@@ -182,6 +182,9 @@ body {
   gap: 0.8rem;
   margin: 1rem 0 0.3rem;
   width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 .sidebar-socials a {
   display: flex;
@@ -189,12 +192,15 @@ body {
   justify-content: center;
   width: 35px;
   height: 35px;
+  min-width: 35px;
+  min-height: 35px;
   background: #232526;
   border-radius: 12px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   position: relative;
   overflow: visible;
+  margin-bottom: 0.5rem;
 }
 
 /* Add tooltip styles */
