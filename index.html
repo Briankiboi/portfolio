@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brian kiboi -  Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <button class="sidebar-toggle" aria-label="Toggle Sidebar">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+    </svg>
+  </button>
+  <div class="sidebar-overlay"></div>
+  <!-- Sidebar/Profile Card -->
+  <aside class="sidebar">
+    <div class="profile-pic-container">
+      <div class="profile-pic-squared">
+        <img src="images/my profile pic.jpg" alt="Brian Kiboi">
+        <span class="status-dot"></span>
+      </div>
+    </div>
+    <h2>Brian Kiboi Njuki</h2>
+    <div class="sidebar-title-pill">Flutter developer, Software Developer,(Aspiring Data analyst)</div>
+    <hr class="sidebar-divider">
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-icon" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path stroke="#FFD600" stroke-width="2" d="M4 6h16v12H4z"/><path stroke="#FFD600" stroke-width="2" d="M4 6l8 7 8-7"/></svg>
+        </span>
+        <div>
+          <div class="contact-label">EMAIL</div>
+          <div class="contact-value ellipsis">
+            <a href="mailto:briankiboi83@gmail.com?subject=Hello from your portfolio&body=Hi Brian," style="color: inherit; text-decoration: none;">briankiboi83@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon" aria-label="Phone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path stroke="#FFD600" stroke-width="2" d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11l-2.2 2.2z"/></svg>
+        </span>
+        <div>
+          <div class="contact-label">PHONE</div>
+          <div class="contact-value ellipsis">+254 112401838</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon" aria-label="Location">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path stroke="#FFD600" stroke-width="2" d="M12 21s-6-5.686-6-10a6 6 0 1112 0c0 4.314-6 10-6 10z"/><circle cx="12" cy="11" r="2" fill="#FFD600"/></svg>
+        </span>
+        <div>
+          <div class="contact-label">LOCATION</div>
+          <div class="contact-value ellipsis">Kikuyu, Kenya</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-socials">
+      <a href="https://www.linkedin.com/in/brian-kiboi-21aa02277/" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path fill="#FFD600" d="M6.94 8.5a1.06 1.06 0 110-2.12 1.06 1.06 0 010 2.12zM7 10h2v7H7v-7zm3.5 0h2v1h.03c.28-.53.97-1.09 2-1.09 2.14 0 2.53 1.41 2.53 3.25V17h-2v-3.25c0-.77-.01-1.76-1.07-1.76-1.07 0-1.23.84-1.23 1.7V17h-2v-7z"/></svg>
+      </a>
+      <a href="https://github.com/Briankiboi" aria-label="GitHub" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path fill="#FFD600" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0112 6.8c.85.004 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.58.69.48C19.13 20.54 22 16.74 22 12.26 22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=254112401838" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#232526"/><path fill="#25D366" d="M12 2a10 10 0 00-8.94 14.47L2 22l5.66-1.48A10 10 0 1012 2zm5.2 14.8c-.22.62-1.28 1.2-1.76 1.28-.47.08-.47.08-1.6-.34a13.1 13.1 0 01-2.1-.98c-1.7-1.1-2.8-2.45-3.13-2.87-.33-.42-.75-1.1-.75-1.7 0-.6.2-.9.28-1.02.08-.12.18-.15.3-.15.12 0 .22.01.32.01.1 0 .23-.04.36.27.13.31.44 1.07.48 1.15.04.08.07.18.01.3-.06.12-.09.19-.18.3-.09.11-.19.24-.27.32-.09.08-.18.17-.08.34.1.17.44.72.95 1.17.65.58 1.2.76 1.37.85.17.09.27.08.37-.05.1-.13.42-.5.53-.67.11-.17.22-.14.36-.08.14.06.89.42 1.04.5.15.08.25.12.29.19.04.07.04.41-.18 1.03z"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li style="display:none;"><a href="#whatdoing" id="whatdoing-tab">What I'm Doing</a></li>
+        <li><a href="#skills-section" id="skills-tab" class="active">Skills</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tab-content">
+      <section id="skills-section" style="display:block;">
+        <div class="section-container">
+          <h2>Skills</h2>
+          <div class="skills-container">
+            <div class="skills-scroll">
+              <div class="skill-card">
+                <img src="images/flutter.png" alt="Flutter">
+                <span>Flutter</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/dart.png" alt="Dart">
+                <span>Dart</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/kotlin.png" alt="Kotlin">
+                <span>Kotlin</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/android.png" alt="Android">
+                <span>Android</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/html.png" alt="HTML">
+                <span>HTML</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/css.webp" alt="CSS">
+                <span>CSS</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/javascript.png" alt="JavaScript">
+                <span>JavaScript</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/php.png" alt="PHP">
+                <span>PHP</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/mysql.png" alt="MySQL">
+                <span>MySQL</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/postgresql.png" alt="PostgreSQL">
+                <span>PostgreSQL</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/django.png" alt="Django">
+                <span>Django</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/git.png" alt="Git">
+                <span>Git</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/sqlite.png" alt="SQLite">
+                <span>SQLite</span>
+              </div>
+              <div class="skill-card">
+                <img src="images/python.png" alt="Python">
+                <span>Python</span>
+              </div>
+            </div>
+          </div>
+          <h2 style="margin-top:2rem;">What I Do</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <div class="service-icon">
+                <img src="images/mobile  icon.png" alt="Mobile Apps" width="36" height="36">
+              </div>
+              <div>
+                <div class="service-title">Mobile Apps</div>
+                <div class="service-desc">Building robust, high-performance mobile applications for Android and iOS using Flutter , focusing on seamless user experience and modern design.</div>
+              </div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon">
+                <img src="images/resposive  websites.png" alt="Web Development" width="36" height="36">
+              </div>
+              <div>
+                <div class="service-title">Web Development</div>
+                <div class="service-desc">Creating responsive, high-quality websites and web apps with modern technologies, ensuring fast load times and professional design.</div>
+              </div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon">
+                <img src="images/ui,ux designs.png" alt="UI/UX Design" width="36" height="36">
+              </div>
+              <div>
+                <div class="service-title">UI/UX Design</div>
+                <div class="service-desc">Designing intuitive, visually appealing interfaces and user experiences using Figma and Canva, tailored for usability and engagement.</div>
+              </div>
+            </div>
+            <div class="service-card">
+              <div class="service-icon">
+                <img src="images/backend.webp" alt="Backend Development" width="36" height="36">
+              </div>
+              <div>
+                <div class="service-title">Backend Development</div>
+                <div class="service-desc">Developing scalable, secure backend systems and APIs with Django and Laravel, focusing on performance and seamless integration.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- About Me Section -->
+    <section id="about">
+      <div class="section-container">
+        <h1>About Me</h1>
+        <p>I am a passionate Flutter developer skilled in building cross-platform apps, REST APIs, UI/UX design, widgets, and state management. I have a proven record of delivering high-quality solutions, including API integration, third-party libraries, and performance optimization. Currently, I am developing an attendance app to further strengthen my real-world experience.</p>
+
+        <p>As a software developer, I have gained strong skills in system design, database management, version control, and API development, enabling me to deliver scalable, efficient (websites and web apps) applications with a focus on user experience.</p>
+
+        <p>I am also actively learning Power BI to expand into data visualization and business intelligence, reflecting my commitment to continuous growth and delivering even greater value to projects.</p>
+      </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume">
+      <div class="section-container">
+        <h2>Resume</h2>
+        <div class="education">
+          <h3>Education</h3>
+          <ul>
+            <li>
+              <strong>Bachelor of Science in Applied Computer Science</strong>
+              <text>Tharaka University, Nairobi, Kenya</text>
+              <text>Sept 2021 – Expected Apr 2025</text>
+              <ul class="education-details">
+                <li>Gained hands-on experience in object-oriented programming with Java, Python, and SQL.</li>
+                <li>Completed over 10 academic projects, including database management systems and analytics tools.</li>
+                <li>Built a mobile attendance app using Flutter for a research initiative, combining innovation and practical development.</li>
+                <li>Certified in Power BI (DataCamp), with strong skills in data visualization and analysis.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>KCSE (Kenya Certificate of Secondary Education)</strong>
+              <text>Komothai Boys' Secondary School</text>
+              <text>Graduated: 2020</text>
+            </li>
+          </ul>
+        </div>
+        <div class="projects">
+          <h3>Projects</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>QR Code Attendance Mobile App</strong><br>
+                <em>Flutter, Firebase</em>
+                <ul>
+                  <li>Designed and developed a mobile application to automate attendance tracking using QR code scanning.</li>
+                  <li>Implemented real-time attendance logging, secure user authentication, and responsive UI components.</li>
+                  <li>Delivered data-driven insights through analytics features to identify absenteeism patterns.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>Task Management System</strong><br>
+                <em>PHP, MySQL</em>
+                <ul>
+                  <li>Created a web-based task management platform supporting multi-user access, task assignment, and status tracking.</li>
+                  <li>Integrated user authentication and role-based access control to ensure data privacy and project accountability.</li>
+                  <li>Enabled reporting and progress monitoring for improved team coordination.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <strong>Performance Analytics Dashboard</strong><br>
+                <em>Power BI, SQL, DAX</em>
+                <ul>
+                  <li>Developed an interactive business intelligence dashboard for real-time performance monitoring.</li>
+                  <li>Visualized key performance indicators (KPIs) and trends using advanced DAX formulas and SQL queries.</li>
+                  <li>Supported data-driven decision-making by transforming raw data into actionable insights.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="download-cv-container">
+          <a href="https://drive.google.com/file/d/1B_DkxMbirQnI0rFzq-Bvoxd2gN5vJqaP/view?usp=sharing" class="download-cv-btn" target="_blank" rel="noopener">
+            <span class="download-cv-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="8" fill="#232526"/><path d="M12 5v10m0 0l-4-4m4 4l4-4" stroke="#FFD600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="6" y="17" width="12" height="2" rx="1" fill="#FFD600"/></svg>
+            </span>
+            Download CV
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+      <div class="section-container">
+        <h2>Portfolio</h2>
+        <div class="portfolio-categories">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="applications">Flutter Apps</button>
+          <button data-filter="webdev">Web development</button>
+          <button data-filter="analytics">Analytics</button>
+        </div>
+        <div class="portfolio-grid">
+          <!-- Flutter Apps -->
+          <div class="portfolio-item" data-category="applications">
+            <img src="./images/projects/qr code.jpg" alt="QR Code Attendance App" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>QR Code Attendance App</h3>
+              <p>Flutter Mobile Application</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="applications">
+            <img src="./images/projects/qr code 2.jpg" alt="QR Code Attendance App" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>QR Code Attendance App</h3>
+              <p>Flutter Mobile Application</p>
+            </div>
+          </div>
+
+          <!-- Web Development -->
+          <div class="portfolio-item" data-category="webdev">
+            <img src="./images/projects/task manangement1.PNG" alt="Task Management System" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem;">
+            <div class="portfolio-item-overlay">
+              <h3>Task Management System</h3>
+              <p>Web Application</p>
+            </div>
+          </div>
+
+          <!-- Analytics -->
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/fifaworld cup 1.PNG" alt="FIFA World Cup Analytics" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>FIFA World Cup Analytics</h3>
+              <p>Sports Analytics Dashboard</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/performance 1.PNG" alt="Performance Analytics Dashboard" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Performance Analytics</h3>
+              <p>Business Intelligence</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/performance 2.PNG" alt="Performance Analytics Dashboard" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Performance Analytics</h3>
+              <p>Data Visualization</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/nice supermarket 1.PNG" alt="Nice Supermarket Analytics" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Nice Supermarket Analytics</h3>
+              <p>Sales Dashboard</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/nice supermarket 2.PNG" alt="Nice Supermarket Analytics" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Nice Supermarket Analytics</h3>
+              <p>Inventory Analysis</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="analytics">
+            <img src="./images/projects/nice supermarket 3.PNG" alt="Nice Supermarket Analytics" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Nice Supermarket Analytics</h3>
+              <p>Performance Metrics</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="section-container">
+        <h2>Contact</h2>
+        <div class="contact-main-ui">
+          <img src="images/my profile pic.jpg" alt="Contact Photo" class="contact-photo">
+          <div class="contact-buttons">
+            <a href="tel:0112401838" class="contact-social-link" style="margin-bottom: 2.2rem;">
+              <span class="contact-social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="6" fill="#232526"/>
+                  <path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z" 
+                      stroke="#4CAF50" 
+                      stroke-width="2" 
+                      fill="none"/>
+                </svg>
+              </span>
+              <span class="contact-social-label">Call: 0112401838/0751613926</span>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=254112401838" class="contact-social-link" style="position: relative; margin-top: 2.5rem;">
+              <div style="position: absolute; top: -55px; width: 100%; text-align: center; font-size: 2rem; line-height: 1;">
+                👇
+              </div>
+              <span class="contact-social-icon" style="margin-top: 18px; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="6" fill="#232526"/>
+                  <path fill="#25D366" d="M12 2a10 10 0 00-8.94 14.47L2 22l5.66-1.48A10 10 0 1012 2zm5.2 14.8c-.22.62-1.28 1.2-1.76 1.28-.47.08-.47.08-1.6-.34a13.1 13.1 0 01-2.1-.98c-1.7-1.1-2.8-2.45-3.13-2.87-.33-.42-.75-1.1-.75-1.7 0-.6.2-.9.28-1.02.08-.12.18-.15.3-.15.12 0 .22.01.32.01.1 0 .23-.04.36.27.13.31.44 1.07.48 1.15.04.08.07.18.01.3-.06.12-.09.19-.18.3-.09.11-.19.24-.27.32-.09.08-.18.17-.08.34.1.17.44.72.95 1.17.65.58 1.2.76 1.37.85.17.09.27.08.37-.05.1-.13.42-.5.53-.67.11-.17.22-.14.36-.08.14.06.89.42 1.04.5.15.08.25.12.29.19.04.07.04.41-.18 1.03z"/>
+                </svg>
+              </span>
+              <span class="contact-social-label">Tap to message me</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I'm Doing Section -->
+    <section id="whatdoing-section" style="display:none;"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html> 
