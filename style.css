@@ -185,6 +185,8 @@ body {
   padding: 0 1rem;
   box-sizing: border-box;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 .sidebar-socials a {
   display: flex;
@@ -199,8 +201,8 @@ body {
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   position: relative;
-  overflow: visible;
   margin-bottom: 0.5rem;
+  z-index: 2;
 }
 
 /* Add tooltip styles */
@@ -299,6 +301,8 @@ body {
 }
 
 .sidebar-socials svg {
+  width: 20px;
+  height: 20px;
   display: block;
   transition: all 0.3s ease;
 }
