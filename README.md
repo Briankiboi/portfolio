@@ -20,4 +20,4 @@ To view or edit this project locally:
 ```bash
 git clone https://github.com/Briankiboi/portfolio.git
 cd portfolio
-# Open index.html in your preferred browser
+
