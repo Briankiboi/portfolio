@@ -63,6 +63,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!targetSection || currentSection === targetSection) return;
 
+    // If showing gallery section, trigger "All" filter
+    if (targetId === 'gallery') {
+      const allFilterButton = document.querySelector('.portfolio-categories button[data-filter="all"]');
+      if (allFilterButton) {
+        allFilterButton.click();
+      }
+    }
+
     // Store scroll position of all sections
     const scrollPositions = new Map();
     document.querySelectorAll('section').forEach(section => {
