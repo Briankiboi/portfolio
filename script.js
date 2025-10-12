@@ -202,6 +202,46 @@ document.addEventListener('DOMContentLoaded', function() {
     showSection('#skills-section');
   }
 
+  // Add click handler for rate card image to open in new tab
+  const rateCardImage = document.querySelector('.rate-card-image');
+  if (rateCardImage) {
+    rateCardImage.addEventListener('click', function() {
+      window.open(this.src, '_blank');
+    });
+  }
+
+  // Payment Modal Functionality
+  const paymentOptions = document.querySelectorAll('.payment-option');
+  const modals = document.querySelectorAll('.modal');
+  const closeButtons = document.querySelectorAll('.close-button');
+
+  paymentOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const modalId = option.getAttribute('data-modal-target');
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'block';
+      }
+    });
+  });
+
+  closeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  window.addEventListener('click', (event) => {
+    modals.forEach(modal => {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
   // Portfolio filtering
   const filterButtons = document.querySelectorAll('.portfolio-categories button');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -232,6 +272,17 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+  // Handle Portfolio link from Testimonial
+  const portfolioLink = document.querySelector('.portfolio-link');
+  if (portfolioLink) {
+    portfolioLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      const hash = this.getAttribute('href');
+      showSection(hash);
+      history.replaceState(null, '', hash);
+    });
+  }
 });
 
 // Sidebar Toggle Functionality
