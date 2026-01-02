@@ -306,4 +306,131 @@ document.querySelectorAll('.navbar a').forEach(link => {
       toggleSidebar();
     }
   });
-}); 
+});
+
+// Portfolio Modal Functionality
+const portfolioModal = document.getElementById('portfolio-modal');
+const portfolioModalImg = document.getElementById('portfolio-modal-img');
+const portfolioModalTitle = document.getElementById('portfolio-modal-title');
+const portfolioModalDesc = document.getElementById('portfolio-modal-desc');
+const portfolioModalClose = document.querySelector('.portfolio-modal-close');
+const zoomInBtn = document.getElementById('zoom-in');
+const zoomOutBtn = document.getElementById('zoom-out');
+const zoomResetBtn = document.getElementById('zoom-reset');
+
+let currentZoom = 1;
+const zoomStep = 0.5;
+const maxZoom = 4;
+const minZoom = 1;
+
+// Open modal when clicking on portfolio items
+document.querySelectorAll('.portfolio-item').forEach(item => {
+  item.addEventListener('click', function(e) {
+    const img = this.querySelector('img');
+    const title = this.querySelector('.portfolio-item-overlay h3')?.textContent || 'Portfolio Item';
+    const desc = this.querySelector('.portfolio-item-overlay p')?.textContent || 'UI/UX Design';
+    
+    if (img) {
+      portfolioModalImg.src = img.src;
+      portfolioModalImg.alt = img.alt;
+      portfolioModalTitle.textContent = title;
+      portfolioModalDesc.textContent = desc;
+      
+      // Reset zoom
+      currentZoom = 1;
+      portfolioModalImg.style.transform = 'scale(1)';
+      portfolioModalImg.classList.remove('zoomed');
+      
+      // Show modal
+      portfolioModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+});
+
+// Close modal
+function closeModal() {
+  portfolioModal.classList.remove('active');
+  document.body.style.overflow = '';
+  currentZoom = 1;
+  portfolioModalImg.style.transform = 'scale(1)';
+  portfolioModalImg.classList.remove('zoomed');
+}
+
+portfolioModalClose.addEventListener('click', closeModal);
+
+// Close modal when clicking outside the image
+portfolioModal.addEventListener('click', function(e) {
+  if (e.target === portfolioModal) {
+    closeModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && portfolioModal.classList.contains('active')) {
+    closeModal();
+  }
+});
+
+// Zoom functionality
+zoomInBtn.addEventListener('click', function() {
+  if (currentZoom < maxZoom) {
+    currentZoom += zoomStep;
+    portfolioModalImg.style.transform = `scale(${currentZoom})`;
+    portfolioModalImg.classList.add('zoomed');
+  }
+});
+
+zoomOutBtn.addEventListener('click', function() {
+  if (currentZoom > minZoom) {
+    currentZoom -= zoomStep;
+    if (currentZoom <= minZoom) {
+      currentZoom = minZoom;
+      portfolioModalImg.classList.remove('zoomed');
+    }
+    portfolioModalImg.style.transform = `scale(${currentZoom})`;
+  }
+});
+
+zoomResetBtn.addEventListener('click', function() {
+  currentZoom = 1;
+  portfolioModalImg.style.transform = 'scale(1)';
+  portfolioModalImg.classList.remove('zoomed');
+});
+
+// Double-click to zoom in/out
+portfolioModalImg.addEventListener('dblclick', function() {
+  if (currentZoom === 1) {
+    currentZoom = 2;
+    portfolioModalImg.style.transform = 'scale(2)';
+    portfolioModalImg.classList.add('zoomed');
+  } else {
+    currentZoom = 1;
+    portfolioModalImg.style.transform = 'scale(1)';
+    portfolioModalImg.classList.remove('zoomed');
+  }
+});
+
+// Mouse wheel zoom (optional)
+portfolioModalImg.addEventListener('wheel', function(e) {
+  e.preventDefault();
+  if (e.deltaY < 0) {
+    // Zoom in
+    if (currentZoom < maxZoom) {
+      currentZoom += 0.1;
+      portfolioModalImg.style.transform = `scale(${currentZoom})`;
+      portfolioModalImg.classList.add('zoomed');
+    }
+  } else {
+    // Zoom out
+    if (currentZoom > minZoom) {
+      currentZoom -= 0.1;
+      if (currentZoom <= minZoom) {
+        currentZoom = minZoom;
+        portfolioModalImg.classList.remove('zoomed');
+      }
+      portfolioModalImg.style.transform = `scale(${currentZoom})`;
+    }
+  }
+}, { passive: false }); 
