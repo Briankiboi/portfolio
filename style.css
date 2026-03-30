@@ -5875,3 +5875,34 @@ section h1 {
     font-size: 1rem;
   }
 } 
+/* Custom Cursor Styles */
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent-color);
+}
+
+.cursor-outline {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--accent-color);
+}
+
+.cursor-dot,
+.cursor-outline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 10000;
+  pointer-events: none;
+  display: none;
+}
+
+@media (pointer: fine) {
+  .cursor-dot,
+  .cursor-outline {
+    display: block;
+  }
+}

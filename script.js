@@ -524,3 +524,39 @@ scrollToTopBtn.addEventListener('click', () => {
     }
   }
 });
+/* Custom Cursor Logic */
+const cursorDot = document.querySelector("[data-cursor-dot]");
+const cursorOutline = document.querySelector("[data-cursor-outline]");
+
+window.addEventListener("mousemove", function (e) {
+  const posX = e.clientX;
+  const posY = e.clientY;
+
+  cursorDot.style.left = `${posX}px`;
+  cursorDot.style.top = `${posY}px`;
+
+  // cursorOutline.style.left = `${posX}px`;
+  // cursorOutline.style.top = `${posY}px`;
+
+  cursorOutline.animate({
+    left: `${posX}px`,
+    top: `${posY}px`
+  }, { duration: 500, fill: "forwards" });
+});
+
+// Cursor hover effect for interactive elements
+const interactives = document.querySelectorAll("a, button, .portfolio-item, .service-card, .skill-card, .payment-option");
+interactives.forEach(el => {
+  el.addEventListener("mouseenter", () => {
+    cursorOutline.classList.add("cursor-hover");
+    cursorOutline.style.transform = "translate(-50%, -50%) scale(1.5)";
+    cursorOutline.style.borderColor = "var(--accent-color)";
+    cursorOutline.style.backgroundColor = "rgba(255, 214, 0, 0.1)";
+  });
+  el.addEventListener("mouseleave", () => {
+    cursorOutline.classList.remove("cursor-hover");
+    cursorOutline.style.transform = "translate(-50%, -50%) scale(1)";
+    cursorOutline.style.borderColor = "var(--accent-color)";
+    cursorOutline.style.backgroundColor = "transparent";
+  });
+});
