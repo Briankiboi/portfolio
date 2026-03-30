@@ -63,11 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!targetSection || currentSection === targetSection) return;
 
-    // If showing gallery section, trigger "All" filter
+    // If showing gallery section, trigger "Functions" filter by default
     if (targetId === 'gallery') {
-      const allFilterButton = document.querySelector('.portfolio-categories button[data-filter="all"]');
-      if (allFilterButton) {
-        allFilterButton.click();
+      const functionsFilterButton = document.querySelector('.portfolio-categories button[data-filter="functions"]');
+      if (functionsFilterButton) {
+        functionsFilterButton.click();
       }
     }
 
@@ -202,11 +202,45 @@ document.addEventListener('DOMContentLoaded', function() {
     showSection('#skills-section');
   }
 
-  // Add click handler for rate card image to open in new tab
+  // Add click handler for rate card image to open in modal
   const rateCardImage = document.querySelector('.rate-card-image');
   if (rateCardImage) {
     rateCardImage.addEventListener('click', function() {
-      window.open(this.src, '_blank');
+      const modal = document.getElementById('portfolio-modal');
+      const modalImg = document.getElementById('portfolio-modal-img');
+      const modalTitle = document.getElementById('portfolio-modal-title');
+      const modalDesc = document.getElementById('portfolio-modal-desc');
+      if (modal && modalImg) {
+        modalImg.src = this.src;
+        modalImg.alt = this.alt;
+        modalTitle.textContent = 'Rate Card';
+        modalDesc.textContent = 'Web Design & Development Rate Card';
+        // Set download link
+        const dlBtn = document.getElementById('modal-download');
+        if (dlBtn) {
+          dlBtn.href = this.src;
+          dlBtn.download = 'Brian_Kiboi_Rate_Card.png';
+        }
+        currentZoom = 1;
+        modalImg.style.transform = 'scale(1)';
+        modalImg.classList.remove('zoomed');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  }
+
+  // Also make the rate card overlay and container clickable
+  const rateCardOverlay = document.querySelector('.rate-card-overlay');
+  if (rateCardOverlay) {
+    rateCardOverlay.addEventListener('click', function() {
+      rateCardImage.click();
+    });
+  }
+  const rateCardContainer = document.querySelector('.rate-card-container');
+  if (rateCardContainer) {
+    rateCardContainer.addEventListener('click', function() {
+      rateCardImage.click();
     });
   }
 
@@ -317,6 +351,7 @@ const portfolioModalClose = document.querySelector('.portfolio-modal-close');
 const zoomInBtn = document.getElementById('zoom-in');
 const zoomOutBtn = document.getElementById('zoom-out');
 const zoomResetBtn = document.getElementById('zoom-reset');
+const modalDownloadBtn = document.getElementById('modal-download');
 
 let currentZoom = 1;
 const zoomStep = 0.5;
@@ -326,6 +361,7 @@ const minZoom = 1;
 // Open modal when clicking on portfolio items
 document.querySelectorAll('.portfolio-item').forEach(item => {
   item.addEventListener('click', function(e) {
+    previouslyFocused = document.activeElement;
     const img = this.querySelector('img');
     const title = this.querySelector('.portfolio-item-overlay h3')?.textContent || 'Portfolio Item';
     const desc = this.querySelector('.portfolio-item-overlay p')?.textContent || 'UI/UX Design';
@@ -335,26 +371,53 @@ document.querySelectorAll('.portfolio-item').forEach(item => {
       portfolioModalImg.alt = img.alt;
       portfolioModalTitle.textContent = title;
       portfolioModalDesc.textContent = desc;
-      
+
+      // Set download link
+      modalDownloadBtn.href = img.src;
+      modalDownloadBtn.download = title.replace(/[^a-zA-Z0-9]/g, '_') + '.png';
+
       // Reset zoom
       currentZoom = 1;
       portfolioModalImg.style.transform = 'scale(1)';
       portfolioModalImg.classList.remove('zoomed');
-      
+
       // Show modal
       portfolioModal.classList.add('active');
       document.body.style.overflow = 'hidden';
+      portfolioModalClose.focus();
     }
   });
 });
 
+// Focus trapping inside modal
+portfolioModal.addEventListener('keydown', function(e) {
+  if (e.key !== 'Tab') return;
+  const focusable = portfolioModal.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey) {
+    if (document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    }
+  } else {
+    if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+});
+
 // Close modal
+let previouslyFocused = null;
+
 function closeModal() {
   portfolioModal.classList.remove('active');
   document.body.style.overflow = '';
   currentZoom = 1;
   portfolioModalImg.style.transform = 'scale(1)';
   portfolioModalImg.classList.remove('zoomed');
+  if (previouslyFocused) previouslyFocused.focus();
 }
 
 portfolioModalClose.addEventListener('click', closeModal);
@@ -433,4 +496,31 @@ portfolioModalImg.addEventListener('wheel', function(e) {
       portfolioModalImg.style.transform = `scale(${currentZoom})`;
     }
   }
-}, { passive: false }); 
+}, { passive: false });
+
+// Scroll to Top Button
+const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+document.querySelectorAll('.section-container').forEach(container => {
+  container.addEventListener('scroll', () => {
+    if (container.scrollTop > 300) {
+      scrollToTopBtn.classList.add('visible');
+    } else {
+      scrollToTopBtn.classList.remove('visible');
+    }
+  });
+});
+
+scrollToTopBtn.addEventListener('click', () => {
+  const activeSection = document.querySelector('section.active');
+  if (activeSection) {
+    const container = activeSection.querySelector('.section-container');
+    if (container) {
+      container.style.scrollBehavior = 'smooth';
+      container.scrollTop = 0;
+      setTimeout(() => {
+        container.style.scrollBehavior = 'auto';
+      }, 500);
+    }
+  }
+});
