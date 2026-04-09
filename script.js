@@ -135,7 +135,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const hash = this.getAttribute('href');
       const currentSection = document.querySelector('section.active');
       const currentContainer = currentSection?.querySelector('.section-container');
-      
+
+      // Scroll the clicked tab into view in the navbar
+      this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
       // If clicking the same section and not at top, scroll to top
       if (currentSection?.id === hash.substring(1) && currentContainer?.scrollTop > 0) {
         currentContainer.style.scrollBehavior = 'smooth';
