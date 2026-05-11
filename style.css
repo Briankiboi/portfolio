@@ -950,9 +950,9 @@ html.intro-skip .intro-splash { display: none !important; }
     width: auto;
     opacity: 1;
     pointer-events: auto;
-    padding: 0.5rem 0.6rem;
+    padding: 0.35rem 0.4rem;
     flex-direction: row;
-    gap: 0.4rem;
+    gap: 0.3rem;
     border: 1px solid rgba(255, 214, 0, 0.22);
     border-radius: 999px;
     background: rgba(20, 22, 27, 0.95);
@@ -962,13 +962,17 @@ html.intro-skip .intro-splash { display: none !important; }
     margin-right: 0;
   }
   .right-sidebar-label { display: none; }
+  /* Inside the chip, hide the descriptive "small" line so only the title shows */
+  .right-sidebar-panel .nav-cat-btn small { display: none; }
   .nav-cat-btn {
     width: auto;
-    padding: 0.34rem 0.75rem;
-    font-size: 0.75rem;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.66rem;
+    line-height: 1;
   }
+  .right-sidebar-panel .nav-cat-btn strong { font-size: 0.66rem; font-weight: 800; }
   .nav-cat-clear {
-    padding: 0.32rem 0.6rem;
+    padding: 0.26rem 0.45rem;
     font-size: 0.68rem;
   }
 }
@@ -5931,6 +5935,131 @@ a.bento-tile:hover {
   position: relative;
 }
 .svc-block-head { margin-bottom: 1.4rem; }
+
+/* ============= READY-TO-LAUNCH PACKAGES ============= */
+.svc-packages { margin: 2rem 0 2.5rem; }
+.svc-package-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.svc-package {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #1c1e25, #16181d);
+  border: 1px solid #25272f;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.svc-package:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 214, 0, 0.45);
+}
+.svc-package-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #0e0f12;
+  cursor: zoom-in;
+  overflow: hidden;
+}
+.svc-package-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.svc-package:hover .svc-package-img img { transform: scale(1.03); }
+.svc-package-body {
+  padding: 1.1rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.svc-package-eyebrow {
+  font-size: 0.65rem;
+  color: #FFD600;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.svc-package-body h4 {
+  font-size: 1.05rem;
+  color: #fff;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.svc-package-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+.svc-package-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+  color: #c9c9c9;
+  line-height: 1.45;
+}
+.svc-package-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #FFD600;
+  font-weight: 700;
+}
+.svc-package-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.svc-package-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -0.005em;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  border: 1.5px solid transparent;
+}
+.svc-package-btn-primary {
+  background: #FFD600;
+  color: #18191A;
+  box-shadow: 0 5px 14px rgba(255, 184, 0, 0.3);
+}
+.svc-package-btn-primary:hover {
+  background: #FFE34D;
+  transform: translateY(-1px);
+  box-shadow: 0 9px 22px rgba(255, 184, 0, 0.45);
+}
+.svc-package-btn-ghost {
+  background: transparent;
+  color: #FFD600;
+  border-color: rgba(255, 214, 0, 0.45);
+}
+.svc-package-btn-ghost:hover {
+  background: rgba(255, 214, 0, 0.08);
+  border-color: #FFD600;
+  color: #FFE34D;
+}
+
+@media (max-width: 900px) {
+  .svc-package-grid { grid-template-columns: 1fr; }
+}
 .svc-eyebrow {
   display: inline-block;
   font-size: 0.7rem;
@@ -7064,8 +7193,18 @@ a.bento-tile:hover {
   }
   /* Give the page bottom space so the floating mode-cluster doesn't sit on the last row */
   .main-content {
-    padding-bottom: 4.5rem;
+    padding-bottom: 6.5rem;
     min-height: auto;
+  }
+  /* Services CTA: tighten so the green WhatsApp button never gets visually cut */
+  .svc-cta-primary {
+    padding: 0.7rem 0.85rem !important;
+    font-size: 0.85rem !important;
+    gap: 0.45rem !important;
+  }
+  .svc-cta-primary > span:not(.svc-cta-primary-ic):not(.svc-cta-primary-arrow) {
+    min-width: 0;
+    white-space: nowrap;
   }
 }
 
