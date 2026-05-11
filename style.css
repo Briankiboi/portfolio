@@ -7032,8 +7032,41 @@ a.bento-tile:hover {
   /* Buttons stack full-width when they would overflow */
   .case-study-actions { flex-direction: column; align-items: stretch; }
   .case-study-link { justify-content: center; width: 100%; }
-  /* Section container should not have height-clipped tall page content on mobile */
-  .section-container { height: auto !important; min-height: calc(100vh - 4rem); }
+  /* Section container should not be a nested scroll box on mobile —
+     let the page body scroll naturally so users can reach the end. */
+  .section-container {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: auto !important;
+  }
+  /* THE REAL FIX:
+     body is a flex container with align-items: flex-start on desktop (for the
+     sidebar+main-content row layout). On mobile that combination prevents
+     vertical scroll past the viewport edge because flex children don't push
+     their parent's height the way block children do. Drop flex on mobile and
+     let the body be a normal scrollable document. */
+  body {
+    display: block !important;
+    align-items: initial !important;
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  html {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  /* Give the page bottom space so the floating mode-cluster doesn't sit on the last row */
+  .main-content {
+    padding-bottom: 4.5rem;
+    min-height: auto;
+  }
 }
 
 @media (max-width: 768px) {
