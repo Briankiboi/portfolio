@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brian kiboi - Portfolio</title>
+    <link rel="icon" type="image/jpeg" href="/images/dp.jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+    <button class="sidebar-toggle" aria-label="Toggle Sidebar">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+      </svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <!-- Sidebar/Profile Card -->
+    <aside class="sidebar">
+      <div class="profile-pic-container">
+        <div class="profile-pic-squared">
+          <img src="/images/dp.jpeg" alt="Brian Kiboi" />
+          <span class="status-dot"></span>
+        </div>
+      </div>
+      <h2>Brian Kiboi Njuki</h2>
+      <div class="sidebar-title-pill">
+        Full-stack Developer<br />Flutter Developer
+      </div>
+      <nav class="sidebar-nav" aria-label="Mobile sections">
+        <a href="/">Home</a>
+        <a href="/what-i-do/">What I Do</a>
+        <a href="/about/">About Me</a>
+        <a href="/portfolio/" class="active">Portfolio</a>
+        <a href="/resume/">CV/Resume</a>
+        <a href="/gallery/">Gallery</a>
+        <a href="/services/">Services</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr class="sidebar-divider" />
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon" aria-label="Email">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24">
+              <rect width="24" height="24" rx="4" fill="#EA4335" />
+              <rect
+                x="4"
+                y="7"
+                width="16"
+                height="11"
+                rx="1.5"
+                fill="none"
+                stroke="#fff"
+                stroke-width="1.5" />
+              <path
+                d="M4 8l8 5.5L20 8"
+                fill="none"
+                stroke="#fff"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </span>
+          <div>
+            <div class="contact-label">EMAIL</div>
+            <div class="contact-value ellipsis">
+              <a
+                href="mailto:briankiboi83@gmail.com?subject=Hello from your portfolio&body=Hi Brian,"
+                style="color: inherit; text-decoration: none"
+                >briankiboi83@gmail.com</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon" aria-label="Phone">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24">
+              <rect width="24" height="24" rx="4" fill="#0088cc" />
+              <path
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.12.45 2.33.69 3.54.69a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.54a1 1 0 01-.25 1.05l-2.2 2.2z"
+                fill="#fff" />
+            </svg>
+          </span>
+          <div>
+            <div class="contact-label">PHONE</div>
+            <div class="contact-value ellipsis">+254 112401838</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon" aria-label="Location">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 64 64">
+              <path
+                fill="#F76D57"
+                d="M32,2c-12.15,0-22,9.85-22,22c0,5.799,3.469,11.469,5.913,15h0.01L32,61l16.077-22h0.01C50.281,35.781,54,29.799,54,24C54,11.85,44.15,2,32,2z M32,38c-7.732,0-14-6.268-14-14s6.268-14,14-14s14,6.268,14,14S39.732,38,32,38z" />
+              <path
+                fill="#394240"
+                d="M32,0C18.745,0,8,10.745,8,24c0,5.678,2.502,10.671,5.271,15l17.097,24.156C30.743,63.686,31.352,64,32,64s1.257-0.314,1.632-0.844L50.729,39C53.375,35.438,56,29.678,56,24C56,10.745,45.255,0,32,0z M48.087,39h-0.01L32,61L15.923,39h-0.01C13.469,35.469,10,29.799,10,24c0-12.15,9.85-22,22-22s22,9.85,22,22C54,29.799,50.281,35.781,48.087,39z" />
+              <path
+                fill="#394240"
+                d="M32,14c-5.523,0-10,4.478-10,10s4.477,10,10,10s10-4.478,10-10S37.523,14,32,14z M32,32c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S36.418,32,32,32z" />
+              <path
+                fill="#F76D57"
+                d="M32,12c-6.627,0-12,5.373-12,12s5.373,12,12,12s12-5.373,12-12S38.627,12,32,12z M32,34c-5.522,0-10-4.477-10-10s4.478-10,10-10s10,4.477,10,10S37.522,34,32,34z" />
+              <path
+                opacity="0.2"
+                fill="#231F20"
+                d="M32,12c-6.627,0-12,5.373-12,12s5.373,12,12,12s12-5.373,12-12S38.627,12,32,12z M32,34c-5.522,0-10-4.477-10-10s4.478-10,10-10s10,4.477,10,10S37.522,34,32,34z" />
+            </svg>
+          </span>
+          <div>
+            <div class="contact-label">LOCATION</div>
+            <div class="contact-value ellipsis">Westlands, Kenya</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-socials">
+        <a
+          href="https://www.linkedin.com/in/brian-kiboi-21aa02277/"
+          aria-label="LinkedIn"
+          target="_blank"
+          rel="noopener">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24">
+            <rect width="24" height="24" rx="4" fill="#0A66C2" />
+            <path
+              d="M8.5 10v6.5M8.5 7.5v.01M11.5 10v6.5M11.5 13c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v3.5"
+              fill="none"
+              stroke="#fff"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=254112401838"
+          aria-label="WhatsApp"
+          target="_blank"
+          rel="noopener">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M16 31C23.732 31 30 24.732 30 17C30 9.26801 23.732 3 16 3C8.26801 3 2 9.26801 2 17C2 19.5109 2.661 21.8674 3.81847 23.905L2 31L9.31486 29.3038C11.3014 30.3854 13.5789 31 16 31ZM16 28.8462C22.5425 28.8462 27.8462 23.5425 27.8462 17C27.8462 10.4576 22.5425 5.15385 16 5.15385C9.45755 5.15385 4.15385 10.4576 4.15385 17C4.15385 19.5261 4.9445 21.8675 6.29184 23.7902L5.23077 27.7692L9.27993 26.7569C11.1894 28.0746 13.5046 28.8462 16 28.8462Z"
+              fill="#BFC8D0" />
+            <path
+              d="M28 16C28 22.6274 22.6274 28 16 28C13.4722 28 11.1269 27.2184 9.19266 25.8837L5.09091 26.9091L6.16576 22.8784C4.80092 20.9307 4 18.5589 4 16C4 9.37258 9.37258 4 16 4C22.6274 4 28 9.37258 28 16Z"
+              fill="url(#wa_sidebar)" />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M16 30C23.732 30 30 23.732 30 16C30 8.26801 23.732 2 16 2C8.26801 2 2 8.26801 2 16C2 18.5109 2.661 20.8674 3.81847 22.905L2 30L9.31486 28.3038C11.3014 29.3854 13.5789 30 16 30ZM16 27.8462C22.5425 27.8462 27.8462 22.5425 27.8462 16C27.8462 9.45755 22.5425 4.15385 16 4.15385C9.45755 4.15385 4.15385 9.45755 4.15385 16C4.15385 18.5261 4.9445 20.8675 6.29184 22.7902L5.23077 26.7692L9.27993 25.7569C11.1894 27.0746 13.5046 27.8462 16 27.8462Z"
+              fill="white" />
+            <path
+              d="M12.5 9.49989C12.1672 8.83131 11.6565 8.8905 11.1407 8.8905C10.2188 8.8905 8.78125 9.99478 8.78125 12.05C8.78125 13.7343 9.52345 15.578 12.0244 18.3361C14.438 20.9979 17.6094 22.3748 20.2422 22.3279C22.875 22.2811 23.4167 20.0154 23.4167 19.2503C23.4167 18.9112 23.2062 18.742 23.0613 18.696C22.1641 18.2654 20.5093 17.4631 20.1328 17.3124C19.7563 17.1617 19.5597 17.3656 19.4375 17.4765C19.0961 17.8018 18.4193 18.7608 18.1875 18.9765C17.9558 19.1922 17.6103 19.083 17.4665 19.0015C16.9374 18.7892 15.5029 18.1511 14.3595 17.0426C12.9453 15.6718 12.8623 15.2001 12.5959 14.7803C12.3828 14.4444 12.5392 14.2384 12.6172 14.1483C12.9219 13.7968 13.3426 13.254 13.5313 12.9843C13.7199 12.7145 13.5702 12.305 13.4803 12.05C13.0938 10.953 12.7663 10.0347 12.5 9.49989Z"
+              fill="white" />
+            <defs>
+              <linearGradient
+                id="wa_sidebar"
+                x1="26.5"
+                y1="7"
+                x2="4"
+                y2="28"
+                gradientUnits="userSpaceOnUse">
+                <stop stop-color="#5BD066" />
+                <stop offset="1" stop-color="#27B43E" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </a>
+        <a
+          href="https://github.com/Briankiboi"
+          aria-label="GitHub"
+          target="_blank"
+          rel="noopener">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24">
+            <rect width="24" height="24" rx="4" fill="#181717" />
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"
+              fill="#fff" />
+          </svg>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+      <nav class="navbar">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/what-i-do/">What I Do</a></li>
+          <li><a href="/about/">About Me</a></li>
+          <li><a href="/portfolio/" class="active">Portfolio</a></li>
+          <li><a href="/resume/">CV/Resume</a></li>
+          <li><a href="/gallery/">Gallery</a></li>
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+
+      <section id="portfolio">
+        <div class="section-container">
+          <h2>Featured Work</h2>
+          <p class="portfolio-subtitle">
+            Carefully crafted websites, mobile apps, and business platforms
+            developed for clients and brands across Kenya , combining modern
+            design, scalability, and user-focused experiences.
+          </p>
+
+          <!-- Headline stats -->
+          <div class="portfolio-stats">
+            <div class="portfolio-stat">
+              <strong>17+</strong><span>Featured case studies</span>
+            </div>
+            <div class="portfolio-stat">
+              <strong>19+</strong><span>Clients · Kenya &amp; Africa</span>
+            </div>
+            <div class="portfolio-stat">
+              <strong>13</strong><span>Live in production</span>
+            </div>
+            <div class="portfolio-stat">
+              <strong>4</strong><span>Apps shipped</span>
+            </div>
+          </div>
+
+          <!-- ===================== FEATURED CASE STUDIES ===================== -->
+          <div class="case-studies">
+            <header class="case-studies-head">
+              <p class="case-studies-eyebrow">Featured client work</p>
+              <h3>Live in production — built end-to-end</h3>
+            </header>
+
+            <!-- CASE STUDY 1 — SWP Security -->
+            <article class="case-study">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live</span
+                  >
+                </div>
+                <h4 class="case-study-title">SWP Security</h4>
+                <p class="case-study-tag">
+                  Private investigations &amp; security firm · Nairobi, Kenya
+                </p>
+                <p class="case-study-desc">
+                  Full marketing-site build for a leading private investigations
+                  and security firm. Conversion-focused landing page, integrated
+                  lead funnel (WhatsApp + email), an in-house CMS so the team
+                  can publish security insights without my help, and SEO-tuned
+                  service pages that rank for local search terms.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Lead Developer &amp; Designer</li>
+                  <li>HTML · CSS · JS</li>
+                  <li>Custom CMS</li>
+                  <li>SEO &amp; performance</li>
+                  <li>Lead-capture funnel</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>Drives qualified consultation requests every week</li>
+                  <li>Self-serve blog publishing for the in-house team</li>
+                  <li>Mobile-first; fully responsive across devices</li>
+                </ul>
+                <div class="case-study-actions">
+                  <a
+                    href="https://swpsecurity.com"
+                    target="_blank"
+                    rel="noopener"
+                    class="case-study-link case-study-link-primary">
+                    Visit live site →
+                  </a>
+                </div>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="SWP Security — Hero"
+                  data-desc="Conversion-focused landing for a Nairobi-based private investigations firm.">
+                  <img
+                    src="/images/projects/swp-hero.webp"
+                    alt="SWP Security — Hero"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SWP Security — Hero</h3>
+                    <p>Conversion-focused landing page</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="SWP Security — Contact funnel"
+                  data-desc="Lead-capture form routing to WhatsApp + email for fast response.">
+                  <img
+                    src="/images/projects/swp-contact.webp"
+                    alt="SWP Security — Contact funnel"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SWP Security — Contact funnel</h3>
+                    <p>Lead-capture routing to WhatsApp + email</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="SWP Security — Insights / Blog"
+                  data-desc="Custom CMS so the team can publish security insights independently.">
+                  <img
+                    src="/images/projects/swp-blog.webp"
+                    alt="SWP Security — Insights / Blog"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SWP Security — Insights / Blog</h3>
+                    <p>Self-publish CMS for the team</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="SWP Security — Footer & resources"
+                  data-desc="Quick links, services, consult-us card and brand-aligned footer.">
+                  <img
+                    src="/images/projects/swp-footer.webp"
+                    alt="SWP Security — Footer & resources"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SWP Security — Footer</h3>
+                    <p>Resources, services &amp; consult-us</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 2 — Simon Mutisya + EARS -->
+            <article class="case-study case-study-flip">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live</span
+                  >
+                  <span class="case-study-badge">On Google Play</span>
+                </div>
+                <h4 class="case-study-title">Simon Mutisya &amp; EARS App</h4>
+                <p class="case-study-tag">
+                  Security risk consultant + companion mobile app · Africa-wide
+                </p>
+                <p class="case-study-desc">
+                  Personal brand site for a senior security risk consultant
+                  operating across Africa — bookings, insights, and consultancy
+                  funnel. Plus the <strong>EARS</strong> companion app: a
+                  real-time African security news + alerts platform that ships
+                  on Google Play, with offline-first reading and
+                  country/category filtering.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Full-stack web</li>
+                  <li>Flutter (Android · iOS)</li>
+                  <li>Realtime news feed</li>
+                  <li>Offline cache</li>
+                  <li>Brand identity &amp; design</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>Site live and converting consultancy enquiries</li>
+                  <li>EARS mobile app shipped on Google Play</li>
+                  <li>Covers Kenya + multiple African regions</li>
+                </ul>
+                <div class="case-study-actions">
+                  <a
+                    href="https://getsimonmutisya.com"
+                    target="_blank"
+                    rel="noopener"
+                    class="case-study-link case-study-link-primary">
+                    Visit live site →
+                  </a>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.ears.updates&pli=1"
+                    target="_blank"
+                    rel="noopener"
+                    class="case-study-link case-study-link-ghost">
+                    <span aria-hidden="true">▶</span> Get EARS on Google Play
+                  </a>
+                </div>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="applications"
+                  data-title="EARS App — How it works"
+                  data-desc="Real-time African security news + alerts app. Browse, search, explore, save offline.">
+                  <img
+                    src="/images/projects/ears-app.webp"
+                    alt="EARS App — How it works"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>EARS — Companion app</h3>
+                    <p>Realtime news · search · offline read</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Simon Mutisya — Resources & Blog"
+                  data-desc="Insights hub with Medium-style featured posts and filterable archive.">
+                  <img
+                    src="/images/projects/mutisya-blog.webp"
+                    alt="Simon Mutisya — Resources"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Simon Mutisya — Resources</h3>
+                    <p>Insights hub + filterable archive</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Simon Mutisya — Footer & Get in Touch"
+                  data-desc="Footer with floating sticky 'Click to Get in Touch' contact tab.">
+                  <img
+                    src="/images/projects/mutisya-footer.webp"
+                    alt="Simon Mutisya — Footer"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Simon Mutisya — Footer</h3>
+                    <p>Sticky contact tab + Get-in-Touch</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 3 — TU Attendance App (Tharaka University) -->
+            <article class="case-study">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live</span
+                  >
+                  <span class="case-study-badge">Flutter</span>
+                </div>
+                <h4 class="case-study-title">TU Attendance App</h4>
+                <p class="case-study-tag">
+                  Tharaka University ICT Department · “Education For Freedom”
+                </p>
+                <p class="case-study-desc">
+                  Lead Flutter developer for the official
+                  <strong>Tharaka University</strong> attendance app. Replaces
+                  paper rolls with a QR-based check-in that's
+                  <strong>geofenced to the lecture hall</strong> — students
+                  can't mark attendance from outside campus. Built three
+                  role-based interfaces (Student, Lecturer, Department admin),
+                  OTP email verification, and searchable attendance logs.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Lead Flutter Developer</li>
+                  <li>Flutter (Android · iOS)</li>
+                  <li>Firebase</li>
+                  <li>QR check-in</li>
+                  <li>Geofencing</li>
+                  <li>Realtime DB</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Replaces manual paper attendance across the university
+                  </li>
+                  <li>Geofencing blocks off-campus check-in fraud</li>
+                  <li>
+                    Three role-based dashboards: student, lecturer, department
+                    admin
+                  </li>
+                </ul>
+                <div class="case-study-actions">
+                  <span
+                    class="case-study-link case-study-link-primary"
+                    style="cursor: default"
+                    >In use at Tharaka University</span
+                  >
+                </div>
+              </div>
+              <div class="case-study-shots case-study-shots--mobile">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="applications"
+                  data-title="TU Attendance — Splash"
+                  data-desc="Brand splash with Tharaka University 'Education For Freedom' motto.">
+                  <img
+                    src="/images/projects/Splashscreen.jpeg"
+                    alt="TU Attendance — Splash"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>TU Attendance — Splash</h3>
+                    <p>“Education For Freedom” brand launch</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="applications"
+                  data-title="TU Attendance — Role pick (Student / Lecturer)"
+                  data-desc="Login flow with separate paths for students and lecturers.">
+                  <img
+                    src="/images/projects/qr code 2.jpg"
+                    alt="TU Attendance — Role pick"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>TU Attendance — Role pick</h3>
+                    <p>Student / Lecturer login paths</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="applications"
+                  data-title="TU Attendance — Pin location (geofencing)"
+                  data-desc="Lecturer pins campus location; geofence validates student check-ins.">
+                  <img
+                    src="/images/flutter1.png"
+                    alt="TU Attendance — Pin location"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>TU Attendance — Pin location</h3>
+                    <p>Geofencing prevents off-campus check-in</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="applications"
+                  data-title="TU Attendance — Lecturer dashboard"
+                  data-desc="Sessions, courses, and attendance overview for lecturers.">
+                  <img
+                    src="/images/flutter2.png"
+                    alt="TU Attendance — Lecturer dashboard"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>TU Attendance — Lecturer dashboard</h3>
+                    <p>Sessions · courses · attendance overview</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 4 — Logix Fleet — Marketing Website (logifleet.ai) -->
+            <article class="case-study case-study-flip">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live</span
+                  >
+                  <span class="case-study-badge">logifleet.ai</span>
+                </div>
+                <h4 class="case-study-title">Logix Fleet — Website</h4>
+                <p class="case-study-tag">
+                  Marketing site for SIPHYY — the Fleet Control OS
+                </p>
+                <p class="case-study-desc">
+                  Production marketing site for <strong>SIPHYY</strong>, Logix
+                  Fleet's Fleet Control OS. Helps fleet and logistics operators
+                  prevent downtime, stop cost leakage, and keep every vehicle
+                  compliant — positioned with clear pricing, case studies,
+                  integrations, and lead-conversion CTAs (Book a Demo · Free
+                  Trial · Get a Quote).
+                </p>
+                <ul class="case-study-stack">
+                  <li>Marketing site</li>
+                  <li>Conversion-focused</li>
+                  <li>Case studies + integrations</li>
+                  <li>Lead funnels</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Anchors sign-ups + demo bookings for the SIPHYY platform
+                  </li>
+                  <li>Live in production at logifleet.ai</li>
+                  <li>Multiple lead-capture paths (demo · quote · trial)</li>
+                </ul>
+                <div class="case-study-actions">
+                  <a
+                    href="https://www.logifleet.ai"
+                    target="_blank"
+                    rel="noopener"
+                    class="case-study-link case-study-link-primary">
+                    Visit logifleet.ai →
+                  </a>
+                </div>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="logifleet.ai — Hero"
+                  data-desc="SIPHYY positioning as a Fleet Control OS, with Book a Demo + Free Trial CTAs.">
+                  <img
+                    src="/images/projects/logixfleet-hero.webp"
+                    alt="Logix Fleet — Live website hero"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>logifleet.ai — Live hero</h3>
+                    <p>“SIPHYY is a Fleet Control OS”</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="Logix Fleet — Marketing site design"
+                  data-desc="Original marketing landing design for the Fleet Management Portal.">
+                  <img
+                    src="/images/figma2.png"
+                    alt="Logix Fleet — Marketing site design"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Logix Fleet — Marketing design</h3>
+                    <p>Site layout &amp; visual direction</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 5 — Logix Fleet — UI/UX Designer (SIPHYY product UI) -->
+            <article class="case-study">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>In production</span
+                  >
+                  <span class="case-study-badge">Designer role</span>
+                </div>
+                <h4 class="case-study-title">Logix Fleet — UI/UX Designer</h4>
+                <p class="case-study-tag">
+                  In-house designer for the SIPHYY product surface
+                </p>
+                <p class="case-study-desc">
+                  In-house <strong>UI/UX Designer</strong> for the SIPHYY
+                  product — Logix Fleet's fleet management portal. Owned the
+                  visual language and shipped the operations dashboards,
+                  vehicle/driver modules, and the in-app navigation system that
+                  fleet operators use daily. End-to-end product UI from
+                  acquisition to ops.
+                </p>
+                <ul class="case-study-stack">
+                  <li>UI/UX Designer</li>
+                  <li>Figma</li>
+                  <li>Ops dashboards</li>
+                  <li>Navigation system</li>
+                  <li>Design system</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Designed dashboards covering vehicles, drivers, inspections,
+                    expenses
+                  </li>
+                  <li>
+                    Built a navigation system that scales across product modules
+                  </li>
+                  <li>
+                    Owned the visual language used across web + driver mobile
+                    app
+                  </li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="SIPHYY — Fleet dashboards"
+                  data-desc="Ops dashboards covering vehicles, drivers, expenses, and inspections.">
+                  <img
+                    src="/images/figma3.png"
+                    alt="SIPHYY — Dashboards & modules"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SIPHYY — Dashboards</h3>
+                    <p>Vehicles · drivers · expenses · inspections</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="SIPHYY — App sidebar (navigation system)"
+                  data-desc="In-app navigation drawer + section system for the product.">
+                  <img
+                    src="/images/figma4.png"
+                    alt="SIPHYY — App sidebar / navigation"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SIPHYY — App sidebar</h3>
+                    <p>Product navigation system</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 6 — Logix Fleet — Driver Mobile App -->
+            <article class="case-study case-study-flip">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Shipped</span
+                  >
+                  <span class="case-study-badge">Mobile</span>
+                </div>
+                <h4 class="case-study-title">Logix Fleet — Driver App</h4>
+                <p class="case-study-tag">
+                  Driver-facing companion app for SIPHYY · trips &amp; jobs
+                </p>
+                <p class="case-study-desc">
+                  Designed the <strong>SIPHYY Driver App</strong> — the mobile
+                  companion that drivers use on the road. Lightweight UI focused
+                  on the daily flow: pick up jobs, accept trips, complete
+                  inspections, and log issues. Built to reduce friction for
+                  non-technical drivers on entry-level devices.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Mobile UI/UX</li>
+                  <li>Figma</li>
+                  <li>Driver workflows</li>
+                  <li>Trips &amp; jobs</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Streamlines trip + job flow for fleet drivers in the field
+                  </li>
+                  <li>
+                    Low-distraction layout designed for entry-level devices
+                  </li>
+                  <li>
+                    Tight visual link to the web product for cross-team
+                    continuity
+                  </li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="SIPHYY Driver App — Trips & jobs"
+                  data-desc="Driver-facing mobile interface for trips and jobs.">
+                  <img
+                    src="/images/figma5.png"
+                    alt="SIPHYY Driver App — Trips & jobs"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>SIPHYY Driver App</h3>
+                    <p>Trips · jobs · inspections on mobile</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 7 — Job Readiness AI (DM Solution Tech startup) -->
+            <article class="case-study">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>In development</span
+                  >
+                  <span class="case-study-badge">Django · AI</span>
+                  <span class="case-study-badge">DM Solution Tech</span>
+                </div>
+                <h4 class="case-study-title">Job Readiness AI</h4>
+                <p class="case-study-tag">
+                  AI-powered candidate interview platform · DM Solution Tech
+                  in-house startup
+                </p>
+                <p class="case-study-desc">
+                  Full-stack build for
+                  <strong>DM Solution Tech's</strong> in-house startup.
+                  AI-driven mock interviews that score candidates and return
+                  structured feedback. Owned
+                  <strong>both the UI/UX design</strong> (Figma)
+                  <strong>and the engineering</strong> (Django + Python) — no
+                  handoff gap. Auth flow with email verification, candidate
+                  skill profile, real-time interview UX, and an AI scoring +
+                  feedback engine.
+                </p>
+                <ul class="case-study-stack">
+                  <li>UI/UX Designer</li>
+                  <li>Full-stack Developer</li>
+                  <li>Django · Python</li>
+                  <li>AI / LLM scoring</li>
+                  <li>Figma → ship</li>
+                  <li>Auth + email verify</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Designed in Figma, then shipped end-to-end — same hands, no
+                    handoff gap
+                  </li>
+                  <li>
+                    AI mock-interview engine returns scores plus structured
+                    feedback
+                  </li>
+                  <li>DM Solution Tech in-house startup product</li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Job Readiness AI — Landing"
+                  data-desc="AI interview platform marketing landing built in Django.">
+                  <img
+                    src="/images/jobreadiness_landingpage.png"
+                    alt="Job Readiness AI — Landing"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Job Readiness AI — Landing</h3>
+                    <p>Django + Python · AI platform</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Job Readiness AI — AI interview"
+                  data-desc="AI-driven mock interview with scoring + structured feedback.">
+                  <img
+                    src="/images/jobreadniessinterview.png"
+                    alt="Job Readiness AI — AI interview"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Job Readiness AI — AI interview</h3>
+                    <p>Scoring + feedback engine</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Job Readiness AI — Candidate profile"
+                  data-desc="Candidate skill profile + interview history dashboard.">
+                  <img
+                    src="/images/jobreadniess profile.png"
+                    alt="Job Readiness AI — Candidate profile"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Job Readiness AI — Profile</h3>
+                    <p>Skill profile + interview history</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="Job Readiness AI — Figma board (UI/UX flow)"
+                  data-desc="Full Figma board: end-to-end candidate flow + page kit. Designed and shipped by me.">
+                  <img
+                    src="/images/figma1.png"
+                    alt="Job Readiness AI — Figma board (UI/UX flow)"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Job Readiness AI — Figma board</h3>
+                    <p>UI/UX Designer · end-to-end candidate flow + page kit</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="figma"
+                  data-title="Job Readiness AI — Desktop UI design"
+                  data-desc="Polished desktop UI design — built by the same hands.">
+                  <img
+                    src="/images/figma6.png"
+                    alt="Job Readiness AI — Desktop UI design"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Job Readiness AI — Desktop UI</h3>
+                    <p>Polished Figma mockup — built by me</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 8 — Kenya Judiciary (Court Internship) -->
+            <article class="case-study case-study-flip">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Internship</span
+                  >
+                  <span class="case-study-badge">Live · gov</span>
+                  <span class="case-study-badge">PHP · MySQL</span>
+                  <span class="case-study-badge">Government</span>
+                </div>
+                <h4 class="case-study-title">
+                  Kenya Judiciary — Court Internship
+                </h4>
+                <p class="case-study-tag">
+                  Maintained the Ajira Job Portal for court recruitment ·
+                  public-sector internship
+                </p>
+                <p class="case-study-desc">
+                  Court attachment internship at the
+                  <strong>Kenya Judiciary</strong>. Helped
+                  <strong>maintain the Ajira Job Portal</strong> — the official
+                  recruitment website used to advertise and process court job
+                  vacancies across Kenya. Day-to-day work covered listing new
+                  vacancies, applicant onboarding, vetting submitted
+                  applications, and keeping the portal running smoothly for
+                  thousands of public users. Alongside the portal, built an
+                  internal <strong>task management tool in PHP</strong> for
+                  court staff to assign work and track case workflows without
+                  paper trails.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Internship · Court attachment</li>
+                  <li>Ajira Job Portal maintenance</li>
+                  <li>PHP · MySQL</li>
+                  <li>Recruitment workflows</li>
+                  <li>Applicant onboarding</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Maintained the live Ajira recruitment portal used across
+                    Kenya's court system
+                  </li>
+                  <li>
+                    Onboarded applicants and processed submissions for court
+                    vacancies
+                  </li>
+                  <li>
+                    Shipped a PHP task management tool that replaced paper-based
+                    workflows
+                  </li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Judiciary — Task Management (PHP)"
+                  data-desc="Internal task management tool for court staff, built in PHP during the attachment.">
+                  <img
+                    src="/images/projects/task manangement1.PNG"
+                    alt="Judiciary — Task Management"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Judiciary — Task Management</h3>
+                    <p>PHP · MySQL · court workflow</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Kenya Judiciary — Ajira Portal"
+                  data-desc="Onboarded applicants to the Judiciary's Ajira recruitment portal.">
+                  <img
+                    src="/images/JudiciaryJobPortal(Ajira).jpeg"
+                    alt="Kenya Judiciary — Ajira Portal"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Kenya Judiciary — Ajira Portal</h3>
+                    <p>Recruitment portal · applicant onboarding</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 9 — Ticket Management (Nissan Sacco Car Hire) -->
+            <article class="case-study">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live · Ops</span
+                  >
+                  <span class="case-study-badge">SACCO</span>
+                  <span class="case-study-badge">Internal tool</span>
+                </div>
+                <h4 class="case-study-title">
+                  Ticket Management — Nissan Sacco
+                </h4>
+                <p class="case-study-tag">
+                  IT system for a private Nissan SACCO car-hire business
+                </p>
+                <p class="case-study-desc">
+                  Built a support ticketing + operations tool for a
+                  <strong>private Nissan SACCO car-hire</strong> business.
+                  Drivers and admins log incidents (mechanical, accident,
+                  customer), assign tickets, prioritize repairs and service
+                  requests, and track each ticket end-to-end from
+                  <strong>open → assigned → resolved</strong>. Keeps the fleet
+                  on the road and tightens accountability.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Full-stack Developer</li>
+                  <li>Ticketing workflow</li>
+                  <li>SACCO operations</li>
+                  <li>Status tracking</li>
+                  <li>Role-based access</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Centralizes vehicle service + incident tracking across the
+                    SACCO
+                  </li>
+                  <li>Reduces handover gaps between drivers and operations</li>
+                  <li>Every ticket trackable open → assigned → resolved</li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Nissan SACCO — Ticket management"
+                  data-desc="Support ticketing for a private Nissan SACCO car-hire business.">
+                  <img
+                    src="/images/projects/Tickets.jpeg"
+                    alt="Nissan SACCO — Ticket management"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Nissan SACCO — Tickets</h3>
+                    <p>Assign · prioritize · resolve</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- CASE STUDY 10 — Tech Support Meru (Cyber café) -->
+            <article class="case-study case-study-flip">
+              <div class="case-study-info">
+                <div class="case-study-badges">
+                  <span class="case-study-badge case-study-badge-live"
+                    ><span class="case-study-dot"></span>Live</span
+                  >
+                  <span class="case-study-badge">Local business</span>
+                  <span class="case-study-badge">Meru</span>
+                </div>
+                <h4 class="case-study-title">Tech Support Meru — Cyber</h4>
+                <p class="case-study-tag">
+                  IT services platform for a Meru-based cyber café
+                </p>
+                <p class="case-study-desc">
+                  Full-stack build for a
+                  <strong>Meru cyber café</strong> offering walk-in and remote
+                  IT support. Conversion-focused landing with a clear services
+                  list, a "Why Choose Us" trust section to build credibility for
+                  a local business, and a
+                  <strong>Smart Support self-service help portal</strong> so
+                  customers can solve common issues without picking up the
+                  phone.
+                </p>
+                <ul class="case-study-stack">
+                  <li>Full-stack Developer</li>
+                  <li>Services landing</li>
+                  <li>Self-service portal</li>
+                  <li>Trust copy + design</li>
+                  <li>Local SEO</li>
+                </ul>
+                <ul class="case-study-impact">
+                  <li>
+                    Brought the cyber café's services online for walk-in +
+                    remote work
+                  </li>
+                  <li>Self-service portal reduces basic phone-support load</li>
+                  <li>
+                    Trust-building "Why Choose Us" drives walk-in conversion
+                  </li>
+                </ul>
+              </div>
+              <div class="case-study-shots">
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Tech Support Meru — Cyber landing"
+                  data-desc="Services landing for the Meru cyber café — walk-in + remote IT support.">
+                  <img
+                    src="/images/projects/TechsupportMeru.jpeg"
+                    alt="Tech Support Meru — Cyber landing"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Tech Support Meru — Landing</h3>
+                    <p>Services · walk-in &amp; remote</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Tech Support Meru — Why Choose Us"
+                  data-desc="Trust-building section with services + value props for the local business.">
+                  <img
+                    src="/images/projects/Whyus.jpeg"
+                    alt="Tech Support Meru — Why Choose Us"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Why Choose Us</h3>
+                    <p>Trust copy · services · local credibility</p>
+                  </div>
+                </div>
+                <div
+                  class="portfolio-item case-study-shot"
+                  data-category="webdev"
+                  data-title="Tech Support Meru — Smart Support portal"
+                  data-desc="Customer-facing self-service help portal for common IT issues.">
+                  <img
+                    src="/images/projects/smartsupport.jpeg"
+                    alt="Tech Support Meru — Smart Support"
+                    loading="lazy" />
+                  <div class="portfolio-item-overlay">
+                    <h3>Smart Support — Help portal</h3>
+                    <p>Self-service customer support</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- ===================== MORE WORK — CATEGORIZED GRID ===================== -->
+          <header class="case-studies-head" style="margin-top: 2.4rem">
+            <p class="case-studies-eyebrow">
+              “Additional projects are not publicly displayed due to client
+              confidentiality and privacy requirements.”
+            </p>
+          </header>
+          <div class="portfolio-categories">
+            <button class="active" data-filter="all">Others</button>
+          </div>
+
+          <div class="portfolio-grid">
+            <!-- ===== Analytics — Performance dashboards ===== -->
+            <div class="portfolio-item" data-category="analytics">
+              <img
+                src="/images/projects/performance 1.PNG"
+                alt="Performance Analytics — Dashboard"
+                loading="lazy" />
+              <div class="portfolio-item-overlay">
+                <h3>Performance Analytics — Dashboard</h3>
+                <p>Business Intelligence · KPI overview + drill-downs</p>
+              </div>
+            </div>
+            <div class="portfolio-item" data-category="analytics">
+              <img
+                src="/images/projects/performance 2.PNG"
+                alt="Performance Analytics — Visuals"
+                loading="lazy" />
+              <div class="portfolio-item-overlay">
+                <h3>Performance Analytics — Visuals</h3>
+                <p>
+                  Data Visualization · trends, comparisons, performance over
+                  time
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Portfolio Image Modal -->
+    <div id="portfolio-modal" class="portfolio-modal">
+      <span class="portfolio-modal-close">&times;</span>
+      <div class="portfolio-modal-content">
+        <img id="portfolio-modal-img" src="" alt="Portfolio Image" />
+        <div class="portfolio-modal-info">
+          <h3 id="portfolio-modal-title"></h3>
+          <p id="portfolio-modal-desc"></p>
+        </div>
+        <div class="portfolio-modal-controls">
+          <button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+          <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">
+            -
+          </button>
+          <button class="zoom-btn" id="zoom-reset" aria-label="Reset zoom">
+            Reset
+          </button>
+          <a
+            class="zoom-btn modal-download-btn"
+            id="modal-download"
+            href=""
+            download=""
+            aria-label="Download image"
+            >⬇ Download</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js" defer></script>
+  </body>
+</html>
