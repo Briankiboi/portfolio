@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.style.overflow = 'hidden';
 
       const schedule = [
-        { at: 2800, fn: () => splash.classList.add('show-2') },
-        { at: 4700, fn: () => splash.classList.add('leaving') },
-        { at: 5100, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 1500, fn: () => splash.classList.add('show-2') },
+        { at: 2400, fn: () => splash.classList.add('leaving') },
+        { at: 2750, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();
@@ -260,7 +260,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- Instant nav: speculation rules (Chrome/Brave/Edge) + prefetch fallback ---------- */
+  /* ---------- Instant nav: lightweight prefetch on hover/focus only.
+     Removed the EAGER speculation prefetch + idle batch prefetch because they
+     were flooding the network with 8 background page requests on every load,
+     hurting the actual current page's load time.
+     Moderate-eagerness prerender stays — it only fires on real user intent. */
   try {
     if (HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
       const sr = document.createElement('script');
@@ -273,11 +277,6 @@ document.addEventListener('DOMContentLoaded', function () {
             { not: { href_matches: '/*\\?*' } }
           ]},
           eagerness: 'moderate'
-        }],
-        prefetch: [{
-          source: 'document',
-          where: { href_matches: '/*' },
-          eagerness: 'eager'
         }]
       });
       document.head.appendChild(sr);
@@ -298,9 +297,6 @@ document.addEventListener('DOMContentLoaded', function () {
     link.addEventListener('touchstart', () => prefetch(link.href), { passive: true });
     link.addEventListener('focus', () => prefetch(link.href));
   });
-  /* Idle-eager prefetch (browsers without speculation rules) */
-  const idle = window.requestIdleCallback || (cb => setTimeout(cb, 1500));
-  idle(() => { navLinks.forEach(link => prefetch(link.href)); }, { timeout: 2500 });
 
   /* ---------- Sidebar toggle (mobile) ---------- */
   const sidebarToggle = document.querySelector('.sidebar-toggle');

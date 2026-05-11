@@ -7006,6 +7006,36 @@ a.bento-tile:hover {
   cursor: zoom-in;
 }
 
+/* ============================================================
+   MOBILE SAFETY PASS — prevent horizontal overflow / cut-off
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Hard guarantee no horizontal scroll/clipping anywhere */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  .main-content { padding-right: 0 !important; max-width: 100%; }
+  .section-container { padding: 0.85rem !important; max-width: 100%; box-sizing: border-box; }
+  /* Allow flex/grid items to shrink below their natural size so chips/buttons wrap */
+  .case-study,
+  .case-study-info,
+  .case-study-shots,
+  .about-stack-group,
+  .about-stack-groups,
+  .cv-preview-actions,
+  .case-study-actions { min-width: 0; max-width: 100%; }
+  /* Case study cards: kill the 280px min-column that was forcing horizontal overflow */
+  .case-study, .case-study-flip { grid-template-columns: 1fr !important; padding: 1rem !important; }
+  /* Stack pills + impact bullets shouldn't blow out the row */
+  .case-study-stack,
+  .about-chips { gap: 0.3rem !important; }
+  .case-study-stack li,
+  .about-chips li { font-size: 0.7rem !important; }
+  /* Buttons stack full-width when they would overflow */
+  .case-study-actions { flex-direction: column; align-items: stretch; }
+  .case-study-link { justify-content: center; width: 100%; }
+  /* Section container should not have height-clipped tall page content on mobile */
+  .section-container { height: auto !important; min-height: calc(100vh - 4rem); }
+}
+
 @media (max-width: 768px) {
   .cv-preview-head {
     padding: 0.85rem 1rem;
