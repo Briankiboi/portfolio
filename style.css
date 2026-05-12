@@ -653,6 +653,10 @@ html.intro-skip .intro-splash { display: none !important; }
   animation: introProgress 4.8s cubic-bezier(.4,.0,.2,1) 0.1s forwards;
 }
 
+/* Slide 2 + dot pager are unused — single-slide splash now. Hide them. */
+.intro-slide-2,
+.intro-splash-dots { display: none !important; }
+
 /* slide indicator dots — clickable to pause on that slide */
 .intro-splash-dots {
   position: absolute;

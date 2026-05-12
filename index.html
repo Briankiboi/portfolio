@@ -14,7 +14,11 @@
       rel="stylesheet" />
     <script>
       // Hide splash instantly if already seen (runs before body paints)
-      try { if (sessionStorage.getItem('intro-seen')) document.documentElement.classList.add('intro-skip'); } catch (_) {}
+      try {
+        var seen  = sessionStorage.getItem('intro-seen');
+        var force = sessionStorage.getItem('force-intro');
+        if (seen && !force) document.documentElement.classList.add('intro-skip');
+      } catch (_) {}
     </script>
   </head>
   <body>

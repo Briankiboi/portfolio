@@ -113,18 +113,31 @@ document.addEventListener('DOMContentLoaded', function () {
   /* First-visit intro splash (home only, once per session, two slides).
      Markup is in index.html so it paints in the first frame.
      Click a dot → pause on that slide. Tap elsewhere → toggle pause/resume. */
+  /* Set this flag from any "Home" link so the next /home load shows the splash again */
+  document.querySelectorAll('a[href="/"], a[href="/#home"]').forEach(a => {
+    a.addEventListener('click', () => {
+      try { sessionStorage.setItem('force-intro', '1'); } catch (_) {}
+    });
+  });
+
   const splash = document.getElementById('intro-splash');
   if (splash) {
-    if (path !== '/' || sessionStorage.getItem('intro-seen')) {
+    const forceIntro = sessionStorage.getItem('force-intro') === '1';
+    if (forceIntro) sessionStorage.removeItem('force-intro');  // consume the one-shot flag
+
+    const firstVisit = !sessionStorage.getItem('intro-seen');
+    const shouldShow = (path === '/') && (firstVisit || forceIntro);
+
+    if (!shouldShow) {
       splash.remove();
     } else {
       sessionStorage.setItem('intro-seen', '1');
       document.body.style.overflow = 'hidden';
 
+      /* Single-slide splash — show slide 1 only, no Welcome second slide. */
       const schedule = [
-        { at: 2500, fn: () => splash.classList.add('show-2') },
-        { at: 4700, fn: () => splash.classList.add('leaving') },
-        { at: 5000, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 2400, fn: () => splash.classList.add('leaving') },
+        { at: 2750, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();
