@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.style.overflow = 'hidden';
 
       const schedule = [
-        { at: 1500, fn: () => splash.classList.add('show-2') },
-        { at: 2400, fn: () => splash.classList.add('leaving') },
-        { at: 2750, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 2500, fn: () => splash.classList.add('show-2') },
+        { at: 4700, fn: () => splash.classList.add('leaving') },
+        { at: 5000, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();

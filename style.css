@@ -650,7 +650,7 @@ html.intro-skip .intro-splash { display: none !important; }
   background: linear-gradient(90deg, #FFE34D, #FFD600, #FFB800);
   border-radius: 999px;
   box-shadow: 0 0 14px rgba(255, 214, 0, 0.5);
-  animation: introProgress 4.6s cubic-bezier(.4,.0,.2,1) 0.2s forwards;
+  animation: introProgress 4.8s cubic-bezier(.4,.0,.2,1) 0.1s forwards;
 }
 
 /* slide indicator dots — clickable to pause on that slide */
@@ -5910,6 +5910,208 @@ a.bento-tile:hover {
   font-weight: 600;
 }
 
+/* ===================== SERVICES "Trusted by" — reuse home bento tile UI ===================== */
+.svc-trust-strip {
+  /* Bento tile uses grid positioning by default — neutralize that on /services/ */
+  grid-column: auto !important;
+  grid-row: auto !important;
+  margin: 1.4rem 0 2rem !important;
+  width: 100% !important;
+}
+
+/* ===================== SVC CLIENTS — DM tree + logo marquee ===================== */
+.svc-clients {
+  margin: 1.4rem 0 1rem;
+  padding: 1.4rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  overflow: visible;
+}
+.svc-clients-head { text-align: center; margin-bottom: 1.6rem; }
+.svc-clients-head h3 {
+  font-size: 1.35rem;
+  color: #fff;
+  font-weight: 700;
+  margin: 0.2rem 0 0;
+  letter-spacing: -0.01em;
+}
+
+/* TREE LAYOUT */
+.svc-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0.5rem 0 1rem;
+  position: relative;
+}
+.svc-tree-root {
+  display: flex;
+  justify-content: center;
+}
+.svc-tree-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 0.7rem;
+  background: #14161b;
+  border: 1px solid #2c2e33;
+  border-radius: 14px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  width: 200px;
+  position: relative;
+  z-index: 2;
+}
+.svc-tree-node:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 214, 0, 0.45);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+}
+.svc-tree-node-root {
+  width: 240px;
+  background: linear-gradient(160deg, #FFE34D, #FFD600, #FFB800);
+  border-color: #FFD600;
+  box-shadow: 0 8px 24px rgba(255, 184, 0, 0.32);
+}
+.svc-tree-node img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: #fff;
+  padding: 6px;
+  border-radius: 12px;
+}
+.svc-tree-node-root img {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px;
+  width: 64px;
+  height: 64px;
+}
+.svc-tree-node-label strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.005em;
+}
+.svc-tree-node-root .svc-tree-node-label strong { color: #18191A; }
+.svc-tree-node-label span {
+  display: block;
+  font-size: 0.68rem;
+  color: #9aa0aa;
+  margin-top: 0.15rem;
+  font-weight: 500;
+}
+.svc-tree-node-root .svc-tree-node-label span { color: rgba(24, 25, 26, 0.72); font-weight: 600; }
+
+/* BIG CLIENT SHOWCASE — one slide at a time, auto-rotating, no repeats */
+.svc-clients-show {
+  position: relative;
+  margin: 2.2rem auto 0;
+  padding: 0 1rem;
+  height: 220px;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.svc-clients-show-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.svc-clients-show-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease, transform 0.7s ease, visibility 0s linear 0.7s;
+  transform: translateY(8px);
+}
+/* Auto-cycle: each slide lights up for 4s in turn (3 slides × 4s = 12s loop) */
+.svc-clients-show-slide:nth-child(1) { animation: svcClientsCycle 12s 0s infinite; }
+.svc-clients-show-slide:nth-child(2) { animation: svcClientsCycle 12s 4s infinite; }
+.svc-clients-show-slide:nth-child(3) { animation: svcClientsCycle 12s 8s infinite; }
+@keyframes svcClientsCycle {
+  0%, 33.33% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  35%, 100% {
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+  }
+}
+/* Pause the slideshow on hover so the user can read */
+.svc-clients-show:hover .svc-clients-show-slide { animation-play-state: paused; }
+
+.svc-clients-show-slide img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  background: #fff;
+  padding: 14px;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 214, 0, 0.15);
+}
+.svc-clients-show-label { text-align: center; }
+.svc-clients-show-label strong {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.005em;
+}
+.svc-clients-show-label span {
+  display: block;
+  font-size: 0.78rem;
+  color: #9aa0aa;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Tiny dot pager under the slideshow */
+.svc-clients-show::after {
+  content: "";
+  position: absolute;
+  bottom: -0.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background:
+    linear-gradient(90deg, #FFD600 0 33%, rgba(255,214,0,0.25) 33% 100%);
+  border-radius: 999px;
+  animation: svcClientsBar 12s linear infinite;
+  background-size: 300% 100%;
+}
+@keyframes svcClientsBar {
+  0%   { background-position: 0%   0; }
+  100% { background-position: -200% 0; }
+}
+
+/* MOBILE — slightly smaller slideshow */
+@media (max-width: 720px) {
+  .svc-tree-node { width: 100%; max-width: 280px; }
+  .svc-tree-node-root { width: 100%; max-width: 280px; }
+  .svc-clients-head h3 { font-size: 1.1rem; }
+  .svc-clients { padding: 1.2rem 1rem 1rem; }
+  .svc-clients-show { height: 200px; padding: 0 0.5rem; }
+  .svc-clients-show-slide img { width: 120px; height: 120px; padding: 12px; }
+  .svc-clients-show-label strong { font-size: 1rem; }
+}
+
 /* Svc pay cards inside flex .payment-options — neutralize stray grid props */
 .payment-options .svc-pay-card {
   grid-column: auto;
@@ -7159,8 +7361,34 @@ a.bento-tile:hover {
   .case-study-stack li,
   .about-chips li { font-size: 0.7rem !important; }
   /* Buttons stack full-width when they would overflow */
-  .case-study-actions { flex-direction: column; align-items: stretch; }
-  .case-study-link { justify-content: center; width: 100%; }
+  .case-study-actions {
+    flex-direction: column;
+    align-items: stretch;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    width: 100%;
+  }
+  .case-study-link {
+    display: flex !important;
+    justify-content: center;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0.6rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    gap: 0.35rem !important;
+    overflow: hidden;
+    text-align: center;
+  }
+  .case-study-link > * {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   /* Section container should not be a nested scroll box on mobile —
      let the page body scroll naturally so users can reach the end. */
   .section-container {
@@ -7196,15 +7424,48 @@ a.bento-tile:hover {
     padding-bottom: 6.5rem;
     min-height: auto;
   }
-  /* Services CTA: tighten so the green WhatsApp button never gets visually cut */
+  /* Services CTA: stop the green WhatsApp button from overflowing the viewport */
+  .svc-cta-card { max-width: 100%; box-sizing: border-box; }
+  .svc-cta-card > .svc-cta-actions {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
   .svc-cta-primary {
-    padding: 0.7rem 0.85rem !important;
-    font-size: 0.85rem !important;
-    gap: 0.45rem !important;
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0.7rem 0.7rem !important;
+    font-size: 0.82rem !important;
+    gap: 0.4rem !important;
+    overflow: hidden;
+    text-align: center;
   }
   .svc-cta-primary > span:not(.svc-cta-primary-ic):not(.svc-cta-primary-arrow) {
     min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+/* Very narrow phones (≤380px) — fall back to a short label */
+@media (max-width: 380px) {
+  .svc-cta-primary {
+    font-size: 0.78rem !important;
+    padding: 0.65rem 0.55rem !important;
+  }
+  /* Hide the long label, show a short one instead */
+  .svc-cta-primary > span:not(.svc-cta-primary-ic):not(.svc-cta-primary-arrow) {
+    font-size: 0;
+  }
+  .svc-cta-primary > span:not(.svc-cta-primary-ic):not(.svc-cta-primary-arrow)::before {
+    content: "Chat on WhatsApp";
+    font-size: 0.78rem;
   }
 }
 
