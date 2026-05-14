@@ -5,6 +5,7 @@ Welcome to my personal portfolio repository! This project showcases my skills, p
 ## 🌐 Live Site
 👉 [Visit Portfolio](https://portfolio-two-kohl-52.vercel.app)
 
+
 ## 🛠️ Technologies Used
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Deployment**: Vercel
