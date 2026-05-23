@@ -4843,6 +4843,17 @@ html {
   padding-top: 4rem;
   padding-bottom: 8rem;
 }
+
+/* Drop the fixed-height internal-scroll container so footers show in full
+   (matches the home page approach — the whole page scrolls instead). */
+#gallery .section-container,
+#resume .section-container,
+#portfolio .section-container {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding-bottom: 2.5rem !important;
+}
 /* Tighten the home-footer top margin inside .section-container so it
    doesn't push itself past the scrollable bottom edge. */
 .section-container .home-footer {
