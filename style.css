@@ -8249,42 +8249,52 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   }
 }
 
-/* Compact mobile sidebar so GitHub social shows without scrolling */
+/* Compact mobile sidebar so the Book-a-call CTA is fully visible without scrolling */
 @media (max-width: 900px) {
   .sidebar {
-    padding: 2.2rem 0.75rem 0.8rem !important;
+    padding: 1.4rem 0.75rem 0.6rem !important;
   }
-  .profile-pic-container { margin: 0 auto 0.35rem !important; }
-  .profile-pic-squared { width: 64px !important; height: 64px !important; }
-  .sidebar h2 { font-size: 1rem !important; margin: 0.2rem 0 !important; }
+  .profile-pic-container { margin: 0 auto 0.2rem !important; padding: 0 !important; }
+  .profile-pic-squared { width: 44px !important; height: 44px !important; }
+  .sidebar h2 { font-size: 0.9rem !important; margin: 0.15rem 0 !important; }
   .sidebar-title-pill {
-    font-size: 0.72rem !important;
-    padding: 0.2rem 0.6rem !important;
-    margin: 0.15rem auto 0.35rem !important;
+    font-size: 0.65rem !important;
+    padding: 0.15rem 0.55rem !important;
+    margin: 0.1rem auto 0.25rem !important;
+    line-height: 1.2 !important;
   }
-  .sidebar-divider { margin: 0.3rem 0 !important; }
+  .sidebar-divider { margin: 0.25rem 0 !important; }
   .contact-item {
-    padding: 0.35rem 0.5rem !important;
-    margin-bottom: 0.25rem !important;
+    padding: 0.3rem 0.5rem !important;
+    margin-bottom: 0.2rem !important;
   }
   .contact-icon svg,
-  .contact-icon img { width: 22px !important; height: 22px !important; }
-  .contact-label { font-size: 0.62rem !important; }
-  .contact-value { font-size: 0.74rem !important; }
+  .contact-icon img { width: 20px !important; height: 20px !important; }
+  .contact-label { font-size: 0.6rem !important; }
+  .contact-value { font-size: 0.72rem !important; }
   .sidebar-socials {
-    gap: 0.9rem !important;
-    margin: 1.3rem 0 0.4rem !important;
-    padding: 0 0.4rem !important;
+    gap: 0.4rem !important;
+    margin: 0.5rem 0 0.3rem !important;
+    padding: 0 0.3rem !important;
     justify-content: center !important;
   }
   .sidebar-socials a {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    min-height: 52px !important;
-    border-radius: 14px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 10px !important;
   }
-  .sidebar-socials svg { width: 28px !important; height: 28px !important; }
+  .sidebar-socials svg { width: 22px !important; height: 22px !important; }
+  .sidebar-nav a {
+    padding: 0.55rem 0.55rem !important;
+    font-size: 0.95rem !important;
+  }
+  .sidebar-book-cta {
+    margin: 0.5rem auto 0.2rem !important;
+    padding: 0.55rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
 }
 
 /* Hide the floating category toggle (right-sidebar) on mobile —
