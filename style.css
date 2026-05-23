@@ -5999,7 +5999,16 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   #about .section-container,
   #contact.section-container,
   #contact > .section-container,
-  #contact .section-container {
+  #contact .section-container,
+  #gallery.section-container,
+  #gallery > .section-container,
+  #gallery .section-container,
+  #portfolio.section-container,
+  #portfolio > .section-container,
+  #portfolio .section-container,
+  #resume.section-container,
+  #resume > .section-container,
+  #resume .section-container {
     height: auto !important;
     max-height: none !important;
     min-height: calc(100vh - 1.6rem) !important;
