@@ -9143,3 +9143,10 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     padding-top: env(safe-area-inset-top, 0) !important;
   }
 }
+
+/* When the Calendly popup is open, hide our mobile hamburger so it doesn't
+   collide with Calendly's close X (both pin to top-right). Restored
+   automatically when the .calendly-overlay element is removed on close. */
+body:has(.calendly-overlay) .sidebar-toggle {
+  display: none !important;
+}
