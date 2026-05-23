@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
-        { at: 900, fn: () => splash.classList.add('show-2') },
-        { at: 2100, fn: () => splash.classList.add('leaving') },
-        { at: 2450, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 4500, fn: () => splash.classList.add('show-2') },
+        { at: 9000, fn: () => splash.classList.add('leaving') },
+        { at: 9350, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();
