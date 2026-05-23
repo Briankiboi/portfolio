@@ -6014,6 +6014,11 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   transition: transform 0.2s ease, opacity 0.2s ease;
   line-height: 0;
 }
+.home-footer-social a svg {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
 .home-footer-social a:hover {
   transform: translateY(-2px);
   opacity: 0.9;
