@@ -7577,12 +7577,18 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   background: linear-gradient(90deg, transparent, #FFD600);
 }
 
+/* HERO — eyebrow row */
+.about-hero-eyebrow {
+  display: block !important;
+  margin: 0.4rem 0 1rem !important;
+}
+
 /* HERO — photo + intro */
 .about-hero {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 1.6rem;
-  align-items: start;
+  align-items: center;
   margin-bottom: 2rem;
 }
 .about-hero-photo {
