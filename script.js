@@ -532,9 +532,53 @@ document.addEventListener('DOMContentLoaded', function () {
   const filterButtons = document.querySelectorAll('.portfolio-categories button');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
 
+  /* Inject filler tiles to round out the current row so no empty cells remain.
+     Runs after every filter change and on window resize. */
+  const FILLER_SUBS = [
+    'Mobile · Full-Stack Engineer',
+    'Nairobi · Remote-first',
+    'DM Solution Tech',
+    'A short visual journey',
+    'briankiboi.is-a.dev',
+    'Built by DM Solution Tech',
+  ];
+  function fillEmptyCells() {
+    document.querySelectorAll('.portfolio-grid').forEach(grid => {
+      // wipe previous auto-fillers
+      grid.querySelectorAll('.portfolio-filler-auto').forEach(n => n.remove());
+
+      // read column count from computed grid template
+      const cols = getComputedStyle(grid)
+        .gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+
+      const visibleCount = [...grid.children].filter(c => {
+        if (c.style.display === 'none') return false;
+        if (c.classList.contains('portfolio-filler-auto')) return false;
+        return true;
+      }).length;
+
+      if (visibleCount === 0) return;
+      const remainder = visibleCount % cols;
+      const needed = remainder === 0 ? 0 : cols - remainder;
+      for (let i = 0; i < needed; i++) {
+        const el = document.createElement('div');
+        el.className = 'portfolio-item portfolio-filler portfolio-filler-auto'
+          + (i % 2 ? ' portfolio-filler-alt' : '');
+        el.setAttribute('aria-hidden', 'true');
+        el.innerHTML =
+          '<span class="portfolio-filler-dot"></span>' +
+          '<span class="portfolio-filler-text">briankiboi.is-a.dev</span>' +
+          '<span class="portfolio-filler-sub">' + FILLER_SUBS[i % FILLER_SUBS.length] + '</span>';
+        grid.appendChild(el);
+      }
+    });
+  }
+
   function applyFilter(filterValue) {
     portfolioItems.forEach(item => {
-      if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+      // Brand-filler tiles are decorative — always show them regardless of filter
+      const isFiller = item.classList.contains('portfolio-filler');
+      if (isFiller || filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
         item.style.display = 'block';
         item.style.opacity = '1';
         item.style.transform = 'scale(1)';
@@ -543,6 +587,7 @@ document.addEventListener('DOMContentLoaded', function () {
         item.style.opacity = '0';
       }
     });
+    fillEmptyCells();
   }
 
   /* Auto-apply default filter on page load (uses the .active button) */
@@ -558,7 +603,8 @@ document.addEventListener('DOMContentLoaded', function () {
       button.classList.add('active');
       const filterValue = button.getAttribute('data-filter');
       portfolioItems.forEach(item => {
-        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+        const isFiller = item.classList.contains('portfolio-filler');
+        if (isFiller || filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
           item.style.display = 'block';
           setTimeout(() => {
             item.style.opacity = '1';
@@ -570,7 +616,16 @@ document.addEventListener('DOMContentLoaded', function () {
           setTimeout(() => { item.style.display = 'none'; }, 300);
         }
       });
+      /* Allow the fade-out 300ms to finish before recalculating fillers */
+      setTimeout(fillEmptyCells, 320);
     });
+  });
+
+  /* Re-balance fillers on resize (debounced) */
+  let __fillResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(__fillResizeTimer);
+    __fillResizeTimer = setTimeout(fillEmptyCells, 150);
   });
 
   /* ---------- Scroll-to-top button ---------- */

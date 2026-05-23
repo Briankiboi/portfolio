@@ -146,6 +146,38 @@ body {
   text-shadow: 0 0 15px rgba(255, 214, 0, 0.6);
 }
 
+.sidebar-book-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 90%;
+  max-width: 240px;
+  margin: 0.75rem auto 0.25rem;
+  padding: 0.65rem 0.85rem;
+  background: linear-gradient(135deg, #0F7AFF, #006BFF);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 107, 255, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.sidebar-book-cta:hover {
+  background: linear-gradient(135deg, #1f87ff, #0F7AFF);
+  box-shadow: 0 12px 26px rgba(0, 107, 255, 0.4);
+  transform: translateY(-1px);
+}
+.sidebar-book-cta img { flex-shrink: 0; }
+.sidebar-book-cta span:not(.sidebar-book-cta-arrow) { flex: 1; letter-spacing: 0.01em; }
+.sidebar-book-cta-arrow {
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.18s ease;
+}
+.sidebar-book-cta:hover .sidebar-book-cta-arrow { transform: translateX(3px); }
+
 .sidebar-divider {
   border: none;
   border-top: 1px solid #333;
@@ -4795,7 +4827,7 @@ html {
 #services .section-container,
 #contact .section-container {
   padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-bottom: 8rem;
 }
 /* Tighten the home-footer top margin inside .section-container so it
    doesn't push itself past the scrollable bottom edge. */
@@ -8808,4 +8840,66 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     padding: 0.7rem 0.55rem !important;
     font-size: 1rem !important;
   }
+}
+
+/* ---------- Gallery brand-filler tiles ----------
+   Fill the empty grid cells with a vertical brand mark so the page
+   doesn't look patchy. Same aspect-ratio: 4/5 cell as photos. */
+.portfolio-filler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  text-align: center;
+  padding: 1rem;
+  cursor: default;
+  background: linear-gradient(160deg, #16181d 0%, #0f1116 100%);
+  border: 1px solid #2a2d36;
+  position: relative;
+  overflow: hidden;
+}
+.portfolio-filler::before {
+  content: '';
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(255, 214, 0, 0.18), transparent 65%);
+  pointer-events: none;
+}
+.portfolio-filler-alt {
+  background: linear-gradient(160deg, #1a1c22 0%, #131519 100%);
+}
+.portfolio-filler-alt::before {
+  inset: auto auto -40% -20%;
+  background: radial-gradient(circle, rgba(0, 107, 255, 0.18), transparent 65%);
+}
+.portfolio-filler:hover img { transform: none; }
+.portfolio-filler-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #25D366;
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.18);
+  z-index: 1;
+}
+.portfolio-filler-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+  font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #FFD600;
+  text-shadow: 0 2px 12px rgba(255, 214, 0, 0.25);
+  z-index: 1;
+}
+.portfolio-filler-sub {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #9aa0aa;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  z-index: 1;
 }

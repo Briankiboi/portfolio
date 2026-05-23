@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="Gallery — Brian Kiboi">
   <meta name="twitter:description" content="Certificates and awards.">
   <meta name="twitter:image" content="https://briankiboi.is-a.dev/images/dp.jpeg">
-  <link rel="icon" type="image/jpeg" href="../images/dp.jpeg">
+  <link rel="icon" type="image/png" href="../image%20copy%203.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../style.css">
@@ -49,6 +49,11 @@
         <a href="/gallery/" class="active">Gallery</a>
         <a href="/contact/">Contact</a>
       </nav>
+    <a class="sidebar-book-cta" href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener">
+      <img src="https://cdn.simpleicons.org/calendly/ffffff" alt="" width="18" height="18">
+      <span>Book a call</span>
+      <span class="sidebar-book-cta-arrow">→</span>
+    </a>
     <hr class="sidebar-divider">
     <div class="contact-info">
       <div class="contact-item">
@@ -115,12 +120,20 @@
         <div class="portfolio-categories">
           <button class="active" data-filter="functions">Functions</button>
           <button data-filter="certificates">Certificates</button>
+          <button data-filter="degrees">Degrees</button>
           <button data-filter="all">All</button>
         </div>
         <div class="portfolio-grid" data-default-filter="all">
+          <!-- Brand filler tile (intro) -->
+          <div class="portfolio-item portfolio-filler portfolio-filler-alt" aria-hidden="true">
+            <span class="portfolio-filler-dot"></span>
+            <span class="portfolio-filler-text">briankiboi.is-a.dev</span>
+            <span class="portfolio-filler-sub">A short visual journey</span>
+          </div>
+
           <!-- Certificates -->
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/ISACA.png" alt="ISACA Certificate" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/ISACA.png" alt="ISACA Certificate" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>ISACA Certification</h3>
               <p>Professional Certificate</p>
@@ -128,7 +141,7 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/Chipurobo.jpeg" alt="Chiborobo Certificate" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/Chipurobo.jpeg" alt="Chiborobo Certificate" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Chiborobo Achievement</h3>
               <p>Robotics Certificate</p>
@@ -136,7 +149,7 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/Innovationweek.png" alt="Innovation Week Certificate 1" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/Innovationweek.png" alt="Innovation Week Certificate 1" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Innovation Week</h3>
               <p>Achievement Certificate</p>
@@ -144,7 +157,7 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/innovationweek2.png" alt="Innovation Week Certificate 2" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/innovationweek2.png" alt="Innovation Week Certificate 2" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Innovation Week</h3>
               <p>Recognition Award</p>
@@ -152,7 +165,7 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/cerebrating%20canva%20ui.jpeg" alt="Cerebrating UI/UX Award" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/cerebrating%20canva%20ui.jpeg" alt="Cerebrating UI/UX Award" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>UI/UX Design</h3>
               <p>Canva Design Award</p>
@@ -160,7 +173,7 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/pm-cert.png" alt="PM  Certificate" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/pm-cert.png" alt="PM  Certificate" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>PM Certificate</h3>
               <p>Project Management Certificate</p>
@@ -168,85 +181,210 @@
           </div>
 
           <div class="portfolio-item" data-category="certificates">
-            <img src="../images/career-essentials-generative-ai.png" alt="Career Essentials in Generative AI Certificate" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/career-essentials-generative-ai.png" alt="Career Essentials in Generative AI Certificate" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Career Essentials in Generative AI</h3>
               <p>Generative AI Certificate</p>
             </div>
           </div>
 
-          <!-- Functions -->
+          <!-- ========== FUNCTIONS — grouped by theme ========== -->
+
+          <!-- Achievements & milestones -->
           <div class="portfolio-item" data-category="functions">
-            <img src="../images/Innovation%20week%20awarding.png" alt="Innovation Week Award Ceremony" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/Innovation%20week%20awarding.png" alt="Innovation Week Award Ceremony" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Innovation Week Winner</h3>
               <p>3rd Position</p>
             </div>
           </div>
-
           <div class="portfolio-item" data-category="functions">
-            <img src="../images/Robotics-Arduino.png" alt="Robotics and Arduino" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/Robotics-Arduino.png" alt="Robotics and Arduino" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Robotics Project</h3>
               <p>Arduino Development</p>
             </div>
           </div>
-
           <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/attache.jpeg" alt="Attachment Experience" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
-            <div class="portfolio-item-overlay">
-              <h3>My 1st Gig</h3>
-              <p>While Still in University</p>
-            </div>
-          </div>
-
-          <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/first%20job%20after%20school.jpeg" alt="First Job After School" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
-            <div class="portfolio-item-overlay">
-              <h3>First Job After School</h3>
-              <p>Career Milestone</p>
-            </div>
-          </div>
-
-          <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/judciary%20attachee.jpeg" alt="Judiciary Attachment" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
-            <div class="portfolio-item-overlay">
-              <h3>Judiciary Attachment</h3>
-              <p>Judiciary ICT Department</p>
-            </div>
-          </div>
-
-          <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/meeting%20for%20product%20growth.jpeg" alt="Product Growth Meeting" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
-            <div class="portfolio-item-overlay">
-              <h3>Product Growth Meeting</h3>
-              <p>Team Collaboration</p>
-            </div>
-          </div>
-
-          <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/mygraduation.jpeg" alt="Graduation Day" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/images2/mygraduation.jpeg" alt="Graduation Day" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Graduation Day</h3>
               <p>Academic Achievement</p>
             </div>
           </div>
           <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/WhatsApp%20Image%202026-03-30%20at%208.41.13%20PM.jpeg" alt="Random" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="gallery%202/image.png" alt="Graduation cake" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Graduation Cake</h3>
+              <p>Applied Computer Science · Class of 2025</p>
+            </div>
+          </div>
+
+          <!-- Brand filler tile -->
+          <div class="portfolio-item portfolio-filler" data-category="functions" aria-hidden="true">
+            <span class="portfolio-filler-dot"></span>
+            <span class="portfolio-filler-text">briankiboi.is-a.dev</span>
+            <span class="portfolio-filler-sub">Mobile · Full-Stack Engineer</span>
+          </div>
+
+          <!-- Career & professional moments -->
+          <div class="portfolio-item" data-category="functions">
+            <img src="../images/images2/attache.jpeg" alt="Attachment Experience" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>My 1st Gig</h3>
+              <p>While Still in University</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="../images/images2/first%20job%20after%20school.jpeg" alt="First Job After School" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>First Job After School</h3>
+              <p>Career Milestone</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="../images/images2/judciary%20attachee.jpeg" alt="Judiciary Attachment" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Judiciary Attachment</h3>
+              <p>Judiciary ICT Department</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="../images/images2/meeting%20for%20product%20growth.jpeg" alt="Product Growth Meeting" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Product Growth Meeting</h3>
+              <p>Team Collaboration</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%205.png" alt="At the office" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>At the Office</h3>
+              <p>Job contract at TU</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%207.png" alt="Suited up" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Suited Up</h3>
+              <p>Workplace portrait</p>
+            </div>
+          </div>
+
+          <!-- Brand filler tile -->
+          <div class="portfolio-item portfolio-filler portfolio-filler-alt" data-category="functions" aria-hidden="true">
+            <span class="portfolio-filler-dot"></span>
+            <span class="portfolio-filler-text">briankiboi.is-a.dev</span>
+            <span class="portfolio-filler-sub">Nairobi · Remote-first</span>
+          </div>
+
+          <!-- Campus & student life -->
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%202.png" alt="Hardware lab" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Hardware Lab</h3>
+              <p>Computer maintenance &amp; assembly class</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%206.png" alt="Library days" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Library Days</h3>
+              <p>Study sessions · campus life</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%203.png" alt="Campus walk with friends" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Campus Walks</h3>
+              <p>With the boys · Tharaka University</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy.png" alt="Hangout with the squad" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Product meetings</h3>
+              <p> work catch-up sessions</p>
+            </div>
+          </div>
+
+          <!-- Brand filler tile -->
+          <div class="portfolio-item portfolio-filler" data-category="functions" aria-hidden="true">
+            <span class="portfolio-filler-dot"></span>
+            <span class="portfolio-filler-text">briankiboi.is-a.dev</span>
+            <span class="portfolio-filler-sub">DM Solution Tech</span>
+          </div>
+
+          <!-- Casual / personal moments -->
+          <div class="portfolio-item" data-category="functions">
+            <img src="gallery%202/image%20copy%204.png" alt="Off-duty portrait" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>Off-Duty</h3>
+              <p>Casual portrait</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="functions">
+            <img src="../images/images2/WhatsApp%20Image%202026-03-30%20at%208.41.13%20PM.jpeg" alt="Random" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Random</h3>
               <p>Moments</p>
             </div>
           </div>
-
           <div class="portfolio-item" data-category="functions">
-            <img src="../images/images2/WhatsApp%20Image%202026-03-30%20at%208.41.14%20PM.jpeg" alt="Vibing" onerror="this.src='./images/placeholder.jpg'" style="object-fit: contain; padding: 1rem; width: 100%; height: 100%;">
+            <img src="../images/images2/WhatsApp%20Image%202026-03-30%20at%208.41.14%20PM.jpeg" alt="Vibing" onerror="this.src='./images/placeholder.jpg'">
             <div class="portfolio-item-overlay">
               <h3>Vibing</h3>
               <p>Good Times</p>
             </div>
           </div>
+
+          <!-- Brand filler tile -->
+          <div class="portfolio-item portfolio-filler portfolio-filler-alt" data-category="functions" aria-hidden="true">
+            <span class="portfolio-filler-dot"></span>
+            <span class="portfolio-filler-text">briankiboi.is-a.dev</span>
+            <span class="portfolio-filler-sub">© 2026 · DM Solution Tech</span>
+          </div>
+
+          <!-- Degrees -->
+          <div class="portfolio-item" data-category="degrees">
+            <img src="gallery%202/image%20copy%208.png" alt="Bachelor of Science in Applied Computer Science — Tharaka University" onerror="this.src='./images/placeholder.jpg'">
+            <div class="portfolio-item-overlay">
+              <h3>BSc Applied Computer Science</h3>
+              <p>Tharaka University · Second Class Honours (Upper Division) · 2025</p>
+            </div>
+          </div>
         </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="home-footer">
+          <div class="home-footer-top">
+            <div class="home-footer-brand">
+              <div class="home-footer-name">
+                <span class="home-footer-dot"></span>
+                <span class="home-footer-domain-name">Briankiboi.is-a.dev</span>
+              </div>
+              <div class="home-footer-role">Mobile Developer &amp; Full-Stack Engineer</div>
+            </div>
+            <div class="home-footer-social">
+              <a href="https://www.linkedin.com/in/brian-kiboi-21aa02277/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M8.5 10v6.5M8.5 7.5v.01M11.5 10v6.5M11.5 13c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v3.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a href="https://api.whatsapp.com/send?phone=254112401838" target="_blank" rel="noopener" aria-label="WhatsApp">
+                <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28 16C28 22.6274 22.6274 28 16 28C13.4722 28 11.1269 27.2184 9.19266 25.8837L5.09091 26.9091L6.16576 22.8784C4.80092 20.9307 4 18.5589 4 16C4 9.37258 9.37258 4 16 4C22.6274 4 28 9.37258 28 16Z" fill="#25D366"/><path d="M12.5 9.49989C12.1672 8.83131 11.6565 8.8905 11.1407 8.8905C10.2188 8.8905 8.78125 9.99478 8.78125 12.05C8.78125 13.7343 9.52345 15.578 12.0244 18.3361C14.438 20.9979 17.6094 22.3748 20.2422 22.3279C22.875 22.2811 23.4167 20.0154 23.4167 19.2503C23.4167 18.9112 23.2062 18.742 23.0613 18.696C22.1641 18.2654 20.5093 17.4631 20.1328 17.3124C19.7563 17.1617 19.5597 17.3656 19.4375 17.4765C19.0961 17.8018 18.4193 18.7608 18.1875 18.9765C17.9558 19.1922 17.6103 19.083 17.4665 19.0015C16.9374 18.7892 15.5029 18.1511 14.3595 17.0426C12.9453 15.6718 12.8623 15.2001 12.5959 14.7803C12.3828 14.4444 12.5392 14.2384 12.6172 14.1483C12.9219 13.7968 13.3426 13.254 13.5313 12.9843C13.7199 12.7145 13.5702 12.305 13.4803 12.05C13.0938 10.953 12.7663 10.0347 12.5 9.49989Z" fill="white"/></svg>
+              </a>
+              <a href="https://github.com/Briankiboi" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#181717"/><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" fill="#fff"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="home-footer-bottom">
+            <span>© <span id="footer-year">2026</span> · Built by <a href="https://www.linkedin.com/company/108609539/" target="_blank" rel="noopener" class="home-footer-link">DM Solution Tech</a></span>
+            <span class="home-footer-domain">https://briankiboi.is-a.dev/</span>
+          </div>
+        </footer>
+        <script>
+          (function(){var y=document.getElementById('footer-year');if(y)y.textContent=new Date().getFullYear();})();
+        </script>
       </div>
     </section>
   </main>
