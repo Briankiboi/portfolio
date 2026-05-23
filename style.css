@@ -477,13 +477,19 @@ section {
 
 /* ---------- First-visit intro splash (home only, two slides) ---------- */
 html.intro-skip .intro-splash { display: none !important; }
-/* Hide the hamburger only while the splash element is actually rendered
-   AND not leaving. As soon as the splash starts its leave transition (or
-   is removed from the DOM — e.g. on non-home pages where it never existed),
-   the selector stops matching and the hamburger reappears automatically.
-   The navbar (z-index 999) already sits below the splash (z-index 100000),
-   so it doesn't need a hide rule. */
-.intro-splash:not(.leaving) ~ .sidebar-toggle { display: none !important; }
+/* Hide the hamburger only when the splash will actually play this frame:
+   - splash element is in the DOM,
+   - it's not in its leaving transition,
+   - AND html.intro-skip has NOT been set by the pre-paint inline script.
+   On internal navigation back to Home, the inline script in <head> adds
+   html.intro-skip *before first paint*, so this rule fails immediately and
+   the hamburger appears on frame 1 — no waiting for script.js to remove
+   the splash element. On true first visit (no intro-skip), the rule fires
+   and hides the hamburger while the splash plays. On non-home pages there
+   is no .intro-splash element, so the rule never matches. */
+html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
+  display: none !important;
+}
 .intro-splash {
   position: fixed;
   inset: 0;
