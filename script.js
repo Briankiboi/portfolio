@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const schedule = [
         { at: 4500, fn: () => splash.classList.add('show-2') },
         { at: 9000, fn: () => splash.classList.add('leaving') },
-        { at: 9350, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 10100, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();
