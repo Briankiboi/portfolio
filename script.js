@@ -210,8 +210,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const firstVisit = !sessionStorage.getItem('intro-seen');
     const shouldShow = (path === '/') && (firstVisit || forceIntro);
 
+    /* Mark splash as done — adds html.intro-skip so the CSS rule that hides
+       the navbar + sidebar-toggle during splash flips off, restoring the
+       nav UI automatically when the splash finishes. */
+    function markIntroDone() {
+      document.documentElement.classList.add('intro-skip');
+    }
+
     if (!shouldShow) {
       splash.remove();
+      markIntroDone();
     } else {
       sessionStorage.setItem('intro-seen', '1');
       // Do NOT lock body scroll — the user should be able to scroll the
@@ -222,14 +230,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const schedule = [
         { at: 4500, fn: () => splash.classList.add('show-2') },
         { at: 9000, fn: () => splash.classList.add('leaving') },
-        { at: 10100, fn: () => { splash.remove(); } },
+        { at: 10100, fn: () => { splash.remove(); markIntroDone(); } },
       ];
 
       function dismissSplashNow() {
         if (!document.body.contains(splash)) return;
         timers.forEach(clearTimeout);
         splash.classList.add('leaving');
-        setTimeout(() => { if (document.body.contains(splash)) splash.remove(); }, 350);
+        setTimeout(() => {
+          if (document.body.contains(splash)) splash.remove();
+          markIntroDone();
+        }, 350);
       }
       // Any scroll/wheel/touchmove/keydown/click on the page dismisses the
       // splash so the user can interact with the page right away.

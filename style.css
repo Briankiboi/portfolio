@@ -477,11 +477,13 @@ section {
 
 /* ---------- First-visit intro splash (home only, two slides) ---------- */
 html.intro-skip .intro-splash { display: none !important; }
-/* While the splash is playing (intro-skip NOT yet applied), hide the nav UI
-   so the splash gets the full viewport — no hamburger or navbar peeking
-   through above the splash's z-index. */
-html:not(.intro-skip) .sidebar-toggle,
-html:not(.intro-skip) .navbar { display: none !important; }
+/* Hide the hamburger only while the splash element is actually rendered
+   AND not leaving. As soon as the splash starts its leave transition (or
+   is removed from the DOM — e.g. on non-home pages where it never existed),
+   the selector stops matching and the hamburger reappears automatically.
+   The navbar (z-index 999) already sits below the splash (z-index 100000),
+   so it doesn't need a hide rule. */
+.intro-splash:not(.leaving) ~ .sidebar-toggle { display: none !important; }
 .intro-splash {
   position: fixed;
   inset: 0;
@@ -9088,3 +9090,35 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   }
 }
 
+
+/* =====================================================
+   Calendly popup — keep the close (X) button visible
+   and easy to tap on mobile. The Calendly default close
+   sits at the popup's top-right and can fall outside the
+   viewport on small screens, or under the browser chrome.
+   We pin a high-contrast circular target to the viewport
+   corner so the user can always cancel the modal.
+   ===================================================== */
+@media (max-width: 900px) {
+  .calendly-overlay .calendly-popup-close,
+  .calendly-popup-close {
+    position: fixed !important;
+    top: 0.6rem !important;
+    right: 0.6rem !important;
+    width: 44px !important;
+    height: 44px !important;
+    background-color: #18191A !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 50% !important;
+    background-size: 22px 22px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55) !important;
+    z-index: 2147483647 !important; /* above Calendly's own stacking */
+    opacity: 1 !important;
+  }
+  /* Make sure the popup body leaves room below the close target. */
+  .calendly-overlay .calendly-popup {
+    padding-top: env(safe-area-inset-top, 0) !important;
+  }
+}
