@@ -8584,10 +8584,22 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 /* ---------- CHANNELS GRID ---------- */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.85rem;
   max-width: 880px;
   margin: 0 auto 1.5rem;
+}
+#contact-local-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #fff;
+}
+.contact-status-tz {
+  color: #86efac;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-left: 0.15rem;
 }
 .contact-channel {
   display: flex;
@@ -8668,6 +8680,9 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   .contact-primary-body small { font-size: 0.74rem; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1001px) and (max-width: 1200px) {
   .contact-grid { grid-template-columns: repeat(2, 1fr); }
 }
 

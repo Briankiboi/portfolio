@@ -258,13 +258,13 @@
             <p class="contact-eyebrow">Get in touch</p>
             <h1>Let's connect.</h1>
             <p class="contact-lede">
-              Building a product, hiring an engineer!<br />
-              <br />
-              Pick whichever channel works best for you
+              Building a product or hiring an engineer? Pick a channel below.
             </p>
             <span class="contact-status">
               <span class="contact-status-dot"></span>
-              Available now &middot; Nairobi (Kenya)
+              Available now &middot; Nairobi &middot;
+              <span id="contact-local-time">--:--</span>
+              <span class="contact-status-tz">EAT</span>
             </span>
           </header>
 
@@ -387,58 +387,6 @@
               </div>
             </a>
 
-            <div class="contact-channel ch-loc" tabindex="0">
-              <span class="ch-ic" aria-hidden="true">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M12 22s-7-7.5-7-13a7 7 0 0114 0c0 5.5-7 13-7 13z"
-                    stroke="#FFD600"
-                    stroke-width="2" />
-                  <circle
-                    cx="12"
-                    cy="9"
-                    r="2.5"
-                    stroke="#FFD600"
-                    stroke-width="2" />
-                </svg>
-              </span>
-              <div class="ch-body">
-                <strong>Based in</strong>
-                <small>Westlands, Nairobi · Kenya</small>
-              </div>
-            </div>
-
-            <div class="contact-channel ch-hours" tabindex="0">
-              <span class="ch-ic" aria-hidden="true">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="9"
-                    stroke="#86efac"
-                    stroke-width="2" />
-                  <path
-                    d="M12 7v5l3 2"
-                    stroke="#86efac"
-                    stroke-width="2"
-                    stroke-linecap="round" />
-                </svg>
-              </span>
-              <div class="ch-body">
-                <strong>Working hours</strong>
-                <small>Mon – Sat · 8 AM – 8 PM EAT</small>
-              </div>
-            </div>
           </div>
 
           <!-- ===== FOOTER ===== -->
@@ -469,7 +417,21 @@
             </div>
           </footer>
           <script>
-            (function(){var y=document.getElementById('footer-year');if(y)y.textContent=new Date().getFullYear();})();
+            (function(){
+              var y=document.getElementById('footer-year');if(y)y.textContent=new Date().getFullYear();
+              var t=document.getElementById('contact-local-time');
+              function tick(){
+                if(!t) return;
+                var now=new Date();
+                var nairobi=new Date(now.toLocaleString('en-US',{timeZone:'Africa/Nairobi'}));
+                var h=nairobi.getHours(), m=nairobi.getMinutes();
+                var hh=((h+11)%12+1);
+                var mm=m<10?'0'+m:m;
+                var ap=h<12?'AM':'PM';
+                t.textContent=hh+':'+mm+' '+ap;
+              }
+              tick(); setInterval(tick, 30000);
+            })();
           </script>
         </div>
       </section>
