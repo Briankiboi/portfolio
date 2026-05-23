@@ -4778,7 +4778,9 @@ html {
   scroll-padding-top: 5rem;
 }
 
-/* Desktop: tab titles were clipped by the fixed navbar — give them air */
+/* Desktop: tab titles were clipped by the fixed navbar — give them air.
+   Bottom padding ensures the in-section footer scrolls fully into view
+   inside the .section-container's overflow-y: auto window. */
 #skills-section .section-container,
 #about .section-container,
 #portfolio .section-container,
@@ -4787,6 +4789,7 @@ html {
 #services .section-container,
 #contact .section-container {
   padding-top: 4rem;
+  padding-bottom: 2.5rem;
 }
 
 /* About Me title: extra breathing room from navbar + underline gap */
@@ -8584,9 +8587,9 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 /* ---------- CHANNELS GRID ---------- */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.85rem;
-  max-width: 880px;
+  max-width: 100%;
   margin: 0 auto 1.5rem;
 }
 .ch-medium:hover { border-color: rgba(255, 255, 255, 0.4); }
@@ -8615,6 +8618,8 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   color: #fff;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   min-height: 72px;
+  min-width: 0;
+  overflow: hidden;
 }
 .contact-channel:hover {
   transform: translateY(-2px);
