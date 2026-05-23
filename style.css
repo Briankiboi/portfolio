@@ -9150,3 +9150,43 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 body:has(.calendly-overlay) .sidebar-toggle {
   display: none !important;
 }
+
+/* =====================================================
+   Mobile fixes for the About-page payment modals
+   (M-Pesa, PayPal — `.modal` + `.close-button`).
+   Same problem Calendly had: corner-pinned X collides
+   with the yellow hamburger toggle. Solution: hide the
+   hamburger while a modal is open AND center the X at
+   the top of the modal for a clearer mobile affordance.
+   ===================================================== */
+body:has(.modal[style*="display: block"]) .sidebar-toggle,
+body:has(.modal[style*="display:block"])  .sidebar-toggle {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .close-button {
+    /* Pin to the top-center of the modal card, sheet-handle style. */
+    top: 0.6rem !important;
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 24px !important;
+    background: #18191A !important;
+    color: #fff !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+    z-index: 10 !important;
+  }
+  .close-button:hover,
+  .close-button:focus {
+    transform: translateX(-50%) rotate(90deg) !important;
+    background: #18191A !important;
+  }
+  /* Give the modal header breathing room below the centered close. */
+  .modal-content .modal-header {
+    padding-top: 3.5rem !important;
+  }
+}
