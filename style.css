@@ -6005,6 +6005,7 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   display: flex;
   align-items: center;
   gap: 0.55rem;
+  flex-wrap: wrap;
 }
 .home-footer-social a {
   display: inline-flex;
