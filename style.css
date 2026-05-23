@@ -5917,10 +5917,13 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     min-height: 100vh;
     min-height: 100dvh;
   }
-  /* Force-disable the fixed-height internal-scroll container on home page */
+  /* Force-disable the fixed-height internal-scroll container on pages with a footer */
   #home.section-container,
   #home > .section-container,
-  #home .section-container {
+  #home .section-container,
+  #about.section-container,
+  #about > .section-container,
+  #about .section-container {
     height: auto !important;
     max-height: none !important;
     min-height: calc(100vh - 4rem) !important;
@@ -5930,6 +5933,12 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     display: flex !important;
     flex-direction: column !important;
     margin: 0.3rem !important;
+  }
+  #about .about-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
   }
   .home-footer {
     margin-top: auto !important;
