@@ -232,12 +232,12 @@ body {
 .sidebar-socials {
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.4rem;
   margin: 0.4rem 0 0.2rem;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0 0.3rem;
   box-sizing: border-box;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   position: relative;
   z-index: 1;
 }
@@ -245,17 +245,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 35px;
-  min-width: 35px;
-  min-height: 35px;
-  background: #232526;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+  transition: transform 0.2s ease;
+  box-shadow: none;
   position: relative;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   z-index: 2;
+  padding: 0;
 }
 
 /* Add tooltip styles */
@@ -335,22 +334,10 @@ body {
   bottom: -20px;
 }
 
-/* LinkedIn specific glow */
-.sidebar-socials a[aria-label="LinkedIn"]:hover {
-  transform: scale(1.13);
-  box-shadow: 0 0 15px rgba(10, 102, 194, 0.5);
-}
-
-/* GitHub specific glow */
-.sidebar-socials a[aria-label="GitHub"]:hover {
-  transform: scale(1.13);
-  box-shadow: 0 0 15px rgba(255, 214, 0, 0.5);
-}
-
-/* WhatsApp specific glow */
-.sidebar-socials a[aria-label="WhatsApp"]:hover {
-  transform: scale(1.13);
-  box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+/* Hover lift only — no colored glow (icons are bare, no frame to glow around) */
+.sidebar-socials a:hover {
+  transform: scale(1.12);
+  box-shadow: none;
 }
 
 .sidebar-socials svg {
