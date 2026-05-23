@@ -4894,8 +4894,9 @@ html {
   padding-bottom: 8rem;
 }
 
-/* Drop the fixed-height internal-scroll container so footers show in full
-   (matches the home page approach — the whole page scrolls instead). */
+/* Drop the fixed-height internal-scroll container so the whole page scrolls
+   as one — no chained inner/outer scroll. Footer now lives outside .section-container. */
+#about .section-container,
 #gallery .section-container,
 #resume .section-container,
 #portfolio .section-container {
@@ -4903,12 +4904,6 @@ html {
   min-height: 0 !important;
   overflow: visible !important;
   padding-bottom: 2.5rem !important;
-}
-/* Tighten the home-footer top margin inside .section-container so it
-   doesn't push itself past the scrollable bottom edge. */
-.section-container .home-footer {
-  margin-top: 2rem;
-  margin-bottom: 0;
 }
 
 /* About Me title: extra breathing room from navbar + underline gap */
@@ -5942,8 +5937,11 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 
 /* ---------- Home page: Footer ---------- */
 .home-footer {
-  margin: 3.5rem 0 1rem;
-  padding: 2rem 0 0.75rem;
+  /* Break out of .main-content (margin-left: 285px, padding-right: 50px) so
+     the band spans viewport edge-to-edge. Inner padding keeps the content
+     aligned with the main column above (clear of the fixed sidebar). */
+  margin: 3.5rem -50px 0 -285px;
+  padding: 2rem 50px 1.25rem calc(285px + 1.5rem);
   border-top: 1px solid #25272f;
 }
 .home-footer-top {
@@ -6097,11 +6095,14 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   .main-content {
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
   }
   .home-footer {
-    margin-top: auto !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 1.5rem !important;
+    margin: auto 0 0 0 !important;
+    padding: 2rem 1rem 1.5rem !important;
   }
 }
 
