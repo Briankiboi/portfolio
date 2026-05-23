@@ -160,7 +160,7 @@
 
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
-    <button class="sidebar-toggle" aria-label="Toggle Sidebar">
+    <button type="button" class="sidebar-toggle" aria-label="Toggle Sidebar">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -188,11 +188,6 @@
         <a href="/resume/">CV/Resume</a>
         <a href="/gallery/">Gallery</a>
         <a href="/contact/">Contact</a>
-        <a class="sidebar-book-cta" href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener">
-          <img src="https://cdn.simpleicons.org/calendly/ffffff" alt="" width="18" height="18">
-          <span>Book a call</span>
-          <span class="sidebar-book-cta-arrow">→</span>
-        </a>
       </nav>
       <hr class="sidebar-divider" />
       <div class="contact-info">
@@ -373,6 +368,11 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#1f1f1f"/><g transform="translate(3 4)"><path d="M13.96 16.5v-4.4h1.3V18H1.4v-5.9h1.3v4.4z" fill="#BCBBBB"/><path d="M4.6 11.5l6.95 1.5.3-1.4-6.95-1.5zm.9-3.4l6.45 3 .6-1.3L6.1 6.8zm1.8-3.2l5.45 4.6.9-1.1L8.3 4zM10.9 2 9.7 3l4.2 5.7 1.2-1zM4.2 14.5h6.95v-1.4H4.2z" fill="#F48024"/></g></svg>
         </a>
       </div>
+      <a class="sidebar-book-cta" href="#" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/briankiboi83/30min'}); return false;">
+        <img src="https://cdn.simpleicons.org/calendly/ffffff" alt="" width="18" height="18">
+        <span>Book a call</span>
+        <span class="sidebar-book-cta-arrow">→</span>
+      </a>
     </aside>
 
     <!-- Main Content -->
@@ -395,7 +395,7 @@
             <!-- TILE 1 — Hero name (big) -->
             <div class="bento-tile bento-tile-name">
               <div class="bento-name-stripe">
-               Explore My Work, Projects And Dev Journey. 
+               Explore My Work & Journey. 
               </div>
               <h1 class="bento-name-h1">
                 Hi, I'm <span class="bento-name-yellow">Brian Kiboi</span><br />
@@ -579,6 +579,7 @@
           </div>
 
           <!-- ===== TECH STACK (categorized with official logos) ===== -->
+          <div class="tech-stack-card">
           <h2 class="home-section-title">Tech Stack</h2>
 
           <div class="tech-category">
@@ -590,22 +591,22 @@
               Languages &amp; Frameworks
             </div>
             <div class="tech-icons-grid">
-              <div class="tech-icon" title="Django"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django"><span>Django</span></div>
-              <div class="tech-icon" title="Python"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"><span>Python</span></div>
-              <div class="tech-icon" title="Flutter"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter"><span>Flutter</span></div>
-              <div class="tech-icon" title="Dart"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart"><span>Dart</span></div>
-              <div class="tech-icon" title="Kotlin"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Kotlin"><span>Kotlin</span></div>
-              <div class="tech-icon" title="Android"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-plain.svg" alt="Android"><span>Android</span></div>
-              <div class="tech-icon" title="React"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"><span>React</span></div>
-              <div class="tech-icon" title="Next.js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js"><span>Next.js</span></div>
-              <div class="tech-icon" title="TypeScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"><span>TypeScript</span></div>
-              <div class="tech-icon" title="JavaScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"><span>JavaScript</span></div>
-              <div class="tech-icon" title="Node.js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js"><span>Node.js</span></div>
-              <div class="tech-icon" title="PHP"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP"><span>PHP</span></div>
-              <div class="tech-icon" title="Laravel"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel"><span>Laravel</span></div>
-              <div class="tech-icon" title="HTML5"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5"><span>HTML5</span></div>
-              <div class="tech-icon" title="CSS3"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3"><span>CSS3</span></div>
-              <div class="tech-icon" title="Tailwind CSS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"><span>Tailwind CSS</span></div>
+              <div class="tech-icon" title="Django"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" loading="lazy" decoding="async"><span>Django</span></div>
+              <div class="tech-icon" title="Python"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" decoding="async"><span>Python</span></div>
+              <div class="tech-icon" title="Flutter"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" loading="lazy" decoding="async"><span>Flutter</span></div>
+              <div class="tech-icon" title="Dart"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" loading="lazy" decoding="async"><span>Dart</span></div>
+              <div class="tech-icon" title="Kotlin"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Kotlin" loading="lazy" decoding="async"><span>Kotlin</span></div>
+              <div class="tech-icon" title="Android"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-plain.svg" alt="Android" loading="lazy" decoding="async"><span>Android</span></div>
+              <div class="tech-icon" title="React"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" loading="lazy" decoding="async"><span>React</span></div>
+              <div class="tech-icon" title="Next.js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" loading="lazy" decoding="async"><span>Next.js</span></div>
+              <div class="tech-icon" title="TypeScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" loading="lazy" decoding="async"><span>TypeScript</span></div>
+              <div class="tech-icon" title="JavaScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy" decoding="async"><span>JavaScript</span></div>
+              <div class="tech-icon" title="Node.js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" loading="lazy" decoding="async"><span>Node.js</span></div>
+              <div class="tech-icon" title="PHP"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" loading="lazy" decoding="async"><span>PHP</span></div>
+              <div class="tech-icon" title="Laravel"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" loading="lazy" decoding="async"><span>Laravel</span></div>
+              <div class="tech-icon" title="HTML5"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" loading="lazy" decoding="async"><span>HTML5</span></div>
+              <div class="tech-icon" title="CSS3"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" loading="lazy" decoding="async"><span>CSS3</span></div>
+              <div class="tech-icon" title="Tailwind CSS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" loading="lazy" decoding="async"><span>Tailwind CSS</span></div>
             </div>
           </div>
 
@@ -620,10 +621,10 @@
               Databases
             </div>
             <div class="tech-icons-grid">
-              <div class="tech-icon" title="MySQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL"><span>MySQL</span></div>
-              <div class="tech-icon" title="PostgreSQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"><span>PostgreSQL</span></div>
-              <div class="tech-icon" title="Supabase"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="Supabase"><span>Supabase</span></div>
-              <div class="tech-icon" title="Firebase"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase"><span>Firebase</span></div>
+              <div class="tech-icon" title="MySQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" loading="lazy" decoding="async"><span>MySQL</span></div>
+              <div class="tech-icon" title="PostgreSQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" loading="lazy" decoding="async"><span>PostgreSQL</span></div>
+              <div class="tech-icon" title="Supabase"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="Supabase" loading="lazy" decoding="async"><span>Supabase</span></div>
+              <div class="tech-icon" title="Firebase"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase" loading="lazy" decoding="async"><span>Firebase</span></div>
             </div>
           </div>
 
@@ -637,13 +638,13 @@
               Cloud &amp; DevOps
             </div>
             <div class="tech-icons-grid">
-              <div class="tech-icon" title="AWS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS"><span>AWS</span></div>
-              <div class="tech-icon" title="DigitalOcean"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg" alt="DigitalOcean"><span>DigitalOcean</span></div>
-              <div class="tech-icon" title="Docker"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
-              <div class="tech-icon" title="Linux"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux"><span>Linux</span></div>
-              <div class="tech-icon" title="Git"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"><span>Git</span></div>
-              <div class="tech-icon" title="GitHub"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="filter: invert(1);"><span>GitHub</span></div>
-              <div class="tech-icon" title="GitHub Actions (CI/CD)"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions"><span>CI/CD</span></div>
+              <div class="tech-icon" title="AWS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS" loading="lazy" decoding="async"><span>AWS</span></div>
+              <div class="tech-icon" title="DigitalOcean"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg" alt="DigitalOcean" loading="lazy" decoding="async"><span>DigitalOcean</span></div>
+              <div class="tech-icon" title="Docker"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" loading="lazy" decoding="async"><span>Docker</span></div>
+              <div class="tech-icon" title="Linux"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" decoding="async"><span>Linux</span></div>
+              <div class="tech-icon" title="Git"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" decoding="async"><span>Git</span></div>
+              <div class="tech-icon" title="GitHub"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" decoding="async" style="filter: invert(1);"><span>GitHub</span></div>
+              <div class="tech-icon" title="GitHub Actions (CI/CD)"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" loading="lazy" decoding="async"><span>CI/CD</span></div>
             </div>
           </div>
 
@@ -657,12 +658,12 @@
               Payments & integrations.
             </div>
             <div class="tech-icons-grid">
-              <div class="tech-icon" title="M-Pesa"><img src="https://api.iconify.design/simple-icons:mpesa.svg?color=%2300B23B" onerror="this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%2300B23B%22/%3E%3Ctext x=%2250%22 y=%2258%22 font-family=%22Arial Black,sans-serif%22 font-weight=%22900%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22%3EM-PESA%3C/text%3E%3C/svg%3E'" alt="M-Pesa"><span>M-Pesa</span></div>
-              <div class="tech-icon" title="Stripe"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt="Stripe"><span>Stripe</span></div>
-              <div class="tech-icon" title="Paystack"><img src="https://api.iconify.design/simple-icons:paystack.svg?color=%2300C3F7" onerror="this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2300C3F7%22/%3E%3Cpath d=%22M30 22 L30 78 M30 22 L58 22 Q72 22 72 38 Q72 54 58 54 L30 54%22 stroke=%22white%22 stroke-width=%2210%22 fill=%22none%22 stroke-linecap=%22square%22/%3E%3C/svg%3E'" alt="Paystack"><span>Paystack</span></div>
-              <div class="tech-icon" title="PayPal"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal"><span>PayPal</span></div>
-              <div class="tech-icon" title="Google Pay"><img src="https://cdn.simpleicons.org/googlepay/ffffff" alt="Google Pay"><span>Google Pay</span></div>
-              <div class="tech-icon" title="Apple Pay"><img src="https://cdn.simpleicons.org/applepay/ffffff" alt="Apple Pay"><span>Apple Pay</span></div>
+              <div class="tech-icon" title="M-Pesa"><img src="https://api.iconify.design/simple-icons:mpesa.svg?color=%2300B23B" onerror="this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%2300B23B%22/%3E%3Ctext x=%2250%22 y=%2258%22 font-family=%22Arial Black,sans-serif%22 font-weight=%22900%22 font-size=%2218%22 fill=%22white%22 text-anchor=%22middle%22%3EM-PESA%3C/text%3E%3C/svg%3E'" alt="M-Pesa" loading="lazy" decoding="async"><span>M-Pesa</span></div>
+              <div class="tech-icon" title="Stripe"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt="Stripe" loading="lazy" decoding="async"><span>Stripe</span></div>
+              <div class="tech-icon" title="Paystack"><img src="https://api.iconify.design/simple-icons:paystack.svg?color=%2300C3F7" onerror="this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2300C3F7%22/%3E%3Cpath d=%22M30 22 L30 78 M30 22 L58 22 Q72 22 72 38 Q72 54 58 54 L30 54%22 stroke=%22white%22 stroke-width=%2210%22 fill=%22none%22 stroke-linecap=%22square%22/%3E%3C/svg%3E'" alt="Paystack" loading="lazy" decoding="async"><span>Paystack</span></div>
+              <div class="tech-icon" title="PayPal"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" loading="lazy" decoding="async"><span>PayPal</span></div>
+              <div class="tech-icon" title="Google Pay"><img src="https://cdn.simpleicons.org/googlepay/ffffff" alt="Google Pay" loading="lazy" decoding="async"><span>Google Pay</span></div>
+              <div class="tech-icon" title="Apple Pay"><img src="https://cdn.simpleicons.org/applepay/ffffff" alt="Apple Pay" loading="lazy" decoding="async"><span>Apple Pay</span></div>
             </div>
           </div>
 
@@ -677,10 +678,11 @@
               Design (UI/UX)
             </div>
             <div class="tech-icons-grid">
-              <div class="tech-icon" title="Figma"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma"><span>Figma</span></div>
-              <div class="tech-icon" title="Canva"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg" alt="Canva"><span>Canva</span></div>
+              <div class="tech-icon" title="Figma"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy" decoding="async"><span>Figma</span></div>
+              <div class="tech-icon" title="Canva"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg" alt="Canva" loading="lazy" decoding="async"><span>Canva</span></div>
             </div>
           </div>
+          </div><!-- /.tech-stack-card -->
         </div>
       </section>
     </main>
@@ -721,7 +723,7 @@
             </div>
             <div class="home-footer-bottom">
               <span>© <span id="footer-year">2026</span> · Built by <a href="https://www.linkedin.com/company/108609539/" target="_blank" rel="noopener" class="home-footer-link">DM Solution Tech</a></span>
-              <span class="home-footer-domain">https://briankiboi.is-a.dev/</span>
+              <span class="home-footer-domain">"Stars ✨ don't shine; they burn 🔥."</span>
             </div>
           </footer>
     <script>

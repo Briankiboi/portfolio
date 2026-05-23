@@ -3,6 +3,27 @@
    Handles: nav active state, sidebar toggle, modals, portfolio filter,
    lightbox, scroll-to-top, custom cursor. */
 
+/* Sidebar toggle — delegated at document level so taps register even if a
+   child SVG/path is the actual target, and so it works without waiting for
+   DOMContentLoaded. */
+(function () {
+  function toggle() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (!sidebar) return;
+    const willOpen = !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', willOpen);
+    if (overlay) overlay.classList.toggle('active', willOpen);
+    document.body.style.overflow = willOpen ? 'hidden' : '';
+  }
+  document.addEventListener('click', function (e) {
+    const toggleBtn = e.target.closest('.sidebar-toggle');
+    if (toggleBtn) { e.preventDefault(); toggle(); return; }
+    const overlay = e.target.closest('.sidebar-overlay');
+    if (overlay) { toggle(); }
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Active nav link based on current URL ---------- */
@@ -12,6 +33,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const href = link.getAttribute('href').replace(/\/$/, '') || '/';
     if (href === path) link.classList.add('active');
     else link.classList.remove('active');
+  });
+
+  /* ---------- Prefetch internal pages on hover for instant navigation ----------
+     Adds <link rel="prefetch"> the first time the user hovers a same-origin
+     link. By the time they click, the HTML is cached. */
+  const prefetched = new Set();
+  function prefetchLink(href) {
+    if (!href || prefetched.has(href)) return;
+    if (!href.startsWith('/') && !href.startsWith(location.origin)) return;
+    prefetched.add(href);
+    const l = document.createElement('link');
+    l.rel = 'prefetch';
+    l.href = href;
+    document.head.appendChild(l);
+  }
+  document.querySelectorAll('a[href^="/"], .navbar a, .sidebar-nav a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    a.addEventListener('mouseenter', () => prefetchLink(href), { once: true, passive: true });
+    a.addEventListener('touchstart',  () => prefetchLink(href), { once: true, passive: true });
   });
 
   /* ---------- Category toggle: Engineer / Freelance ----------
@@ -272,6 +313,21 @@ document.addEventListener('DOMContentLoaded', function () {
   buildSidebarNav();
   applyMode(getStoredMode());
 
+  /* Hide the floating VIEW AS tab when the page footer is in view so it
+     doesn't visually compete with the footer's social row. */
+  (function () {
+    const aside = document.querySelector('.right-sidebar');
+    const footer = document.querySelector('.home-footer');
+    if (!aside || !footer || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) aside.classList.toggle('hide-at-footer', e.isIntersecting);
+      },
+      { rootMargin: '0px 0px -20% 0px' }
+    );
+    io.observe(footer);
+  })();
+
   /* CTA tiles on home set the mode before navigating */
   document.querySelectorAll('[data-set-mode]').forEach(el => {
     el.addEventListener('click', () => {
@@ -302,49 +358,40 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   } catch (_) {}
 
-  const prefetched = new Set();
-  function prefetch(href) {
-    if (!href || prefetched.has(href) || href.startsWith('#')) return;
-    prefetched.add(href);
-    const l = document.createElement('link');
-    l.rel = 'prefetch';
-    l.href = href;
-    document.head.appendChild(l);
-  }
   navLinks.forEach(link => {
-    link.addEventListener('mouseenter', () => prefetch(link.href), { passive: true });
-    link.addEventListener('touchstart', () => prefetch(link.href), { passive: true });
-    link.addEventListener('focus', () => prefetch(link.href));
+    link.addEventListener('mouseenter', () => prefetchLink(link.href), { passive: true });
+    link.addEventListener('touchstart', () => prefetchLink(link.href), { passive: true });
+    link.addEventListener('focus', () => prefetchLink(link.href));
   });
 
-  /* ---------- Sidebar toggle (mobile) ---------- */
-  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  /* ---------- Sidebar: close on nav link tap (mobile) ----------
+     The open/close toggle itself is wired at document level near the top of
+     this file so it works even before DOMContentLoaded fires. */
   const sidebar = document.querySelector('.sidebar');
-  const overlay = document.querySelector('.sidebar-overlay');
-
-  function toggleSidebar() {
-    if (!sidebar) return;
-    sidebar.classList.toggle('active');
-    if (overlay) overlay.classList.toggle('active');
-    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-  }
-  if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
-  if (overlay) overlay.addEventListener('click', toggleSidebar);
-
-  /* Close sidebar when clicking any nav link (mobile) */
   document.querySelectorAll('.navbar a, .sidebar-nav a').forEach(link => {
     link.addEventListener('click', () => {
-      if (sidebar && sidebar.classList.contains('active')) toggleSidebar();
+      if (sidebar && sidebar.classList.contains('active')) {
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     });
   });
 
-  /* ---------- Section-container scroll shadow ---------- */
+  /* ---------- Section-container scroll shadow (rAF-throttled) ---------- */
   document.querySelectorAll('.section-container').forEach(container => {
+    let ticking = false;
     container.addEventListener('scroll', () => {
-      container.style.boxShadow = container.scrollTop > 0
-        ? '0 8px 32px rgba(0,0,0,0.3)'
-        : '0 8px 32px rgba(0,0,0,0.25)';
-    });
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        container.style.boxShadow = container.scrollTop > 0
+          ? '0 8px 32px rgba(0,0,0,0.3)'
+          : '0 8px 32px rgba(0,0,0,0.25)';
+        ticking = false;
+      });
+    }, { passive: true });
   });
 
   /* ---------- Contact form (placeholder) ---------- */
@@ -579,14 +626,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- Scroll-to-top button ---------- */
+  /* ---------- Scroll-to-top button (rAF-throttled) ---------- */
   const scrollToTopBtn = document.getElementById('scroll-to-top');
   if (scrollToTopBtn) {
     document.querySelectorAll('.section-container').forEach(container => {
+      let ticking = false;
       container.addEventListener('scroll', () => {
-        if (container.scrollTop > 300) scrollToTopBtn.classList.add('visible');
-        else scrollToTopBtn.classList.remove('visible');
-      });
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          if (container.scrollTop > 300) scrollToTopBtn.classList.add('visible');
+          else scrollToTopBtn.classList.remove('visible');
+          ticking = false;
+        });
+      }, { passive: true });
     });
     scrollToTopBtn.addEventListener('click', () => {
       const container = document.querySelector('.section-container');
@@ -604,16 +657,23 @@ document.addEventListener('DOMContentLoaded', function () {
   const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
 
   if (cursorDot && cursorOutline && hasFinePointer) {
+    /* rAF-throttle: capture latest mouse coords, apply once per frame. */
+    let latestX = 0, latestY = 0, cursorTicking = false;
     window.addEventListener('mousemove', function (e) {
-      const posX = e.clientX;
-      const posY = e.clientY;
-      cursorDot.style.left = `${posX}px`;
-      cursorDot.style.top  = `${posY}px`;
-      cursorOutline.animate({
-        left: `${posX}px`,
-        top:  `${posY}px`,
-      }, { duration: 500, fill: 'forwards' });
-    });
+      latestX = e.clientX;
+      latestY = e.clientY;
+      if (cursorTicking) return;
+      cursorTicking = true;
+      requestAnimationFrame(() => {
+        cursorDot.style.left = `${latestX}px`;
+        cursorDot.style.top  = `${latestY}px`;
+        cursorOutline.animate({
+          left: `${latestX}px`,
+          top:  `${latestY}px`,
+        }, { duration: 500, fill: 'forwards' });
+        cursorTicking = false;
+      });
+    }, { passive: true });
 
     const interactives = document.querySelectorAll('a, button, .portfolio-item, .service-card, .skill-card, .payment-option');
     interactives.forEach(el => {

@@ -16,7 +16,7 @@ body {
 .sidebar {
   position: fixed;
   left: 0;
-  top: 7rem;
+  top: 3.5rem; /* sit just below the fixed navbar — fills the empty space above */
   z-index: 1000;
   margin-left: 1rem;
   margin-top: 0;
@@ -43,6 +43,8 @@ body {
     right: -100%;
     visibility: hidden;
     transition: right 0.3s ease, visibility 0.3s ease;
+    /* Undo the desktop max-height cap; mobile keeps full natural height. */
+    max-height: none;
   }
   .sidebar.active {
     right: 0;
@@ -152,8 +154,9 @@ body {
   display: flex !important;
   align-items: center !important;
   gap: 0.6rem !important;
-  width: 95% !important;
+  width: 100% !important;
   max-width: 260px !important;
+  box-sizing: border-box !important;
   margin: 0.9rem auto 0.4rem !important;
   padding: 0.78rem 0.95rem !important;
   background: linear-gradient(135deg, #0F7AFF, #006BFF) !important;
@@ -903,6 +906,15 @@ html.intro-skip .intro-splash { display: none !important; }
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+/* When the footer scrolls into view, slide the VIEW AS tab off-screen so it
+   doesn't overlap or visually compete with the footer's social row. */
+.right-sidebar.hide-at-footer {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(40px, -50%);
+  pointer-events: none;
 }
 .right-sidebar-tab {
   width: 34px;
@@ -1779,6 +1791,11 @@ section h1 {
   height: 280px;
 }
 
+/* Prevent FOUC on filtered grids: hide every item until JS runs and shows
+   the ones that match the active filter button. */
+#gallery .portfolio-grid .portfolio-item { display: none; }
+#gallery .portfolio-grid .portfolio-item[data-category="functions"] { display: block; }
+
 .portfolio-item img {
   width: 100%;
   height: 100%;
@@ -2101,11 +2118,11 @@ section h1 {
   }
 
   .sidebar-toggle {
-    display: block;
+    display: flex;
     top: 0.45rem;
     right: 0.5rem;
     left: auto;
-    z-index: 1001;
+    z-index: 100001;
     padding: 0.35rem;
   }
 
@@ -2154,7 +2171,7 @@ section h1 {
   }
 
   .sidebar-toggle {
-    display: block;
+    display: flex;
     top: 0.35rem;
     right: 0.5rem;
     left: auto;
@@ -3433,7 +3450,7 @@ section h1 {
   top: 0.7rem;
   right: 0.7rem;
   left: auto;
-  z-index: 1001;
+  z-index: 100001;
   background: linear-gradient(135deg, #FFD600, #FFB800);
   border: none;
   color: #18191A;
@@ -3444,6 +3461,9 @@ section h1 {
   padding: 0;
   border-radius: 14px;
   cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
   box-shadow: 0 8px 22px rgba(255, 184, 0, 0.4), 0 0 0 1px rgba(255, 214, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -3456,6 +3476,7 @@ section h1 {
 .sidebar-toggle svg {
   width: 28px;
   height: 28px;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -3481,7 +3502,7 @@ section h1 {
   }
 
   .sidebar-toggle {
-    display: block;
+    display: flex;
   }
 
   .main-content {
@@ -5938,24 +5959,44 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 
 /* ---------- Home page: Footer ---------- */
 .home-footer {
-  /* Body-level footer that spans viewport edge-to-edge. Left padding clears
-     the fixed sidebar so content aligns with the main column above. */
+  /* Body-level footer spanning viewport edge-to-edge. Brand sits near page left
+     edge, URL at right edge (matches inspo). Sidebar's max-height keeps it
+     from extending into the footer area. */
   flex-basis: 100%;
   width: 100%;
   margin: 3.5rem 0 0;
-  padding: 2rem 50px 1.25rem calc(285px + 1.5rem);
-  border-top: 1px solid #25272f;
+  padding: 2rem 1.5rem 1.25rem 1.5rem;
   box-sizing: border-box;
-}
-.home-footer-top {
-  display: flex;
+  /* Grid layout: socials in a centered pill, full-width rule, then brand-L / copy-mid / url-R. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas:
+    ".     social  ."
+    "rule  rule    rule"
+    "brand copy    url";
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 1.4rem;
-  flex-wrap: wrap;
+  row-gap: 1.25rem;
+  column-gap: 1.5rem;
+}
+.home-footer::before {
+  content: '';
+  display: block;
+  grid-area: rule;
+  align-self: stretch;
+  justify-self: stretch;
+  width: auto;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+  margin: 0 -1.5rem; /* extend to viewport edges */
+}
+/* Unwrap the old top/bottom rows so their children become direct grid items. */
+.home-footer-top,
+.home-footer-bottom {
+  display: contents;
 }
 .home-footer-brand {
+  grid-area: brand;
+  justify-self: start;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -5990,10 +6031,20 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   padding-left: 1.45rem;
 }
 .home-footer-social {
+  grid-area: social;
+  justify-self: center;
+  /* Shift right by the sidebar width so the pill is visually centered between
+     the fixed sidebar's right edge and the viewport's right edge. */
+  margin-left: 285px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 0.85rem;
   flex-wrap: wrap;
+  padding: 0.7rem 1.1rem;
+  background: #15161a;
+  border: 1px solid #25272f;
+  border-radius: 14px;
 }
 .home-footer-social a {
   display: inline-flex;
@@ -6011,16 +6062,15 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   transform: translateY(-2px);
   opacity: 0.9;
 }
-.home-footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #1f2128;
+/* © (first span inside .home-footer-bottom) — centered middle column. */
+.home-footer-bottom > span:not(.home-footer-domain) {
+  grid-area: copy;
+  justify-self: center;
+  /* Match the social pill's sidebar-clearance shift so © stays under it. */
+  margin-left: 285px;
+  text-align: center;
   font-size: 0.78rem;
   color: #8b8f99;
-  flex-wrap: wrap;
   letter-spacing: 0.01em;
 }
 .home-footer-link {
@@ -6036,22 +6086,39 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   border-bottom-color: #FFD600;
 }
 .home-footer-domain {
-  font-family: 'SF Mono', 'JetBrains Mono', monospace;
+  grid-area: url;
+  justify-self: end;
+  /* Match the "DM Solution Tech" font (body Poppins, bold, yellow) — but no
+     underline since this is a quote, not a link. */
   color: #FFD600;
-  opacity: 0.7;
-  font-size: 0.7rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+}
+@media (max-width: 1100px) {
+  /* No sidebar visible — undo the sidebar-clearance shift. */
+  .home-footer-social,
+  .home-footer-bottom > span:not(.home-footer-domain) {
+    margin-left: 0;
+  }
 }
 @media (max-width: 600px) {
-  .home-footer-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+  .home-footer {
+    grid-template-columns: 1fr;
+    /* Mobile order: socials, brand, divider, tagline, then dev credit at the very bottom. */
+    grid-template-areas:
+      "social"
+      "brand"
+      "rule"
+      "url"
+      "copy";
+    justify-items: center;
+    text-align: center;
+    row-gap: 1rem;
   }
-  .home-footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-  }
+  .home-footer-brand { justify-self: center; align-items: center; }
+  .home-footer-role { padding-left: 0; }
+  .home-footer-domain { justify-self: center; }
 }
 
 /* Push footer to viewport bottom on mobile (overrides ALL section-container rules) */
@@ -6110,6 +6177,20 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 }
 
 /* ---------- Home page: Tech Stack categorized ---------- */
+/* Outer container that mirrors the About-page rate card (.cv-preview). */
+.tech-stack-card {
+  margin: 1.4rem 0 2rem;
+  padding: 1.25rem 1.4rem 0.5rem;
+  background: linear-gradient(160deg, #1a1c22, #16181d);
+  border: 1px solid #25272f;
+  border-radius: 16px;
+}
+.tech-stack-card > .home-section-title {
+  margin-top: 0;
+}
+.tech-stack-card > .tech-category:last-child {
+  margin-bottom: 0;
+}
 .tech-category {
   margin-bottom: 1.5rem;
 }
@@ -8245,9 +8326,9 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   .sidebar {
     padding: 0.9rem 0.55rem 0.5rem !important;
   }
-  .profile-pic-container { margin: 0 auto 0.15rem !important; padding: 0 !important; }
-  .profile-pic-squared { width: 38px !important; height: 38px !important; }
-  .sidebar h2 { font-size: 0.85rem !important; margin: 0.1rem 0 !important; }
+  .profile-pic-container { margin: 0 auto 0.25rem !important; padding: 0 !important; }
+  .profile-pic-squared { width: 58px !important; height: 58px !important; }
+  .sidebar h2 { font-size: 0.95rem !important; margin: 0.15rem 0 !important; }
   /* Title pill carries no extra info on mobile — hide it to save space */
   .sidebar-title-pill { display: none !important; }
   .sidebar-divider { margin: 0.2rem 0 !important; }
@@ -8266,13 +8347,14 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     flex-basis: 100%;
     display: block;
     text-align: center;
-    font-size: 0.6rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #FFD600;
-    opacity: 0.8;
-    margin-bottom: 0.25rem;
+    opacity: 1;
+    margin-bottom: 0.35rem;
+    text-shadow: 0 0 6px rgba(255, 214, 0, 0.25);
   }
   /* Icons only — no frame, no shadow, no glow on mobile to save space */
   .sidebar-socials a {
@@ -8293,15 +8375,40 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   .sidebar-socials a::before,
   .sidebar-socials a::after { display: none !important; }
   .sidebar-socials svg { width: 28px !important; height: 28px !important; }
-  .sidebar-nav { margin: 0.15rem 0 0.2rem !important; }
+  .sidebar-nav { margin: 0.4rem 0 0.3rem !important; }
   .sidebar-nav a {
-    padding: 0.45rem 0.5rem !important;
-    font-size: 0.9rem !important;
+    padding: 0.7rem 0.55rem !important;
+    font-size: 0.95rem !important;
   }
+  /* Pin Book-a-call to the bottom edge of the drawer (matches the
+     getsimonmutisya 'Get in Touch' bar). Sidebar is position:fixed so
+     absolute positions against it. */
   .sidebar-book-cta {
-    margin: 0.3rem auto 0.15rem !important;
-    padding: 0.5rem 0.7rem !important;
-    font-size: 0.82rem !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 2.8rem !important;
+    width: calc(100% - 1.4rem) !important;
+    max-width: 280px !important;
+    margin: 0 !important;
+    padding: 0.85rem 1rem !important;
+    font-size: 0.95rem !important;
+  }
+  /* Reserve space at the bottom of the nav so the floating CTA doesn't
+     overlap the Contact link */
+  .sidebar-nav { padding-bottom: 4rem !important; }
+}
+
+/* Desktop: replace the social-icons row in the sidebar with the
+   Book-a-call CTA alone. Socials remain in the page footer, so this
+   removes duplication and gives the sidebar a clear primary action. */
+@media (min-width: 901px) {
+  .sidebar-socials { display: none !important; }
+  .sidebar > .sidebar-book-cta {
+    /* Same outer spacing the social row used to have so the sidebar
+       card keeps its original height/feel. */
+    margin: 0.85rem auto 0.6rem !important;
+    width: calc(100% - 0.3rem) !important;
   }
 }
 
