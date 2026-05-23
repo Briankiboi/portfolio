@@ -3,7 +3,16 @@
     "allow": [
       "Bash(sort -t: -k3 -rn)",
       "Bash(node -c \"/home/brayo/Documents/personal projects/portfolio/portfolio/script.js\")",
-      "Bash(awk '/^@media/{m=NR\" \"$0} NR==8386{print \"  -> wrapping media at line \"m; exit}' \"/home/brayo/Documents/personal projects/portfolio/portfolio/style.css\")"
+      "Bash(awk '/^@media/{m=NR\" \"$0} NR==8386{print \"  -> wrapping media at line \"m; exit}' \"/home/brayo/Documents/personal projects/portfolio/portfolio/style.css\")",
+      "Bash(fc-list)",
+      "Bash(cp og-card.png og-card-favicon.png)",
+      "Bash(convert -size 1200x630 'xc:#18191A' '\\(' images/dp.jpeg -resize 540x630^ -gravity center -extent 540x630 '\\)' -gravity West -composite '\\(' og-card-favicon.png -resize 220x220 '\\)' -gravity East -geometry +180+-150 -composite -font /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf -fill '#FFD600' -pointsize 56 -gravity East -annotate +60+30 'Brian Kiboi' -font /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf -fill '#F1F1F1' -pointsize 28 -gravity East -annotate +60+110 'Mobile Developer & Full-Stack Engineer' -font /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf -fill '#FFD600' -pointsize 26 -gravity East -annotate +60+170 briankiboi.is-a.dev og-card-new.png)",
+      "Bash(identify og-card-new.png)",
+      "Bash(convert og-card-new.png -strip -quality 90 -define png:compression-level=9 og-card.png)",
+      "Bash(identify og-card.png og-card-favicon.png)",
+      "Bash(convert og-card.png -depth 8 -strip -define png:compression-level=9 -define png:compression-strategy=2 og-card.png)",
+      "Bash(identify og-card.png)",
+      "Bash(identify og-card-new.png og-card-favicon.png)"
     ]
   }
 }
