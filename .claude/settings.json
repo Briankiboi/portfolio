@@ -12,7 +12,8 @@
       "Bash(identify og-card.png og-card-favicon.png)",
       "Bash(convert og-card.png -depth 8 -strip -define png:compression-level=9 -define png:compression-strategy=2 og-card.png)",
       "Bash(identify og-card.png)",
-      "Bash(identify og-card-new.png og-card-favicon.png)"
+      "Bash(identify og-card-new.png og-card-favicon.png)",
+      "Bash(identify /tmp/og-test.png)"
     ]
   }
 }
