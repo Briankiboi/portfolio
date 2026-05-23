@@ -1683,8 +1683,8 @@ section h1 {
 
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.5rem;
   padding: 0.5rem 0;
 }
 
@@ -1693,16 +1693,22 @@ section h1 {
   overflow: hidden;
   cursor: pointer;
   border-radius: 8px;
+  aspect-ratio: 4 / 5;
+  background: #18191A;
 }
 
 .portfolio-item img {
   width: 100%;
+  height: 100%;
   display: block;
+  object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
 }
 
+/* Document-style items keep contain so the full sheet shows */
 .portfolio-item[data-category="webdev"] img,
-.portfolio-item[data-category="certificates"] img {
+.portfolio-item[data-category="certificates"] img,
+.portfolio-item[data-category="degrees"] img {
   object-fit: contain;
   background: #232526;
   padding: 0.5rem;
@@ -4789,7 +4795,13 @@ html {
 #services .section-container,
 #contact .section-container {
   padding-top: 4rem;
-  padding-bottom: 2.5rem;
+  padding-bottom: 4rem;
+}
+/* Tighten the home-footer top margin inside .section-container so it
+   doesn't push itself past the scrollable bottom edge. */
+.section-container .home-footer {
+  margin-top: 2rem;
+  margin-bottom: 0;
 }
 
 /* About Me title: extra breathing room from navbar + underline gap */
@@ -8592,8 +8604,6 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   max-width: 100%;
   margin: 0 auto 1.5rem;
 }
-.ch-medium:hover { border-color: rgba(255, 255, 255, 0.4); }
-.ch-stack:hover { border-color: rgba(244, 128, 36, 0.5); }
 #contact-local-time {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
@@ -8658,11 +8668,49 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   white-space: nowrap;
 }
 
-/* Brand color border hints on hover */
-.ch-call:hover    { border-color: rgba(96, 165, 250, 0.5); }
-.ch-mail:hover    { border-color: rgba(248, 113, 113, 0.5); }
-.ch-linkedin:hover{ border-color: rgba(96, 165, 250, 0.5); }
-.ch-github:hover  { border-color: rgba(255, 255, 255, 0.4); }
+/* Per-tile brand color theming */
+.ch-call {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.14), rgba(96, 165, 250, 0.04) 60%, #16181d);
+  border-color: rgba(96, 165, 250, 0.28);
+}
+.ch-call .ch-ic { background: rgba(96, 165, 250, 0.18); border-color: rgba(96, 165, 250, 0.4); }
+.ch-call:hover { border-color: rgba(96, 165, 250, 0.7); box-shadow: 0 12px 26px rgba(96, 165, 250, 0.18); }
+
+.ch-mail {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.14), rgba(248, 113, 113, 0.04) 60%, #16181d);
+  border-color: rgba(248, 113, 113, 0.28);
+}
+.ch-mail .ch-ic { background: rgba(248, 113, 113, 0.18); border-color: rgba(248, 113, 113, 0.4); }
+.ch-mail:hover { border-color: rgba(248, 113, 113, 0.7); box-shadow: 0 12px 26px rgba(248, 113, 113, 0.18); }
+
+.ch-linkedin {
+  background: linear-gradient(135deg, rgba(10, 102, 194, 0.16), rgba(10, 102, 194, 0.04) 60%, #16181d);
+  border-color: rgba(10, 102, 194, 0.32);
+}
+.ch-linkedin .ch-ic { background: rgba(10, 102, 194, 0.18); border-color: rgba(10, 102, 194, 0.4); }
+.ch-linkedin:hover { border-color: rgba(10, 102, 194, 0.75); box-shadow: 0 12px 26px rgba(10, 102, 194, 0.2); }
+
+.ch-github {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03) 60%, #16181d);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.ch-github .ch-ic { background: #181717; border-color: rgba(255, 255, 255, 0.18); }
+.ch-github:hover { border-color: rgba(255, 255, 255, 0.45); box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45); }
+
+.ch-medium {
+  background: linear-gradient(135deg, rgba(0, 171, 108, 0.14), rgba(0, 171, 108, 0.04) 60%, #16181d);
+  border-color: rgba(0, 171, 108, 0.3);
+}
+.ch-medium .ch-ic { background: rgba(0, 171, 108, 0.18); border-color: rgba(0, 171, 108, 0.4); }
+.ch-medium:hover { border-color: rgba(0, 171, 108, 0.7); box-shadow: 0 12px 26px rgba(0, 171, 108, 0.18); }
+
+.ch-stack {
+  background: linear-gradient(135deg, rgba(244, 128, 36, 0.14), rgba(244, 128, 36, 0.04) 60%, #16181d);
+  border-color: rgba(244, 128, 36, 0.3);
+}
+.ch-stack .ch-ic { background: rgba(244, 128, 36, 0.18); border-color: rgba(244, 128, 36, 0.4); }
+.ch-stack:hover { border-color: rgba(244, 128, 36, 0.7); box-shadow: 0 12px 26px rgba(244, 128, 36, 0.2); }
+
 .ch-loc, .ch-hours { cursor: default; }
 .ch-loc:hover, .ch-hours:hover { transform: none; }
 
