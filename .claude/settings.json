@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(sort -t: -k3 -rn)",
-      "Bash(node -c \"/home/brayo/Documents/personal projects/portfolio/portfolio/script.js\")"
+      "Bash(node -c \"/home/brayo/Documents/personal projects/portfolio/portfolio/script.js\")",
+      "Bash(awk '/^@media/{m=NR\" \"$0} NR==8386{print \"  -> wrapping media at line \"m; exit}' \"/home/brayo/Documents/personal projects/portfolio/portfolio/style.css\")"
     ]
   }
 }
