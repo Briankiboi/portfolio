@@ -8702,6 +8702,7 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   height: 26px;
   filter: brightness(0) invert(1);
 }
+.contact-primary-icon svg { width: 26px; height: 26px; display: block; }
 .contact-primary-body { flex: 1; min-width: 0; }
 .contact-primary-body strong {
   display: block;
