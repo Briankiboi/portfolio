@@ -35,9 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
     else link.classList.remove('active');
   });
 
-  /* ---------- Prefetch internal pages on hover for instant navigation ----------
-     Adds <link rel="prefetch"> the first time the user hovers a same-origin
-     link. By the time they click, the HTML is cached. */
+  /* ---------- Prefetch internal pages so navigation feels instant ----------
+     Two-stage: eagerly prefetch the main nav routes once the browser is
+     idle (works for mobile too, since it doesn't need hover), and also
+     prefetch any other same-origin link on first hover / touchstart. */
   const prefetched = new Set();
   function prefetchLink(href) {
     if (!href || prefetched.has(href)) return;
@@ -46,11 +47,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const l = document.createElement('link');
     l.rel = 'prefetch';
     l.href = href;
+    l.as = 'document';
     document.head.appendChild(l);
   }
+  function isInternal(href) {
+    if (!href) return false;
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+    return href.startsWith('/') || href.startsWith(location.origin);
+  }
+  // Stage 1: eager prefetch of all primary nav routes on idle so mobile
+  // (no hover) and quick clicks still get a warm cache.
+  const idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); };
+  idle(() => {
+    const seen = new Set();
+    document.querySelectorAll('.navbar a, .sidebar-nav a').forEach(a => {
+      const href = a.getAttribute('href');
+      if (!isInternal(href)) return;
+      if (seen.has(href)) return;
+      seen.add(href);
+      prefetchLink(href);
+    });
+  });
+  // Stage 2: prefetch any other internal link on first hover / touchstart.
   document.querySelectorAll('a[href^="/"], .navbar a, .sidebar-nav a').forEach(a => {
     const href = a.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (!isInternal(href)) return;
     a.addEventListener('mouseenter', () => prefetchLink(href), { once: true, passive: true });
     a.addEventListener('touchstart',  () => prefetchLink(href), { once: true, passive: true });
   });

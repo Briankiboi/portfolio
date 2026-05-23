@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sort -t: -k3 -rn)",
+      "Bash(node -c \"/home/brayo/Documents/personal projects/portfolio/portfolio/script.js\")"
+    ]
+  }
+}

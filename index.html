@@ -106,14 +106,14 @@
           sessionStorage.removeItem('home-splash-played');
           document.documentElement.classList.add('intro-skip');
         } else {
-          // Arriving from another internal page — show typewriter splash (fallback path)
+          // Arriving from another internal page — skip the splash entirely so
+          // page-to-page navigation feels instant (no 2.5s typewriter wait).
           var ref = document.referrer;
           if (ref) {
             try {
               var refOrigin = new URL(ref).origin;
               if (refOrigin === window.location.origin) {
                 document.documentElement.classList.add('intro-skip');
-                document.documentElement.classList.add('show-domain-splash');
               }
             } catch (_) {}
           }
