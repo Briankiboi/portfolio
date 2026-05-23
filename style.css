@@ -7582,7 +7582,7 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 1.6rem;
-  align-items: center;
+  align-items: start;
   margin-bottom: 2rem;
 }
 .about-hero-photo {
