@@ -1724,11 +1724,26 @@ section h1 {
   overflow-x: auto;
   padding-bottom: 0.5rem;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  /* Hide the scrollbar by default — reveal it only when the user is
+     interacting (hover on desktop, active touch on mobile, keyboard focus). */
+  scrollbar-width: none;
   scrollbar-color: #FFD600 #232526;
 }
 
 .portfolio-categories::-webkit-scrollbar {
+  height: 0;
+  background: transparent;
+}
+
+.portfolio-categories:hover,
+.portfolio-categories:focus-within,
+.portfolio-categories:active {
+  scrollbar-width: thin;
+}
+
+.portfolio-categories:hover::-webkit-scrollbar,
+.portfolio-categories:focus-within::-webkit-scrollbar,
+.portfolio-categories:active::-webkit-scrollbar {
   height: 4px;
 }
 
