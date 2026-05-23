@@ -4,6 +4,7 @@ body {
   background: #18191A;
   color: #F1F1F1;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
   min-height: 100vh;
@@ -5937,12 +5938,14 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 
 /* ---------- Home page: Footer ---------- */
 .home-footer {
-  /* Break out of .main-content (margin-left: 285px, padding-right: 50px) so
-     the band spans viewport edge-to-edge. Inner padding keeps the content
-     aligned with the main column above (clear of the fixed sidebar). */
-  margin: 3.5rem -50px 0 -285px;
+  /* Body-level footer that spans viewport edge-to-edge. Left padding clears
+     the fixed sidebar so content aligns with the main column above. */
+  flex-basis: 100%;
+  width: 100%;
+  margin: 3.5rem 0 0;
   padding: 2rem 50px 1.25rem calc(285px + 1.5rem);
   border-top: 1px solid #25272f;
+  box-sizing: border-box;
 }
 .home-footer-top {
   display: flex;
@@ -8254,7 +8257,22 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
     margin: 0.3rem 0 0.2rem !important;
     padding: 0 0.2rem !important;
     justify-content: center !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
+    position: relative;
+  }
+  /* Mobile-only section label above the icon row */
+  .sidebar-socials::before {
+    content: "SOCIAL · DEV";
+    flex-basis: 100%;
+    display: block;
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #FFD600;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
   }
   /* Icons only — no frame, no shadow, no glow on mobile to save space */
   .sidebar-socials a {
