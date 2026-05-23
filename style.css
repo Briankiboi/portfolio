@@ -5674,6 +5674,7 @@ a.bento-tile { cursor: pointer; }
   flex-shrink: 0;
 }
 .bento-wa-icon img { filter: brightness(0) invert(1); }
+.bento-wa-icon svg { width: 26px; height: 26px; display: block; }
 .bento-wa-body { flex: 1; }
 .bento-wa-body strong {
   display: block;
@@ -5723,6 +5724,7 @@ a.bento-tile { cursor: pointer; }
   height: 24px;
   filter: brightness(0) invert(1);
 }
+.bento-cal-icon svg { width: 24px; height: 24px; display: block; }
 .bento-cal-body { flex: 1; }
 .bento-cal-body strong {
   display: block;
