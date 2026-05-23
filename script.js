@@ -16,11 +16,26 @@
     if (overlay) overlay.classList.toggle('active', willOpen);
     document.body.style.overflow = willOpen ? 'hidden' : '';
   }
+  function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (!sidebar || !sidebar.classList.contains('active')) return;
+    sidebar.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
   document.addEventListener('click', function (e) {
     const toggleBtn = e.target.closest('.sidebar-toggle');
     if (toggleBtn) { e.preventDefault(); toggle(); return; }
     const overlay = e.target.closest('.sidebar-overlay');
-    if (overlay) { toggle(); }
+    if (overlay) { toggle(); return; }
+    /* Book-a-call tapped from the open sidebar drawer: close the drawer so
+       the Calendly popup gets a clean full-screen overlay. The inline
+       onclick on .sidebar-book-cta opens Calendly first; this fires next
+       in the bubble phase and slides the drawer shut. */
+    if (e.target.closest('.sidebar-book-cta')) {
+      closeSidebar();
+    }
   });
 })();
 

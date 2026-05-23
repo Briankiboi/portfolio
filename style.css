@@ -477,6 +477,11 @@ section {
 
 /* ---------- First-visit intro splash (home only, two slides) ---------- */
 html.intro-skip .intro-splash { display: none !important; }
+/* While the splash is playing (intro-skip NOT yet applied), hide the nav UI
+   so the splash gets the full viewport — no hamburger or navbar peeking
+   through above the splash's z-index. */
+html:not(.intro-skip) .sidebar-toggle,
+html:not(.intro-skip) .navbar { display: none !important; }
 .intro-splash {
   position: fixed;
   inset: 0;
