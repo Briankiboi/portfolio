@@ -199,14 +199,28 @@ document.addEventListener('DOMContentLoaded', function () {
       splash.remove();
     } else {
       sessionStorage.setItem('intro-seen', '1');
-      document.body.style.overflow = 'hidden';
+      // Do NOT lock body scroll — the user should be able to scroll the
+      // content underneath while the splash plays. Any scroll/key/click
+      // also dismisses the splash immediately (see listener below).
 
       /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
         { at: 4500, fn: () => splash.classList.add('show-2') },
         { at: 9000, fn: () => splash.classList.add('leaving') },
-        { at: 10100, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 10100, fn: () => { splash.remove(); } },
       ];
+
+      function dismissSplashNow() {
+        if (!document.body.contains(splash)) return;
+        timers.forEach(clearTimeout);
+        splash.classList.add('leaving');
+        setTimeout(() => { if (document.body.contains(splash)) splash.remove(); }, 350);
+      }
+      // Any scroll/wheel/touchmove/keydown/click on the page dismisses the
+      // splash so the user can interact with the page right away.
+      ['scroll', 'wheel', 'touchmove', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, dismissSplashNow, { once: true, passive: true });
+      });
       let timers = [];
       let startedAt = performance.now();
       let elapsed = 0;
