@@ -625,4 +625,31 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
+
+  /* ---------- Home tap: instant domain splash, then navigate ---------- */
+  const currentPathHome = window.location.pathname.replace(/\/$/, '') || '/';
+  if (currentPathHome !== '/') {
+    document.querySelectorAll('a[href="/"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+
+        const splash = document.createElement('div');
+        splash.className = 'domain-splash domain-splash-instant';
+        splash.innerHTML =
+          '<div class="domain-splash-content">' +
+            '<span class="domain-splash-text">briankiboi.is-a.dev</span>' +
+          '</div>';
+        document.body.appendChild(splash);
+
+        try { sessionStorage.setItem('home-splash-played', '1'); } catch (_) {}
+
+        document.documentElement.classList.add('show-domain-splash');
+
+        setTimeout(function() {
+          window.location.href = '/';
+        }, 1400);
+      });
+    });
+  }
 });

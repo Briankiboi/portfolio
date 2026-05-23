@@ -5032,9 +5032,7 @@ html {
   isolation: isolate;
 }
 a.bento-tile { cursor: pointer; }
-a.bento-tile:hover {
-  transform: translateY(-3px);
-  border-color: #FFD600;
+.bento-tile:hover {
   box-shadow: 0 14px 32px rgba(255, 214, 0, 0.12);
 }
 
@@ -5111,6 +5109,60 @@ a.bento-tile:hover {
   max-width: 95%;
 }
 .bento-name-sub strong { color: #FFD600; font-weight: 600; }
+
+/* DM Solution Tech LinkedIn link */
+.bento-name-dm-link {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+.bento-name-dm-link strong {
+  color: #FFD600;
+  border-bottom: 1px dashed rgba(255, 214, 0, 0.5);
+  padding-bottom: 1px;
+  transition: border-color 0.2s ease;
+}
+.bento-name-dm-link:hover strong {
+  border-bottom-color: #FFD600;
+}
+
+/* Slight "(Django)" suffix in role line */
+.bento-name-role-sm {
+  font-size: 0.78em;
+  font-weight: 500;
+  color: #9aa0aa;
+  letter-spacing: 0;
+}
+
+/* Location/timezone line (used in status tile) */
+.bento-name-loc {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: #9aa0aa;
+  margin: 0.3rem 0 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Open to work availability line */
+.bento-name-availability {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c8cbd2;
+  margin: 0.75rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #25272f;
+}
+.availability-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+  flex-shrink: 0;
+}
 
 /* ---------- TILE 2: LOCATION ---------- */
 .bento-tile-loc {
@@ -5267,6 +5319,7 @@ a.bento-tile:hover {
 .bento-tile-hire:hover {
   background: #FFE34D;
   border-color: #FFE34D;
+  box-shadow: 0 14px 32px rgba(255, 214, 0, 0.32);
 }
 .bento-tile-hire:hover::before { left: 125%; }
 .bento-tile-hire .bento-cta-body { flex: 1; position: relative; z-index: 1; }
@@ -5298,52 +5351,41 @@ a.bento-tile:hover {
   transform: translateX(6px);
 }
 
-/* ---------- TILE 5: GET A FREELANCER (secondary CTA — dark with yellow stripe) ---------- */
+/* ---------- TILE 5: GET A FREELANCER (yellow, matches Hire tile) ---------- */
 .bento-tile-quote {
-  background: #1a1c22;
-  border-color: #2a2d36;
-  color: #f1f1f1;
+  background: #FFD600;
+  border-color: #FFD600;
+  color: #18191A;
   flex-direction: row;
   align-items: center;
   gap: 0.9rem;
   position: relative;
   overflow: hidden;
-  padding-left: 1.1rem;
-}
-.bento-tile-quote::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 4px;
-  background: #FFD600;
-  pointer-events: none;
 }
 .bento-tile-quote:hover {
-  border-color: #FFD600;
-  background: #1c1f26;
+  background: #FFE34D;
+  border-color: #FFE34D;
 }
 .bento-tile-quote .bento-cta-body { flex: 1; position: relative; z-index: 1; }
 .bento-tile-quote .bento-cta-body strong {
   display: block;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
+  color: #18191A;
   margin-bottom: 0.15rem;
   letter-spacing: -0.01em;
 }
 .bento-tile-quote .bento-cta-body small {
   display: block;
   font-size: 0.78rem;
-  color: #9aa0aa;
+  color: rgba(24, 25, 26, 0.72);
   font-weight: 500;
 }
 .bento-tile-quote .bento-cta-arrow {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #FFD600;
+  color: #18191A;
   align-self: center;
   position: relative;
   z-index: 1;
@@ -5459,54 +5501,121 @@ a.bento-tile:hover {
   grid-row: 2 !important;
 }
 
-/* ---------- TILE 8: WHATSAPP (row 3, full width) — black tile, green icon ---------- */
+/* ---------- TILE 8: WHATSAPP (row 3, left half — solid brand teal) ---------- */
 .bento-tile-wa {
-  grid-column: 1 / -1;
+  grid-column: 1 / span 2;
   grid-row: 3;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.85rem;
-  background: linear-gradient(160deg, #1a1c22, #16181d);
-  border-color: rgba(37, 211, 102, 0.25);
+  gap: 1rem;
+  background: #128C7E;
+  border-color: #128C7E;
   color: #fff;
-  padding: 0.85rem 1.1rem;
+  padding: 1.7rem 1.4rem;
 }
 .bento-tile-wa:hover {
-  border-color: #25D366;
-  box-shadow: 0 14px 36px rgba(37, 211, 102, 0.18);
+  background: #15A092;
+  border-color: #15A092;
+  box-shadow: 0 14px 32px rgba(18, 140, 126, 0.32);
 }
 .bento-wa-arrow {
   font-size: 1.4rem;
   font-weight: 700;
   margin-left: auto;
-  color: #25D366;
+  color: #fff;
   transition: transform 0.2s ease;
 }
 .bento-tile-wa:hover .bento-wa-arrow { transform: translateX(4px); }
 .bento-wa-icon {
   width: 46px;
   height: 46px;
-  background: rgba(37, 211, 102, 0.12);
-  border: 1px solid rgba(37, 211, 102, 0.3);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
+.bento-wa-icon img { filter: brightness(0) invert(1); }
 .bento-wa-body { flex: 1; }
 .bento-wa-body strong {
   display: block;
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0.15rem;
+  color: #fff;
 }
 .bento-wa-body small {
   display: block;
   font-size: 0.74rem;
-  opacity: 0.88;
+  color: rgba(255, 255, 255, 0.88);
   font-weight: 500;
+}
+
+/* ---------- TILE: BOOK A MEETING (Calendly — row 3, right half) ---------- */
+.bento-tile-cal {
+  grid-column: 3 / span 2;
+  grid-row: 3;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  background: #006BFF;
+  border-color: #006BFF;
+  color: #fff;
+  padding: 1.7rem 1.4rem;
+}
+.bento-tile-cal:hover {
+  background: #0F7AFF;
+  border-color: #0F7AFF;
+  box-shadow: 0 14px 32px rgba(0, 107, 255, 0.32);
+}
+.bento-cal-icon {
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bento-cal-icon img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+.bento-cal-body { flex: 1; }
+.bento-cal-body strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  color: #fff;
+}
+.bento-cal-body small {
+  display: block;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+.bento-cal-arrow {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-left: auto;
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+.bento-tile-cal:hover .bento-cal-arrow { transform: translateX(4px); }
+
+@media (max-width: 900px) {
+  .bento-tile-cal {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
 }
 
 /* ---------- TILE 9: SELECTED WORK (full-width grid, row 4) ---------- */
@@ -5518,36 +5627,52 @@ a.bento-tile:hover {
 }
 .bento-work-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.6rem;
   margin-top: 0.35rem;
 }
+@media (max-width: 1100px) {
+  .bento-work-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .bento-work-grid { grid-template-columns: repeat(2, 1fr); }
+  /* When 5th card is alone in last row of 2-col grid, center it */
+  .bento-work-card:nth-child(5):last-child {
+    grid-column: 1 / -1;
+    max-width: calc(50% - 0.35rem);
+    justify-self: center;
+  }
+}
 .bento-work-card {
   position: relative;
-  background: #16181d;
-  border: 1px solid #25272f;
-  border-radius: 10px;
-  padding: 0.9rem 0.85rem 0.85rem;
+  background: #232526;
+  border: 1px solid #2a2d36;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  transition: border-color 0.2s ease;
+  gap: 0.35rem;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+}
+.bento-work-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(255, 214, 0, 0.10);
 }
 .bento-work-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: #1f2229;
-  border: 1px solid #2a2d36;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e4e6eb;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
-.bento-work-icon svg {
-  width: 18px;
-  height: 18px;
+.bento-work-icon svg,
+.bento-work-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
 }
 .bento-work-tag {
   font-size: 0.6rem !important;
@@ -5560,7 +5685,7 @@ a.bento-tile:hover {
 .bento-work-card strong {
   font-size: 0.92rem;
   font-weight: 700;
-  color: #fff;
+  color: #FFD600;
   letter-spacing: -0.005em;
   line-height: 1.25;
 }
@@ -5571,6 +5696,337 @@ a.bento-tile:hover {
 }
 .bento-tile-work:hover .bento-work-card:hover {
   border-color: #3a3d47;
+}
+
+/* ===== Domain typewriter splash (return visits to home) ===== */
+.domain-splash {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+/* Only show when arriving from an internal page (e.g. clicked Home from /about/) */
+html.show-domain-splash .domain-splash {
+  display: flex;
+  animation:
+    domainSplashIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    domainSplashOut 0.55s cubic-bezier(0.65, 0, 0.35, 1) 2.0s forwards;
+}
+.domain-splash-content {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+  font-size: clamp(2rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(10px);
+}
+html.show-domain-splash .domain-splash-content {
+  animation:
+    domainTextIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+    domainTextOut 0.45s cubic-bezier(0.65, 0, 0.35, 1) 1.95s forwards;
+}
+.domain-splash-text {
+  color: #FFD600;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: domainSplashType 1.1s steps(19, end) 0.3s forwards;
+}
+.domain-splash-cursor {
+  display: inline-block;
+  width: 0.4ch;
+  height: 1em;
+  background: #FFD600;
+  margin-left: 0.1em;
+  animation:
+    domainSplashBlink 0.55s steps(1) 0.3s 2,
+    domainCursorOut 0.25s ease-out 1.4s forwards;
+  vertical-align: middle;
+}
+@keyframes domainCursorOut {
+  to {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+  }
+}
+@keyframes domainSplashIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes domainTextIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes domainTextOut {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+@keyframes domainSplashType {
+  to { width: 19ch; }
+}
+@keyframes domainSplashBlink {
+  50% { opacity: 0; }
+}
+@keyframes domainSplashOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Instant variant — used when tapping Home from another page. No fade-in,
+   no typewriter start delay: the splash appears the frame you click. */
+html.show-domain-splash .domain-splash.domain-splash-instant {
+  display: flex;
+  opacity: 1;
+  animation: none;
+}
+html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-content {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+.domain-splash.domain-splash-instant .domain-splash-text {
+  animation: domainSplashType 1.1s steps(19, end) 0s forwards;
+}
+
+/* ---------- Home page: Footer ---------- */
+.home-footer {
+  margin: 3.5rem 0 1rem;
+  padding: 2rem 0 0.75rem;
+  border-top: 1px solid #25272f;
+}
+.home-footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+}
+.home-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.home-footer-name {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.home-footer-domain-name {
+  color: #FFD600;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.home-footer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+  flex-shrink: 0;
+}
+.home-footer-role {
+  font-size: 0.8rem;
+  color: #8b8f99;
+  letter-spacing: 0.01em;
+  padding-left: 1.45rem;
+}
+.home-footer-social {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.home-footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  line-height: 0;
+}
+.home-footer-social a:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+.home-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1f2128;
+  font-size: 0.78rem;
+  color: #8b8f99;
+  flex-wrap: wrap;
+  letter-spacing: 0.01em;
+}
+.home-footer-link {
+  color: #FFD600;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.5);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.home-footer-link:hover {
+  color: #FFE34D;
+  border-bottom-color: #FFD600;
+}
+.home-footer-domain {
+  font-family: 'SF Mono', 'JetBrains Mono', monospace;
+  color: #FFD600;
+  opacity: 0.7;
+  font-size: 0.7rem;
+}
+@media (max-width: 600px) {
+  .home-footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .home-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+}
+
+/* Push footer to viewport bottom on mobile (overrides ALL section-container rules) */
+@media (max-width: 1100px) {
+  html, body {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  /* Force-disable the fixed-height internal-scroll container on home page */
+  #home.section-container,
+  #home > .section-container,
+  #home .section-container {
+    height: auto !important;
+    max-height: none !important;
+    min-height: calc(100vh - 4rem) !important;
+    min-height: calc(100dvh - 4rem) !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0.3rem !important;
+  }
+  .home-footer {
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 1.25rem !important;
+  }
+}
+
+/* ---------- Home page: Tech Stack categorized ---------- */
+.tech-category {
+  margin-bottom: 1.5rem;
+}
+.tech-category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e4e6eb;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #25272f;
+  letter-spacing: -0.005em;
+}
+.tech-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+  gap: 0.7rem;
+}
+.tech-icon {
+  width: 100%;
+  min-width: 0;
+  border-radius: 12px;
+  background: #1a1c22;
+  border: 1px solid #25272f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.5rem 0.75rem;
+  gap: 0.6rem;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  cursor: default;
+}
+.tech-icon:hover {
+  border-color: #FFD600;
+  background: #1d1f27;
+  transform: translateY(-2px);
+}
+.tech-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+.tech-icon span {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #c0c4cc;
+  text-align: center;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.tech-icon:hover span {
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .tech-icons-grid { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 0.5rem; }
+  .tech-icon { padding: 0.75rem 0.4rem 0.55rem; gap: 0.45rem; }
+  .tech-icon img { width: 36px; height: 36px; }
+  .tech-icon span { font-size: 0.68rem; }
+}
+
+/* ---------- Home page: section titles below bento ---------- */
+.home-section-title {
+  font-size: 1.6rem !important;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin: 2.5rem 0 1rem !important;
+  padding: 0 !important;
+  border-top: 1px solid #25272f;
+  padding-top: 2rem !important;
+}
+.home-section-title .scroll-hint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #9aa0aa;
+  margin-left: 0.6rem;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 900px) {
+  .home-section-title {
+    font-size: 1.25rem !important;
+    margin: 2rem 0 0.85rem !important;
+    padding-top: 1.5rem !important;
+  }
 }
 
 /* ---------- TILE 10: TRUSTED BY (clean list, row 5) ---------- */
@@ -5612,10 +6068,14 @@ a.bento-tile:hover {
   }
   .bento-tile,
   .bento-tile-name,
+  .bento-tile-status,
+  .bento-tile-hire,
+  .bento-tile-quote,
   .bento-tile-deliver,
   .bento-tile-work,
   .bento-tile-trust,
-  .bento-tile-wa {
+  .bento-tile-wa,
+  .bento-tile-cal {
     grid-column: 1 / -1 !important;
     grid-row: auto !important;
   }
@@ -5631,7 +6091,6 @@ a.bento-tile:hover {
 /* Tighten further on real phones */
 @media (max-width: 480px) {
   .bento-deliver-list { grid-template-columns: 1fr; }
-  .bento-work-grid { grid-template-columns: 1fr; }
   .bento-name-h1 { font-size: 1.25rem; }
 }
 
@@ -6673,6 +7132,22 @@ a.bento-tile:hover {
 }
 .svc-cta-primary:hover .svc-cta-primary-arrow { transform: translateX(4px); }
 
+/* Calendly variant — distinct from WhatsApp green */
+.svc-cta-primary.svc-cta-primary-cal {
+  background: #0a0c10;
+  color: #fff;
+  border: 1px solid #2a2d36;
+  box-shadow: 0 6px 18px rgba(0, 107, 255, 0.18);
+}
+.svc-cta-primary.svc-cta-primary-cal:hover {
+  background: #006BFF;
+  border-color: #006BFF;
+  box-shadow: 0 10px 24px rgba(0, 107, 255, 0.35);
+}
+.svc-cta-primary.svc-cta-primary-cal .svc-cta-primary-ic img {
+  display: block;
+}
+
 .svc-cta-secondary {
   display: inline-flex;
   align-items: center;
@@ -6732,21 +7207,364 @@ a.bento-tile:hover {
 }
 
 /* =====================================================
-   ABOUT PAGE — redesigned
+   ABOUT PAGE — Accepted Channels (vertical, logo-centered)
+   Big brand logo on top, name + meta stacked below, refined
+   brand-color glow on hover. Scoped to .about-wrap.
    ===================================================== */
-.about-wrap { padding: 1.5rem 1.2rem 2rem; }
+.about-wrap .svc-pay-methods-row {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.about-wrap .svc-pay-card {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 0.9rem;
+  padding: 1.6rem 1.2rem 1.4rem;
+  border-radius: 16px;
+  color: #f1f1f1;
+  background: linear-gradient(180deg, #181a20, #131519);
+  border: 1px solid #25272f;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+/* Brand-color glow centered behind the logo */
+.about-wrap .svc-pay-card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 200px;
+  border-radius: 50%;
+  opacity: 0.16;
+  filter: blur(48px);
+  z-index: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.about-wrap .svc-pay-card > .svc-pay-logo,
+.about-wrap .svc-pay-card > .svc-pay-meta { position: relative; z-index: 1; }
 
-.about-eyebrow {
-  display: inline-block;
+.about-wrap .svc-pay-mpesa::before { background: #25D366; }
+.about-wrap .svc-pay-mpesa:hover {
+  transform: translateY(-3px);
+  border-color: rgba(37, 211, 102, 0.5);
+  box-shadow: 0 18px 38px rgba(37, 211, 102, 0.16);
+}
+.about-wrap .svc-pay-mpesa:hover::before {
+  opacity: 0.3;
+  transform: translateX(-50%) scale(1.08);
+}
+
+.about-wrap .svc-pay-paypal::before { background: #009cde; }
+.about-wrap .svc-pay-paypal:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 156, 222, 0.5);
+  box-shadow: 0 18px 38px rgba(0, 156, 222, 0.16);
+}
+.about-wrap .svc-pay-paypal:hover::before {
+  opacity: 0.3;
+  transform: translateX(-50%) scale(1.08);
+}
+
+/* Big centered brand logo — native colors, prominent */
+.about-wrap .svc-pay-logo {
+  width: auto;
+  min-width: 130px;
+  height: 64px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.about-wrap .svc-pay-logo svg {
+  height: 56px;
+  width: auto;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.about-wrap .svc-pay-meta {
+  flex: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.about-wrap .svc-pay-meta strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.about-wrap .svc-pay-meta small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.76rem;
+  color: #9aa0aa;
+  font-weight: 500;
+}
+/* Region tag inline with the description — Kenya flag / Globe icon in a brand-tinted pill */
+.about-wrap .svc-pay-mpesa .svc-pay-meta small::before,
+.about-wrap .svc-pay-paypal .svc-pay-meta small::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.18rem 0.42rem;
+  border-radius: 5px;
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+}
+.about-wrap .svc-pay-mpesa .svc-pay-meta small::before {
+  content: '🇰🇪';
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.32);
+}
+.about-wrap .svc-pay-paypal .svc-pay-meta small::before {
+  content: '🌍';
+  background: rgba(0, 156, 222, 0.12);
+  border: 1px solid rgba(0, 156, 222, 0.32);
+}
+
+.about-wrap .svc-pay-note {
+  color: #6b7280;
+  font-size: 0.78rem;
+  margin-top: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .about-wrap .svc-pay-methods-row { grid-template-columns: 1fr; }
+  .about-wrap .svc-pay-card { padding: 1.4rem 1rem 1.2rem; }
+  .about-wrap .svc-pay-logo svg { height: 50px; }
+}
+
+/* Book-a-meeting CTA inside the Consultation timeline card */
+.about-wrap .svc-track-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  margin: 0.2rem 0 0.85rem;
+  padding: 0.45rem 0.7rem 0.45rem 0.55rem;
+  background: rgba(0, 107, 255, 0.10);
+  border: 1px solid rgba(0, 107, 255, 0.32);
+  border-radius: 8px;
+  color: #4d9bff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.about-wrap .svc-track-cta img { display: block; }
+.about-wrap .svc-track-cta-arrow {
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+.about-wrap .svc-track-cta:hover {
+  background: rgba(0, 107, 255, 0.18);
+  border-color: rgba(0, 107, 255, 0.55);
+  color: #80b9ff;
+  transform: translateY(-1px);
+}
+.about-wrap .svc-track-cta:hover .svc-track-cta-arrow { transform: translateX(3px); }
+
+/* =====================================================
+   ABOUT PAGE — global hover polish (matches home bento lift)
+   Apply the home tile-lift behavior to interactive cards in About.
+   ===================================================== */
+.about-wrap .service-card,
+.about-wrap .svc-package,
+.about-wrap .svc-track-item {
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.about-wrap .service-card:hover,
+.about-wrap .svc-package:hover,
+.about-wrap .svc-track-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 214, 0, 0.45);
+  box-shadow: 0 14px 32px rgba(255, 214, 0, 0.10);
+}
+
+/* =====================================================
+   ABOUT PAGE — CTA tiles (mirrors home WhatsApp/Calendly tiles)
+   ===================================================== */
+.about-cta {
+  margin: 1.6rem 0 0;
+  padding: 1.6rem 1.4rem 1.4rem;
+  background: linear-gradient(180deg, #1a1c22, #16181d);
+  border: 1px solid #25272f;
+  border-radius: 16px;
+}
+.about-cta-head { margin-bottom: 1.1rem; }
+.about-cta-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #86efac;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #FFD600;
-  opacity: 0.85;
-  margin: 0 0 0.4rem;
-  padding-left: 1.4rem;
+  margin-bottom: 0.55rem;
+}
+.about-cta-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #25D366;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.22);
+  animation: ctaPulse 1.8s ease-in-out infinite;
+}
+.about-cta-h {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.about-cta-p {
+  color: #9aa0aa;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.about-cta-p strong { color: #FFD600; font-weight: 600; }
+
+.about-cta-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin: 0 0 0.85rem;
+}
+.about-cta-tile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.about-cta-tile-wa {
+  background: #128C7E;
+  border-color: #128C7E;
+}
+.about-cta-tile-wa:hover {
+  background: #15A092;
+  border-color: #15A092;
+  box-shadow: 0 14px 32px rgba(18, 140, 126, 0.32);
+  transform: translateY(-1px);
+}
+.about-cta-tile-cal {
+  background: #006BFF;
+  border-color: #006BFF;
+}
+.about-cta-tile-cal:hover {
+  background: #0F7AFF;
+  border-color: #0F7AFF;
+  box-shadow: 0 14px 32px rgba(0, 107, 255, 0.32);
+  transform: translateY(-1px);
+}
+.about-cta-tile-mail {
+  background: #C5221F;
+  border-color: #C5221F;
+}
+.about-cta-tile-mail:hover {
+  background: #EA4335;
+  border-color: #EA4335;
+  box-shadow: 0 14px 32px rgba(234, 67, 53, 0.32);
+  transform: translateY(-1px);
+}
+.about-cta-tile-icon {
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.about-cta-tile-icon img {
+  width: 26px;
+  height: 26px;
+  filter: brightness(0) invert(1);
+}
+.about-cta-tile-body { flex: 1; min-width: 0; }
+.about-cta-tile-body strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  color: #fff;
+}
+.about-cta-tile-body small {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+}
+.about-cta-tile-arrow {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-left: auto;
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+.about-cta-tile:hover .about-cta-tile-arrow { transform: translateX(4px); }
+
+@media (max-width: 980px) {
+  .about-cta-tiles { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .about-cta { padding: 1.3rem 1.1rem 1.2rem; }
+  .about-cta-tiles { grid-template-columns: 1fr; }
+  .about-cta-h { font-size: 1.1rem; }
+  .about-cta-p { font-size: 0.85rem; }
+}
+
+/* =====================================================
+   ABOUT PAGE — redesigned
+   ===================================================== */
+.about-wrap { padding: 20rem 1.2rem 2rem; }
+
+#about .about-eyebrow,
+.about-eyebrow {
+  display: inline-block !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: #FFD600 !important;
+  opacity: 1 !important;
+  margin: 0 0 0.5rem !important;
+  padding: 0 0 0 1.4rem !important;
+  max-width: none !important;
+  line-height: 1.2 !important;
   position: relative;
+  visibility: visible !important;
 }
 .about-eyebrow::before {
   content: "";
@@ -6770,16 +7588,19 @@ a.bento-tile:hover {
 .about-hero-photo {
   position: relative;
   width: 200px;
-  height: 200px;
+  aspect-ratio: 662 / 682;
+  height: auto;
   border-radius: 24px;
   overflow: hidden;
   border: 1.5px solid rgba(255, 214, 0, 0.25);
   box-shadow: 0 14px 40px rgba(0,0,0,0.4);
+  background: #16181d;
 }
 .about-hero-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
 }
 .about-hero-text h1 {
@@ -7800,20 +8621,16 @@ a.bento-tile:hover {
 }
 
 /* =====================================================
-   MOBILE ONLY — reorder bento tiles so Loc (Nairobi)
-   sits AFTER the Hire / Freelance CTAs.
-   Desktop layout is unaffected.
+   MOBILE — bento tile order matches source/desktop flow
    ===================================================== */
 @media (max-width: 900px) {
   .bento-tile-name      { order: 1; }
-  .bento-tile-available { order: 2; }
+  .bento-tile-status    { order: 2; }
   .bento-tile-hire      { order: 3; }
-  .bento-tile-quote     { order: 3; }  /* same row as Hire — side by side */
-  .bento-tile-loc       { order: 4; }  /* Nairobi moves DOWN to after CTAs */
-  .bento-tile-deliver   { order: 5; }
-  .bento-tile-wa        { order: 6; }
-  .bento-tile-featured  { order: 6; }
-  .bento-tile-trust     { order: 7; }
+  .bento-tile-quote     { order: 4; }
+  .bento-tile-wa        { order: 5; }
+  .bento-tile-cal       { order: 6; }
+  .bento-tile-work      { order: 7; }
 }
 
 /* About — "What I bring" / Strength card (replaces "Currently building") */
