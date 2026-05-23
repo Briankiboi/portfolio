@@ -523,9 +523,11 @@ html.intro-skip .intro-splash { display: none !important; }
   filter: saturate(1.1) brightness(0.72);
 }
 .intro-bg-portrait {
-  background-image: url('/images/images2/hero-portrait.webp'), url('/images/images2/hero-portrait.jpg');
-  filter: saturate(1.05) brightness(0.42) blur(8px);
-  transform: scale(1.2);
+  background-image: url('/gallery/gallery%202/image%20copy%206.png');
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05) brightness(0.55);
+  transform: scale(1.12);
 }
 .intro-slide-scrim {
   position: absolute;
@@ -689,12 +691,52 @@ html.intro-skip .intro-splash { display: none !important; }
   background: linear-gradient(90deg, #FFE34D, #FFD600, #FFB800);
   border-radius: 999px;
   box-shadow: 0 0 14px rgba(255, 214, 0, 0.5);
-  animation: introProgress 4.8s cubic-bezier(.4,.0,.2,1) 0.1s forwards;
+  animation: introProgress 7.2s cubic-bezier(.4,.0,.2,1) 0.1s forwards;
 }
 
-/* Slide 2 + dot pager are unused — single-slide splash now. Hide them. */
-.intro-slide-2,
-.intro-splash-dots { display: none !important; }
+/* Slide 2 — typewriter "briankiboi.is-a.dev" then "Welcome." (is-a-dev style) */
+.intro-domain-slide {
+  gap: 1rem;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+}
+.intro-domain-line,
+.intro-domain-welcome-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+.intro-domain-text,
+.intro-domain-welcome-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  color: #FFD600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.intro-domain-text {
+  font-size: clamp(1.8rem, 6.5vw, 4.5rem);
+}
+.intro-domain-welcome-text {
+  font-size: clamp(2.4rem, 9vw, 6rem);
+}
+/* Slide 2 enters: type domain (1.0s), hold, then type welcome (0.7s) */
+.intro-splash.show-2 .intro-domain-line {
+  animation: introFadeUp 0.4s cubic-bezier(.2,.7,.2,1) 0.05s forwards;
+}
+.intro-splash.show-2 .intro-domain-text {
+  animation: introTypeDomain 1.0s steps(19, end) 0.3s forwards;
+}
+.intro-splash.show-2 .intro-domain-welcome-line {
+  animation: introFadeUp 0.35s cubic-bezier(.2,.7,.2,1) 1.6s forwards;
+}
+.intro-splash.show-2 .intro-domain-welcome-text {
+  animation: introTypeWelcome 0.7s steps(8, end) 1.75s forwards;
+}
+@keyframes introTypeDomain { to { width: 19ch; } }
+@keyframes introTypeWelcome { to { width: 8ch; } }
 
 /* slide indicator dots — clickable to pause on that slide */
 .intro-splash-dots {
@@ -1893,6 +1935,15 @@ section h1 {
 
   #gallery .portfolio-item:nth-child(4n+1) {
     grid-row: span 2;
+  }
+
+  #gallery .portfolio-item-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #gallery .portfolio-item:hover .portfolio-item-overlay,
+  #gallery .portfolio-item:focus-within .portfolio-item-overlay {
+    opacity: 1;
   }
 }
 
@@ -5202,7 +5253,7 @@ a.bento-tile { cursor: pointer; }
 }
 .bento-name-dm-link strong {
   color: #FFD600;
-  border-bottom: 1px dashed rgba(255, 214, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 214, 0, 0.5);
   padding-bottom: 1px;
   transition: border-color 0.2s ease;
 }
@@ -6022,18 +6073,28 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   #resume .section-container {
     height: auto !important;
     max-height: none !important;
-    min-height: calc(100vh - 1.6rem) !important;
-    min-height: calc(100dvh - 1.6rem) !important;
+    min-height: calc(100vh - 1rem) !important;
+    min-height: calc(100dvh - 1rem) !important;
     overflow-y: visible !important;
     overflow-x: hidden !important;
     display: flex !important;
     flex-direction: column !important;
-    margin: 0.3rem !important;
+    margin: 0.3rem 0.3rem 0 0.3rem !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  body {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .main-content {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
   }
   .home-footer {
     margin-top: auto !important;
     margin-bottom: 0 !important;
-    padding-bottom: 1.25rem !important;
+    padding-bottom: 1.5rem !important;
   }
 }
 

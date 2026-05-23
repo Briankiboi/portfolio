@@ -38,16 +38,21 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
-    <!-- Calendly popup widget -->
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+    <!-- Calendly popup widget (non-blocking) -->
     <link
       href="https://assets.calendly.com/assets/external/widget.css"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
     <script
       src="https://assets.calendly.com/assets/external/widget.js"
       type="text/javascript"
-      async
+      defer
     ></script>
     <script>
       window.addEventListener("message", function (e) {

@@ -14,10 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
     else link.classList.remove('active');
   });
 
-  /* ---------- Category toggle: Engineer / Freelance ---------- */
+  /* ---------- Category toggle: Engineer / Freelance ----------
+     Engineer view (hiring path): everything including CV/Resume.
+     Freelance view (project path): hides CV/Resume (clients want
+     portfolio + services, not a resume). About/Services and Gallery
+     stay visible in both because services and credentials matter for
+     both audiences. */
   const CATEGORY_PATHS = {
-    engineer:  ['/', '/about', '/portfolio', '/resume', '/what-i-do', '/gallery', '/contact'],
-    freelance: ['/', '/services', '/what-i-do', '/contact'],
+    engineer:  ['/', '/about', '/portfolio', '/resume', '/gallery', '/contact'],
+    freelance: ['/', '/about', '/portfolio', '/gallery', '/contact'],
   };
   const MODE_KEY = 'nav-mode';
   const navbar = document.querySelector('.navbar');
@@ -134,10 +139,11 @@ document.addEventListener('DOMContentLoaded', function () {
       sessionStorage.setItem('intro-seen', '1');
       document.body.style.overflow = 'hidden';
 
-      /* Single-slide splash — show slide 1 only, no Welcome second slide. */
+      /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
-        { at: 2400, fn: () => splash.classList.add('leaving') },
-        { at: 2750, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
+        { at: 900, fn: () => splash.classList.add('show-2') },
+        { at: 2100, fn: () => splash.classList.add('leaving') },
+        { at: 2450, fn: () => { splash.remove(); document.body.style.overflow = ''; } },
       ];
       let timers = [];
       let startedAt = performance.now();
@@ -200,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
           paused = false;
           // Treat current time as start of this slide so resume continues from here
           startedAt = performance.now();
-          elapsed = i === 0 ? 0 : 2800;
+          elapsed = i === 0 ? 0 : 2400;
           pause();
         });
       });
@@ -626,10 +632,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- Home tap: instant domain splash, then navigate ---------- */
-  const currentPathHome = window.location.pathname.replace(/\/$/, '') || '/';
-  if (currentPathHome !== '/') {
-    document.querySelectorAll('a[href="/"]').forEach(link => {
+  /* ---------- Home / Contact tap: instant domain splash, then navigate ---------- */
+  const currentPathTap = window.location.pathname.replace(/\/$/, '') || '/';
+  function attachDomainSplash(selector, target) {
+    document.querySelectorAll(selector).forEach(link => {
       link.addEventListener('click', function(e) {
         if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
@@ -642,14 +648,18 @@ document.addEventListener('DOMContentLoaded', function () {
           '</div>';
         document.body.appendChild(splash);
 
-        try { sessionStorage.setItem('home-splash-played', '1'); } catch (_) {}
+        if (target === '/') {
+          try { sessionStorage.setItem('home-splash-played', '1'); } catch (_) {}
+        }
 
         document.documentElement.classList.add('show-domain-splash');
 
         setTimeout(function() {
-          window.location.href = '/';
+          window.location.href = target;
         }, 1400);
       });
     });
   }
+  if (currentPathTap !== '/')        attachDomainSplash('a[href="/"]', '/');
+  if (currentPathTap !== '/contact') attachDomainSplash('a[href="/contact/"], a[href="/contact"]', '/contact/');
 });

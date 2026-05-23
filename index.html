@@ -23,10 +23,13 @@
     <link rel="stylesheet" href="style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet" />
-    <!-- Calendly popup widget -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+    <!-- Calendly popup widget (loaded non-blocking; CSS pulled in only when used) -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
     <script>
       // Auto-close Calendly modal after a booking is confirmed
       window.addEventListener('message', function(e) {
@@ -72,19 +75,19 @@
         <div class="intro-slide-content">
           <div class="intro-splash-eyebrow">DM Solution Tech</div>
           <h1 class="intro-splash-name">Brian <span>Kiboi</span></h1>
-          <p class="intro-splash-tag">Flutter &amp; Full-Stack Engineer · Nairobi</p>
+          <p class="intro-splash-tag">Mobile Developer &amp; Full-Stack Engineer</p>
         </div>
       </div>
       <div class="intro-slide intro-slide-2">
         <div class="intro-slide-bg intro-bg-portrait"></div>
         <div class="intro-slide-scrim intro-slide-scrim-2"></div>
-        <div class="intro-slide-content intro-welcome">
-          <div class="intro-welcome-portrait">
-            <img src="images/images2/hero-portrait.webp" alt="" />
+        <div class="intro-slide-content intro-domain-slide">
+          <div class="intro-domain-line">
+            <span class="intro-domain-text">briankiboi.is-a.dev</span>
           </div>
-          <div class="intro-welcome-eyebrow">It's nice to meet you</div>
-          <h1 class="intro-welcome-title">Welcome<span class="intro-welcome-dot">.</span></h1>
-          <p class="intro-welcome-tag">Glad you stopped by — take a look around.</p>
+          <div class="intro-domain-welcome-line">
+            <span class="intro-domain-welcome-text">Welcome.</span>
+          </div>
         </div>
       </div>
       <div class="intro-splash-progress"><span></span></div>
