@@ -5242,16 +5242,12 @@ a.bento-tile:hover {
    If they ever look the same, the page loses its meaning.
    ===================================================== */
 .bento-tile-hire {
-  background: linear-gradient(135deg, #FFE34D 0%, #FFD600 45%, #FFB800 100%);
+  background: #FFD600;
   border-color: #FFD600;
   color: #18191A;
   flex-direction: row;
   align-items: center;
   gap: 0.9rem;
-  box-shadow:
-    0 0 0 1px rgba(255, 214, 0, 0.3),
-    0 8px 24px rgba(255, 184, 0, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
 }
@@ -5269,12 +5265,8 @@ a.bento-tile:hover {
   pointer-events: none;
 }
 .bento-tile-hire:hover {
-  transform: translateY(-3px);
+  background: #FFE34D;
   border-color: #FFE34D;
-  box-shadow:
-    0 0 0 1px rgba(255, 227, 77, 0.6),
-    0 18px 44px rgba(255, 184, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 .bento-tile-hire:hover::before { left: 125%; }
 .bento-tile-hire .bento-cta-body { flex: 1; position: relative; z-index: 1; }
@@ -5306,69 +5298,59 @@ a.bento-tile:hover {
   transform: translateX(6px);
 }
 
-/* ---------- TILE 5: GET A QUOTE (matches Hire tile) ---------- */
+/* ---------- TILE 5: GET A FREELANCER (secondary CTA — dark with yellow stripe) ---------- */
 .bento-tile-quote {
-  background: linear-gradient(135deg, #FFE34D 0%, #FFD600 45%, #FFB800 100%);
-  border-color: #FFD600;
-  color: #18191A;
+  background: #1a1c22;
+  border-color: #2a2d36;
+  color: #f1f1f1;
   flex-direction: row;
   align-items: center;
   gap: 0.9rem;
-  box-shadow:
-    0 0 0 1px rgba(255, 214, 0, 0.3),
-    0 8px 24px rgba(255, 184, 0, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
+  padding-left: 1.1rem;
 }
 .bento-tile-quote::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.6s ease;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: #FFD600;
   pointer-events: none;
 }
 .bento-tile-quote:hover {
-  transform: translateY(-3px);
-  border-color: #FFE34D;
-  box-shadow:
-    0 0 0 1px rgba(255, 227, 77, 0.6),
-    0 18px 44px rgba(255, 184, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-color: #FFD600;
+  background: #1c1f26;
 }
-.bento-tile-quote:hover::before { left: 125%; }
 .bento-tile-quote .bento-cta-body { flex: 1; position: relative; z-index: 1; }
 .bento-tile-quote .bento-cta-body strong {
   display: block;
   font-size: 1.05rem;
-  font-weight: 800;
-  color: #18191A;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 0.15rem;
   letter-spacing: -0.01em;
 }
 .bento-tile-quote .bento-cta-body small {
   display: block;
   font-size: 0.78rem;
-  color: rgba(24, 25, 26, 0.72);
-  font-weight: 600;
+  color: #9aa0aa;
+  font-weight: 500;
 }
 .bento-tile-quote .bento-cta-arrow {
   margin: 0;
   font-size: 1.4rem;
-  font-weight: 800;
-  color: #18191A;
+  font-weight: 700;
+  color: #FFD600;
   align-self: center;
   position: relative;
   z-index: 1;
-  transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+  transition: transform 0.25s ease;
 }
 .bento-tile-quote:hover .bento-cta-arrow {
-  transform: translateX(6px);
+  transform: translateX(4px);
 }
 
 /* ---------- TILE 6: STATS ---------- */
@@ -5458,9 +5440,28 @@ a.bento-tile:hover {
   transform: translateY(-1px);
 }
 
-/* ---------- TILE 8: WHATSAPP (row 3, cols 3-4) — black tile, green icon ---------- */
+/* ---------- TILE STATUS: combined location + availability (cols 3-4, row 1) ---------- */
+.bento-tile-status {
+  grid-column: 3 / -1;
+  grid-row: 1;
+  background: linear-gradient(160deg, #1a1c22, #1d1f27);
+  justify-content: center;
+}
+
+/* Hire CTA — col 3 row 2 (left of dual CTA pair) */
+.bento-tile-hire {
+  grid-column: 3 !important;
+  grid-row: 2 !important;
+}
+/* Quote CTA — col 4 row 2 (right of dual CTA pair) */
+.bento-tile-quote {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+}
+
+/* ---------- TILE 8: WHATSAPP (row 3, full width) — black tile, green icon ---------- */
 .bento-tile-wa {
-  grid-column: 3 / span 2;
+  grid-column: 1 / -1;
   grid-row: 3;
   flex-direction: row;
   align-items: center;
@@ -5508,50 +5509,98 @@ a.bento-tile:hover {
   font-weight: 500;
 }
 
-/* ---------- TILE 9: TRUSTED BY (full-width marquee, row 4) ---------- */
-.bento-tile-trust {
+/* ---------- TILE 9: SELECTED WORK (full-width grid, row 4) ---------- */
+.bento-tile-work {
   grid-column: 1 / -1;
   grid-row: 4;
   background: linear-gradient(160deg, #1a1c22, #1d1f27);
-  padding: 0.65rem 0 0.7rem 1rem;
-  overflow: hidden;
+  padding: 0.9rem 1.1rem 0.95rem;
 }
-.bento-tile-trust .bento-eyebrow { padding-right: 1.1rem; }
-.bento-trust-marquee {
-  position: relative;
-  overflow: hidden;
-  margin-top: 0.2rem;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-}
-.bento-trust-track {
-  display: flex;
+.bento-work-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.6rem;
-  width: max-content;
-  animation: trustMarquee 28s linear infinite;
+  margin-top: 0.35rem;
 }
-.bento-trust-track span {
-  flex-shrink: 0;
-  font-size: 0.85rem;
+.bento-work-card {
+  position: relative;
+  background: #16181d;
+  border: 1px solid #25272f;
+  border-radius: 10px;
+  padding: 0.9rem 0.85rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: border-color 0.2s ease;
+}
+.bento-work-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #1f2229;
+  border: 1px solid #2a2d36;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e4e6eb;
+  margin-bottom: 0.2rem;
+}
+.bento-work-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.bento-work-tag {
+  font-size: 0.6rem !important;
+  font-weight: 700 !important;
+  color: #9aa0aa !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.05rem;
+}
+.bento-work-card strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+}
+.bento-work-card span {
+  font-size: 0.72rem;
+  color: #a8acb5;
+  line-height: 1.4;
+}
+.bento-tile-work:hover .bento-work-card:hover {
+  border-color: #3a3d47;
+}
+
+/* ---------- TILE 10: TRUSTED BY (clean list, row 5) ---------- */
+.bento-tile-trust {
+  grid-column: 1 / -1;
+  grid-row: 5;
+  background: linear-gradient(160deg, #1a1c22, #1d1f27);
+  padding: 0.75rem 1.1rem 0.85rem;
+}
+.bento-trust-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  margin-top: 0.35rem;
+}
+.bento-trust-list em {
+  font-style: normal;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #d4d6db;
   background: #232634;
   border: 1px solid #2a2d36;
-  padding: 0.45rem 1rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 999px;
   letter-spacing: 0.01em;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
-.bento-trust-track span:hover {
+.bento-trust-list em:hover {
   border-color: #FFD600;
   color: #fff;
-}
-.bento-tile-trust:hover .bento-trust-track {
-  animation-play-state: paused;
-}
-@keyframes trustMarquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
 }
 
 /* ===== MOBILE / TABLET (<900px) — stack everything ===== */
@@ -5564,6 +5613,7 @@ a.bento-tile:hover {
   .bento-tile,
   .bento-tile-name,
   .bento-tile-deliver,
+  .bento-tile-work,
   .bento-tile-trust,
   .bento-tile-wa {
     grid-column: 1 / -1 !important;
@@ -5575,11 +5625,13 @@ a.bento-tile:hover {
   .bento-name-h1 { font-size: 1.4rem; }
   .bento-loc-city { font-size: 1.3rem; }
   .bento-deliver-list { grid-template-columns: repeat(2, 1fr); }
+  .bento-work-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Tighten further on real phones */
 @media (max-width: 480px) {
   .bento-deliver-list { grid-template-columns: 1fr; }
+  .bento-work-grid { grid-template-columns: 1fr; }
   .bento-name-h1 { font-size: 1.25rem; }
 }
 
