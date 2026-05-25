@@ -6956,20 +6956,17 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
 .svc-package-img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
   background: #0e0f12;
   cursor: zoom-in;
   overflow: hidden;
 }
 .svc-package-img img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.5s ease;
+  height: auto;
   display: block;
+  transition: transform 0.5s ease;
 }
-.svc-package:hover .svc-package-img img { transform: scale(1.03); }
+.svc-package:hover .svc-package-img img { transform: scale(1.02); }
 .svc-package-body {
   padding: 1.1rem 1.2rem 1.2rem;
   display: flex;
