@@ -785,63 +785,15 @@ document.addEventListener('DOMContentLoaded', function () {
   if (currentPathTap !== '/contact') attachDomainSplash('a[href="/contact/"], a[href="/contact"]', '/contact/');
 });
 
-// ===== PWA: service worker + persistent install button =====
+// ===== PWA: register service worker; let Chrome show its native install banner =====
 (function () {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('/sw.js').catch(function () {});
     });
   }
-
-  var deferredPrompt = null;
-  var installBtn = null;
-
-  function createBtn() {
-    if (installBtn) return installBtn;
-    installBtn = document.createElement('button');
-    installBtn.id = 'pwa-install-btn';
-    installBtn.type = 'button';
-    installBtn.setAttribute('aria-label', 'Install Briankiboi.is-a.dev as an app');
-    installBtn.innerHTML =
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>' +
-      '<span>Install app</span>';
-    installBtn.addEventListener('click', function () {
-      if (!deferredPrompt) return;
-      installBtn.disabled = true;
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice
-        .catch(function () {})
-        .finally(function () {
-          deferredPrompt = null;
-          installBtn.disabled = false;
-          hideBtn();
-        });
-    });
-    document.body.appendChild(installBtn);
-    return installBtn;
-  }
-
-  function showBtn() {
-    createBtn().classList.add('is-visible');
-  }
-  function hideBtn() {
-    if (installBtn) installBtn.classList.remove('is-visible');
-  }
-
-  // Already running as installed PWA — don't show the button.
-  var isStandalone =
-    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
-    window.navigator.standalone === true;
-  if (isStandalone) return;
-
-  window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    showBtn();
-  });
-
-  window.addEventListener('appinstalled', function () {
-    deferredPrompt = null;
-    hideBtn();
-  });
+  // NOTE: we intentionally do NOT call e.preventDefault() on beforeinstallprompt.
+  // Chrome's native top install banner (matches the SWP Security style) shows on
+  // its own once engagement criteria are met. Calling preventDefault() would
+  // suppress it.
 })();

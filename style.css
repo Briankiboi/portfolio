@@ -4476,48 +4476,55 @@ section h1 {
 
 .modal-content {
   background: linear-gradient(180deg, #1d1f27, #16181d);
-  margin: 6% auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
   padding: 0;
   border: 1px solid #2a2d36;
   border-radius: 20px;
   width: 92%;
   max-width: 460px;
-  position: relative;
   box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.02);
-  overflow: hidden;
-  animation: slideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+  animation: modalPopIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideIn {
-  from { transform: translateY(-30px) scale(0.98); opacity: 0; }
-  to   { transform: translateY(0) scale(1);       opacity: 1; }
+@keyframes modalPopIn {
+  from { transform: translate(-50%, -50%) scale(0.95); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
 }
 
 .close-button {
-  color: rgba(255,255,255,0.7);
+  color: #1a1a1a;
   position: absolute;
-  top: 14px;
-  right: 18px;
-  width: 32px;
-  height: 32px;
+  bottom: -62px;
+  left: 50%;
+  right: auto;
+  top: auto;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 400;
-  background: rgba(0, 0, 0, 0.35);
+  background: #fff;
   border-radius: 50%;
-  transition: background 0.2s ease, transform 0.25s ease, color 0.2s ease;
+  transform: translateX(-50%);
+  transition: background 0.2s ease, transform 0.25s ease, color 0.2s ease, box-shadow 0.2s ease;
   z-index: 5;
   user-select: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
 }
 
 .close-button:hover,
 .close-button:focus {
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
+  color: #1a1a1a;
+  background: #ffd54d;
   cursor: pointer;
-  transform: rotate(90deg);
+  transform: translateX(-50%) rotate(90deg);
+  box-shadow: 0 8px 24px rgba(255,213,77,0.4);
 }
 
 /* Brand banner at top — colored per provider */
@@ -4530,6 +4537,7 @@ section h1 {
   border-bottom: 1px solid #2a2d36;
   position: relative;
   overflow: hidden;
+  border-radius: 20px 20px 0 0;
 }
 .modal-header::before {
   content: "";
@@ -9166,28 +9174,25 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
 
 @media (max-width: 900px) {
   .close-button {
-    /* Pin to the top-center of the modal card, sheet-handle style. */
-    top: 0.6rem !important;
+    /* Float BELOW the modal as a clear, large tap target. */
+    top: auto !important;
+    bottom: -62px !important;
     right: auto !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 24px !important;
-    background: #18191A !important;
-    color: #fff !important;
-    border: 2px solid #ffffff !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 28px !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
     z-index: 10 !important;
   }
   .close-button:hover,
   .close-button:focus {
     transform: translateX(-50%) rotate(90deg) !important;
-    background: #18191A !important;
-  }
-  /* Give the modal header breathing room below the centered close. */
-  .modal-content .modal-header {
-    padding-top: 3.5rem !important;
+    background: #ffd54d !important;
   }
 }
 
