@@ -95,11 +95,11 @@
   <link rel="dns-prefetch" href="https://cdn.simpleicons.org">
     <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lemon&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lemon&display=swap" rel="stylesheet"></noscript>
     <!-- Calendly popup widget (loaded non-blocking; CSS pulled in only when used) -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
@@ -159,7 +159,7 @@
             <span class="intro-domain-text">briankiboi.is-a.dev</span>
           </div>
           <div class="intro-domain-welcome-line">
-            <span class="intro-domain-welcome-text">Welcome.</span>
+            <span class="intro-domain-welcome-text">Welcome...</span>
           </div>
         </div>
       </div>
@@ -168,6 +168,55 @@
         <span class="intro-dot"></span>
         <span class="intro-dot"></span>
       </div>
+      <div class="intro-spinner" aria-hidden="true">
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+      </div>
+      <button class="intro-pause-btn" type="button" aria-label="Pause splash" id="intro-pause-btn">
+        <svg class="intro-pause-ring" viewBox="0 0 60 60" aria-hidden="true">
+          <circle class="ring-bg"       cx="30" cy="30" r="26"></circle>
+          <circle class="ring-progress" cx="30" cy="30" r="26"></circle>
+        </svg>
+        <svg class="intro-pause-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="5" width="4" height="14" rx="1.2"/>
+          <rect x="14" y="5" width="4" height="14" rx="1.2"/>
+        </svg>
+        <svg class="intro-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <span class="intro-pause-count" aria-hidden="true">5</span>
+        <span class="intro-pause-tap" aria-hidden="true">👆</span>
+      </button>
+      <script>
+        (function () {
+          var btn = document.getElementById('intro-pause-btn');
+          var splash = document.getElementById('intro-splash');
+          if (!btn || !splash) return;
+          var countEl = btn.querySelector('.intro-pause-count');
+          var timer = null;
+          function clearTimer() { if (timer) { clearInterval(timer); timer = null; } }
+          btn.addEventListener('click', function () {
+            clearTimer();
+            var nowPaused = splash.classList.toggle('paused');
+            btn.setAttribute('aria-label', nowPaused ? 'Resume splash' : 'Pause splash');
+            if (nowPaused) {
+              var n = 5;
+              if (countEl) countEl.textContent = n;
+              timer = setInterval(function () {
+                n -= 1;
+                if (n <= 0) {
+                  clearTimer();
+                  splash.classList.remove('paused');
+                  btn.setAttribute('aria-label', 'Pause splash');
+                } else if (countEl) {
+                  countEl.textContent = n;
+                }
+              }, 1000);
+            }
+          });
+        })();
+      </script>
     </div>
 
     <!-- Quick typewriter splash for return visits to home -->
