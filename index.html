@@ -94,12 +94,20 @@
   <link rel="dns-prefetch" href="https://api.iconify.design">
   <link rel="dns-prefetch" href="https://cdn.simpleicons.org">
     <link rel="stylesheet" href="style.css" />
+    <!-- Preload Lemon font file directly so the splash doesn't flash a fallback -->
+    <link rel="preload" as="font" type="font/ttf"
+          href="https://fonts.gstatic.com/s/lemon/v19/HI_EiYEVKqRMq0jB.ttf"
+          crossorigin="anonymous" />
+    <!-- Lemon CSS loads eagerly (small file, critical for hero splash) -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Lemon&display=block" />
+    <!-- Poppins (body text) stays deferred for performance -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lemon&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lemon&display=swap" rel="stylesheet"></noscript>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
     <!-- Calendly popup widget (loaded non-blocking; CSS pulled in only when used) -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
@@ -189,32 +197,25 @@
         <span class="intro-pause-tap" aria-hidden="true">👆</span>
       </button>
       <script>
+        // Let the splash's own pause/resume logic (in script.js) own the slide timer.
+        // This button is a visual handle: clicks bubble up to the splash listener,
+        // and we just mirror the live countdown from data-countdown into our badge.
         (function () {
           var btn = document.getElementById('intro-pause-btn');
           var splash = document.getElementById('intro-splash');
           if (!btn || !splash) return;
           var countEl = btn.querySelector('.intro-pause-count');
-          var timer = null;
-          function clearTimer() { if (timer) { clearInterval(timer); timer = null; } }
-          btn.addEventListener('click', function () {
-            clearTimer();
-            var nowPaused = splash.classList.toggle('paused');
-            btn.setAttribute('aria-label', nowPaused ? 'Resume splash' : 'Pause splash');
-            if (nowPaused) {
-              var n = 5;
-              if (countEl) countEl.textContent = n;
-              timer = setInterval(function () {
-                n -= 1;
-                if (n <= 0) {
-                  clearTimer();
-                  splash.classList.remove('paused');
-                  btn.setAttribute('aria-label', 'Pause splash');
-                } else if (countEl) {
-                  countEl.textContent = n;
-                }
-              }, 1000);
-            }
-          });
+
+          // Mirror the splash's countdown attribute into the round badge
+          new MutationObserver(function () {
+            var n = splash.getAttribute('data-countdown');
+            if (n && countEl) countEl.textContent = n;
+          }).observe(splash, { attributes: true, attributeFilter: ['data-countdown', 'class'] });
+
+          // Keep aria-label honest as the splash flips between paused / playing
+          new MutationObserver(function () {
+            btn.setAttribute('aria-label', splash.classList.contains('paused') ? 'Resume splash' : 'Pause splash');
+          }).observe(splash, { attributes: true, attributeFilter: ['class'] });
         })();
       </script>
     </div>
