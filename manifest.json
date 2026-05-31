@@ -1,0 +1,33 @@
+{
+  "name": "Briankiboi.is-a.dev - Brian Kiboi Portfolio",
+  "short_name": "Briankiboi",
+  "description": "Mobile Developer & Full-Stack Developer based in Nairobi, Kenya. I build scalable mobile and web products for startups, agencies, and growing businesses.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#18191A",
+  "background_color": "#18191A",
+  "lang": "en",
+  "categories": ["productivity", "business"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -6953,17 +6953,20 @@ html.show-domain-splash .domain-splash.domain-splash-instant .domain-splash-cont
   transform: translateY(-3px);
   border-color: rgba(255, 214, 0, 0.45);
 }
-.svc-package-img {
+.svc-package .svc-package-img {
   display: block;
   width: 100%;
+  height: auto;
   background: #0e0f12;
   cursor: zoom-in;
   overflow: hidden;
+  flex: none;
 }
-.svc-package-img img {
+.svc-package .svc-package-img img {
   width: 100%;
   height: auto;
   display: block;
+  object-fit: contain;
   transition: transform 0.5s ease;
 }
 .svc-package:hover .svc-package-img img { transform: scale(1.02); }
@@ -9185,5 +9188,47 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   /* Give the modal header breathing room below the centered close. */
   .modal-content .modal-header {
     padding-top: 3.5rem !important;
+  }
+}
+
+/* =====================================================
+   PWA — persistent install button (floating)
+   Hidden by default; JS toggles .is-visible when the
+   browser fires beforeinstallprompt (Android Chrome).
+   ===================================================== */
+#pwa-install-btn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.05rem;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #18191A;
+  background: #FFD600;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(255, 214, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+#pwa-install-btn.is-visible { display: inline-flex; }
+#pwa-install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(255, 214, 0, 0.38), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+#pwa-install-btn:disabled { opacity: 0.7; cursor: progress; }
+#pwa-install-btn svg { display: block; }
+
+@media (max-width: 540px) {
+  #pwa-install-btn {
+    right: 12px;
+    bottom: 12px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.78rem;
   }
 }
