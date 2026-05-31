@@ -535,7 +535,8 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
   animation: introZoom 6s cubic-bezier(.2,.7,.2,1) forwards;
 }
 .intro-bg-workstation {
-  background-image: url('/image%20copy%202.png');
+  background-color: #0b0f1a;
+  background-image: url('/image%20copy%202.webp'), url('/image%20copy%202.png');
   filter: saturate(1.1) brightness(0.72);
 }
 .intro-bg-portrait {
