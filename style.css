@@ -536,26 +536,10 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
 }
 .intro-bg-workstation {
   background-color: #0b0f1a;
-  /* Poster = the GIF's own first frame, so it paints instantly and the GIF
-     starts animating from identical pixels — no visible swap/flash. */
-  background-image: url('/_gif-poster.webp'), url('/_gif-poster.png');
-  /* GIF artwork is a small laptop on a dark canvas — brighten it (don't dim)
-     so it's actually visible behind the text scrim. */
-  filter: saturate(1.15) brightness(1.15);
+  /* Static image (webp first, png fallback) — paints fast, no dark flash. */
+  background-image: url('/image%20copy%202.webp'), url('/image%20copy%202.png');
+  filter: saturate(1.1) brightness(0.72);
 }
-.intro-bg-workstation::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('/_.gif');
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-/* Set by JS once the GIF has fully loaded — fades the animation in seamlessly
-   over the already-painted static image, so there is no dark flash. */
-.intro-bg-workstation.gif-ready::after { opacity: 1; }
 .intro-bg-portrait {
   background-image: url('/gallery/gallery%202/image%20copy%206.png');
   background-size: cover;
@@ -567,8 +551,8 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.05), rgba(0,0,0,0.55) 80%),
-    linear-gradient(180deg, rgba(10,11,13,0.15) 0%, rgba(10,11,13,0.4) 60%, rgba(10,11,13,0.7) 100%);
+    radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.25), rgba(0,0,0,0.85) 75%),
+    linear-gradient(180deg, rgba(10,11,13,0.35) 0%, rgba(10,11,13,0.65) 60%, rgba(10,11,13,0.92) 100%);
 }
 .intro-slide-scrim-2 {
   background:
