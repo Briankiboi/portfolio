@@ -538,7 +538,8 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
   background-color: #0b0f1a;
   /* Static image (webp first, png fallback) — paints fast, no dark flash. */
   background-image: url('/image%20copy%202.webp'), url('/image%20copy%202.png');
-  filter: saturate(1.1) brightness(0.72);
+  /* Show the image exactly as provided — no dimming. */
+  filter: none;
 }
 .intro-bg-portrait {
   background-image: url('/gallery/gallery%202/image%20copy%206.png');
@@ -550,9 +551,8 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
 .intro-slide-scrim {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.25), rgba(0,0,0,0.85) 75%),
-    linear-gradient(180deg, rgba(10,11,13,0.35) 0%, rgba(10,11,13,0.65) 60%, rgba(10,11,13,0.92) 100%);
+  /* No overlay on slide 1 — show the image exactly as provided. */
+  background: none;
 }
 .intro-slide-scrim-2 {
   background:
@@ -607,8 +607,15 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
 }
 .intro-splash-tag {
   font-size: clamp(0.92rem, 1.6vw, 1.15rem);
-  color: #d6d8de;
-  font-weight: 500;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  /* Readable pill behind the text so it stands out over any background */
+  background: rgba(8, 12, 20, 0.72);
+  padding: 0.4em 1em;
+  border-radius: 999px;
+  display: inline-block;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
   margin: 0;
   opacity: 0;
   transform: translateY(12px);

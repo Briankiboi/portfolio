@@ -94,15 +94,15 @@
   <link rel="dns-prefetch" href="https://api.iconify.design">
   <link rel="dns-prefetch" href="https://cdn.simpleicons.org">
     <link rel="stylesheet" href="style.css" />
-    <!-- Preload Lemon font file directly so the splash doesn't flash a fallback -->
+    <!-- Preload Lemon font with high priority so it arrives with the image -->
     <link rel="preload" as="font" type="font/ttf"
           href="https://fonts.gstatic.com/s/lemon/v19/HI_EiYEVKqRMq0jB.ttf"
-          crossorigin="anonymous" />
+          crossorigin="anonymous" fetchpriority="high" />
     <!-- Static splash background paints instantly (never dark) -->
     <link rel="preload" as="image" href="/image copy 2.webp" fetchpriority="high" />
     <!-- Lemon CSS loads eagerly (small file, critical for hero splash) -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Lemon&display=block" />
+          href="https://fonts.googleapis.com/css2?family=Lemon&display=swap" />
     <!-- Poppins (body text) stays deferred for performance -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
