@@ -1533,14 +1533,14 @@ section h1 {
 /* Auto-compact: when there are 4+ landscape shots, use a 2-col grid so the
    shots column doesn't grow into a tall single stack (which leaves black
    space in the info column). Last odd-positioned shot spans full width. */
-.case-study-shots:not(.case-study-shots--mobile):has(.case-study-shot:nth-child(4)) {
+.case-study-shots:not(.case-study-shots--mobile):not(.case-study-shots--browser):has(.case-study-shot:nth-child(4)) {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.case-study-shots:not(.case-study-shots--mobile):has(.case-study-shot:nth-child(4)) .case-study-shot {
+.case-study-shots:not(.case-study-shots--mobile):not(.case-study-shots--browser):has(.case-study-shot:nth-child(4)) .case-study-shot {
   aspect-ratio: 16 / 10;
 }
-.case-study-shots:not(.case-study-shots--mobile):has(.case-study-shot:nth-child(4)) .case-study-shot:last-child:nth-child(odd) {
+.case-study-shots:not(.case-study-shots--mobile):not(.case-study-shots--browser):has(.case-study-shot:nth-child(4)) .case-study-shot:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
 
@@ -1584,6 +1584,99 @@ section h1 {
   padding: 0 !important;
   background: transparent !important;
 }
+/* Variant: show the full screenshot uncropped (contain, with letterbox). Use
+   on .case-study-shots when the shots are wide browser captures whose useful
+   content sits outside the default crop window. */
+.case-study-shots--full .case-study-shot img,
+.case-study-shots--full .case-study-shot[data-category] img {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #0e0f12 !important;
+}
+
+/* ============================================================
+   Variant: --browser
+   Present wide web screenshots as faux browser windows. Each shot
+   gets a chrome bar (traffic-light dots + URL pill) and the capture
+   fills the body cover-cropped from the top — NO black letterbox.
+   Used for the Siphyy marketplace shots.
+   ============================================================ */
+.case-study-shots--browser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  align-content: start;
+}
+.case-study-shots--browser .case-study-shot {
+  aspect-ratio: 16 / 11;
+  border-radius: 12px;
+  border: 1px solid #2c2e33;
+  background: #0e0f12;
+  /* leave room for the chrome bar at the top */
+  padding-top: 30px;
+  box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+/* Chrome bar */
+.case-study-shots--browser .case-study-shot::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(180deg, #1c1e24, #16181d);
+  border-bottom: 1px solid #2c2e33;
+  z-index: 2;
+}
+/* Traffic-light dots + URL pill */
+.case-study-shots--browser .case-study-shot::after {
+  content: attr(data-url);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  /* dots are drawn with a repeating background on the left */
+  padding-left: 64px;
+  padding-right: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #8a8d96;
+  background-image: radial-gradient(circle, #ff5f57 50%, transparent 52%),
+    radial-gradient(circle, #febc2e 50%, transparent 52%),
+    radial-gradient(circle, #28c840 50%, transparent 52%);
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+  background-position: 14px center, 30px center, 46px center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 3;
+  pointer-events: none;
+}
+/* The capture: fill the body, crop from the top, no black space */
+.case-study-shots--browser .case-study-shot img,
+.case-study-shots--browser .case-study-shot[data-category] img {
+  object-fit: cover !important;
+  object-position: center top !important;
+  background: #fff !important;
+  transition: object-position 0.5s ease, transform 0.5s ease;
+}
+/* Hover: lift + slowly pan the crop downward to reveal more of the page */
+.case-study-shots--browser .case-study-shot:hover {
+  border-color: rgba(255, 214, 0, 0.5);
+}
+.case-study-shots--browser .case-study-shot:hover img {
+  object-position: center bottom !important;
+}
+@media (max-width: 560px) {
+  .case-study-shots--browser { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 900px) {
   .case-study, .case-study-flip { grid-template-columns: 1fr; }
   .case-study-flip .case-study-info { order: 1; }
