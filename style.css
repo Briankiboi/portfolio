@@ -536,9 +536,24 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
 }
 .intro-bg-workstation {
   background-color: #0b0f1a;
-  background-image: url('/_.gif');
+  /* Poster = the GIF's own first frame, so it paints instantly and the GIF
+     starts animating from identical pixels — no visible swap/flash. */
+  background-image: url('/_gif-poster.webp'), url('/_gif-poster.png');
   filter: saturate(1.1) brightness(0.72);
 }
+.intro-bg-workstation::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/_.gif');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+/* Set by JS once the GIF has fully loaded — fades the animation in seamlessly
+   over the already-painted static image, so there is no dark flash. */
+.intro-bg-workstation.gif-ready::after { opacity: 1; }
 .intro-bg-portrait {
   background-image: url('/gallery/gallery%202/image%20copy%206.png');
   background-size: cover;

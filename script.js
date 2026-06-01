@@ -226,6 +226,18 @@ document.addEventListener('DOMContentLoaded', function () {
       // content underneath while the splash plays. Any scroll/key/click
       // also dismisses the splash immediately (see listener below).
 
+      /* Seamless GIF: the static image is already painted (CSS base layer).
+         Fade the GIF in only once it has fully decoded so there is never a
+         dark flash while it loads. */
+      const workstation = splash.querySelector('.intro-bg-workstation');
+      if (workstation) {
+        const gif = new Image();
+        gif.onload = () => workstation.classList.add('gif-ready');
+        gif.src = '/_.gif';
+        // If it's already cached, decode resolves immediately.
+        if (gif.complete) workstation.classList.add('gif-ready');
+      }
+
       /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
         { at: 6500,  fn: () => splash.classList.add('show-2') },
