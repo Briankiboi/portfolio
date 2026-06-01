@@ -228,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
-        { at: 4500, fn: () => splash.classList.add('show-2') },
-        { at: 9000, fn: () => splash.classList.add('leaving') },
-        { at: 10100, fn: () => { splash.remove(); markIntroDone(); } },
+        { at: 6500,  fn: () => splash.classList.add('show-2') },
+        { at: 11000, fn: () => splash.classList.add('leaving') },
+        { at: 12100, fn: () => { splash.remove(); markIntroDone(); } },
       ];
 
       function dismissSplashNow() {
