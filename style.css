@@ -539,7 +539,9 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
   /* Poster = the GIF's own first frame, so it paints instantly and the GIF
      starts animating from identical pixels — no visible swap/flash. */
   background-image: url('/_gif-poster.webp'), url('/_gif-poster.png');
-  filter: saturate(1.1) brightness(0.72);
+  /* GIF artwork is a small laptop on a dark canvas — brighten it (don't dim)
+     so it's actually visible behind the text scrim. */
+  filter: saturate(1.15) brightness(1.15);
 }
 .intro-bg-workstation::after {
   content: '';
@@ -565,8 +567,8 @@ html:not(.intro-skip) .intro-splash:not(.leaving) ~ .sidebar-toggle {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.25), rgba(0,0,0,0.85) 75%),
-    linear-gradient(180deg, rgba(10,11,13,0.35) 0%, rgba(10,11,13,0.65) 60%, rgba(10,11,13,0.92) 100%);
+    radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.05), rgba(0,0,0,0.55) 80%),
+    linear-gradient(180deg, rgba(10,11,13,0.15) 0%, rgba(10,11,13,0.4) 60%, rgba(10,11,13,0.7) 100%);
 }
 .intro-slide-scrim-2 {
   background:
