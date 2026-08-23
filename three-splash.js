@@ -1,4 +1,4 @@
-﻿import * as THREE from 'three';
+import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
@@ -129,7 +129,8 @@ gltfLoader.load(
   },
   (xhr) => {
     if (xhr.lengthComputable && loaderProgress) {
-      const percent = (xhr.loaded / xhr.total) * 100;
+      let percent = (xhr.loaded / xhr.total) * 100;
+      if (percent > 100) percent = 100;
       loaderProgress.textContent = percent.toFixed(2) + '%';
     }
   },
