@@ -98,6 +98,7 @@ function updateModelTransform() {
 // Load GLTF Model with progress
 const gltfLoader = new GLTFLoader();
 const progressContainer = document.getElementById('model-load-progress');
+const loadingPct = document.querySelector('.loading-pct');
 let modelLoaded = false;
 let nameTyped = false;
 
@@ -135,7 +136,11 @@ gltfLoader.load(
 
     tryTriggerSpin();
   },
-  (xhr) => {},
+  (xhr) => {
+    if (xhr.lengthComputable && loadingPct) {
+      loadingPct.textContent = Math.round((xhr.loaded / xhr.total) * 100) + '%';
+    }
+  },
   (error) => {
     console.error('Error loading 3D model:', error);
     if (progressContainer) {

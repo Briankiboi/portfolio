@@ -9685,12 +9685,25 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   color: #FFD600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  animation: loadingFade 1.5s ease-in-out infinite;
 }
 
-@keyframes loadingFade {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+.loading-dots::after {
+  content: '';
+  animation: loadingDots 1.4s steps(4, end) infinite;
+}
+
+.loading-pct {
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  display: inline-block;
+}
+
+@keyframes loadingDots {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
 }
 
 /* ==========================================
