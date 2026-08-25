@@ -95,10 +95,8 @@ function updateModelTransform() {
   }
 }
 
-// Load GLTF Model with progress
+// Load GLTF Model
 const gltfLoader = new GLTFLoader();
-const progressContainer = document.getElementById('model-load-progress');
-const loadingPct = document.querySelector('.loading-pct');
 let modelLoaded = false;
 let nameTyped = false;
 
@@ -128,24 +126,11 @@ gltfLoader.load(
     modelLoaded = true;
 
     renderer.compile(scene, camera);
-
-    if (progressContainer) {
-      progressContainer.style.opacity = '0';
-      setTimeout(() => progressContainer.remove(), 500);
-    }
-
     tryTriggerSpin();
   },
-  (xhr) => {
-    if (xhr.lengthComputable && loadingPct) {
-      loadingPct.textContent = Math.round((xhr.loaded / xhr.total) * 100) + '%';
-    }
-  },
+  (xhr) => {},
   (error) => {
     console.error('Error loading 3D model:', error);
-    if (progressContainer) {
-      progressContainer.innerHTML = '<span style="font-size:14px;opacity:.6">Failed to load 3D model</span>';
-    }
   }
 );
 
