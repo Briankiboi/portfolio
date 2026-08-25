@@ -9610,8 +9610,6 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   cursor: grabbing;
 }
 
-/* Model canvas — loads silently behind the typewriter */
-
 /* ==========================================
    ENLARGED MOBILE HEADER & PROMINENT MOBILE LAYOUT
    ========================================== */
