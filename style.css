@@ -9610,6 +9610,28 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   cursor: grabbing;
 }
 
+/* Fallback shimmer behind canvas — visible while3D model loads */
+#canvas-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #0a0b0d 0%, #1a1b2e 40%, #0a0b0d 60%, #1a1b2e 100%);
+  background-size: 400% 400%;
+  animation: fallbackShimmer 3s ease infinite;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+#canvas-fallback.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes fallbackShimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ==========================================
    ENLARGED MOBILE HEADER & PROMINENT MOBILE LAYOUT
    ========================================== */

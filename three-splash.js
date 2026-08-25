@@ -99,6 +99,7 @@ function updateModelTransform() {
 
 // Load GLTF Model
 const gltfLoader = new GLTFLoader();
+const canvasFallback = document.getElementById('canvas-fallback');
 gltfLoader.load(
   './desktop_pc/scene.gltf',
   (gltf) => {
@@ -116,6 +117,8 @@ gltfLoader.load(
 
     updateModelTransform();
     scene.add(desktopModel);
+
+    if (canvasFallback) canvasFallback.classList.add('hidden');
   },
   (xhr) => {},
   (error) => {
