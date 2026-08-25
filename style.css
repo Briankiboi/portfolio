@@ -9552,7 +9552,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
 
 .hero-head-text {
   font-family: 'Poppins', sans-serif;
-  font-size: clamp(1.4rem, 2.1vw, 2.0rem);
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
   font-weight: 900;
   line-height: 1.15;
   color: #ffffff;
@@ -9580,7 +9580,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
 
 .hero-sub-text {
   font-family: 'Poppins', sans-serif;
-  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
   font-weight: 500;
   color: #dfd9ff;
   margin-top: 8px;
@@ -9610,93 +9610,21 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   cursor: grabbing;
 }
 
-/* CanvasLoader */
-.canvas-loader-container {
+/* Model load progress */
+#model-load-progress {
   position: absolute;
-  top: 50%;
+  bottom: 15%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  transform: translateX(-50%);
   z-index: 20;
   pointer-events: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #ffffff;
+  opacity: 0.7;
   transition: opacity 0.4s ease;
-}
-
-.dm-spinning-logo {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  overflow: hidden;
-  object-fit: cover;
-  animation: logoSpin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-}
-
-@keyframes logoSpin {
-  0% { transform: rotateY(0deg) scale(1); }
-  50% { transform: rotateY(180deg) scale(1.1); }
-  100% { transform: rotateY(360deg) scale(1); }
-}
-
-.loader-text {
-  font-size: 14px;
-  color: #f1f1f1;
-  font-weight: 800;
-  margin-top: 40px;
   letter-spacing: 0.5px;
-}
-
-@keyframes mulShdSpin {
-  0%, 100% {
-    box-shadow: 0 -2.6em #ffffff, 1.8em -1.8em rgba(255, 255, 255, 0.2),
-      2.5em 0 rgba(255, 255, 255, 0.2), 1.75em 1.75em rgba(255, 255, 255, 0.2),
-      0 2.5em rgba(255, 255, 255, 0.2), -1.8em 1.8em rgba(255, 255, 255, 0.2),
-      -2.6em 0 rgba(255, 255, 255, 0.5), -1.8em -1.8em rgba(255, 255, 255, 0.7);
-  }
-  12.5% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.7), 1.8em -1.8em #ffffff,
-      2.5em 0 rgba(255, 255, 255, 0.2), 1.75em 1.75em rgba(255, 255, 255, 0.2),
-      0 2.5em rgba(255, 255, 255, 0.2), -1.8em 1.8em rgba(255, 255, 255, 0.2),
-      -2.6em 0 rgba(255, 255, 255, 0.2), -1.8em -1.8em rgba(255, 255, 255, 0.5);
-  }
-  25% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.5), 1.8em -1.8em rgba(255, 255, 255, 0.7),
-      2.5em 0 #ffffff, 1.75em 1.75em rgba(255, 255, 255, 0.2),
-      0 2.5em rgba(255, 255, 255, 0.2), -1.8em 1.8em rgba(255, 255, 255, 0.2),
-      -2.6em 0 rgba(255, 255, 255, 0.2), -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
-  37.5% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.2), 1.8em -1.8em rgba(255, 255, 255, 0.5),
-      2.5em 0 rgba(255, 255, 255, 0.7), 1.75em 1.75em #ffffff,
-      0 2.5em rgba(255, 255, 255, 0.2), -1.8em 1.8em rgba(255, 255, 255, 0.2),
-      -2.6em 0 rgba(255, 255, 255, 0.2), -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
-  50% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.2), 1.8em -1.8em rgba(255, 255, 255, 0.2),
-      2.5em 0 rgba(255, 255, 255, 0.5), 1.75em 1.75em rgba(255, 255, 255, 0.7),
-      0 2.5em #ffffff, -1.8em 1.8em rgba(255, 255, 255, 0.2),
-      -2.6em 0 rgba(255, 255, 255, 0.2), -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
-  62.5% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.2), 1.8em -1.8em rgba(255, 255, 255, 0.2),
-      2.5em 0 rgba(255, 255, 255, 0.2), 1.75em 1.75em rgba(255, 255, 255, 0.5),
-      0 2.5em rgba(255, 255, 255, 0.7), -1.8em 1.8em #ffffff,
-      -2.6em 0 rgba(255, 255, 255, 0.2), -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
-  75% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.2), 1.8em -1.8em rgba(255, 255, 255, 0.2),
-      2.5em 0 rgba(255, 255, 255, 0.2), 1.75em 1.75em rgba(255, 255, 255, 0.2),
-      0 2.5em rgba(255, 255, 255, 0.5), -1.8em 1.8em rgba(255, 255, 255, 0.7),
-      -2.6em 0 #ffffff, -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
-  87.5% {
-    box-shadow: 0 -2.6em rgba(255, 255, 255, 0.2), 1.8em -1.8em rgba(255, 255, 255, 0.2),
-      2.5em 0 rgba(255, 255, 255, 0.2), 1.75em 1.75em rgba(255, 255, 255, 0.2),
-      0 2.5em rgba(255, 255, 255, 0.2), -1.8em 1.8em rgba(255, 255, 255, 0.5),
-      -2.6em 0 rgba(255, 255, 255, 0.7), -1.8em -1.8em rgba(255, 255, 255, 0.2);
-  }
 }
 
 /* ==========================================
@@ -9704,65 +9632,74 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
    ========================================== */
 @media (max-width: 768px) {
   .top-nav {
-    top: 18px;
-    left: 18px;
+    top: 8px;
+    left: 12px;
   }
   .logo-wrapper {
-    gap: 16px;
+    gap: 8px;
   }
   .brand-logo {
-    height: 75px; /* Prominent large logo on mobile */
+    height: 70px;
   }
   .brand-title {
-    font-size: 28px; /* Prominent large title on mobile */
+    font-size: 28px;
     letter-spacing: 0.5px;
   }
   .hero-intro {
-    top: 125px;
-    left: 18px;
-    gap: 14px;
-    max-width: calc(100vw - 36px);
+    top: 92px;
+    left: 12px;
+    gap: 8px;
+    max-width: calc(100vw - 24px);
   }
   .purple-dot {
-    width: 14px;
-    height: 14px;
+    width: 8px;
+    height: 8px;
   }
   .violet-gradient-line {
-    height: 90px;
-    width: 4px;
+    height: 50px;
+    width: 3px;
   }
   .hero-head-text {
-    font-size: clamp(1.6rem, 5.5vw, 2.2rem);
-    min-height: 42px;
+    font-size: clamp(2rem, 8.5vw, 2.8rem);
+    min-height: 56px;
   }
   .hero-sub-text {
-    font-size: clamp(0.85rem, 2.8vw, 1.0rem);
-    min-height: 24px;
+    font-size: clamp(1.05rem, 4vw, 1.25rem);
+    min-height: 30px;
     margin-top: 4px;
   }
 }
 
 @media (max-width: 480px) {
   .top-nav {
-    top: 14px;
-    left: 14px;
+    top: 6px;
+    left: 10px;
   }
   .brand-logo {
-    height: 65px; /* High visibility logo on mobile phones */
+    height: 62px;
   }
   .brand-title {
-    font-size: 23px; /* High visibility title on mobile phones */
+    font-size: 25px;
   }
   .hero-intro {
-    top: 105px;
-    left: 14px;
+    top: 78px;
+    left: 10px;
+    gap: 7px;
+  }
+  .purple-dot {
+    width: 7px;
+    height: 7px;
+  }
+  .violet-gradient-line {
+    height: 40px;
+    width: 2px;
   }
   .hero-head-text {
-    font-size: 1.45rem;
-    min-height: 38px;
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    min-height: 52px;
   }
   .hero-sub-text {
-    font-size: 0.82rem;
-    min-height: 22px;
+    font-size: clamp(1rem, 4.2vw, 1.2rem);
+    min-height: 28px;
   }
 }

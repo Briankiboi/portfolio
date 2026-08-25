@@ -6,8 +6,6 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // 1. MAIN 3D DESKTOP PC SCENE
 // ==========================================
 const canvas = document.getElementById('webgl-canvas');
-const loaderElement = document.getElementById('loader');
-const loaderProgress = document.getElementById('loader-progress');
 
 // Scene
 const scene = new THREE.Scene();
@@ -26,13 +24,14 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
   alpha: true,
-  preserveDrawingBuffer: true,
+  preserveDrawingBuffer: false,
   powerPreference: "high-performance"
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -52,12 +51,9 @@ spotLight.position.set(-20, 50, 10);
 spotLight.angle = 0.12;
 spotLight.penumbra = 1;
 spotLight.castShadow = true;
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
+spotLight.shadow.mapSize.width = 512;
+spotLight.shadow.mapSize.height = 512;
 scene.add(spotLight);
-
-const pointLight = new THREE.PointLight(0xffffff, 1);
-scene.add(pointLight);
 
 // Responsive sizing & positioning
 let desktopModel = null;
@@ -91,7 +87,7 @@ function updateModelTransform() {
   } else {
     // Full Desktop Monitors (Exact untouched position)
     desktopModel.scale.set(0.88, 0.88, 0.88);
-    desktopModel.position.set(0.6, -3.0, -1.5);
+    desktopModel.position.set(4.0, -2.5, -1.5);
   }
   
   if (!isSpinning) {
@@ -99,8 +95,18 @@ function updateModelTransform() {
   }
 }
 
-// Load GLTF Model
+// Load GLTF Model with progress
 const gltfLoader = new GLTFLoader();
+const progressContainer = document.getElementById('model-load-progress');
+let modelLoaded = false;
+let nameTyped = false;
+
+function tryTriggerSpin() {
+  if (nameTyped && modelLoaded && !isSpinning) {
+    trigger360Spin();
+  }
+}
+
 gltfLoader.load(
   './desktop_pc/scene.gltf',
   (gltf) => {
@@ -118,24 +124,23 @@ gltfLoader.load(
 
     updateModelTransform();
     scene.add(desktopModel);
+    modelLoaded = true;
 
-    // Hide loader
-    if (loaderElement) {
-      loaderElement.style.opacity = '0';
-      setTimeout(() => {
-        loaderElement.style.display = 'none';
-      }, 350);
+    renderer.compile(scene, camera);
+
+    if (progressContainer) {
+      progressContainer.style.opacity = '0';
+      setTimeout(() => progressContainer.remove(), 500);
     }
+
+    tryTriggerSpin();
   },
-  (xhr) => {
-    if (xhr.lengthComputable && loaderProgress) {
-      let percent = (xhr.loaded / xhr.total) * 100;
-      if (percent > 100) percent = 100;
-      loaderProgress.textContent = percent.toFixed(2) + '%';
-    }
-  },
+  (xhr) => {},
   (error) => {
     console.error('Error loading 3D model:', error);
+    if (progressContainer) {
+      progressContainer.innerHTML = '<span style="font-size:14px;opacity:.6">Failed to load 3D model</span>';
+    }
   }
 );
 
@@ -214,8 +219,10 @@ function startTypewriter() {
     if (charIndexHead < headPrefix.length) {
       typedHead.appendChild(document.createTextNode(headPrefix.charAt(charIndexHead)));
       charIndexHead++;
-      setTimeout(typeHeadPrefix, 80);
+      setTimeout(typeHeadPrefix, 50);
     } else {
+      nameTyped = true;
+      tryTriggerSpin();
       const spanName = document.createElement('span');
       spanName.className = 'purple-highlight';
       typedHead.appendChild(spanName);
@@ -227,12 +234,11 @@ function startTypewriter() {
     if (charIndexName < headName.length) {
       spanElement.textContent += headName.charAt(charIndexName);
       charIndexName++;
-      setTimeout(typeHeadName.bind(null, spanElement), 90);
+      setTimeout(typeHeadName.bind(null, spanElement), 60);
     } else {
       setTimeout(() => {
-        trigger360Spin();
         typeSub();
-      }, 550);
+      }, 350);
     }
   }
 
@@ -240,11 +246,11 @@ function startTypewriter() {
     if (charIndexSub < subText.length) {
       typedSub.textContent += subText.charAt(charIndexSub);
       charIndexSub++;
-      setTimeout(typeSub, 45);
+      setTimeout(typeSub, 30);
     }
   }
 
-  setTimeout(typeHeadPrefix, 600);
+  setTimeout(typeHeadPrefix, 100);
 }
 
 startTypewriter();

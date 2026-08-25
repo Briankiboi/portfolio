@@ -103,7 +103,11 @@
   <link rel="preload" as="font" type="font/ttf" href="https://fonts.gstatic.com/s/lemon/v19/HI_EiYEVKqRMq0jB.ttf"
     crossorigin="anonymous" fetchpriority="high" />
   <!-- Static splash background paints instantly (never dark) -->
-  <link rel="preload" as="image" href="/image copy 2.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/image copy 2.webp" fetchpriority="high" />
+    <link rel="preload" as="fetch" href="./desktop_pc/scene.gltf" crossorigin="anonymous" fetchpriority="high" />
+    <link rel="preload" as="fetch" href="./desktop_pc/scene.bin" crossorigin="anonymous" fetchpriority="high" />
+    <link rel="preload" as="image" href="./desktop_pc/textures/Material_baseColor.jpeg" fetchpriority="high" />
+    <link rel="preload" as="image" href="./desktop_pc/textures/Material.074_25_baseColor.jpeg" fetchpriority="high" />
   <!-- Lemon CSS loads eagerly (small file, critical for hero splash) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lemon&display=swap" />
   <!-- Poppins (body text) stays deferred for performance -->
@@ -152,11 +156,15 @@
       }
     } catch (_) { }
   </script>
+  <!-- Modulepreload Three.js core + addons so the browser fetches + compiles early -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" />
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js" />
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js" />
   <script type="importmap">
       {
         "imports": {
-          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
         }
       }
     </script>
@@ -169,7 +177,7 @@
       <div class="logo-wrapper">
         <img src="logo.png" alt="DM Logo" class="brand-logo" />
         <div class="brand-title-group">
-          <span class="brand-title">DM Solutions Limited.</span>
+          <span class="brand-title">DM Solution Tech</span>
         </div>
       </div>
     </header>
@@ -187,11 +195,8 @@
 
     <!-- 3D Canvas Container -->
     <div id="canvas-container">
-      <div id="loader" class="canvas-loader-container">
-        <img src="logo.png" alt="DM Solution" class="dm-spinning-logo" />
-        <p id="loader-progress" class="loader-text">0.00%</p>
-      </div>
       <canvas id="webgl-canvas"></canvas>
+      <div id="model-load-progress">Loading...</div>
     </div>
 
     <script type="module" src="three-splash.js"></script>
