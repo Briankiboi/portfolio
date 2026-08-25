@@ -196,7 +196,16 @@
     <!-- 3D Canvas Container -->
     <div id="canvas-container">
       <canvas id="webgl-canvas"></canvas>
-      <div id="model-load-progress">Loading...</div>
+      <div id="model-load-progress">
+        <div class="puzzle-loader">
+          <div class="puzzle-piece"></div>
+          <div class="puzzle-piece"></div>
+          <div class="puzzle-piece"></div>
+          <div class="puzzle-piece"></div>
+          <div class="puzzle-piece"></div>
+        </div>
+        <span class="loading-text">Loading...</span>
+      </div>
     </div>
 
     <script type="module" src="three-splash.js"></script>

@@ -9610,21 +9610,87 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
   cursor: grabbing;
 }
 
-/* Model load progress */
+/* Model load progress — puzzle animation */
 #model-load-progress {
   position: absolute;
-  bottom: 15%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   z-index: 20;
   pointer-events: none;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 13px;
-  color: #ffffff;
-  opacity: 0.7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   transition: opacity 0.4s ease;
-  letter-spacing: 0.5px;
+}
+
+.puzzle-loader {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  animation: puzzleSpin 3s linear infinite;
+}
+
+.puzzle-piece {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #FFD600;
+  border-radius: 3px;
+}
+
+.puzzle-piece:nth-child(1) {
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  animation: puzzlePulse 1.5s ease-in-out infinite;
+}
+.puzzle-piece:nth-child(2) {
+  top: 50%; right: 0;
+  transform: translateY(-50%);
+  animation: puzzlePulse 1.5s ease-in-out 0.3s infinite;
+}
+.puzzle-piece:nth-child(3) {
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  animation: puzzlePulse 1.5s ease-in-out 0.6s infinite;
+}
+.puzzle-piece:nth-child(4) {
+  top: 50%; left: 0;
+  transform: translateY(-50%);
+  animation: puzzlePulse 1.5s ease-in-out 0.9s infinite;
+}
+.puzzle-piece:nth-child(5) {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  opacity: 0.5;
+  animation: puzzlePulse 1.5s ease-in-out 1.2s infinite;
+}
+
+@keyframes puzzleSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes puzzlePulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8) translate(var(--tx, 0), var(--ty, 0)); }
+  50% { opacity: 1; transform: scale(1.1) translate(var(--tx, 0), var(--ty, 0)); }
+}
+
+.loading-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #FFD600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: loadingFade 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingFade {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 /* ==========================================
@@ -9632,7 +9698,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
    ========================================== */
 @media (max-width: 768px) {
   .top-nav {
-    top: 8px;
+    top: 20px;
     left: 12px;
   }
   .logo-wrapper {
@@ -9646,7 +9712,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
     letter-spacing: 0.5px;
   }
   .hero-intro {
-    top: 92px;
+    top: 116px;
     left: 12px;
     gap: 8px;
     max-width: calc(100vw - 24px);
@@ -9672,7 +9738,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
 
 @media (max-width: 480px) {
   .top-nav {
-    top: 6px;
+    top: 18px;
     left: 10px;
   }
   .brand-logo {
@@ -9682,7 +9748,7 @@ body:has(.modal[style*="display:block"])  .sidebar-toggle {
     font-size: 25px;
   }
   .hero-intro {
-    top: 78px;
+    top: 98px;
     left: 10px;
     gap: 7px;
   }
