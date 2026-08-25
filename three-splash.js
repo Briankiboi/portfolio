@@ -24,14 +24,13 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
   alpha: true,
-  preserveDrawingBuffer: false,
+  preserveDrawingBuffer: true,
   powerPreference: "high-performance"
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -51,9 +50,12 @@ spotLight.position.set(-20, 50, 10);
 spotLight.angle = 0.12;
 spotLight.penumbra = 1;
 spotLight.castShadow = true;
-spotLight.shadow.mapSize.width = 512;
-spotLight.shadow.mapSize.height = 512;
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
 scene.add(spotLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+scene.add(pointLight);
 
 // Responsive sizing & positioning
 let desktopModel = null;
@@ -97,15 +99,6 @@ function updateModelTransform() {
 
 // Load GLTF Model
 const gltfLoader = new GLTFLoader();
-let modelLoaded = false;
-let nameTyped = false;
-
-function tryTriggerSpin() {
-  if (nameTyped && modelLoaded && !isSpinning) {
-    trigger360Spin();
-  }
-}
-
 gltfLoader.load(
   './desktop_pc/scene.gltf',
   (gltf) => {
@@ -123,10 +116,6 @@ gltfLoader.load(
 
     updateModelTransform();
     scene.add(desktopModel);
-    modelLoaded = true;
-
-    renderer.compile(scene, camera);
-    tryTriggerSpin();
   },
   (xhr) => {},
   (error) => {
@@ -209,10 +198,8 @@ function startTypewriter() {
     if (charIndexHead < headPrefix.length) {
       typedHead.appendChild(document.createTextNode(headPrefix.charAt(charIndexHead)));
       charIndexHead++;
-      setTimeout(typeHeadPrefix, 50);
+      setTimeout(typeHeadPrefix, 80);
     } else {
-      nameTyped = true;
-      tryTriggerSpin();
       const spanName = document.createElement('span');
       spanName.className = 'purple-highlight';
       typedHead.appendChild(spanName);
@@ -224,11 +211,12 @@ function startTypewriter() {
     if (charIndexName < headName.length) {
       spanElement.textContent += headName.charAt(charIndexName);
       charIndexName++;
-      setTimeout(typeHeadName.bind(null, spanElement), 60);
+      setTimeout(typeHeadName.bind(null, spanElement), 90);
     } else {
       setTimeout(() => {
+        trigger360Spin();
         typeSub();
-      }, 350);
+      }, 550);
     }
   }
 
@@ -236,11 +224,11 @@ function startTypewriter() {
     if (charIndexSub < subText.length) {
       typedSub.textContent += subText.charAt(charIndexSub);
       charIndexSub++;
-      setTimeout(typeSub, 30);
+      setTimeout(typeSub, 45);
     }
   }
 
-  setTimeout(typeHeadPrefix, 100);
+  setTimeout(typeHeadPrefix, 600);
 }
 
 startTypewriter();
