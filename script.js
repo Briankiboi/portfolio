@@ -226,14 +226,35 @@ document.addEventListener('DOMContentLoaded', function () {
       // content underneath while the splash plays. Any scroll/key/click
       // also dismisses the splash immediately (see listener below).
 
-      /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
-      const schedule = [
-        { at: 1100,  fn: () => splash.classList.add('show-2') },
-        { at: 1500, fn: () => splash.classList.add('leaving') },
-        { at: 2050, fn: () => { splash.remove(); markIntroDone(); } },
-      ];
-
+      /* Splash waits until the desktop 3D model finishes its single full
+         rotation (that's the whole point of the splash), then advances to
+         slide 2 and leaves. A hard timeout guards against a failed model
+         load so the splash can never get stuck forever. */
       let timers = null;
+      function advanceAndLeave() {
+        splash.classList.add('show-2');
+        setTimeout(() => {
+          splash.classList.remove('show-2');
+          splash.classList.add('leaving');
+          setTimeout(() => {
+            if (document.body.contains(splash)) splash.remove();
+            markIntroDone();
+          }, 520);
+        }, 1100);
+      }
+      function startAutoSchedule() {
+        timers = [
+          setTimeout(advanceAndLeave, 8000), // hard fallback if spin never fires
+        ];
+      }
+      // Let the desktop finish its spin, then transition away.
+      const onSpinComplete = () => {
+        if (!document.body.contains(splash)) return;
+        if (timers) timers.forEach(clearTimeout);
+        advanceAndLeave();
+      };
+      window.addEventListener('desktop-spin-complete', onSpinComplete, { once: true });
+      startAutoSchedule();
       function dismissSplashNow() {
         if (!document.body.contains(splash)) return;
         if (timers) timers.forEach(clearTimeout);

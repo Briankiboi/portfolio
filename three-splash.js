@@ -165,6 +165,7 @@ function animate() {
       spinProgress = 0;
       desktopModel.rotation.y = startRotY;
       controls.enabled = true;
+      window.dispatchEvent(new CustomEvent('desktop-spin-complete'));
     }
   } else {
     controls.update();
