@@ -116,6 +116,10 @@ gltfLoader.load(
 
     updateModelTransform();
     scene.add(desktopModel);
+
+    // If the user asked for a spin before the model was ready (slow network),
+    // kick off the full 360 rotation now that it has loaded.
+    if (spinPending) startSpin();
   },
   (xhr) => {},
   (error) => {
@@ -140,12 +144,26 @@ window.addEventListener('resize', () => {
 // Ultra-Smooth Single 360 Clockwise Rotation Engine
 let isSpinning = false;
 let spinProgress = 0;
-const SPIN_SPEED = 0.0075;
+let spinPending = false;
+const SPIN_SPEED = 0.0045;
 
 export function trigger360Spin() {
+  // Don't interrupt an already-running spin.
   if (isSpinning) return;
+  // The 3D model loads over the network and may not be ready yet. Queue the
+  // spin so the full 360 rotation always plays once the model arrives —
+  // never a wasted or half spin.
+  if (!desktopModel) {
+    spinPending = true;
+    return;
+  }
+  startSpin();
+}
+
+function startSpin() {
   isSpinning = true;
   spinProgress = 0;
+  spinPending = false;
   controls.enabled = false;
 }
 
