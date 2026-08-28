@@ -228,26 +228,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
       /* Two-slide splash: brand intro → typewriter "briankiboi.is-a.dev" + "Welcome." */
       const schedule = [
-        { at: 6500,  fn: () => splash.classList.add('show-2') },
-        { at: 14000, fn: () => splash.classList.add('leaving') },
-        { at: 15100, fn: () => { splash.remove(); markIntroDone(); } },
+        { at: 1100,  fn: () => splash.classList.add('show-2') },
+        { at: 1500, fn: () => splash.classList.add('leaving') },
+        { at: 2050, fn: () => { splash.remove(); markIntroDone(); } },
       ];
 
+      let timers = null;
       function dismissSplashNow() {
         if (!document.body.contains(splash)) return;
-        timers.forEach(clearTimeout);
+        if (timers) timers.forEach(clearTimeout);
         splash.classList.add('leaving');
         setTimeout(() => {
           if (document.body.contains(splash)) splash.remove();
           markIntroDone();
-        }, 350);
+        }, 520);
       }
-      // Any scroll/wheel/touchmove/keydown/click on the page dismisses the
-      // splash so the user can interact with the page right away.
+      // Any scroll/wheel/touchmove/keydown on the page dismisses the splash
+      // so the user can interact with the page right away.
       ['scroll', 'wheel', 'touchmove', 'keydown'].forEach(evt => {
         window.addEventListener(evt, dismissSplashNow, { once: true, passive: true });
       });
-      let timers = schedule.map(s => setTimeout(s.fn, s.at));
+
+      // Click to dismiss — distinguish a plain tap from dragging the 3D model.
+      let pressX = null, pressY = null, isDown = false;
+      splash.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        pressX = e.clientX;
+        pressY = e.clientY;
+      });
+      window.addEventListener('pointerup', (e) => {
+        if (!isDown) return;
+        isDown = false;
+        const dx = e.clientX - pressX;
+        const dy = e.clientY - pressY;
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) {
+          dismissSplashNow();
+        }
+      });
+
+      // Brand header on the splash is a real link to the homepage.
+      const splashBrand = splash.querySelector('.logo-wrapper');
+      if (splashBrand) {
+        splashBrand.addEventListener('click', (e) => {
+          e.stopPropagation();
+          try { sessionStorage.setItem('force-intro', '1'); } catch (_) {}
+          dismissSplashNow();
+        });
+      }
+      timers = schedule.map(s => setTimeout(s.fn, s.at));
     }
   }
   function ensureModeLoader() {

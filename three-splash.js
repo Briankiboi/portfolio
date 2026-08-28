@@ -176,59 +176,28 @@ function animate() {
 animate();
 
 // ==========================================
-// 2. TYPEWRITER ANIMATION
+// 2. SMOOTH TYPEWRITER ANIMATION (requestAnimationFrame)
 // ==========================================
 const typedHead = document.getElementById('typed-head');
 const typedSub = document.getElementById('typed-sub');
 
 const headPrefix = "Hi, I'm ";
 const headName = "Brian Kiboi";
-const subText = "Mobile Developer & Full-Stack Engineer";
-
-let charIndexHead = 0;
-let charIndexName = 0;
-let charIndexSub = 0;
+const subText = "Software & Mobile Developer";
 
 function startTypewriter() {
   if (!typedHead || !typedSub) return;
   typedHead.innerHTML = '';
   typedSub.textContent = '';
 
-  function typeHeadPrefix() {
-    if (charIndexHead < headPrefix.length) {
-      typedHead.appendChild(document.createTextNode(headPrefix.charAt(charIndexHead)));
-      charIndexHead++;
-      setTimeout(typeHeadPrefix, 80);
-    } else {
-      const spanName = document.createElement('span');
-      spanName.className = 'purple-highlight';
-      typedHead.appendChild(spanName);
-      typeHeadName(spanName);
-    }
-  }
+  typedHead.appendChild(document.createTextNode(headPrefix));
+  const spanName = document.createElement('span');
+  spanName.className = 'purple-highlight';
+  spanName.textContent = headName;
+  typedHead.appendChild(spanName);
 
-  function typeHeadName(spanElement) {
-    if (charIndexName < headName.length) {
-      spanElement.textContent += headName.charAt(charIndexName);
-      charIndexName++;
-      setTimeout(typeHeadName.bind(null, spanElement), 90);
-    } else {
-      setTimeout(() => {
-        trigger360Spin();
-        typeSub();
-      }, 550);
-    }
-  }
-
-  function typeSub() {
-    if (charIndexSub < subText.length) {
-      typedSub.textContent += subText.charAt(charIndexSub);
-      charIndexSub++;
-      setTimeout(typeSub, 45);
-    }
-  }
-
-  setTimeout(typeHeadPrefix, 600);
+  typedSub.textContent = subText;
+  trigger360Spin();
 }
 
 startTypewriter();
