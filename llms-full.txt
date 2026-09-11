@@ -1,0 +1,55 @@
+# Brian Kiboi — Software & Website Developer in Nairobi, Kenya
+
+## Who I am
+Brian Kiboi is a full-stack and mobile software developer based in Nairobi, Kenya. I build fast websites, web applications, mobile apps and business platforms for clients and brands across Kenya — combining modern design, scalability and user-focused experiences. I currently work as a Software Developer (Frontend, Mobile & UI/UX) at LogixFleet and also run my own client projects through DM Solution Tech.
+
+## Why choose me
+- Nairobi-based and remote-friendly, with clear English communication.
+- End-to-end ownership: frontend, backend, testing, UI/UX and deployment.
+- Shipped real products: fleet-management SaaS (ERP), e-commerce platforms, job-readiness tools, driver apps, attendance management systems.
+- Experienced with payments used in East Africa: M-Pesa, Stripe, Paystack.
+- DevOps-aware: Docker, CI/CD, AWS and DigitalOcean deployments.
+
+## Services
+- Web Applications & SaaS — React, Django, Node.js. Includes ERP and custom business systems.
+- Progressive Web Apps (PWAs) — installable, offline-capable, app-like.
+- Native Mobile Apps — Flutter / React Native for iOS & Android.
+- E-commerce & Payments — online stores with M-Pesa, Stripe and Paystack.
+- DevOps & Deployment — Docker, CI/CD, cloud hosting (AWS, DigitalOcean), domain management.
+- SEO & Search Optimization — technical SEO, structured data, performance.
+
+## Tech stack
+Python, Django, React, JavaScript, TypeScript, Node.js, Flutter/Dart, HTML, CSS, Tailwind, Docker, AWS, DigitalOcean, MongoDB, PostgreSQL, Redis, Figma, Stripe, Paystack, M-Pesa.
+
+## Experience
+- Software Developer — Frontend, Mobile & UI/UX at LogixFleet (Jan 2026 – Present, Hybrid, Nairobi). Built the Siphyy Fleet Management SaaS ERP (vehicles, drivers, maintenance, workflows), a React Native driver's app, AI feature screens, e-commerce spare-parts UI; integrated Stripe, Paystack and M-Pesa.
+- QA Engineer — E2E testing at LogixFleet (Oct 2025 – Dec 2025).
+- Junior Full-Stack Developer — Attendance Management App, Tharaka University (Apr 2025 – Sep 2025, Tharaka-Nithi, Kenya).
+- Freelance Web Developer — self-employed, remote (Jan 2025 – Present).
+
+## Selected projects
+- Siphyy Fleet ERP (LogixFleet) — fleet management SaaS ERP. React, Django, AWS. Live.
+- E-commerce Platform — product catalogue, cart, secure checkout with M-Pesa and Stripe.
+- Job Readiness Platform — AI-assisted resume building, skill tracking, interview prep (in development).
+- Custom websites & business systems for Kenyan clients.
+
+## FAQ
+### What services does Brian Kiboi offer?
+Websites, web apps, progressive web apps (PWAs), native mobile apps, e-commerce platforms, ERP/SaaS/custom systems, DevOps setup and SEO. Payment-ready builds include Stripe, Paystack and M-Pesa.
+
+### What technologies does Brian Kiboi use?
+React, Django, Python, Node.js, JavaScript, TypeScript on the front/back end; Flutter and Dart for mobile; Docker, AWS and DigitalOcean for deployment; Figma for UI/UX; MongoDB and PostgreSQL for data.
+
+### Why should I work with Brian Kiboi?
+Nairobi-based, remote-friendly, end-to-end ownership, and real products shipped (fleet ERP, e-commerce, job-readiness tools). Experience integrating African payment systems (M-Pesa, Stripe, Paystack) and a background in QA and UI/UX as well as code.
+
+### Where is Brian Kiboi based?
+Nairobi, Kenya. Available for remote projects with startups, agencies and growing businesses across East Africa and beyond.
+
+## Contact
+- Email: briankiboi83@gmail.com
+- Phone: +254 112 401 838
+- LinkedIn: https://www.linkedin.com/in/brian-kiboi-21aa02277/
+- GitHub: https://github.com/Briankiboi
+- Medium: https://briankiboi32.medium.com
+- Stack Overflow: https://stackoverflow.com/users/29328163/brian-kiboi

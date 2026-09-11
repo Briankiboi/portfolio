@@ -1,13 +1,29 @@
 {
   "headers": [
     {
-      "source": "/(.+)\\.(woff|woff2|ttf|otf|eot)",
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+      ]
+    },
+    {
+      "source": "/(index-.*)\\.(js|css)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(.+)\\.(webp|png|jpg|jpeg|gif|svg|ico|avif)",
+      "source": "/(.*)\\.(woff|woff2|ttf|otf|eot)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(webp|png|jpg|jpeg|gif|svg|ico|avif)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -16,15 +32,21 @@
       ]
     },
     {
-      "source": "/(.+)\\.(css|js)",
+      "source": "/(.*)\\.(gltf|bin)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800"
+          "value": "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=31536000"
         }
+      ]
+    },
+    {
+      "source": "/(index\\.html|sw\\.js|robots\\.txt|sitemap\\.xml|manifest\\.json|llms\\.txt|llms-full\\.txt|pwa-install\\.js|og-card-new\\.jpg|og-card-favicon\\.png)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600" }
       ]
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": true
+  "trailingSlash": false
 }
