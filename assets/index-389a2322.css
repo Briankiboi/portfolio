@@ -1944,3 +1944,18 @@ background: #ffffff;
   .ct-stack .ct-slot { flex: 1 1 0%; min-height: 0; }
   .ct-slot-2 { display: block; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Hero hardening: poster + dark base behind the WebGL canvas so the   */
+/* hero is never a white block while the 3D scene loads (or if WebGL   */
+/* is unavailable on a device).                                        */
+/* ------------------------------------------------------------------ */
+#root section:first-of-type {
+  background: #0b111f url(/assets/hero-poster.webp) center / cover no-repeat;
+}
+.bk-no-webgl #root canvas {
+  visibility: hidden !important;
+}
+.bk-no-webgl .canvas-loader {
+  display: none !important;
+}
