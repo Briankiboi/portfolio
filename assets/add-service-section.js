@@ -1570,7 +1570,7 @@ section:has(.feedbacks-wrap) {
   var PACKAGES = [
     {
       thumb: '/assets/svc-website.webp',
-      full: '/assets/website-package-full.png',
+      full: '/assets/website-package-full.webp',
       imgAlt: 'DM Solution Tech — Website Package, 20% OFF',
       dataTitle: 'Website Package — 20% OFF',
       dataDesc: 'Need a Website? SEO + analytics + AI-ready structure + social/contact form + Medium auto-sync + 30+ gallery images.',
@@ -1589,7 +1589,7 @@ section:has(.feedbacks-wrap) {
     },
     {
       thumb: '/assets/svc-ecommerce.webp',
-      full: '/assets/ecommerce-package-full.png',
+      full: '/assets/ecommerce-package-full.webp',
       imgAlt: 'DM Solution Tech — E-commerce Package',
       dataTitle: 'E-commerce Package — Launch Your Online Store',
       dataDesc: 'Launch your online store today. SEO, analytics, payments (M-Pesa/Stripe/PayPal), social/email integration, contact forms + messaging.',
@@ -1610,7 +1610,7 @@ section:has(.feedbacks-wrap) {
 
   // Rate card preview data — EXACT copy of portfolio-main /about
   var RATE_CARD = {
-    src: '/assets/Rate-card.png',
+    src: '/assets/Rate-card.webp',
     alt: 'Brian Kiboi - Web Design & Development Rate Card',
     download: 'Brian_Kiboi_Rate_Card.png'
   };
