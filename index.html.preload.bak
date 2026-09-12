@@ -234,8 +234,7 @@
     <script src="/assets/add-service-section.js"></script>
     <script src="/pwa-install.js"></script>
     <link rel="stylesheet" href="/assets/index-389a2322.css">
-      <link rel="modulepreload" href="/assets/index-4f0713c4.js">
-</head>
+  </head>
   <body>
     <div id="root"></div>
 
