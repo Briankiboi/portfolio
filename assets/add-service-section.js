@@ -1552,18 +1552,22 @@ section:has(.feedbacks-wrap) {
 
   // ── Service data — EXACT copy of portfolio-main /about "What I offer" section
   var SERVICES = [
-    { emoji:'🏢', title:'Custom ERPs & Fleet Systems', badge:'Shipped',
-      descHtml:'Inventory, HR, finance, operations dashboards and full <strong>Custom ERPs</strong> tailored to your business workflows and scalable as you grow.' },
-    { iconSrc:'/assets/service-mobile-icon.png', iconAlt:'Mobile Apps', title:'Mobile Apps with Flutter',
-      desc:'Cross-platform Android & iOS apps with native performance, smooth UX, and clean architecture for long-term maintenance.' },
-    { emoji:'🛒', title:'E-commerce Platforms',
-      desc:'Full online stores with product management, cart, secure checkout, and M-Pesa or international payment gateway integration.' },
-    { iconSrc:'/assets/service-website-icon.png', iconAlt:'Company Websites', title:'Organization & Company Websites',
-      desc:'Corporate and brand websites with custom CMS, multi-page architecture, contact & lead-capture flows, and SEO-ready structure.' },
-    { emoji:'👤', title:'Personal & Professional Websites',
-      desc:'Portfolios, resumes, personal brand sites — modern, responsive, and tuned for the audiences that matter to you.' },
-    { emoji:'💼', title:'Software Consultancy', badge:'Extra',
-      desc:'Technology choice, architecture, stack decisions and digital strategy guidance to help you scale efficiently and avoid costly rework.' }
+    { emoji:'\u{1f3e2}', title:'Custom ERP & Business Software Development',
+      desc:'Custom ERP Systems & Business Software. Build tailored ERP and business management systems for inventory, HR, finance, operations, fleet management, customer management, and other business workflows. I develop scalable software around your processes, with role-based access, dashboards, reporting, APIs, and integrations.' },
+    { emoji:'\u{1f4f1}', title:'Mobile App Development',
+      desc:'Flutter & React Native Mobile Apps. Design and develop Android and iOS mobile applications using Flutter and React Native. From business and delivery apps to customer-facing products, I build responsive, reliable apps with clean architecture, intuitive UX, API integration, authentication, payments, and long-term maintainability.' },
+    { emoji:'\u{1f6d2}', title:'E-commerce Development',
+      desc:'E-commerce Websites & Online Stores. Build custom e-commerce websites and online stores with product management, shopping carts, checkout, order management, customer accounts, inventory workflows, and secure payment integrations including M-Pesa, Stripe, and Paystack.' },
+    { emoji:'\u{1f310}', title:'Web Development',
+      desc:'Custom Websites & Web Applications. Develop modern, responsive business websites, web applications, SaaS platforms, and customer portals using technologies such as React, Django, Laravel, Node.js, and modern JavaScript/TypeScript. Websites are structured for performance, accessibility, scalability, and search-engine visibility.' },
+    { emoji:'\u{1f50e}', title:'SEO & Website Optimization',
+      desc:"SEO, Performance & Search Visibility. Improve your website\u2019s Google search visibility through technical SEO, page structure, metadata, semantic content, mobile optimization, performance improvements, sitemap and indexing setup, and search-friendly development practices. I also help maintain website health as your business grows." },
+    { emoji:'\u{1f464}', title:'Personal & Professional Websites',
+      desc:'Portfolio, Resume & Personal Brand Websites. Create modern portfolio websites, professional profiles, CV/resume websites, and personal brand platforms designed to present your work clearly and professionally. Responsive layouts, optimized performance, SEO-ready structure, contact forms, and social integrations are included where needed.' },
+    { emoji:'\u{1f6e0}\u{fe0f}', title:'Software Maintenance & Support',
+      desc:'Website & Software Maintenance. Keep websites and software secure, reliable, and up to date through bug fixes, feature updates, performance optimization, troubleshooting, dependency updates, security checks, database maintenance, SEO improvements, backups, and ongoing technical support.' },
+    { emoji:'\u{1f4bc}', title:'Technology Consultancy',
+      desc:'Software & IT Consulting. Get guidance on technology selection, software architecture, system design, technical strategy, APIs, integrations, hosting, deployment, and digital transformation. I help businesses choose practical solutions that can scale without unnecessary complexity or costly rework.' }
   ];
 
   // ── Package data — EXACT copy of portfolio-main /about "Ready-to-launch packages"
@@ -1682,7 +1686,7 @@ section:has(.feedbacks-wrap) {
 
     var sub = document.createElement('p');
     sub.className = 'svc-standalone-sub';
-    sub.textContent = 'What I Offer';
+    sub.textContent = 'I build websites, online stores, and web apps that Kenyan and East African businesses actually run, from concept to launch.';
 
     header.appendChild(h2);
     header.appendChild(sub);

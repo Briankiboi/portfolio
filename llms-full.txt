@@ -1,7 +1,7 @@
-# Brian Kiboi — Software & Website Developer in Nairobi, Kenya
+# Brian Kiboi — Digital Product Builder · Remote-First, Nairobi, Kenya
 
 ## Who I am
-Brian Kiboi is a full-stack and mobile software developer based in Nairobi, Kenya. I build fast websites, web applications, mobile apps and business platforms for clients and brands across Kenya — combining modern design, scalability and user-focused experiences. I currently work as a Software Developer (Frontend, Mobile & UI/UX) at LogixFleet and also run my own client projects through DM Solution Tech.
+Brian Kiboi is a remote-first digital product builder based in Nairobi, Kenya. I build fast websites, web applications, mobile apps and business platforms for clients and brands across Kenya and East Africa — combining modern design, scalability and user-focused experiences. I currently work as a Software Developer (Frontend, Mobile & UI/UX) at LogixFleet and also run my own client projects through DM Solution Tech.
 
 ## Why choose me
 - Nairobi-based and remote-friendly, with clear English communication.
@@ -11,12 +11,14 @@ Brian Kiboi is a full-stack and mobile software developer based in Nairobi, Keny
 - DevOps-aware: Docker, CI/CD, AWS and DigitalOcean deployments.
 
 ## Services
-- Web Applications & SaaS — React, Django, Node.js. Includes ERP and custom business systems.
-- Progressive Web Apps (PWAs) — installable, offline-capable, app-like.
-- Native Mobile Apps — Flutter / React Native for iOS & Android.
-- E-commerce & Payments — online stores with M-Pesa, Stripe and Paystack.
-- DevOps & Deployment — Docker, CI/CD, cloud hosting (AWS, DigitalOcean), domain management.
-- SEO & Search Optimization — technical SEO, structured data, performance.
+- Custom ERP & Business Software Development — fleet management ERP, business automation and internal systems.
+- Mobile App Development — Flutter / React Native for iOS & Android.
+- E-commerce Development — online stores with M-Pesa, Stripe and Paystack.
+- Web Development & SaaS — React, Django, Node.js business websites, dashboards and platforms.
+- SEO & Website Optimization — technical SEO, structured data and Core Web Vitals.
+- Personal & Professional Websites — portfolio and professional-brand sites.
+- Software Maintenance & Support — updates, bug fixes, security checks and troubleshooting.
+- Technology Consultancy — architecture guidance and digital-transformation advice.
 
 ## Tech stack
 Python, Django, React, JavaScript, TypeScript, Node.js, Flutter/Dart, HTML, CSS, Tailwind, Docker, AWS, DigitalOcean, MongoDB, PostgreSQL, Redis, Figma, Stripe, Paystack, M-Pesa.
