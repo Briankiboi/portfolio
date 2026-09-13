@@ -1944,3 +1944,8 @@ background: #ffffff;
   .ct-stack .ct-slot { flex: 1 1 0%; min-height: 0; }
   .ct-slot-2 { display: block; }
 }
+
+/* mobile-safe fallback for the 3D "Stacks in prod" tiles */
+.bk-stack-cell{display:flex;align-items:center;justify-content:center;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);overflow:hidden}
+.bk-stack-cell .bk-stack-img{width:60%;height:60%;object-fit:contain;pointer-events:none;-webkit-user-select:none;user-select:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,.35))}
+@media(max-width:820px){.bk-stack-cell{width:5.5rem!important;height:5.5rem!important}.bk-stack-cell .bk-stack-img{max-width:40px;max-height:40px}}

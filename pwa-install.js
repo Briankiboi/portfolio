@@ -71,7 +71,15 @@
     });
     return el;
   }
-  function show() { if (el && !installed) el.classList.add('open'); }
+  function isPastHero() {
+    var y = window.pageYOffset ||
+      (document.documentElement && document.documentElement.scrollTop) || 0;
+    return y >= 120;
+  }
+  function show() {
+    if (el && !installed && isPastHero()) el.classList.add('open');
+  }
+  window.addEventListener('scroll', show, { passive: true });
   function dismiss() {
     try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch (e) {}
     if (el) el.classList.remove('open');
