@@ -9,6 +9,10 @@
   var isMobileUA = /android|iphone|ipad|ipod|mobile/i.test(ua);
   var isSmall = window.matchMedia('(max-width: 820px)').matches;
   var isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+  // Keep the current design intact on-device without forcing the install bar over the content.
+  // The fixed overlay is the element that breaks the physical phone layout, so suppress it on real mobile screens.
+  if (isMobileUA && isSmall) return;
   if (!((isMobileUA && isSmall) || (isTouch && isSmall))) return; // never show on desktop
 
   // already installed / standalone → do nothing
