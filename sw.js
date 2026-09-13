@@ -8,7 +8,7 @@
 //     NETWORK-FIRST and runtime-cached, so edits go live without a cache dance.
 //   - On install the whole 3D scene + hero images are precached in the
 //     background, so the next visit has zero asset loading.
-const VERSION = 'portfolio-v4';
+const VERSION = 'portfolio-v5';
 const PRECACHE_URLS = [
       "/",
       "/assets/brian-dp.webp",
