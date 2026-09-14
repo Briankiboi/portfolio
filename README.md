@@ -1,53 +1,109 @@
-# Brian Kiboi — Portfolio (deployed build)
+# 🚀 Portfolio – Brian Kiboi
 
-This folder is the complete, deployment-ready build of **Brian Kiboi | Portfolio**
-(a React + Vite single-page app). Serve it as static files from any host.
+**Full‑Stack & Mobile Engineer (Flutter) | QA & Test Automation | Nairobi, Kenya**  
+I build production‑ready web and mobile systems for startups, agencies, and growing businesses-focusing on clean architecture, reliable testing, and real business value.
 
-## Run locally
+**Live portfolio:** https://briankiboi.is-a.dev  
+**Contact:** briankiboi83@gmail.com 
+**WhatsApp: +254 112 401 838
 
-```bash
-node /tmp/serve_portfolio.js
-# → http://localhost:8899/
-```
+---
 
-Or with any static server:
+## 👤 About Me
 
-```bash
-npx serve .
-python3 -m http.server 8899
-```
+I’m a Kenya‑based software professional working across full‑stack development, QA/testing, and technical documentation. My work spans ERP/tools, e‑commerce, company websites, and mobile apps—delivered with structured workflows, clear documentation, and a focus on maintainability.
 
-## What's inside
+- **Core focus:** Scalable web & mobile apps, REST APIs, system integrations, database design, cloud deployment, and deep testing (unit, integration, E2E).
+- **QA mindset:** Playwright‑style thinking for web testing workflows, regression checks, and workflow validation across drivers, vehicles, workshops, inspections, inventory, and finance flows.
+- **Delivery style:** Practical, step‑by‑step implementation with usable results, strong documentation, and production‑ready code.
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | App shell + full SEO (meta, Open Graph, Twitter cards, JSON-LD Person/WebSite/Organization, PWA metas, service-worker registration) |
-| `assets/` | Bundled JS/CSS (Vite build), portfolio imagery, tech icons |
-| `desktop_pc/`, `planet/` | 3D models used in the hero |
-| `sw.js` | Service worker — PWA install + offline shell (network-first navigation, cache-first hashed assets) |
-| `manifest.json` | PWA manifest (icons, theme `#050816`) |
-| `robots.txt` | Search-engine allow rules + sitemap reference |
-| `sitemap.xml` | Sitemap for Google (single-page app) |
-| `og-card-new.jpg` | 1200×630 social-share card (Open Graph / Twitter) |
-| `og-card-favicon.png`, `apple-touch-icon.png`, `icon-192/512.png`, `icon-maskable-512.png` | Brand icons |
-| `google8ccc378ecb46c2ec.html` | Google Search Console ownership verification |
-| `CNAME` | Custom domain for GitHub Pages (`briankiboi.is-a.dev`) |
-| `vercel.json` | Vercel config: cache headers, security headers, clean URLs |
+---
 
-## Deploy
+## 🛠️ Tech Stack
 
-- **Vercel**: point it at this folder (`vercel.json` is already configured).
-- **GitHub Pages**: keep `CNAME`, push contents.
-- **Any host**: just upload the folder and serve `/` → `index.html`.
+**Languages & Frameworks**
+- Flutter / Dart
+- Python / Django (DRF)
+- JavaScript / React / Next.js
+- Node.js / TypeScript
+- Flask, Laravel (as needed)
 
-## SEO / Search Console
+**Databases**
+- PostgreSQL, MySQL, SQLite
 
-1. Confirm the production URL — `https://briankiboi.is-a.dev/` is used in
-   `index.html` (canonical/OG) and `sitemap.xml`. Swap if the domain changes.
-2. In [Google Search Console](https://search.google.com/search-console) add the
-   domain and verify (the `google8ccc…html` file proves ownership on that domain).
-3. Submit `sitemap.xml`, then URL-Inspect the homepage to force indexing.
+**Cloud, DevOps & Integrations**
+- Git / GitHub, CI/CD basics
+- REST APIs, webhooks, payment gateways (Stripe), SMS (Africa’s Talking), Slack notifications
 
-## Notes
+**QA & Testing**
+- Web testing workflows (Playwright‑style), regression suites, test plans, bug reports, user guides, and product documentation.
 
-- `assets/*.js` are hand-patched production bundles — keep `.bak*` copies when editing.
+---
+
+## 💼 What I Build
+
+- **ERP & SaaS tools** – modular business workflow automation, inventory, finance, and reporting.
+- **Mobile apps (Flutter)** – Android/iOS apps for real operational use (WebView‑heavy, API‑driven, custom org apps).
+- **E‑commerce platforms** – multi‑vendor/single‑vendor storefronts with cart, checkout, and payment integration.
+- **Company & portfolio websites** – conversion‑focused landing pages, insights hubs, and lead‑gen funnels.
+- **Integrations** – Stripe payments, Slack alerts, SMS gateways, and other third‑party APIs.
+
+---
+
+## 📦 Featured Projects (from GitHub)
+
+These repos show the kind of systems I design and ship:
+
+- **Django‑ERP‑tools‑Rest‑framework** – Full‑stack ERP platform with Django REST Framework + Vue.js for modular workflow automation.
+- **StripeAPIIntegration** – Secure Stripe payments (one‑time, subscriptions, webhooks) for SaaS‑style apps.
+- **Slack‑Integration‑Django** – n8n usage  in Real‑time Slack notifications via webhooks for operational events.
+- **Flutter‑Advanced‑WebView‑App‑with‑InAppWebView** – Feature‑rich Flutter WebView app with JS bridging and native interaction.
+- **Python‑Flask‑Postgres‑CP3** – RESTful API with auth, CRUD, and PostgreSQL for scalable backends.
+- **SMS‑Gateway‑Africastalking‑** – Automated SMS alerts and notifications using Africa’s Talking.
+
+(Your portfolio site expands on these with live demos and context.)
+
+---
+
+## 🧪 Testing & Documentation
+
+Beyond coding, I:
+
+- Design and execute test plans and regression suites for complex workflows (fleet, ERP, e‑commerce).
+- Write clear bug reports, test documentation, user guides, and product docs that teams can actually use.
+- Validate end‑to‑end flows: authentication, data integrity, role‑based access, and integrations.
+
+This makes my projects easier to maintain, hand over, and scale.
+
+---
+
+## 🏢 Experience Snapshot
+
+- **Junior Software Developer** – LogixFleet (Nairobi) – full‑stack work on fleet‑management systems.
+- **Software Test Engineer / QA Automation (Playwright)** – LogixFleet – web testing, regression, workflow validation.
+- **Remote Software Developer & Consultant** – DM Solutions – websites, web apps, custom features, performance optimization.
+- **Mobile Application Developer (Flutter)** – Tharaka University – Flutter apps for real operational needs.
+- **ICT Attaché** – Judiciary, Office of the Chief Justice – software development and data analysis.
+
+---
+
+## 📬 Let’s Work Together
+
+I’m open to:
+
+- Full‑time or contract **Full‑Stack / Flutter** roles
+- Freelance projects: ERP tools, mobile apps, e‑commerce, company websites, integrations
+- QA / test automation engagements where code + testing + documentation matter
+
+**Ways to reach me:**
+
+- Portfolio: https://briankiboi.is-a.dev
+- Email: briankiboi83@gmail.com
+- WhatsApp: +254 112 401 838
+- LinkedIn: https://www.linkedin.com/in/brian-kiboi-21aa02277
+
+---
+
+## 📄 License & Usage
+
+This portfolio code is for demonstration and personal branding. Feel free to use ideas and structure for your own portfolio; just don’t copy my content verbatim for commercial use without asking.
