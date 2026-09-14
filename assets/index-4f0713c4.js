@@ -3425,8 +3425,8 @@ const Sj=()=>{
     const step=(now)=>{
       const p=Math.min((now-st)/dur,1);
       setCounts({
-        exp:Math.floor(p*2),
-        proj:Math.floor(p*15),
+        exp:Math.floor(p*3),
+        proj:Math.floor(p*18),
         sat:Math.floor(p*98)
       });
       if(p<1)rid=requestAnimationFrame(step);
