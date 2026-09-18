@@ -1548,7 +1548,208 @@ section:has(.feedbacks-wrap) {
   .ch-body small { font-size: 0.75rem !important; }
   .svc-send-box { padding: 0.7rem !important; }
   .svc-send-text { min-height: 64px !important; font-size: 0.84rem !important; }
-}`;
+}
+
+.svc-contact-rail {
+  position: fixed;
+  z-index: 1000;
+  top: 29%;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transform: translateX(calc(100% - 54px));
+  transition: transform 0.35s ease;
+  filter: drop-shadow(-8px 8px 18px rgba(0, 0, 0, 0.22));
+}
+.svc-contact-rail.is-visible { transform: translateX(0); }
+.svc-contact-rail.is-open { transform: translateX(0); }
+.svc-contact-rail-tab {
+  position: relative;
+  width: 54px;
+  min-height: 180px;
+  border: 0;
+  border-radius: 14px 0 0 0;
+  background: #0786c5;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.65rem;
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 0.75rem 0.4rem;
+}
+.svc-contact-tooltip {
+  position: absolute;
+  z-index: 2;
+  right: calc(100% + 36px);
+  top: 50%;
+  width: 230px;
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(8px, -50%);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.svc-contact-rail-tab:hover .svc-contact-tooltip,
+.svc-contact-rail-tab:focus-visible .svc-contact-tooltip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+.svc-contact-rail-tab::after {
+  content: '›';
+  position: absolute;
+  z-index: 1;
+  left: -36px;
+  top: 50%;
+  width: 36px;
+  height: 72px;
+  border-radius: 14px 0 0 14px;
+  background: #0786c5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 400;
+  transform: translateY(-50%);
+}
+.svc-contact-rail-tab > span:not(.svc-contact-tooltip) {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.96rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transform-origin: center;
+  animation: svc-toolhub-grow 10s ease-in-out infinite;
+}
+.svc-contact-tooltip strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: #d49b00;
+  font-weight: 800;
+}
+.svc-contact-rail-tab > strong {
+  color: #ffd600;
+  font-size: 1.35rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  animation: svc-hand-point 1.1s ease-in-out infinite;
+}
+@keyframes svc-hand-point {
+  0%, 100% {
+    transform: translateY(-3px) scale(1);
+    text-shadow: 0 0 0 rgba(255, 214, 0, 0);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.18);
+    text-shadow: 0 0 5px #ffd600, 0 0 13px rgba(255, 214, 0, 0.75);
+  }
+}
+@keyframes svc-toolhub-grow {
+  0%, 48% {
+    transform: scale(1);
+    color: #fff;
+    text-shadow: 0 0 0 rgba(255, 214, 0, 0);
+  }
+  55%, 95% {
+    transform: scale(1.1);
+    color: #fff;
+    text-shadow: 0 0 0 rgba(255, 214, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    color: #fff;
+    text-shadow: 0 0 0 rgba(255, 214, 0, 0);
+  }
+}
+.svc-contact-rail-links { display: flex; flex-direction: column; width: 54px; }
+.svc-contact-rail-links a {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.3rem;
+}
+.svc-contact-rail-links a:first-child { background: #f0443e; }
+.svc-contact-rail-links a:first-child i { color: #fff; }
+.svc-contact-rail-links a:last-child { background: #087bb5; border-radius: 0 0 0 12px; }
+.svc-contact-rail-links a:last-child i { transform: rotate(180deg); }
+.svc-contact-rail-links a:hover { filter: brightness(1.12); }
+.svc-contact-rail-whatsapp {
+  position: fixed;
+  z-index: 1001;
+  right: 18px;
+  bottom: 18px;
+  width: 220px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.68rem;
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.65rem 0.75rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24);
+  transform: translateY(130%);
+  transition: transform 0.35s ease;
+}
+.svc-contact-rail-whatsapp span { white-space: nowrap; }
+.svc-contact-rail-whatsapp.is-visible { transform: translateY(0); }
+.svc-contact-rail-whatsapp strong { font-weight: 800; }
+.svc-contact-rail-whatsapp i {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #20b84b;
+  font-size: 1.55rem;
+}
+@media (max-width: 768px) {
+  .svc-contact-rail { top: 30%; }
+  .svc-contact-rail-tab, .svc-contact-rail-links { width: 52px; }
+  .svc-contact-rail-tab { min-height: 168px; }
+  .svc-contact-rail-tab span { font-size: 0.88rem; }
+  .svc-contact-tooltip {
+    width: 170px !important;
+    padding: 0.28rem 0.35rem !important;
+    font-size: 0.45rem !important;
+    line-height: 1.15 !important;
+  }
+  .svc-contact-rail-links a { min-height: 52px; }
+  .svc-contact-rail-whatsapp {
+    right: 10px;
+    bottom: 10px;
+    width: 220px;
+    gap: 0.45rem;
+    font-size: 0.68rem;
+    padding: 0.45rem 0.55rem;
+    max-width: calc(100vw - 20px);
+  }
+  .svc-contact-rail-whatsapp i { width: 38px; height: 38px; font-size: 1.25rem; }
+}
+`;
 
   // ── Service data — EXACT copy of portfolio-main /about "What I offer" section
   var SERVICES = [
@@ -1624,6 +1825,36 @@ section:has(.feedbacks-wrap) {
     var s = document.createElement('style');
     s.id = 'svc-styles'; s.textContent = CSS;
     document.head.appendChild(s);
+  }
+
+  function initContactRail() {
+    if (document.getElementById('svc-contact-rail')) return;
+    var rail = document.createElement('aside');
+    rail.id = 'svc-contact-rail';
+    rail.className = 'svc-contact-rail';
+    rail.setAttribute('aria-label', 'Contact links');
+    rail.innerHTML =
+      '<button class="svc-contact-rail-tab" type="button" aria-label="Tool-Hub Kit" aria-expanded="false" aria-controls="svc-contact-rail-links">' +
+      '<strong aria-hidden="true">👇</strong><span>Tool-Hub Kit</span><span class="svc-contact-tooltip">DM Solutions Tools Hub is a scalable and flexible collection of free, client-side tools designed to work with the technologies that complement your existing workflows.<br><strong>Tap to open the Tool-Hub Kit.</strong></span></button>' +
+      '<div id="svc-contact-rail-links" class="svc-contact-rail-links" hidden>' +
+      '<a href="https://api.whatsapp.com/send?phone=254112401838&text=Hi%20Brian%2C%20I%20would%20like%20to%20get%20in%20touch." target="_blank" rel="noopener" aria-label="Chat with Brian on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>' +
+      '<a href="tel:+254112401838" aria-label="Call Brian"><i class="fas fa-phone" aria-hidden="true"></i></a>' +
+      '</div>';
+    document.body.appendChild(rail);
+    var tab = rail.querySelector('.svc-contact-rail-tab');
+    var links = rail.querySelector('.svc-contact-rail-links');
+    tab.addEventListener('click', function () {
+      var open = rail.classList.toggle('is-open');
+      tab.setAttribute('aria-expanded', String(open));
+      links.hidden = !open;
+    });
+
+    function revealOnScroll() {
+      var visible = window.scrollY > 120;
+      rail.classList.toggle('is-visible', visible);
+    }
+    window.addEventListener('scroll', revealOnScroll, { passive: true });
+    revealOnScroll();
   }
 
   // Calendly popup widget — loaded on demand (only when the tile is clicked)
@@ -2260,6 +2491,7 @@ section:has(.feedbacks-wrap) {
     if (document.getElementById('svc-deliver-section')) return;
 
     injectStyles();
+    initContactRail();
     injectCalendly();
     var parent = testimonials.parentNode;
     var anchor = testimonials.nextSibling;
