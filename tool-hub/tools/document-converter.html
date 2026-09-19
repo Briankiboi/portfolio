@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Converter — Free Tools Hub</title>
+<meta name="description" content="Convert Word (DOCX) to PDF directly in your browser. 100% private — your file never leaves your device.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">Document Converter</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:860px;margin:0 auto">
+
+            <header class="tool-meta">
+                <span class="tool-meta-icon"><i class="fa-solid fa-file-word" aria-hidden="true"></i></span>
+                <div class="tool-meta-body">
+                    <h1>Document Converter</h1>
+                    <p>Turn a Word (DOCX) document into a clean PDF — entirely in your browser, no uploads, no account, no watermark.</p>
+                    <div class="tool-meta-row">
+                        <span class="tool-badge">Word → PDF</span>
+                        <span class="tool-badge tool-badge-soft">client-side</span>
+                    </div>
+                </div>
+                <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+            </header>
+            <span id="page-meta-title" data-title="Document Converter — DM Solution Technologies Toolkits" style="display:none"></span>
+
+            <!-- Conversion route -->
+            <div class="dc-route">
+                <span class="dc-route-side"><span class="dc-route-ico">🖹</span>DOCX <span class="dc-route-f">.docx</span></span>
+                <span class="dc-route-arrow">→</span>
+                <span class="dc-route-side"><span class="dc-route-ico dc-route-ico-out">📄</span>PDF <span class="dc-route-f">.pdf</span></span>
+            </div>
+
+            <!-- Step indicator -->
+            <ol class="dc-steps" id="dc-steps" aria-label="Conversion steps">
+                <li class="dc-step is-active" data-step="1"><span class="dc-step-num">1</span><span class="dc-step-label">Choose file</span></li>
+                <li class="dc-step" data-step="2"><span class="dc-step-num">2</span><span class="dc-step-label">Convert</span></li>
+                <li class="dc-step" data-step="3"><span class="dc-step-num">3</span><span class="dc-step-label">Download</span></li>
+            </ol>
+
+            <!-- Dropzone -->
+            <div class="dc-dropzone" id="dc-dropzone" tabindex="0">
+                <input type="file" id="dc-file" accept=".docx" aria-label="Choose a DOCX file">
+                <div class="dc-dz-ico"><span>⇪</span></div>
+                <p class="dc-title">Drag &amp; drop your <b>DOCX</b> file here</p>
+                <p class="dc-sub">or tap anywhere to browse — your file never leaves this device</p>
+                <span class="dc-btn">📂 Select Document</span>
+                <span class="dc-badge">.docx</span>
+            </div>
+
+            <!-- Selected file card -->
+            <div class="dc-filecard" id="dc-filecard" hidden>
+                <span class="dc-file-ico" id="dc-file-ico">🖹</span>
+                <div class="dc-file-info">
+                    <p class="dc-file-name" id="dc-file-name">document.docx</p>
+                    <p class="dc-file-size" id="dc-file-size">0 KB</p>
+                </div>
+                <button type="button" class="btn btn-ghost dc-file-change" id="dc-change">Change</button>
+                <button type="button" class="btn btn-primary" id="dc-convertbtn">⚡ Convert to PDF</button>
+            </div>
+
+            <!-- Progress panel -->
+            <div class="dc-progress" id="dc-progress" hidden aria-live="polite">
+                <div class="dc-progress-row">
+                    <span class="dc-progress-ico" id="dc-progress-ico">⚙️</span>
+                    <span class="dc-stage" id="dc-stage">Reading your file…</span>
+                    <span class="dc-pct" id="dc-pct">0%</span>
+                </div>
+                <div class="dc-track"><div class="dc-fill" id="dc-fill"></div></div>
+            </div>
+
+            <!-- Result panel -->
+            <div class="dc-result" id="dc-result" hidden aria-live="polite">
+                <div class="dc-result-top">
+                    <span class="dc-result-ico" id="dc-result-ico">✅</span>
+                    <div>
+                        <p class="dc-result-title" id="dc-result-title">Done! Your PDF is ready</p>
+                        <p class="dc-result-msg" id="dc-result-msg"><b id="dc-result-src">file</b> → <b id="dc-result-out">file</b></p>
+                    </div>
+                </div>
+                <div class="dc-result-actions">
+                    <button type="button" class="btn btn-primary" id="dc-download">⬇ Download</button>
+                    <button type="button" class="btn btn-ghost" id="dc-another">↻ Convert another</button>
+                </div>
+            </div>
+
+            <div class="alert err hidden" id="dc-notice" style="margin-top:1rem"></div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>This is the key detail: your file is never uploaded anywhere. The DOCX is parsed with <strong>mammoth</strong> and turned into a PDF with <strong>html2pdf</strong>, all inside this tab. Disconnect from the internet and it still works.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🧩</span>How it works</div>
+                    <p>Your Word file is converted to styled HTML that faithfully keeps paragraphs, headings, lists, bold/italic and images, then rendered page-by-page into a crisp, printable PDF.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>Large documents may take a few seconds — the work happens in your browser's memory.</li>
+                        <li>For best fidelity, keep your formatting in the document body; the PDF follows the visual width of your content.</li>
+                        <li>Only content you have the right to reproduce should be converted.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<!-- Conversion libraries (client-side) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast } = window.ToolsApp;
+    const KEY = 'document-converter';
+
+    const dropzone = document.getElementById('dc-dropzone');
+    const input    = document.getElementById('dc-file');
+
+    const fileCard = document.getElementById('dc-filecard');
+    const fName    = document.getElementById('dc-file-name');
+    const fSize    = document.getElementById('dc-file-size');
+    const fIco     = document.getElementById('dc-file-ico');
+    const changeBtn= document.getElementById('dc-change');
+    const convertBtn = document.getElementById('dc-convertbtn');
+
+    const progress = document.getElementById('dc-progress');
+    const stageEl  = document.getElementById('dc-stage');
+    const pctEl    = document.getElementById('dc-pct');
+    const fillEl   = document.getElementById('dc-fill');
+    const progIco  = document.getElementById('dc-progress-ico');
+
+    const resultPanel = document.getElementById('dc-result');
+    const resTitle = document.getElementById('dc-result-title');
+    const resSrc   = document.getElementById('dc-result-src');
+    const resOut   = document.getElementById('dc-result-out');
+    const dlBtn    = document.getElementById('dc-download');
+    const againBtn = document.getElementById('dc-another');
+
+    const notice   = document.getElementById('dc-notice');
+
+    let file = null;
+    let pendingUrl = null;
+    let pendingName = '';
+    let downloading = false;
+
+    /* ── Steps ─────────────────────────────────────────────── */
+    function setStep(n){
+        document.querySelectorAll('.dc-step').forEach(s => {
+            const step = +s.dataset.step;
+            s.classList.toggle('is-active', step === n);
+            s.classList.toggle('is-done', step < n);
+            s.querySelector('.dc-step-num').textContent = step < n ? '✓' : step;
+        });
+    }
+
+    /* ── File selection ────────────────────────────────────── */
+    function fmtSize(bytes){
+        if (!bytes && bytes !== 0) return '';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(2) + ' MB';
+    }
+
+    function fail(msg){
+        notice.innerHTML = '⚠️ ' + msg.replace(/</g, '&lt;');
+        notice.classList.remove('hidden');
+        toast('Conversion failed', 'err');
+        setStep(1);
+    }
+
+    function pick(f){
+        if (!f) return;
+        const ext = '.' + (f.name.split('.').pop() || '').toLowerCase();
+        if (ext !== '.docx'){
+            fail('That file type isn\u2019t supported. Please choose a .docx Word document.');
+            return;
+        }
+        file = f;
+        fName.textContent = f.name;
+        fSize.textContent = fmtSize(f.size) + ' — ready to convert';
+        fIco.textContent = '🖹';
+        notice.classList.add('hidden');
+        dropzone.hidden = true;
+        fileCard.hidden = false;
+        setStep(1);
+        convertBtn.disabled = false;
+    }
+
+    function clearSelection(){
+        file = null;
+        if (pendingUrl){ URL.revokeObjectURL(pendingUrl); pendingUrl = null; }
+        dropzone.hidden = false;
+        fileCard.hidden = true;
+        progress.hidden = true;
+        resultPanel.hidden = true;
+        notice.classList.add('hidden');
+        input.value = '';
+        setStep(1);
+    }
+
+    changeBtn.addEventListener('click', clearSelection);
+    againBtn.addEventListener('click', clearSelection);
+
+    input.addEventListener('change', () => pick(input.files && input.files[0]));
+
+    /* drag & drop */
+    ['dragenter', 'dragover'].forEach(ev => dropzone.addEventListener(ev, e => {
+        e.preventDefault(); dropzone.classList.add('is-drag');
+    }));
+    ['dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, e => {
+        e.preventDefault(); dropzone.classList.remove('is-drag');
+    }));
+    dropzone.addEventListener('drop', e => {
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) pick(f);
+    });
+
+    /* ── Progress ───────────────────────────────────────────── */
+    function setProgress(pct, msg, spinning){
+        pct = Math.max(0, Math.min(100, pct));
+        fillEl.style.width = pct + '%';
+        pctEl.textContent = Math.round(pct) + '%';
+        stageEl.textContent = msg;
+        progIco.textContent = spinning !== false ? '⚙️' : '✅';
+        progIco.classList.toggle('is-spin', spinning !== false);
+    }
+
+    /* ── Conversion ─────────────────────────────────────────── */
+    function downloadBlobURL(url, name){
+        const a = document.createElement('a');
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    async function convertDocxToPdf(f){
+        setProgress(8, 'Reading your DOCX file…');
+        const arrayBuffer = await f.arrayBuffer();
+        setProgress(35, 'Parsing the document structure…');
+        const result = await mammoth.convertToHtml({ arrayBuffer });
+        let html = result.value;
+        if (!html || !html.trim()) html = '<p>The document is empty, contains only unsupported elements, or could not be read.</p>';
+        setProgress(62, 'Rendering styled pages…');
+
+        const container = document.createElement('div');
+        container.innerHTML = '<div style="padding:40px;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;line-height:1.6;color:#000;background:#ffffff">' + html + '</div>';
+
+        const pdfBlob = await html2pdf()
+            .set({
+                margin: 0.5,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            })
+            .from(container)
+            .toPdf()
+            .output('blob');
+
+        setProgress(96, 'Finalizing the PDF…');
+        return { blob: pdfBlob, out: f.name.replace(/\.docx$/i, '.pdf') };
+    }
+
+    convertBtn.addEventListener('click', async () => {
+        if (!file || downloading) return;
+        downloading = true;
+        convertBtn.disabled = true;
+        fileCard.hidden = true;
+        notice.classList.add('hidden');
+        progress.hidden = false;
+        resultPanel.hidden = true;
+        setStep(2);
+
+        try {
+            const start = Date.now();
+            const res = await convertDocxToPdf(file);
+
+            const min = Math.max(0, 350 - (Date.now() - start));
+            if (min > 0) await new Promise(r => setTimeout(r, min));
+
+            setProgress(100, 'Complete — your download is ready', false);
+            if (pendingUrl) URL.revokeObjectURL(pendingUrl);
+            pendingUrl = URL.createObjectURL(res.blob);
+            pendingName = res.out;
+            dlBtn.textContent = '⬇ Download ' + res.out;
+            resSrc.textContent = file.name;
+            resOut.textContent = res.out;
+            resTitle.textContent = 'Done! Your PDF is ready';
+            notice.classList.add('hidden');
+            resultPanel.hidden = false;
+            setStep(3);
+            toast('Conversion complete');
+        } catch (err) {
+            progress.hidden = true;
+            fail(err && err.message ? err.message : err);
+            console.error(err);
+            fileCard.hidden = false;
+        } finally {
+            downloading = false;
+            convertBtn.disabled = false;
+        }
+    });
+
+    dlBtn.addEventListener('click', () => {
+        if (pendingUrl){
+            downloadBlobURL(pendingUrl, pendingName);
+            toast('Downloading ' + pendingName);
+        }
+    });
+
+    window.ToolsApp.toolPageInit(KEY);
+})();
+</script>
+<style>
+    .dc-route { display:flex; align-items:center; justify-content:center; gap:1.1rem; margin:1.1rem 0 1.2rem; padding:.8rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); flex-wrap:wrap; }
+    .dc-route-side { display:inline-flex; align-items:center; gap:.55rem; font-weight:800; font-size:.92rem; color:var(--text); }
+    .dc-route-ico { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-size:.95rem; background:var(--surface-2); border:1px solid var(--border); }
+    .dc-route-ico-out { background:var(--grad); border-color:transparent; color:#fff; box-shadow:0 4px 12px rgba(15,118,110,.35); }
+    .dc-route-f { font-family:ui-monospace,monospace; font-size:.72rem; font-weight:800; color:var(--muted); background:var(--surface-2); border:1px solid var(--border); padding:.14rem .5rem; border-radius:999px; }
+    .dc-route-arrow { font-size:1.3rem; font-weight:900; color:var(--primary); }
+
+    .dc-steps { display:flex; gap:.5rem; margin:1.1rem 0 1.3rem; padding:0; list-style:none; }
+    .dc-step { display:flex; align-items:center; gap:.55rem; flex:1; color:var(--muted); position:relative; }
+    .dc-step-num { width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:.8rem; background:var(--surface-2); border:1.5px solid var(--border); color:var(--muted); transition:all .25s ease; }
+    .dc-step-label { font-size:.78rem; font-weight:700; letter-spacing:.02em; white-space:nowrap; }
+    .dc-step:not(:last-child)::after { content:''; flex:1; height:2px; margin:0 .4rem; background:var(--border); border-radius:2px; transition:background .25s ease; }
+    .dc-step.is-active .dc-step-num { background:var(--grad); border-color:transparent; color:#fff; box-shadow:0 4px 12px rgba(15,118,110,.35); }
+    .dc-step.is-active .dc-step-label { color:var(--primary-dark); }
+    .dc-step.is-done .dc-step-num { background:var(--primary); border-color:transparent; color:#fff; }
+    .dc-step.is-done .dc-step-label { color:var(--primary-dark); }
+    .dc-step.is-done::after { background:var(--primary); }
+
+    .dc-dropzone { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.35rem; padding:2.6rem 1.4rem; text-align:center; cursor:pointer; background:var(--surface); border:2px dashed var(--border); border-radius:18px; transition:border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease; min-height:250px; }
+    .dc-dropzone:hover, .dc-dropzone:focus-visible { border-color:var(--primary); outline:none; }
+    .dc-dropzone.is-drag { border-color:var(--primary); background:rgba(15,118,110,.05); box-shadow:0 0 0 4px rgba(15,118,110,.12); transform:scale(1.01); }
+    .dc-dropzone input[type=file] { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+    .dc-dz-ico { width:74px; height:74px; border-radius:22px; display:grid; place-items:center; background:var(--grad); color:#fff; font-size:2rem; font-weight:900; box-shadow:0 12px 28px -10px rgba(15,118,110,.6); margin-bottom:.6rem; }
+    .dc-title { font-weight:800; font-size:1.06rem; color:var(--text); margin:.2rem 0 0; }
+    .dc-title b { color:var(--primary-dark); }
+    .dc-sub { font-size:.8rem; color:var(--muted); margin:0 0 1rem; }
+    .dc-btn { display:inline-block; background:var(--surface-2); color:var(--primary-dark); border:1.5px solid var(--border); font-size:.84rem; font-weight:700; padding:.6rem 1.3rem; border-radius:11px; transition:all .2s ease; }
+    .dc-dropzone:hover .dc-btn { border-color:var(--primary); background:var(--surface); }
+    .dc-badge { position:absolute; top:.9rem; right:1rem; font-family:ui-monospace,monospace; font-size:.72rem; font-weight:800; letter-spacing:.04em; color:var(--primary-dark); background:rgba(15,118,110,.09); border:1px solid rgba(15,118,110,.18); padding:.22rem .6rem; border-radius:999px; }
+
+    .dc-filecard { display:flex; align-items:center; gap:.9rem; margin:1rem 0; padding:1rem 1.1rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); flex-wrap:wrap; animation:dcUp .25s ease; }
+    .dc-file-ico { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-size:1.2rem; background:var(--surface-2); border:1px solid var(--border); }
+    .dc-file-info { flex:1; min-width:150px; }
+    .dc-file-name { font-weight:800; font-size:.92rem; color:var(--text); word-break:break-all; margin:0; }
+    .dc-file-size { font-size:.75rem; color:var(--muted); margin:.1rem 0 0; }
+
+    .dc-progress { margin:1rem 0; padding:1.1rem 1.2rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); animation:dcUp .25s ease; }
+    .dc-progress-row { display:flex; align-items:center; gap:.6rem; margin-bottom:.8rem; }
+    .dc-progress-ico { width:28px; height:28px; border-radius:8px; display:grid; place-items:center; font-size:.9rem; background:var(--surface-2); border:1px solid var(--border); }
+    .dc-progress-ico.is-spin { animation:dcSpin 1.1s linear infinite; }
+    .dc-stage { flex:1; font-size:.86rem; font-weight:700; color:var(--text); }
+    .dc-pct { font-size:.8rem; font-weight:800; color:var(--primary-dark); font-variant-numeric:tabular-nums; }
+    .dc-track { height:9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--border); overflow:hidden; }
+    .dc-fill { height:100%; width:0; border-radius:999px; background:var(--grad); transition:width .3s ease; }
+
+    .dc-result { margin:1rem 0; padding:1.2rem 1.3rem; background:var(--surface); border:1px solid #BBF7D0; border-radius:16px; box-shadow:0 8px 22px -14px rgba(21,128,61,.4); animation:dcUp .3s ease; }
+    .dc-result-top { display:flex; align-items:center; gap:.9rem; margin-bottom:1rem; }
+    .dc-result-ico { width:46px; height:46px; border-radius:14px; display:grid; place-items:center; font-size:1.2rem; background:#F0FDF4; border:1px solid #BBF7D0; }
+    .dc-result-title { font-weight:800; font-size:.98rem; color:var(--text); margin:0; }
+    .dc-result-msg { font-size:.78rem; color:var(--muted); margin:.15rem 0 0; word-break:break-all; }
+    .dc-result-msg b { color:var(--primary-dark); }
+    .dc-result-actions { display:flex; gap:.6rem; flex-wrap:wrap; }
+    .dc-result-actions .btn { padding:.6rem 1.15rem; font-size:.85rem; }
+
+    @keyframes dcUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    @keyframes dcSpin { to { transform:rotate(360deg); } }
+
+    @media (max-width:520px){
+        .dc-steps .dc-step-label { display:none; }
+    }
+</style>
+</body>
+</html>

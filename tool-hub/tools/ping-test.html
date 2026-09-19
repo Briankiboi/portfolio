@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ping Test — Free Tools Hub</title>
+<meta name="description" content="Measure HTTP round-trip time to any URL with a client-side ping simulation — offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">Ping Test</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-tower-cell" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>Ping Test</h1>
+                <p>Measure HTTP round-trip time to any URL. Uses timestamped HEAD requests to simulate ping rounds — results show per-ping latency and aggregate stats.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Network</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <!-- Input -->
+            <div class="row row-2">
+                <div class="field">
+                    <label for="ping-url">Host / URL</label>
+                    <input id="ping-url" type="text" placeholder="https://example.com" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="ping-count">Pings</label>
+                    <select id="ping-count">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </div>
+            <button id="ping-start" class="btn btn-primary btn-block">🏓 Start Ping Test</button>
+
+            <!-- Progress -->
+            <div id="ping-progress" class="hidden" style="margin-top:1.25rem">
+                <div style="background:#E4E8EF;border-radius:999px;height:8px;overflow:hidden">
+                    <div id="ping-bar" style="background:linear-gradient(90deg,#1E40AF,#7C3AED);height:100%;width:0%;transition:width .3s;border-radius:999px"></div>
+                </div>
+                <p id="ping-status" style="font-size:.82rem;color:var(--muted);margin-top:.4rem;text-align:center"></p>
+            </div>
+
+            <!-- Results -->
+            <div class="result-box" id="ping-result" aria-live="polite">
+                <h2>Result</h2>
+                <div id="ping-output"><p class="output-text">Enter a URL and click Start Ping Test.</p></div>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Sends one <code>HEAD</code> request per round to your URL with a <code>no-cors</code>, <code>no-store</code> cache-buster query (<code>?_ping=timestamp</code>) so repeat pings aren't served from a cache. Each round's round-trip time is measured from your browser; a 5-second timeout marks a round as lost. Results are summarised as <strong>min</strong>, <strong>avg</strong>, <strong>max</strong>, <strong>jitter</strong> (max − min), <strong>packet loss %</strong>, a verdict and a per-round table and bar chart.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>This is an <em>application-layer</em> ping — requests go straight from your browser to the target (not ICMP, and no server or proxy in between).</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>If you omit the scheme, <code>https://</code> is added for you.</li>
+                        <li>Because of <code>no-cors</code>, the round-trip is still measurable across origins — good for testing any public site.</li>
+                        <li>High jitter means connection stability issues; run with a higher count for a steadier average.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<div id="toast"></div>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, esc, toast } = window.ToolsApp;
+
+    let running = false;
+
+    async function pingOnce(url, timeoutMs){
+        const start = performance.now();
+        const ctrl = new AbortController();
+        const timer = setTimeout(()=> ctrl.abort(), timeoutMs);
+        try {
+            const ts = Date.now();
+            await fetch(url + (url.includes('?') ? '&' : '?') + '_ping=' + ts, {
+                method: 'HEAD',
+                mode: 'no-cors',
+                cache: 'no-store',
+                signal: ctrl.signal
+            });
+            clearTimeout(timer);
+            return { ms: Math.round(performance.now() - start), ok: true };
+        } catch(e){
+            clearTimeout(timer);
+            if(e.name === 'AbortError'){
+                return { ms: timeoutMs, ok: false, timeout: true };
+            }
+            // Network error still means the server responded (or failed after some time)
+            return { ms: Math.round(performance.now() - start), ok: false, err: e.message };
+        }
+    }
+
+    function computeStats(times){
+        if(!times.length) return null;
+        const sorted = [...times].sort((a,b)=>a-b);
+        const min = sorted[0];
+        const max = sorted[sorted.length-1];
+        const avg = Math.round(times.reduce((s,v)=>s+v,0)/times.length);
+        const jitter = sorted.length > 1 ? Math.round(sorted[sorted.length-1] - sorted[0]) : 0;
+        return { min, max, avg, jitter };
+    }
+
+    function verdict(avg, loss){
+        if(loss > 50) return { text: 'Unreachable / High Loss', color: '#b91c1c', bg: '#fef2f2' };
+        if(avg < 100) return { text: 'Great', color: '#15803d', bg: '#f0fdf4' };
+        if(avg < 300) return { text: 'OK', color: '#1e40af', bg: '#eff6ff' };
+        return { text: 'Slow', color: '#b45309', bg: '#fffbeb' };
+    }
+
+    function renderBars(times, maxMs){
+        if(!times.length) return '';
+        const cappedMax = Math.max(maxMs, 1);
+        let html = '<div style="display:flex;align-items:flex-end;gap:3px;height:60px;margin:1rem 0">';
+        for(let i=0; i<times.length; i++){
+            const pct = Math.min((times[i] / cappedMax) * 100, 100);
+            const color = times[i] < 100 ? '#15803d' : times[i] < 300 ? '#1e40af' : '#b91c1c';
+            html += '<div title="Ping '+(i+1)+': '+times[i]+'ms" style="flex:1;height:'+pct+'%;background:'+color+';border-radius:4px 4px 0 0;min-width:12px;transition:height .3s"></div>';
+        }
+        html += '</div>';
+        return html;
+    }
+
+    async function doPing(){
+        if(running) return;
+        let raw = $('#ping-url').value.trim();
+        if(!raw){ toast('Enter a URL','err'); return; }
+        if(!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
+        try { new URL(raw); } catch(e){ toast('Invalid URL','err'); return; }
+
+        const count = parseInt($('#ping-count').value, 10);
+        running = true;
+        $('#ping-start').disabled = true;
+        $('#ping-progress').classList.remove('hidden');
+        $('#ping-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Pinging <strong>'+esc(raw)+'</strong>…</p>';
+        $('#ping-bar').style.width = '0%';
+
+        const times = [];
+        const allResults = [];
+        for(let i=0; i<count; i++){
+            $('#ping-status').textContent = 'Ping '+(i+1)+' of '+count+'…';
+            $('#ping-bar').style.width = Math.round(((i)/count)*100)+'%';
+            const r = await pingOnce(raw, 5000);
+            times.push(r.ms);
+            allResults.push({ round: i+1, ms: r.ms, ok: r.ok });
+            $('#ping-bar').style.width = Math.round(((i+1)/count)*100)+'%';
+        }
+
+        $('#ping-progress').classList.add('hidden');
+        running = false;
+        $('#ping-start').disabled = false;
+
+        const losses = allResults.filter(r=>!r.ok).length;
+        const lossPct = Math.round((losses/count)*100);
+        const successTimes = allResults.filter(r=>r.ok).map(r=>r.ms);
+        const stats = computeStats(successTimes);
+        const v = stats ? verdict(stats.avg, lossPct) : { text: 'Unreachable', color: '#b91c1c', bg: '#fef2f2' };
+        const maxMs = stats ? stats.max : 100;
+
+        let html = '';
+
+        // Stats cards
+        if(stats){
+            html += '<div class="stat-grid">';
+            html += '<div class="stat"><div class="num" style="color:#15803d">'+stats.min+'</div><div class="lbl">Min (ms)</div></div>';
+            html += '<div class="stat"><div class="num">'+stats.avg+'</div><div class="lbl">Avg (ms)</div></div>';
+            html += '<div class="stat"><div class="num" style="color:#b91c1c">'+stats.max+'</div><div class="lbl">Max (ms)</div></div>';
+            html += '<div class="stat"><div class="num" style="color:#0E8A6C">'+stats.jitter+'</div><div class="lbl">Jitter (ms)</div></div>';
+            html += '</div>';
+        }
+
+        html += '<div class="stat-grid" style="grid-template-columns:1fr 1fr">';
+        html += '<div class="stat"><div class="num" style="color:'+(lossPct>0?'#b91c1c':'#15803d')+'">'+lossPct+'%</div><div class="lbl">Packet Loss</div></div>';
+        html += '<div class="stat"><div style="background:'+v.bg+';color:'+v.color+';font-weight:900;font-size:1.1rem;padding:.5rem;border-radius:10px">'+v.text+'</div><div class="lbl" style="margin-top:.3rem">Verdict</div></div>';
+        html += '</div>';
+
+        // Bar chart
+        html += renderBars(successTimes, maxMs);
+
+        // Per-round table
+        html += '<table style="width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.8rem">';
+        html += '<tr style="background:#F3F5F9"><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Round</th><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">RTT (ms)</th><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Status</th></tr>';
+        for(const r of allResults){
+            const msColor = r.ms < 100 ? '#15803d' : r.ms < 300 ? '#1e40af' : '#b91c1c';
+            html += '<tr><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF;font-weight:700">'+r.round+'</td><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF;color:'+msColor+';font-weight:700">'+r.ms+'</td><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF">'+(r.ok?'<span style="color:#15803d">✓ Reply</span>':'<span style="color:#b91c1c">✕ '+(r.timeout?'Timeout':'Error')+'</span>')+'</td></tr>';
+        }
+        html += '</table>';
+
+        html += '<div style="margin-top:1rem"><button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector(\'#ping-output table\').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Results</button></div>';
+
+        $('#ping-output').innerHTML = html;
+        toast('Ping test complete');
+    }
+
+    $('#ping-start').addEventListener('click', doPing);
+    $('#ping-url').addEventListener('keydown', e => { if(e.key==='Enter') doPing(); });
+
+    window.ToolsApp.toolPageInit('ping_test');
+})();
+</script>
+</body>
+</html>

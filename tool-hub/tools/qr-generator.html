@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator — Free Tools Hub</title>
+<meta name="description" content="Generate QR codes locally — text, URLs, and more — offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">QR Code Generator</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>QR Code Generator</h1>
+                <p>Generate QR codes from any text or URL. Uses qrcodejs — fully offline.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Business</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+                        <div id="qrg-lib-note" style="display:none;padding:.75rem;background:#FFFBEB;border:1px solid #FDE68A;border-radius:.5rem;color:#92400E;margin-bottom:1.1rem;font-size:.85rem">
+                ⚠️ QR code library failed to load. If you are offline or on <code>file://</code>, try: <code>python3 -m http.server</code> then open <code>http://localhost:8000</code>
+            </div>
+
+            <div class="field">
+                <label for="qrg-text">Text or URL</label>
+                <textarea id="qrg-text" rows="3" placeholder="Enter text or URL…" style="width:100%;resize:vertical" autocomplete="off"></textarea>
+                <p id="qrg-detect" style="font-size:.75rem;color:var(--muted);margin-top:.25rem;margin-bottom:0"></p>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+                <div class="field">
+                    <label for="qrg-size">Size (px)</label>
+                    <input id="qrg-size" type="number" value="256" min="64" max="1024">
+                </div>
+                <div class="field">
+                    <label for="qrg-ec">Error Correction</label>
+                    <select id="qrg-ec">
+                        <option value="L">Low (7%)</option>
+                        <option value="M" selected>Medium (15%)</option>
+                        <option value="Q">Quartile (25%)</option>
+                        <option value="H">High (30%)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+                <div class="field">
+                    <label for="qrg-dark">Dark Color</label>
+                    <input id="qrg-dark" type="color" value="#000000">
+                </div>
+                <div class="field">
+                    <label for="qrg-light">Light Color</label>
+                    <input id="qrg-light" type="color" value="#ffffff">
+                </div>
+            </div>
+            <button id="qrg-gen" class="btn btn-primary btn-block">📱 Generate QR Code</button>
+
+            <div class="result-box" id="qrg-result" style="display:none;text-align:center" aria-live="polite">
+                <h2>QR Code</h2>
+                <div id="qrg-canvas-wrap" style="margin:1rem 0;display:inline-block;border:1px solid var(--border);border-radius:.5rem;overflow:hidden"></div>
+                <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem">
+                    <button class="btn btn-primary" id="qrg-dl-png">⬇️ Download PNG</button>
+                    <button class="btn btn-secondary" id="qrg-dl-svg">⬇️ Download SVG</button>
+                    <button class="btn btn-ghost" id="qrg-copy-text">📋 Copy Text</button>
+                </div>
+            </div>
+        <div class="info-note">
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                <p>Renders your text into a QR code entirely in this page using a lightweight QR library loaded from a CDN. You control the <strong>size</strong>, the <strong>dark/light colors</strong> and the <strong>error-correction level</strong> (L / M / Q / H). The type is auto-detected as you type (URL, phone number or plain text). The finished code can be downloaded as <code>PNG</code> or <code>SVG</code>.</p>
+            </div>
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                <p>Nothing you enter is uploaded or stored — encoding happens 100% on-device. If the CDN library can't load (offline or <code>file://</code>), a notice tells you to serve the folder with <code>python3 -m http.server</code>.</p>
+            </div>
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                <ul>
+                    <li>A higher error-correction level survives damage or partial obstruction, but makes the code denser.</li>
+                    <li>Keep strong dark-on-light contrast for reliable scanning — avoid light dark modules on dark backgrounds.</li>
+                    <li>URLs and phone numbers in a QR trigger the scanner's app to open or dial automatically when scanned.</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script src="../assets/vendor/qrcode.min.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast, copyText, esc, downloadBlob, toolPageInit } = ToolsApp;
+    toolPageInit('qr-generator');
+
+    let libOk = typeof QRCode !== 'undefined';
+    if (!libOk) $('#qrg-lib-note').style.display = '';
+
+    let lastDataUrl = null;
+
+    $('#qrg-text').addEventListener('input', function(){
+        const v = this.value.trim();
+        const det = $('#qrg-detect');
+        if (!v){ det.textContent = ''; return; }
+        if (/^\w+:\/\//.test(v)) det.textContent = '🔗 Detected: URL';
+        else if (/^\d{10,}$/.test(v)) det.textContent = '📱 Detected: Phone number';
+        else det.textContent = '📝 Detected: Text';
+    });
+
+    $('#qrg-gen').addEventListener('click', function(){
+        if (!libOk){ toast('QR library not loaded', 'err'); return; }
+        const text = $('#qrg-text').value.trim();
+        if (!text){ toast('Enter some text or a URL first', 'err'); return; }
+        const size = parseInt($('#qrg-size').value) || 256;
+        const wrap = $('#qrg-canvas-wrap');
+        wrap.innerHTML = '';
+
+        try {
+            const qr = new QRCode(wrap, {
+                text: text,
+                width: size,
+                height: size,
+                colorDark: $('#qrg-dark').value,
+                colorLight: $('#qrg-light').value,
+                correctLevel: QRCode.CorrectLevel[$('#qrg-ec').value]
+            });
+            setTimeout(function(){
+                const canvas = wrap.querySelector('canvas');
+                if (canvas) lastDataUrl = canvas.toDataURL('image/png');
+                else {
+                    const img = wrap.querySelector('img');
+                    if (img) lastDataUrl = img.src;
+                }
+            }, 200);
+            $('#qrg-result').style.display = '';
+            toast('QR code generated');
+        } catch(e){
+            toast('Error: ' + (e.message||e), 'err');
+        }
+    });
+
+    $('#qrg-dl-png').addEventListener('click', function(){
+        if (!lastDataUrl){ toast('Generate a QR code first', 'err'); return; }
+        const a = document.createElement('a');
+        a.href = lastDataUrl; a.download = 'qrcode.png';
+        document.body.appendChild(a); a.click();
+        setTimeout(() => a.remove(), 500);
+        toast('Downloading qrcode.png');
+    });
+
+    $('#qrg-dl-svg').addEventListener('click', function(){
+        const wrap = $('#qrg-canvas-wrap');
+        const canvas = wrap.querySelector('canvas');
+        if (!canvas){ toast('Generate first', 'err'); return; }
+        const w = canvas.width, h = canvas.height;
+        const ctx = canvas.getContext('2d');
+        const imgData = ctx.getImageData(0, 0, w, h);
+        let paths = '';
+        for (let y = 0; y < h; y++){
+            for (let x = 0; x < w; x++){
+                const i = (y * w + x) * 4;
+                if (imgData.data[i] < 128) paths += `M${x},${y}h1v1h-1z`;
+            }
+        }
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="${$('#qrg-light').value}"/><path d="${paths}" fill="${$('#qrg-dark').value}"/></svg>`;
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        downloadBlob(blob, 'qrcode.svg');
+    });
+
+    $('#qrg-copy-text').addEventListener('click', function(){ copyText($('#qrg-text').value, this); });
+})();
+</script>
+</body>
+</html>

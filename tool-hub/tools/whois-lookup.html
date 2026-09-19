@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHOIS Lookup — Free Tools Hub</title>
+<meta name="description" content="Look up WHOIS/RDAP registration data for any domain — client-side, offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">WHOIS / RDAP Lookup</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-id-card" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>WHOIS / RDAP Lookup</h1>
+                <p>Query public RDAP endpoints for domain registration details — registrar, dates, name servers, and contact info.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Domains & DNS</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <!-- Input -->
+            <div class="field">
+                <label for="w-domain">Enter Domain</label>
+                <input id="w-domain" type="text" placeholder="example.com" autocomplete="off">
+            </div>
+            <div style="display:flex;gap:.6rem">
+                <button id="w-lookup" class="btn btn-primary" style="flex:1">🔎 Lookup</button>
+                <button id="w-open-rdap" class="btn btn-secondary hidden" title="Open full RDAP JSON in new tab">📄 Raw RDAP</button>
+            </div>
+
+            <!-- Results -->
+            <div class="result-box" id="w-result" aria-live="polite">
+                <h2>Result</h2>
+                <div id="w-output"><p class="output-text">Enter a domain above and click Lookup.</p></div>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Queries the modern WHOIS via public <strong>RDAP</strong> (the registry API that has replaced the old WHOIS) — <code>rdap.org</code> first (CORS-enabled), falling back to <code>rdap.verisign.com</code> for <code>.com</code>/<code>.net</code> when needed. The record shows the registrar, created/updated/expiry dates, domain status flags, nameservers and any published contacts. The <strong>📄 Raw RDAP</strong> button opens the full JSON record in a new tab.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>Only the domain you enter is shared with the registry's public API — and nothing is stored or tracked.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>Contact fields showing "Redacted (GDPR)" is normal registrar policy — not a tool limitation.</li>
+                        <li>Every TLD has its own RDAP provider; <code>rdap.org</code> routes automatically, and Verisign covers <code>.com</code>/<code>.net</code>.</li>
+                        <li>Registration dates come straight from registry data, making this the authoritative source for domain age too.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<div id="toast"></div>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, $$, esc, toast, copyText } = window.ToolsApp;
+
+    let lastRdapUrl = '';
+    let lastJson = null;
+
+    function clean(s){ return s ? esc(String(s)) : '—'; }
+
+    function dateStr(v){
+        if(!v) return '—';
+        const d = new Date(v);
+        return isNaN(d) ? esc(v) : d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    }
+
+    function renderResult(data, domain){
+        lastJson = data;
+        const h = data.handle || domain;
+        const ld = data.ldhName || domain;
+
+        const regName = (data.status||[]).join(', ') || '—';
+        const creation = dateStr(data.events?.find(e=>e.eventAction==='registration')?.eventDate);
+        const expiry = dateStr(data.events?.find(e=>e.eventAction==='expiration')?.eventDate);
+        const updated = dateStr(data.events?.find(e=>e.eventAction==='last changed')?.eventDate);
+
+        const nameservers = (data.nameservers||[]).map(n=>esc(n.ldhName)).join('<br>') || '—';
+        const registrar = esc(data.roles?.includes('registrar') ? (data.publicIds?.find(p=>p.type==='IANA Registrar ID')?.identifier || '') : '');
+        const regEntity = data.entities?.find(e=>(e.roles||[]).includes('registrar'));
+        const regLabel = regEntity ? esc(regEntity.handle || regEntity.vcardArray?.[1]?.find(v=>v[0]==='fn')?.[3] || 'Registrar') : registrar || '—';
+
+        function contactVal(ent){
+            if(!ent) return 'Redacted (GDPR)';
+            try {
+                const vcard = ent.vcardArray?.[1];
+                if(!vcard) return 'Redacted (GDPR)';
+                const fn = vcard.find(v=>v[0]==='fn')?.[3];
+                const org = vcard.find(v=>v[0]==='org')?.[3];
+                const email = vcard.find(v=>v[0]==='email')?.[3];
+                const parts = [fn, org, email].filter(Boolean);
+                return parts.length ? esc(parts.join(' · ')) : 'Redacted (GDPR)';
+            } catch(e){ return 'Redacted (GDPR)'; }
+        }
+
+        const registrant = contactVal(data.entities?.find(e=>(e.roles||[]).includes('registrant')));
+        const admin = contactVal(data.entities?.find(e=>(e.roles||[]).includes('administrative')));
+        const tech = contactVal(data.entities?.find(e=>(e.roles||[]).includes('technical')));
+
+        let html = `<table style="width:100%;border-collapse:collapse;font-size:.92rem">
+            <tr><td style="padding:.45rem .6rem;font-weight:700;width:160px;border-bottom:1px solid #E4E8EF">Domain</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF;word-break:break-all">${clean(ld)}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Status</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${clean(regName)}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Registrar</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${regLabel}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Created</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${creation}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Expiry</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${expiry}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Updated</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${updated}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Name Servers</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${nameservers}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Registrant</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${registrant}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Admin Contact</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${admin}</td></tr>
+            <tr><td style="padding:.45rem .6rem;font-weight:700">Tech Contact</td><td style="padding:.45rem .6rem">${tech}</td></tr>
+        </table>`;
+
+        html += `<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector('#w-output table').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Table</button>
+        </div>`;
+
+        $('#w-output').innerHTML = html;
+    }
+
+    async function doLookup(){
+        const raw = $('#w-domain').value.trim().replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/.*$/,'');
+        if(!raw){ toast('Enter a domain','err'); return; }
+        const domain = raw.toLowerCase();
+        $('#w-lookup').disabled = true;
+        $('#w-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Looking up <strong>'+esc(domain)+'</strong>…</p>';
+        $('#w-open-rdap').classList.add('hidden');
+
+        let data = null;
+        let rdapUrl = '';
+
+        try {
+            rdapUrl = 'https://rdap.org/domain/' + domain;
+            const res = await fetch(rdapUrl);
+            if(res.ok){
+                data = await res.json();
+            } else {
+                throw new Error('rdap.org returned ' + res.status);
+            }
+        } catch(e1){
+            try {
+                const tld = domain.split('.').pop();
+                if(tld === 'com'){
+                    rdapUrl = 'https://rdap.verisign.com/com/v1/domain/' + domain;
+                } else if(tld === 'net'){
+                    rdapUrl = 'https://rdap.verisign.com/net/v1/domain/' + domain;
+                } else if(tld === 'org'){
+                    rdapUrl = 'https://rdap.org/domain/' + domain;
+                } else {
+                    rdapUrl = 'https://rdap.org/domain/' + domain;
+                }
+                const res2 = await fetch(rdapUrl);
+                if(res2.ok){
+                    data = await res2.json();
+                } else {
+                    throw new Error('fallback returned ' + res2.status);
+                }
+            } catch(e2){
+                $('#w-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch RDAP data for <strong>'+esc(domain)+'</strong>. The domain may not exist or the endpoint may be unreachable.</p>';
+                $('#w-lookup').disabled = false;
+                return;
+            }
+        }
+
+        lastRdapUrl = rdapUrl;
+        $('#w-open-rdap').classList.remove('hidden');
+        renderResult(data, domain);
+        $('#w-lookup').disabled = false;
+        toast('RDAP data loaded');
+    }
+
+    $('#w-lookup').addEventListener('click', doLookup);
+    $('#w-domain').addEventListener('keydown', e => { if(e.key==='Enter') doLookup(); });
+
+    $('#w-open-rdap').addEventListener('click', ()=>{
+        if(lastRdapUrl) window.open(lastRdapUrl, '_blank');
+    });
+
+    window.ToolsApp.toolPageInit('whois_lookup');
+})();
+</script>
+</body>
+</html>

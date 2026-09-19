@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR & Barcode Scanner — Free Tools Hub</title>
+<meta name="description" content="Scan QR codes and barcodes from camera or image — client-side, offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">QR &amp; Barcode Scanner</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-camera-retro" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>QR & Barcode Scanner</h1>
+                <p>Scan QR codes and barcodes with your camera. URLs open straight in your browser; product codes (like KEBS-marked items) link to searches on Google, Jumia, Amazon and Barcode Lookup. Uses html5-qrcode.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Business</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <div id="qs-lib-note" style="display:none;padding:.75rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:.5rem;color:#9a3412;margin-bottom:1rem;font-size:.85rem">
+                ⚠️ QR scanner library failed to load. If running from <code>file://</code>, serve via: <code>python3 -m http.server</code> then open <code>http://localhost:8000</code>
+            </div>
+
+            <div id="qs-camera-error" style="display:none;padding:.75rem;background:#fef2f2;border:1px solid #fca5a5;border-radius:.5rem;color:#b91c1c;margin-bottom:1rem;font-size:.85rem"></div>
+
+            <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+                <button class="btn btn-primary" id="qs-start">▶️ Start Camera</button>
+                <button class="btn" id="qs-stop" disabled>⏹️ Stop</button>
+            </div>
+
+            <div class="field">
+                <label for="qs-cam">Camera</label>
+                <select id="qs-cam" class="field"><option value="">Select camera…</option></select>
+            </div>
+
+            <div id="qs-reader" style="width:100%;min-height:300px;border:2px dashed var(--border);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:var(--muted);margin-bottom:1rem;overflow:hidden"></div>
+
+            <div class="result-box" id="qs-result" style="display:none" aria-live="polite">
+                <h2>Scan Result</h2>
+                <p style="margin:.5rem 0"><strong>Type:</strong> <span id="qs-type"></span></p>
+                <p style="margin:.5rem 0"><strong>Value:</strong></p>
+                <div style="background:var(--bg,#f9fafb);padding:.75rem;border-radius:.5rem;word-break:break-all;font-family:monospace;font-size:.9rem;border:1px solid var(--border)" id="qs-value"></div>
+
+                <div id="qs-action-link" style="display:none;margin-top:.8rem">
+                    <p style="font-size:.9rem;font-weight:600;color:var(--primary,#C77800)">🔗 Link detected</p>
+                    <div style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap">
+                        <a class="btn btn-primary" id="qs-open-link" href="#" target="_blank" rel="noopener">Open in browser ↗</a>
+                        <span style="font-size:.8rem;color:var(--muted);align-self:center">Opens the scanned address in a new tab</span>
+                    </div>
+                </div>
+
+                <div id="qs-action-product" style="display:none;margin-top:.8rem">
+                    <p style="font-size:.9rem;font-weight:600;color:var(--primary,#C77800)">🛒 Product barcode detected</p>
+                    <p style="font-size:.82rem;color:var(--muted);margin:.25rem 0 .5rem">This looks like a product code (e.g. KEBS / GS1-style barcode). Search it online:</p>
+                    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                        <button type="button" class="btn" id="qs-search-google">🔎 Google</button>
+                        <button type="button" class="btn" id="qs-search-jumia">🛍️ Jumia (KE)</button>
+                        <button type="button" class="btn" id="qs-search-amazon">📦 Amazon</button>
+                        <button type="button" class="btn" id="qs-search-barcode">🏷️ Barcode Lookup</button>
+                    </div>
+                </div>
+
+                <p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">Scanned at: <span id="qs-time"></span></p>
+                <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+                    <button class="btn btn-primary" id="qs-copy">📋 Copy Value</button>
+                    <button class="fav-btn" id="qs-fav" onclick="ToolsApp.toggleFavorite('qrscan-'+document.getElementById('qs-value').textContent)" title="Save">☆ Save</button>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Uses the <code>html5-qrcode</code> engine to scan your camera feed at ~10fps inside a framed scan box (pick a rear camera from the list when available). When a code is detected, the tool shows its format and time — then goes further:</p>
+                    <ul style="margin-top:.4rem;padding-left:1.2rem;display:grid;gap:.25rem">
+                        <li><strong>Link detected</strong> — if the code holds a URL, an <strong>Open in browser</strong> button appears so you can jump straight to the site.</li>
+                        <li><strong>Product barcode</strong> — numeric codes like EAN/UPC/GS1 (the kind found on KEBS-marked products) trigger quick searches on Google, Jumia Kenya, Amazon and Barcode Lookup so you can identify the item.</li>
+                    </ul>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>Camera frames are decoded entirely on-device — nothing leaves your browser.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>⚠️ Camera access needs HTTPS or <code>localhost</code> plus a permission prompt — if denied, allow it in browser settings and reload.</li>
+                        <li>Plain, even lighting and a flat, close-up angle give the fastest reads.</li>
+                        <li>Hold the code steady within the box until you hear/see the scan detection.</li>
+                        <li>For KEBS product verification, point the camera at the barcode on the packaging — the numeric code will appear in <strong>Product barcode detected</strong> with ready-made search links.</li>
+                        <li>Click <strong>Stop camera</strong> after detection to free the camera for other apps.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script src="../assets/vendor/html5-qrcode.min.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast, copyText, esc, toolPageInit } = ToolsApp;
+    toolPageInit('qr-scanner');
+
+    let libOk = typeof Html5Qrcode !== 'undefined' && typeof Html5QrcodeScanner !== 'undefined';
+    if (!libOk) $('#qs-lib-note').style.display = '';
+
+    let scanner = null;
+    let scanning = false;
+
+    async function listCameras(){
+        try {
+            const cams = await Html5Qrcode.getCameras();
+            if (cams && cams.length){
+                const sel = $('#qs-cam');
+                sel.innerHTML = '<option value="">Select camera…</option>' +
+                    cams.map(c => `<option value="${esc(c.id)}">${esc(c.label || ('Camera ' + c.id))}</option>`).join('');
+            }
+        } catch(e){
+            console.warn('Camera list error:', e);
+        }
+    }
+
+    function isUrl(text){
+        try {
+            const u = new URL(text);
+            return /^https?:$/.test(u.protocol);
+        } catch(e){ return false; }
+    }
+
+    function isProductBarcode(text){
+        if (text && /^[0-9]{8,14}$/.test(text.replace(/[\s-]/g, ''))) return true;
+        if (/^(0|1|2|3|4|5)[0-9]{11}$/.test(String(text).trim())) return true;
+        return false;
+    }
+
+    function showProductActions(val){
+        const pan = $('#qs-action-product');
+        const clean = String(val).replace(/[\s-]/g, '');
+        $('#qs-search-google').onclick = function(){ window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank', 'noopener'); };
+        $('#qs-search-jumia').onclick = function(){ window.open('https://www.jumia.co.ke/catalog/?q=' + encodeURIComponent(val), '_blank', 'noopener'); };
+        $('#qs-search-amazon').onclick = function(){ window.open('https://www.amazon.com/s?k=' + encodeURIComponent(val), '_blank', 'noopener'); };
+        $('#qs-search-barcode').onclick = function(){ window.open('https://www.barcodelookup.com/' + encodeURIComponent(clean), '_blank', 'noopener'); };
+        pan.style.display = '';
+    }
+
+    function showResult(decodedText, decodedResult){
+        $('#qs-value').textContent = decodedText;
+        const fmt = (decodedResult && decodedResult.result && decodedResult.result.format)
+            ? decodedResult.result.format.formatName : 'QR / Barcode';
+        $('#qs-type').textContent = fmt;
+        $('#qs-time').textContent = new Date().toLocaleString();
+        $('#qs-result').style.display = '';
+        $('#qs-action-link').style.display = 'none';
+        $('#qs-action-product').style.display = 'none';
+
+        const val = String(decodedText || '').trim();
+        if (isUrl(val)){
+            $('#qs-action-link').style.display = '';
+            const a = $('#qs-open-link');
+            a.href = val;
+        } else if (isProductBarcode(val)){
+            showProductActions(val);
+        }
+        toast('Code detected!');
+    }
+
+    function showError(msg){
+        const el = $('#qs-camera-error');
+        el.style.display = ''; el.textContent = msg;
+    }
+    function hideError(){ $('#qs-camera-error').style.display = 'none'; }
+
+    $('#qs-start').addEventListener('click', async function(){
+        if (!libOk){ toast('Library not loaded', 'err'); return; }
+        hideError();
+        if (!scanner) scanner = new Html5Qrcode('qs-reader');
+        scanning = true;
+        $('#qs-start').disabled = true;
+        $('#qs-stop').disabled = false;
+
+        const camId = $('#qs-cam').value;
+        const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.333 };
+        try {
+            const successCb = (decodedText, decodedResult) => showResult(decodedText, decodedResult);
+            const errCb = () => {};
+            if (camId){
+                await scanner.start(camId, config, successCb, errCb);
+            } else {
+                await scanner.start({ facingMode: 'environment' }, config, successCb, errCb);
+            }
+        } catch(e){
+            scanning = false;
+            $('#qs-start').disabled = false;
+            $('#qs-stop').disabled = true;
+            const msg = (e.message || String(e));
+            if (msg.includes('Permission') || msg.includes('permission') || msg.includes('NotAllowed')){
+                showError('Camera permission denied. Please allow camera access in your browser settings and reload the page. On some browsers you must use HTTPS or localhost.');
+            } else if (msg.includes('NotFound') || msg.includes('not found')){
+                showError('No camera found. Connect a camera or try the image upload method below.');
+            } else {
+                showError('Camera error: ' + msg);
+            }
+        }
+    });
+
+    $('#qs-stop').addEventListener('click', async function(){
+        if (!scanner || !scanning) return;
+        try {
+            await scanner.stop();
+        } catch(e){}
+        scanning = false;
+        $('#qs-start').disabled = false;
+        $('#qs-stop').disabled = true;
+        toast('Camera stopped');
+    });
+
+    $('#qs-copy').addEventListener('click', function(){ copyText($('#qs-value').textContent, this); });
+
+    if (libOk) listCameras();
+})();
+</script>
+</body>
+</html>

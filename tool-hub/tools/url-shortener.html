@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Shortener — Free Tools Hub</title>
+<meta name="description" content="Shorten URLs locally — client-side, offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">URL Shortener</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-link" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>URL Shortener</h1>
+                <p>Create short links that actually redirect — fully client-side. Every short link opens this page with <code>?go=CODE</code> and instantly forwards to your long URL from any browser on this device.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Dev & Code</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <div class="field">
+                <label for="us-url">Long URL</label>
+                <input id="us-url" type="url" placeholder="https://example.com/very/long/path" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="us-alias">Custom Alias <span style="color:var(--muted)">(optional)</span></label>
+                <input id="us-alias" type="text" placeholder="my-link" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="us-password">Password <span style="color:var(--muted)">(optional, client-side only)</span></label>
+                <input id="us-password" type="password" placeholder="••••" autocomplete="off">
+            </div>
+            <button id="us-shorten" class="btn btn-primary btn-block">✂️ Shorten URL</button>
+
+            <div class="result-box" id="us-result" style="display:none" aria-live="polite">
+                <h2>Shortened URL</h2>
+                <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.5rem">
+                    <code id="us-short-url" style="font-size:1.1rem;word-break:break-all"></code>
+                    <button class="btn btn-primary" id="us-copy" style="white-space:nowrap">📋 Copy</button>
+                    <button class="btn" id="us-open" style="white-space:nowrap">🌐 Open Preview</button>
+                </div>
+                <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">✅ Resolves instantly using this page's local history. Works over http:// and file:// (same device). Share on other devices only if this page is hosted somewhere.</p>
+            </div>
+
+            <div id="us-file-note" class="info-note" style="display:none">
+                <p>📎 <strong>Running from file://?</strong> All features work offline. If you need full CORS support, run: <code>python3 -m http.server</code> and open <code>http://localhost:8000</code></p>
+            </div>
+
+            <div id="us-history-wrap" style="margin-top:1.5rem;display:none">
+                <h2 style="font-size:1rem;margin-bottom:.5rem">📋 Session History</h2>
+                <div style="overflow-x:auto">
+                    <table style="width:100%;font-size:.85rem;border-collapse:collapse">
+                        <thead><tr style="border-bottom:2px solid var(--border)">
+                            <th style="text-align:left;padding:.4rem">Short Code</th>
+                            <th style="text-align:left;padding:.4rem">Long URL</th>
+                            <th style="text-align:left;padding:.4rem">Created</th>
+                            <th style="text-align:left;padding:.4rem">Actions</th>
+                        </tr></thead>
+                        <tbody id="us-history"></tbody>
+                    </table>
+                </div>
+                <button class="btn" id="us-clear-history" style="margin-top:.5rem;font-size:.8rem">🗑️ Clear History</button>
+            </div>
+        <div class="info-note">
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                <p>Each shortened link is generated locally — an alias you choose, or a random 7-character base-62 code — and stored together with the long URL in this device's <code>localStorage</code> history (up to 50 entries). The short URL is simply this page's address followed by <code>?go=code</code>: opening it reads the code, looks up the stored target and redirects you. Custom aliases and an optional client-side password hint are supported, and the history can be cleared or managed row by row.</p>
+            </div>
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                <p>Short links and their targets are stored only in this device's local storage — nothing is uploaded to any service.</p>
+            </div>
+            <div class="note-sec">
+                <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                <ul>
+                    <li>A generated <code>?go=…</code> link resolves instantly from this page, so share it across devices only while the folder is being served (e.g. a hosted copy or <code>python3 -m http.server</code>).</li>
+                    <li>On <code>file://</code>, everything works offline and stays on the same device.</li>
+                    <li>Custom aliases are faster to type and more memorable; alphanumerics, <code>-</code> and <code>_</code> are kept.</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast, copyText, esc, isHttpUrl, toolPageInit } = ToolsApp;
+    toolPageInit('url-shortener');
+
+    if (location.protocol === 'file:') $('#us-file-note').style.display = '';
+
+    const HISTORY_KEY = 'us_history';
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch(e){ history = []; }
+
+    const mkShortUrl = code => location.href.split('?')[0] + '?go=' + encodeURIComponent(code);
+
+    const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    function hashCode(str){
+        let h = 0;
+        for (let i = 0; i < str.length; i++) { h = ((h << 5) - h + str.charCodeAt(i)) | 0; }
+        return Math.abs(h);
+    }
+    function base62(n, len){
+        let s = '';
+        for (let i = 0; i < len; i++) { s = BASE62[n % 62] + s; n = Math.floor(n / 62); }
+        return s;
+    }
+
+    function genCode(url, alias){
+        if (alias && alias.trim()) return alias.trim().replace(/[^a-zA-Z0-9_-]/g,'');
+        return base62(hashCode(url + Date.now()), 7);
+    }
+
+    function renderHistory(){
+        const wrap = $('#us-history-wrap');
+        const tbody = $('#us-history');
+        if (!history.length){ wrap.style.display='none'; return; }
+        wrap.style.display='';
+        tbody.innerHTML = history.map((h,i) => `<tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:.4rem"><code>${esc(h.code)}</code></td>
+            <td style="padding:.4rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(h.url)}">${esc(h.url)}</td>
+            <td style="padding:.4rem;white-space:nowrap">${new Date(h.created).toLocaleString()}</td>
+            <td style="padding:.4rem;white-space:nowrap">
+                <button class="btn" style="font-size:.75rem;padding:.2rem .5rem" onclick="window._usCopyShort(${i})">📋</button>
+                <button class="btn" style="font-size:.75rem;padding:.2rem .5rem" onclick="window._usDelHist(${i})">🗑️</button>
+            </td>
+        </tr>`).join('');
+    }
+
+    window._usCopyShort = function(i){ copyText(mkShortUrl(history[i].code)); };
+    window._usDelHist = function(i){ history.splice(i,1); localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); renderHistory(); toast('Removed'); };
+
+    renderHistory();
+
+    $('#us-shorten').addEventListener('click', function(){
+        const url = $('#us-url').value.trim();
+        if (!isHttpUrl(url)){ toast('Please enter a valid http/https URL', 'err'); return; }
+        const alias = $('#us-alias').value.trim();
+        const code = genCode(url, alias);
+        const shortUrl = mkShortUrl(code);
+
+        $('#us-short-url').textContent = shortUrl;
+        $('#us-result').style.display = '';
+
+        history.unshift({ code, url, alias, password: !!$('#us-password').value, created: Date.now() });
+        if (history.length > 50) history.pop();
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        renderHistory();
+
+        toast('Short link created — it redirects now');
+    });
+
+    $('#us-copy').addEventListener('click', function(){ copyText($('#us-short-url').textContent, this); });
+    $('#us-open').addEventListener('click', function(){
+        window.open($('#us-short-url').textContent, '_blank');
+    });
+    $('#us-clear-history').addEventListener('click', function(){
+        history = []; localStorage.removeItem(HISTORY_KEY); renderHistory(); toast('History cleared');
+    });
+
+    /* ── Redirection entry point (?go=CODE) ─────────────────────────── */
+    (function resolveGo(){
+        const code = (new URLSearchParams(location.search)).get('go');
+        if (!code) return;
+        const hit = history.find(h => h.code === code);
+        if (!hit || !isHttpUrl(hit.url)){
+            toast('Short link not found — create it again first', 'err');
+            $('#us-short-url').textContent = location.href;
+            $('#us-result').style.display = '';
+            return;
+        }
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;font-family:Poppins,sans-serif';
+        overlay.innerHTML = '<div style="font-size:2.4rem">↪️</div><div style="color:#1F2430;font-weight:700">Redirecting…</div><div style="color:#5A6472;font-size:.85rem;max-width:480px;word-break:break-all;text-align:center;padding:0 1rem">' + esc(hit.url) + '</div>';
+        document.body.appendChild(overlay);
+        setTimeout(() => { try { location.replace(hit.url); } catch(e){ window.open(hit.url, '_top'); } }, 700);
+    })();
+})();
+</script>
+</body>
+</html>

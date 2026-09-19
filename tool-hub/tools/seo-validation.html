@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Validation — Free Tools Hub</title>
+<meta name="description" content="Validate on-page SEO: titles, meta, Open Graph, Twitter cards, schema, robots, and more — with pass/warn/fail reasons and fixes — client-side, offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">SEO Validation</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1120px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>SEO Validation</h1>
+                <p>Item-by-item on-page SEO validation with reasons and fixes, an overall score bar, and a one-click export.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">SEO & Search</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            <span id="page-meta-title" data-title="SEO Validation — DM Solution Technologies Toolkits" style="display:none"></span>
+            
+
+            <!-- Input -->
+            <div class="field">
+                <label for="sv-url">Page URL (optional)</label>
+                <input id="sv-url" type="text" placeholder="https://example.com/page" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="sv-html">…or paste raw HTML</label>
+                <textarea id="sv-html" placeholder="<html>…</html>" style="min-height:110px"></textarea>
+            </div>
+            <button id="sv-validate" class="btn btn-primary btn-block">🔍 Validate</button>
+
+            <div class="alert err hidden" id="sv-notice" style="margin-top:1rem"></div>
+
+            <!-- Results -->
+            <div class="result-box" id="sv-result" aria-live="polite">
+                <h2>Validation Report</h2>
+                <p class="output-text" id="sv-output">Enter a URL or paste HTML, then click Validate.</p>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Fetches the page live (or parses HTML you paste) with <code>DOMParser</code> and runs a battery of on-page SEO checks locally: <code>title</code> length, meta description, keywords, canonical, H1/H2 usage, Open Graph, Twitter cards, JSON-LD structured data validity, robots meta, sitemap link, image alt completeness and more — each scored <strong>Pass / Warn / Fail</strong> with a weighted overall score and targeted fixes. To get the page, the tool first tries a direct fetch from your browser; when CORS blocks that, it automatically retries through a public CORS relay (<code>r.jina.ai</code>, then <code>api.allorigins.win</code>).</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>The page is fetched directly from your browser when possible — no server in between — and nothing is stored. Only when CORS blocks that does the tool relay the request through a public CORS relay, which simply forwards the page's HTML back to your browser. For a fully private path, paste raw HTML instead and nothing is sent at all.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>The tool auto-retries through a public CORS relay when direct reads are blocked — if even that fails (or you want zero third-party contact), paste the page's raw HTML and re-run.</li>
+                        <li>"Meta keywords present" shows a warning because Google has ignored that tag since 2009 — it's expected, not an error.</li>
+                        <li>Fix <strong>Fail</strong> items first, then tackle <strong>Warn</strong>; the score updates as items pass.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, $$, esc, toast, copyText, fmt } = window.ToolsApp;
+
+    let items = [];
+    let fetchedStatus = null;
+
+    function metaVal(doc, attr, val){
+        const el = doc.querySelector('meta[' + attr + '="' + val.replace(/"/g, '\\"') + '"]');
+        return el && el.getAttribute('content') ? el.getAttribute('content').trim() : '';
+    }
+    function badge(st){
+        const map = {
+            pass: ['#16a34a', '#dcfce7'],
+            warn: ['#d97706', '#fef3c7'],
+            fail: ['#dc2626', '#fee2e2'],
+            info: ['#1e40af', '#dbeafe']
+        };
+        const c = map[st] || map.info;
+        const label = st === 'info' ? 'N/A' : st.toUpperCase();
+        return '<span style="background:' + c[1] + ';color:' + c[0] + ';font-weight:800;font-size:.68rem;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + label + '</span>';
+    }
+    function add(label, status, reason, fix){
+        items.push({ label, status, reason, fix });
+    }
+
+    function score(){
+        const scored = items.filter(i => i.status !== 'info');
+        if (!scored.length) return 0;
+        const pts = scored.reduce((s, i) => s + (i.status === 'pass' ? 1 : i.status === 'warn' ? .5 : 0), 0);
+        return Math.round(pts / scored.length * 100);
+    }
+
+    async function fetchUrl(url){
+        try {
+            const res = await fetch(url, { redirect: 'follow' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return { status: res.status, finalUrl: res.url, text: await res.text() };
+        } catch (e) {
+            let lastErr = e;
+            const proxies = [
+                { name: 'Jina Reader', make: u => new Request('https://r.jina.ai/' + u, { headers: { 'X-Return-Format': 'html' } }) },
+                { name: 'AllOrigins', make: u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u) }
+            ];
+            for (const p of proxies){
+                try {
+                    const res = await fetch(p.make(url));
+                    if (!res.ok) throw new Error(p.name + ' HTTP ' + res.status);
+                    const t = await res.text();
+                    if (t && t.trim().length > 80) return { status: 200, finalUrl: url, text: t };
+                    throw new Error(p.name + ' empty response');
+                } catch (e2) { lastErr = e2; }
+            }
+            throw lastErr;
+        }
+    }
+
+    async function getSource(){
+        const url = $('#sv-url').value.trim();
+        const html = $('#sv-html').value.trim();
+        if (!url && !html){ toast('Enter a URL or paste HTML first', 'err'); return null; }
+        if (url && html){ toast('URL ignored — using pasted HTML'); return { url: null, html: html }; }
+        if (html) return { url: null, html: html };
+        return { url: url, html: '' };
+    }
+
+    function validate(data, html, live){
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        if (doc.querySelector('parsererror')){ $('#sv-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not parse the HTML as a document.</p>'; return; }
+
+        items = [];
+        const titleTag = (doc.querySelector('title') || {}).textContent || '';
+        const title = titleTag.trim();
+        const desc = metaVal(doc, 'name', 'description');
+        const keywords = metaVal(doc, 'name', 'keywords');
+        const canon = doc.querySelector('link[rel="canonical"]');
+        const h1s = Array.from(doc.querySelectorAll('h1'));
+        const h2s = doc.querySelectorAll('h2').length;
+        const ogT = metaVal(doc, 'property', 'og:title');
+        const ogD = metaVal(doc, 'property', 'og:description');
+        const ogI = metaVal(doc, 'property', 'og:image');
+        const twC = metaVal(doc, 'name', 'twitter:card');
+        const twT = metaVal(doc, 'name', 'twitter:title');
+        const robots = metaVal(doc, 'name', 'robots');
+        const sitemapRel = (doc.querySelector('link[rel="sitemap"]') || {}).getAttribute ? doc.querySelector('link[rel="sitemap"]').getAttribute('href') : '';
+        const fav = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+        const imgs = Array.from(doc.querySelectorAll('img'));
+        const altOK = imgs.filter(im => im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '').length;
+        const altPct = imgs.length ? Math.round(altOK / imgs.length * 100) : 100;
+
+        /* Title */
+        if (title.length >= 10 && title.length <= 60) add('Title tag', 'pass', '「' + title + '」 — ' + title.length + ' chars', 'Keep it 10–60 chars with the primary keyword near the start.');
+        else if (title) add('Title tag', 'warn', '「' + title + '」 — ' + title.length + ' chars', 'Rewrite to 10–60 chars.');
+        else add('Title tag', 'fail', 'Missing <title> tag', 'Add a unique <title> tag (10–60 chars).');
+
+        /* Meta description */
+        if (desc.length >= 50 && desc.length <= 160) add('Meta description', 'pass', desc.length + ' chars — good length', 'Consider adding a call to action if you like.');
+        else if (desc) add('Meta description', 'warn', desc.length + ' chars (ideal 50–160)', 'Rewrite to 50–160 chars to avoid truncation in SERPs.');
+        else add('Meta description', 'fail', 'Missing meta description', 'Add a meta description of 50–160 chars.');
+
+        /* Keywords */
+        if (keywords) add('Meta keywords', 'warn', 'Present but ignored by Google since 2009', 'Harmless but useless; move effort into title/description/on-page copy.');
+        else add('Meta keywords', 'pass', 'Absent — correct choice (not a ranking factor)', '');
+
+        /* Canonical */
+        if (canon && canon.getAttribute('href')) add('Canonical', 'pass', 'Points to ' + canon.getAttribute('href'), '');
+        else add('Canonical', 'warn', 'No canonical URL', 'Add <link rel="canonical" href="' + esc(live && data.url ? data.url : '/current-page/') + '"> to consolidate duplicate URLs.');
+
+        /* H1 */
+        if (h1s.length === 1) add('H1 heading', 'pass', 'Exactly one H1: 「' + esc(h1s[0].textContent.trim().slice(0, 60)) + '」', '');
+        else if (h1s.length > 1) add('H1 heading', 'warn', h1s.length + ' H1 tags — dilutes topic focus', 'Demote extras to H2/H3; keep one H1 per page.');
+        else add('H1 heading', 'fail', 'No H1 heading', 'Add one keyword-rich H1.');
+
+        /* H2 */
+        if (h2s >= 1) add('H2 headings', 'pass', h2s + ' H2 heading(s)', '');
+        else add('H2 headings', 'warn', 'No H2 headings', 'Add H2s to structure content sections.');
+
+        /* OG */
+        ogT ? add('og:title', 'pass', ogT, '') : add('og:title', 'fail', 'Missing', 'Add <meta property="og:title" content="…">.');
+        ogD ? add('og:description', 'pass', ogD, '') : add('og:description', 'warn', 'Missing', 'Add og:description for richer shared previews.');
+        ogI ? add('og:image', 'pass', ogI, '') : add('og:image', 'warn', 'Missing (no image preview on shares)', 'Add og:image (1200×630 recommended).');
+
+        /* Twitter */
+        if (twC && twT) add('Twitter cards', 'pass', 'card + title present', '');
+        else if (twC || twT) add('Twitter cards', 'warn', 'Partial: ' + (twC ? 'card' : '') + (twT ? ' title' : ''), 'Add twitter:card and twitter:title.');
+        else add('Twitter cards', 'warn', 'No twitter card meta (falls back to OG)', 'Most platforms use OG tags; add Twitter tags for best display.');
+
+        /* JSON-LD */
+        const schemas = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'));
+        if (schemas.length){
+            const types = [];
+            let invalid = 0;
+            schemas.forEach(s => {
+                try {
+                    const j = JSON.parse(s.textContent);
+                    const t = Array.isArray(j) ? j.map(x => x['@type'] || x['@graph']).flat().filter(Boolean) : (function(){
+                        if (j['@graph']) return j['@graph'].map(g => g['@type']).filter(Boolean);
+                        return j['@type'] ? [j['@type']] : [];
+                    })();
+                    types.push(...t);
+                } catch(e){ invalid++; }
+            });
+            if (invalid && !types.length) add('Structured data (JSON-LD)', 'fail', 'JSON-LD present but malformed (could not parse)', 'Fix the JSON-LD syntax so rich results can be read.');
+            else add('Structured data (JSON-LD)', 'pass', types.length + (types.length === 1 ? ' type' : ' types') + ' detected: ' + types.join(', '), invalid ? (invalid + ' block(s) failed to parse — check them.') : '');
+        } else {
+            add('Structured data (JSON-LD)', 'warn', 'No schema.org JSON-LD found', 'Add JSON-LD structured data (e.g. Article, Product, FAQ, Organization) for rich results.');
+        }
+
+        /* Robots */
+        if (robots && /noindex/i.test(robots)) add('Robots meta', 'warn', 'robots="' + robots + '" — this page is blocked from indexing', 'Remove noindex if you want this page in Google.');
+        else add('Robots meta', 'pass', robots ? 'robots="' + robots + '" (allowed)' : 'None — defaults to index,follow', '');
+
+        /* Sitemap */
+        if (sitemapRel) add('Sitemap link', 'pass', 'Declared: ' + sitemapRel, '');
+        else add('Sitemap link', 'warn', 'No sitemap rel — consider /sitemap.xml + reference in robots.txt', 'Submit an XML sitemap and reference it in robots.txt.');
+
+        /* Image ALT */
+        if (!imgs.length) add('Image ALT completeness', 'pass', 'No images to check', '');
+        else if (altPct >= 95) add('Image ALT completeness', 'pass', altPct + '% of ' + imgs.length + ' images have alt text', '');
+        else if (altPct >= 50) add('Image ALT completeness', 'warn', altPct + '% (' + altOK + '/' + imgs.length + ') have alt text', 'Add alt text to the remaining ' + (imgs.length - altOK) + ' image(s).');
+        else add('Image ALT completeness', 'fail', 'Only ' + altPct + '% (' + altOK + '/' + imgs.length + ') have alt text', 'Add descriptive alt text to every meaningful image.');
+
+        /* Favicon */
+        fav && fav.getAttribute('href') ? add('Favicon', 'pass', 'Favicon declared', '') : add('Favicon', 'warn', 'No favicon link', 'Add a favicon for brand recognition in browser tabs.');
+
+        /* HTTPS note (only when live) */
+        if (live && data.url){
+            if (/^https:/.test(data.url)) add('HTTPS', 'pass', 'Page served over HTTPS ✓', '');
+            else if (/^http:/.test(data.url)) add('HTTPS', 'warn', 'Page uses plain HTTP — not secure', 'Upgrade to HTTPS (Let\'s Encrypt/Certbot makes it free).');
+            else add('HTTPS', 'info', 'Skipped — not an http(s) URL', '');
+        } else {
+            add('HTTPS', 'info', 'Cannot verify from pasted HTML', 'Enter the URL and re-run for live check.');
+        }
+
+        /* Header / 404 (only live) */
+        if (live){
+            const st = fetchedStatus.status;
+            if (st >= 200 && st < 300) add('HTTP status / headers', 'pass', 'Page returned ' + st + ' OK' + (fetchedStatus.finalUrl && fetchedStatus.finalUrl !== data.url ? ' (redirected to ' + fetchedStatus.finalUrl + ')' : ''), '');
+            else if (st >= 300 && st < 400) add('HTTP status / headers', 'warn', 'Redirect (' + st + ') to ' + fetchedStatus.finalUrl, 'Fine for moves, but ensure the final URL is indexed.');
+            else if (st >= 400) add('HTTP status / headers', 'fail', 'Page returned HTTP ' + st, 'Fix the server error / 404 before worrying about SEO.');
+            else add('HTTP status / headers', 'info', 'Could not read status (' + st + ')', '');
+        } else {
+            add('HTTP status / headers', 'info', 'Not checked — requires fetching the URL live', 'Paste-only validation can\'t read headers.');
+        }
+
+        render();
+    }
+
+    function render(){
+        const total = score();
+        const scored = items.filter(i => i.status !== 'info');
+        const c = total >= 80 ? '#16a34a' : total >= 50 ? '#d97706' : '#dc2626';
+
+        let html = '<div style="margin-bottom:1.2rem">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.4rem">'
+            + '<span style="font-weight:800;font-size:.95rem">Overall score: <span style="color:' + c + '">' + total + '/100</span></span>'
+            + '<span style="font-size:.75rem;color:var(--muted)">' + scored.filter(i => i.status === 'pass').length + ' pass · ' + scored.filter(i => i.status === 'warn').length + ' warn · ' + scored.filter(i => i.status === 'fail').length + ' fail · ' + items.filter(i => i.status === 'info').length + ' not checked</span>'
+            + '</div>'
+            + '<div style="height:12px;border-radius:999px;background:#E9EDF3;overflow:hidden"><div style="height:100%;width:' + total + '%;border-radius:999px;background:linear-gradient(90deg,' + c + ',#0E8A6C);transition:width .4s"></div></div>'
+            + '</div>';
+
+        html += '<label style="display:flex;align-items:center;gap:.45rem;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.8rem;cursor:pointer">'
+            + '<input type="checkbox" id="sv-show-warn" checked style="width:auto"> Show all warnings'
+            + '</label>';
+
+        html += '<table style="width:100%;border-collapse:collapse;font-size:.86rem">'
+            + '<thead><tr style="text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em">'
+            + '<th style="padding:.4rem .6rem">Check</th><th style="padding:.4rem .6rem">Status</th><th style="padding:.4rem .6rem">Reason</th><th style="padding:.4rem .6rem">Recommended fix</th>'
+            + '</tr></thead><tbody>';
+
+        items.forEach((it, i) => {
+            const warnRow = it.status === 'warn';
+            html += '<tr data-i="' + i + '" data-warn="' + warnRow + '" style="border-bottom:1px solid #E4E8EF" class="sv-row' + (warnRow ? ' sv-warn' : '') + '">'
+                + '<td style="padding:.5rem .6rem;font-weight:700;white-space:nowrap">' + esc(it.label) + '</td>'
+                + '<td style="padding:.5rem .6rem">' + badge(it.status) + '</td>'
+                + '<td style="padding:.5rem .6rem;color:#374151;word-break:break-word">' + esc(it.reason) + '</td>'
+                + '<td style="padding:.5rem .6rem;color:#6b7280;font-size:.8rem">' + esc(it.fix) + '</td>'
+                + '</tr>';
+        });
+
+        html += '</tbody></table>';
+
+        html += '<div style="margin-top:1.4rem;display:flex;gap:.5rem;flex-wrap:wrap">'
+            + '<button class="btn btn-secondary" id="sv-export" style="font-size:.82rem;padding:.5rem 1rem">📋 Export Report</button>'
+            + '</div>';
+
+        $('#sv-output').innerHTML = html;
+
+        const chk = $('#sv-show-warn');
+        chk.addEventListener('change', () => {
+            $$('.sv-warn').forEach(r => r.style.display = chk.checked ? '' : 'none');
+            toast(chk.checked ? 'Showing warnings' : 'Warnings hidden');
+        });
+
+        $('#sv-export').addEventListener('click', e => {
+            let r = 'SEO VALIDATION REPORT\n' + '='.repeat(40) + '\n';
+            r += 'Date: ' + new Date().toISOString() + '\n';
+            r += 'Score: ' + total + '/100\n\n';
+            items.forEach(it => r += '[' + (it.status === 'info' ? 'NA' : it.status.toUpperCase()) + '] ' + it.label + ' — ' + it.reason + (it.fix ? ' | Fix: ' + it.fix : '') + '\n');
+            copyText(r, e.currentTarget);
+        });
+
+        toast('Validation complete — score ' + total + '/100');
+    }
+
+    async function doValidate(){
+        const data = await getSource();
+        if (!data) return;
+        const btn = $('#sv-validate');
+        btn.disabled = true;
+        $('#sv-notice').classList.add('hidden');
+        $('#sv-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ ' + (data.url && !data.html ? 'Fetching ' + esc(data.url) + ' (auto-retries through a public CORS relay if direct is blocked)…' : 'Validating…') + '</p>';
+
+        if (data.url && !data.html){
+            try {
+                const r = await fetchUrl(data.url);
+                fetchedStatus = r;
+                data.html = r.text;
+                validate(data, r.text, true);
+                btn.disabled = false;
+                return;
+            } catch(e){
+                fetchedStatus = null;
+                $('#sv-notice').textContent = '⚠️ Could not read the page — your browser blocks cross-origin reads (CORS) and the relay services didn\u2019t return it either. Paste the page\'s raw HTML below to validate on-page SEO — HTTP/HTTPS items will be marked "not checked".';
+                $('#sv-notice').classList.remove('hidden');
+                $('#sv-html').focus();
+                $('#sv-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(data.url) + ' automatically — paste raw HTML and re-run.</p>';
+                btn.disabled = false;
+                return;
+            }
+        }
+        if (!data.html || !data.html.trim()){ btn.disabled = false; $('#sv-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Nothing to validate.</p>'; return; }
+        validate(data, data.html, false);
+        btn.disabled = false;
+    }
+
+    $('#sv-validate').addEventListener('click', doValidate);
+    $('#sv-url').addEventListener('keydown', e => { if (e.key === 'Enter') doValidate(); });
+
+    const KEY = 'seo-validation';
+    window.ToolsApp.toolPageInit(KEY);
+    const fb = document.querySelector('.fav-btn');
+    if (fb){
+        fb.textContent = window.ToolsApp.isFavorite(KEY) ? '⭐' : '☆';
+        fb.addEventListener('click', () => { fb.textContent = window.ToolsApp.isFavorite(KEY) ? '⭐' : '☆'; });
+    }
+})();
+</script>
+</body>
+</html>

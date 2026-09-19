@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Tools Hub | Developer, SEO &amp; Business Tools</title>
+<meta name="description" content="Free client-side developer, SEO & business tools. All processing runs locally in your browser by Brian Kiboi.">
+<link rel="icon" type="image/png" href="assets/icon-512.png">
+<link rel="apple-touch-icon" href="assets/icon-512.png">
+<link rel="manifest" href="manifest.json">
+<link rel="canonical" href="https://briankiboi.is-a.dev/tool-hub/">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:title" content="Tools — Brian Kiboi">
+<meta property="og:description" content="Free client-side developer, SEO & business tools. All processing runs locally in your browser.">
+<meta property="og:url" content="https://briankiboi.is-a.dev/tool-hub/">
+<meta property="og:image" content="https://briankiboi.is-a.dev/tool-hub/assets/icon-512.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Tools Hub — Brian Kiboi">
+<meta name="twitter:description" content="Free client-side developer, SEO and business tools. Everything runs locally in your browser.">
+<meta name="twitter:image" content="https://briankiboi.is-a.dev/tool-hub/assets/icon-512.png">
+<meta name="theme-color" content="#0E8A6C">
+<!-- Fonts: Poppins + Nunito — matching briankiboi.is-a.dev -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/hub.css">
+<link rel="stylesheet" href="assets/css/site-search.css">
+<link rel="stylesheet" href="assets/css/site-header.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="hub-page flex flex-col min-h-screen">
+
+<!-- Shared site header injected by site-header.js (same as every tool page) -->
+<div id="hub-header-slot" data-root=""></div>
+
+<!-- Soft ambient layer (stays light) -->
+<div class="hub-bg" aria-hidden="true">
+    <div class="bg-tint tint-1"></div>
+    <div class="bg-tint tint-2"></div>
+    <div class="bg-dots"></div>
+</div>
+
+<main class="hub-main">
+
+        <!-- ══ Hero (ToolHub clone) — full-bleed, edge to edge ══ -->
+        <section class="hub-hero th-hero">
+            <div class="th-hero-bg" aria-hidden="true"></div>
+            <div class="th-hero-inner">
+                    <span class="hub-status"><span class="dot pulse" aria-hidden="true"></span><b id="tool-count-hero">0</b> tools</span>
+                    <h1 class="hub-hero-title th-hero-title">ToolsHub: Powerful Tools for<br>
+                    <span class="th-brand">Smarter Digital Work</span></h1>
+                <p class="hub-sub th-hero-sub">Generate, check, and manage digital tasks faster with ToolsHub a simple, reliable toolkit built to make your online work easier, quicker, and more efficient.</p>
+
+                <div class="hub-search">
+                    <svg class="hub-search-ico" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="tool-search-input" placeholder="Search tools — QR, DNS, invoice, WebP…" aria-label="Search tools" autocomplete="off" spellcheck="false">
+                    <button type="button" id="search-clear" class="hub-search-clear" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <div class="hub-hero-cta">
+                    <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" class="btn-demo">Book a Session</a>
+                    <a href="#tools" class="btn-outline">Explore the toolkit
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="hub-container">
+
+        <!-- ══ All tools ══ -->
+        <section class="hub-works section-anchor" id="tools">
+            <div class="hub-toolbar">
+                <div class="hub-toolbar-top">
+                    <div class="hub-toolbar-spacer"></div>
+                    <div class="hub-toolbar-left">
+                        <h2 class="hub-title">All tools</h2>
+                        <p class="hub-title-sub">Browse by category, or use the Saved chip to view your favorited tools.</p>
+                    </div>
+                    </div>
+            </div>
+            <div class="hub-controls">
+                <div class="chips" id="category-chips" role="group" aria-label="Filter by category"></div>
+            </div>
+            <div class="grid-tools" id="tools-grid" aria-live="polite"></div>
+        </section>
+
+        <!-- ══ Why choose DM Solutions Tools Hub ══ -->
+        <section class="hub-features section-anchor">
+            <div class="hub-section-head center">
+                <span class="hub-eyebrow">The difference</span>
+                <h2 class="hub-title">Why choose DM Solutions Tools Hub?</h2>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <span class="feature-ico">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </span>
+                    <h3>Work Smarter</h3>
+                    <p>Access useful tools in one place and complete everyday digital tasks faster, without switching between multiple websites or applications.</p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-ico">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                    </span>
+                    <h3>Simple and Accessible</h3>
+                    <p>Use clean, easy-to-understand tools designed to work smoothly across desktop, tablet, and mobile devices whenever you need them.</p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-ico">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </span>
+                    <h3>Built for You</h3>
+                    <p>Free Tools Hub is thoughtfully designed and continuously maintained to provide practical, reliable solutions for everyday digital needs.</p>
+                </article>
+            </div>
+        </section>
+
+        
+
+    </div>
+</main>
+
+<!-- Footer (ToolHub-style: red band + black footer, exact clone) -->
+<footer class="toolhub-foot">
+
+
+    <div class="th-foot-black">
+        <div class="th-foot-left">
+            <a href="index.html" class="th-foot-logo-link"><img src="assets/icon-512.png" alt="DM Solutions Tools Hub" class="th-foot-logo-img"></a>
+            <h3>DM Solutions Free Digital Toolkits</h3>
+            <p>DM Solutions Tools Hub is a scalable and flexible collection of free, client-side tools designed to work with the technologies that complement your existing workflows.</p>
+        </div>
+            <div class="th-foot-right">
+            <h4 class="th-foot-contact-title">Contact</h4>
+            <p class="th-foot-line"><a href="tel:+254112401838" rel="noopener"><svg class="th-foot-line-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+254 112 401 838</span></a></p>
+            <p class="th-foot-line"><a href="mailto:briankiboi83@gmail.com" rel="noopener"><svg class="th-foot-line-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span>briankiboi83@gmail.com</span></a></p>
+            <h4 class="th-foot-contact-title th-foot-contact-title-alt">Find Me Online</h4>
+            <div class="th-foot-licos"><a href="tel:+254112401838" target="_blank" rel="noopener" aria-label="Phone" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0088cc"/><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.12.45 2.33.69 3.54.69a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.54a1 1 0 01-.25 1.05l-2.2 2.2z" fill="#fff"/></svg></a><a href="https://api.whatsapp.com/send?phone=254112401838" target="_blank" rel="noopener" aria-label="WhatsApp" class="th-foot-lico"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wa_bar" x1="26.5" y1="7" x2="4" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#5BD066"/><stop offset="1" stop-color="#27B43E"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#25D366"/><path d="M28 16C28 22.6274 22.6274 28 16 28C13.4722 28 11.1269 27.2184 9.19266 25.8837L5.09091 26.9091L6.16576 22.8784C4.80092 20.9307 4 18.5589 4 16C4 9.37258 9.37258 4 16 4C22.6274 4 28 9.37258 28 16Z" fill="url(#wa_bar)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16 30C23.732 30 30 23.732 30 16C30 8.26801 23.732 2 16 2C8.26801 2 2 8.26801 2 16C2 18.5109 2.661 20.8674 3.81847 22.905L2 30L9.31486 28.3038C11.3014 29.3854 13.5789 30 16 30ZM16 27.8462C22.5425 27.8462 27.8462 22.5425 27.8462 16C27.8462 9.45755 22.5425 4.15385 16 4.15385C9.45755 4.15385 4.15385 9.45755 4.15385 16C4.15385 18.5261 4.9445 20.8675 6.29184 22.7902L5.23077 26.7692L9.27993 25.7569C11.1894 27.0746 13.5046 27.8462 16 27.8462Z" fill="white"/><path d="M12.5 9.49989C12.1672 8.83131 11.6565 8.8905 11.1407 8.8905C10.2188 8.8905 8.78125 9.99478 8.78125 12.05C8.78125 13.7343 9.52345 15.578 12.0244 18.3361C14.438 20.9979 17.6094 22.3748 20.2422 22.3279C22.875 22.2811 23.4167 20.0154 23.4167 19.2503C23.4167 18.9112 23.2062 18.742 23.0613 18.696C22.1641 18.2654 20.5093 17.4631 20.1328 17.3124C19.7563 17.1617 19.5597 17.3656 19.4375 17.4765C19.0961 17.8018 18.4193 18.7608 18.1875 18.9765C17.9558 19.1922 17.6103 19.083 17.4665 19.0015C16.9374 18.7892 15.5029 18.1511 14.3595 17.0426C12.9453 15.6718 12.8623 15.2001 12.5959 14.7803C12.3828 14.4444 12.5392 14.2384 12.6172 14.1483C12.9219 13.7968 13.3426 13.254 13.5313 12.9843C13.7199 12.7145 13.5702 12.305 13.4803 12.05C13.0938 10.953 12.7663 10.0347 12.5 9.49989Z" fill="white"/></svg></a><a href="https://www.linkedin.com/in/brian-kiboi-21aa02277/" target="_blank" rel="noopener" aria-label="LinkedIn" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M8.5 10v6.5M8.5 7.5v.01M11.5 10v6.5M11.5 13c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v3.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="https://github.com/Briankiboi" target="_blank" rel="noopener" aria-label="GitHub" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#181717"/><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" fill="#fff"/></svg></a><a href="mailto:briankiboi83@gmail.com?subject=Hello" target="_blank" rel="noopener" aria-label="Email" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#EA4335"/><rect x="4" y="7" width="16" height="11" rx="1.5" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M4 8l8 5.5L20 8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="https://briankiboi32.medium.com" target="_blank" rel="noopener" aria-label="Medium" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#000"/><path fill="#fff" d="m15.014 8.994v7.326c0 .198 0 .234-.127.362l-1.302 1.264v.27h6.32v-.27l-1.257-1.234c-.091-.07-.148-.178-.148-.3 0-.022.002-.043.005-.064v.002-9.07c-.003-.019-.005-.04-.005-.062 0-.121.058-.229.148-.298l.001-.001 1.286-1.234v-.27h-4.456l-3.176 7.924-3.609-7.924h-4.675v.271l1.502 1.813c.127.115.207.281.207.466 0 .022-.001.043-.003.064v-.003 7.126c.007.041.011.088.011.136 0 .222-.088.423-.231.571l-1.69 2.054v.27h4.8v-.27l-1.691-2.054c-.149-.154-.241-.363-.241-.595 0-.04.003-.079.008-.117v.004-6.16l4.215 9.195h.49z"/></svg></a><a href="https://www.instagram.com/kiboi_brian/" target="_blank" rel="noopener" aria-label="Instagram" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="ig-grad-fl" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFD521"/><stop offset="30%" stop-color="#F50000"/><stop offset="60%" stop-color="#B900B4"/><stop offset="100%" stop-color="#5B00FF"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="url(#ig-grad-fl)"/><path d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z" fill="#fff"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z" fill="#fff"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z" fill="#fff"/></svg></a><a href="https://stackoverflow.com/users/29328163/brian-kiboi" target="_blank" rel="noopener" aria-label="Stack Overflow" class="th-foot-lico"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#1f1f1f"/><g transform="translate(3 4)"><path d="M13.96 16.5v-4.4h1.3V18H1.4v-5.9h1.3v4.4z" fill="#BCBBBB"/><path d="M4.6 11.5l6.95 1.5.3-1.4-6.95-1.5zm.9-3.4l6.45 3 .6-1.3L6.1 6.8zm1.8-3.2l5.45 4.6.9-1.1L8.3 4zM10.9 2 9.7 3l4.2 5.7 1.2-1zM4.2 14.5h6.95v-1.4H4.2z" fill="#F48024"/></g></svg></a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="th-foot-bottom">
+        <p class="th-foot-copy">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" class="th-foot-demo">Book a Session</a>
+        <p class="th-foot-domain"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener">https://briankiboi.is-a.dev</a></p>
+    </div>
+
+</footer>
+
+
+<button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+</button>
+
+<div id="app-toast"></div>
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/site-search.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/site-header.js"></script>
+<script src="pwa-install.js?v=2"></script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+}
+</script>
+</body>
+</html>

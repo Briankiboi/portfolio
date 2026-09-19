@@ -1,0 +1,21 @@
+{
+  "name": "DM Solutions Free Tools",
+  "short_name": "Free Tools",
+  "description": "Private, client-side tools for everyday digital work.",
+  "start_url": "/tool-hub/",
+  "scope": "/tool-hub/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0E8A6C",
+  "background_color": "#F8FAFC",
+  "lang": "en",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

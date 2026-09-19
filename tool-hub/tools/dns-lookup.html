@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Lookup — Free Tools Hub</title>
+<meta name="description" content="Query DNS records (A, AAAA, MX, NS, TXT, SOA, CNAME, ANY) via Google's public DNS-over-HTTPS API — client-side, offline clone.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">DNS Lookup</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-server" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>DNS Lookup</h1>
+                <p>Query any DNS record type using Google's public DNS-over-HTTPS resolver. Results are fetched live from 8.8.8.8.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Domains & DNS</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <!-- Input -->
+            <div class="row row-2">
+                <div class="field">
+                    <label for="dns-domain">Domain Name</label>
+                    <input id="dns-domain" type="text" placeholder="example.com" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="dns-type">Record Type</label>
+                    <select id="dns-type">
+                        <option value="1">A</option>
+                        <option value="28">AAAA</option>
+                        <option value="5">CNAME</option>
+                        <option value="15">MX</option>
+                        <option value="2">NS</option>
+                        <option value="16">TXT</option>
+                        <option value="6">SOA</option>
+                        <option value="255">ANY</option>
+                    </select>
+                </div>
+            </div>
+            <button id="dns-query" class="btn btn-primary btn-block">🔎 Query DNS</button>
+
+            <!-- Results -->
+            <div class="result-box" id="dns-result" aria-live="polite">
+                <h2>Result</h2>
+                <div id="dns-output"><p class="output-text">Enter a domain and select a record type above.</p></div>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Queries the public <strong>Google DNS-over-HTTPS</strong> API (<code>dns.google/resolve</code>, CORS-enabled) — the exact resolver behind <code>8.8.8.8</code>. Pick a record type and the tool returns every matching record with its name, type, TTL and value. Supported types: <code>A</code>, <code>AAAA</code>, <code>CNAME</code>, <code>MX</code>, <code>NS</code>, <code>TXT</code>, <code>SOA</code> and <code>ANY</code>. Entered domains are cleaned automatically (strips <code>http(s)://</code>, <code>www.</code> and path).</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>Only the domain and record type you enter are sent to Google's resolver — no personal data — and nothing is stored or tracked.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>TTL shows how long record values are cached; after DNS changes, allow up to the TTL for propagation.</li>
+                        <li>Use <code>MX</code> to check email routing, <code>TXT</code> for SPF/DKIM/ownership tokens, and <code>NS</code> to confirm your nameservers.</li>
+                        <li><code>ANY</code> returns whatever the resolver happens to have cached for all types — for a complete answer, query each type you care about.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<div id="toast"></div>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, esc, toast, copyText } = window.ToolsApp;
+
+    const TYPE_MAP = {1:'A',2:'NS',5:'CNAME',6:'SOA',15:'MX',16:'TXT',28:'AAAA',255:'ANY'};
+    const TYPE_NAME = {'1':'A','2':'NS','5':'CNAME','6':'SOA','15':'MX','16':'TXT','28':'AAAA','255':'ANY'};
+
+    function decodeTxt(arr){
+        if(!arr) return '—';
+        const list = Array.isArray(arr) ? arr : [arr];
+        return list.map(b => {
+            try { return atob(b); } catch(e){
+                try {
+                    const bytes = Uint8Array.from(atob(b), c=>c.charCodeAt(0));
+                    return new TextDecoder().decode(bytes);
+                } catch(e2){ return b; }
+            }
+        }).join(' ');
+    }
+
+    function dataCell(type, a){
+        if(type === 'MX'){
+            return '<span class="pill purple" style="margin-right:.4rem;white-space:nowrap">pri ' + a.PRIORITY + '</span> ' + esc(a.exchange);
+        }
+        if(type === 'A') return '<code class="mono">' + esc(a.IP) + '</code>';
+        if(type === 'AAAA') return '<code class="mono">' + esc(a.IPv6) + '</code>';
+        if(type === 'TXT'){
+            return '<code class="mono">' + esc(decodeTxt(a.data)) + '</code>';
+        }
+        return '<code class="mono">' + esc(a.data || JSON.stringify(a)) + '</code>';
+    }
+
+    function renderRecords(answers, rrtype){
+        if(!answers || !answers.length){
+            return '<p class="output-text" style="color:var(--muted)">No records found.</p>';
+        }
+        let html = '<div class="t-wrap"><table style="width:100%;border-collapse:collapse;font-size:.88rem">';
+        html += '<tr><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:30%">Name</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:11%">Type</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:10%">TTL</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Data</th></tr>';
+        for(const a of answers){
+            const name = esc(a.name);
+            const type = TYPE_MAP[a.type] || a.type;
+            const ttl = a.TTL != null ? a.TTL + 's' : '—';
+            html += '<tr><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;word-break:break-all">' + name + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3"><span class="pill">' + type + '</span></td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;color:var(--muted);white-space:nowrap">' + ttl + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3">' + dataCell(type, a) + '</td></tr>';
+        }
+        html += '</table></div>';
+        html += '<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">';
+        html += '<button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector(\'#dns-output table\').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Table</button>';
+        html += '</div>';
+        return html;
+    }
+
+    async function doQuery(){
+        const domain = $('#dns-domain').value.trim().replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/.*$/,'');
+        if(!domain){ toast('Enter a domain','err'); return; }
+        const type = $('#dns-type').value;
+        const typeName = TYPE_NAME[type];
+        $('#dns-query').disabled = true;
+        $('#dns-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Querying <strong>'+esc(domain)+'</strong> for ' + typeName + ' records…</p>';
+
+        try {
+            const url = 'https://dns.google/resolve?name=' + encodeURIComponent(domain) + '&type=' + type;
+            const res = await fetch(url);
+            if(!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+
+            if(data.Status === 3){
+                $('#dns-output').innerHTML = '<div class="alert err">⚠️ <strong>NXDOMAIN</strong> — The domain <strong>'+esc(domain)+'</strong> does not exist. Check the spelling and try again.</div>';
+            } else if(data.Status === 0){
+                const answers = Array.isArray(data.Answer) ? data.Answer : (data.Answer ? [data.Answer] : []);
+                const count = answers.length;
+                let header = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem"><span style="font-size:.82rem;color:var(--muted)">' + count + ' record' + (count!==1?'s':'') + ' found</span></div>';
+                $('#dns-output').innerHTML = header + renderRecords(answers, typeName);
+            } else if(data.Status === 2){
+                $('#dns-output').innerHTML = '<div class="alert err">⚠️ <strong>SERVFAIL</strong> — The resolver could not process the query. Try again shortly.</div>';
+            } else {
+                $('#dns-output').innerHTML = '<div class="alert info">ℹ DNS returned status ' + data.Status + '. No records available for this query.</div>';
+            }
+        } catch(e){
+            $('#dns-output').innerHTML = '<div class="alert err">⚠️ <strong>Network error:</strong> ' + esc(e.message) + '. Check your connection and try again.</div>';
+        }
+        $('#dns-query').disabled = false;
+    }
+
+    $('#dns-query').addEventListener('click', doQuery);
+    $('#dns-domain').addEventListener('keydown', e => { if(e.key==='Enter') doQuery(); });
+
+    window.ToolsApp.toolPageInit('dns_lookup');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Currency Converter — Free Tools Hub</title>
+<meta name="description" content="Convert between world currencies with live exchange rates — private, free, no sign-up.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <style>
+        /* ── Currency Converter UI · keypad + split ──────────────── */
+        .calc-panel,
+        .split-panel { border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFEFB 0%, #FDF9F2 100%); padding: 1.05rem; box-shadow: 0 2px 0 rgba(31,36,48,.02), 0 10px 26px -16px rgba(31,36,48,.18); }
+        .calc-panel { display: flex; flex-direction: column; gap: .75rem; }
+        .split-panel { display: flex; flex-direction: column; gap: .55rem; margin-top: 1.05rem; }
+
+        .calc-head { display: flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #1F2430; margin: 0; }
+        .calc-panel .nl-ico,
+        .split-panel .nl-ico { width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; font-size: .76rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04); }
+        .calc-panel .nl-ico { background: #E7F6F1; border: 1px solid #C4EAD9; }
+        .split-panel .nl-ico { background: #FFF0CC; border: 1px solid #FFE3A3; }
+
+        .ck-display { background: linear-gradient(165deg, #0B1220 0%, #172033 100%); color: #F8FAFC; border-radius: 14px; padding: .85rem 1.05rem .8rem; text-align: right; box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 8px 18px -12px rgba(11,18,32,.5); }
+        .ck-expr { font-size: .74rem; color: #94A3B8; min-height: 1.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .02em; }
+        .ck-result { font-size: 2.05rem; font-weight: 800; line-height: 1.2; color: #F8FAFC; word-break: break-all; font-variant-numeric: tabular-nums; }
+
+        .ck-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; }
+        .ck-btn { height: 52px; border: none; border-radius: 13px; font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: transform .08s ease, filter .15s ease, box-shadow .15s ease; color: #0F172A; }
+        .ck-btn:active { transform: scale(.94); }
+        .ck-digit { background: #F1F5F9; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
+        .ck-digit:hover { filter: brightness(.96); }
+        .ck-fn { background: #E2E8F0; color: #475569; font-size: .98rem; }
+        .ck-fn:hover { filter: brightness(.97); }
+        .ck-ac { background: #FDE5E5; color: #C0341E; }
+        .ck-ac:hover { background: #FBCCCC; }
+        .ck-op { background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; box-shadow: 0 5px 12px -6px rgba(14,138,108,.55); }
+        .ck-op:hover { background: linear-gradient(165deg, #0B795F 0%, #0A624C 100%); }
+        .ck-eq { background: linear-gradient(165deg, #D98B1A 0%, #B86A00 100%); box-shadow: 0 5px 12px -6px rgba(199,120,0,.6); }
+        .ck-eq:hover { background: linear-gradient(165deg, #C97F10 0%, #A15E00 100%); }
+        .ck-zero { grid-column: span 2; }
+
+        .ck-total { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-top: 1px dashed #E7E2D8; border-bottom: 1px dashed #E7E2D8; padding: .5rem 0 .55rem; }
+        .ck-total span { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #64748B; }
+        .ck-total b { font-size: 1.4rem; font-weight: 800; color: #0B6F56; font-variant-numeric: tabular-nums; }
+
+        .deduct-row { display: flex; align-items: center; gap: .6rem; }
+        .deduct-row label { font-size: .78rem; font-weight: 700; color: #1F2430; margin: 0; white-space: nowrap; }
+        .deduct-row input { width: 100%; text-align: center; font-weight: 700; }
+        .deduct-out { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
+        .kv { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: .5rem .75rem; display: flex; flex-direction: column; gap: .1rem; box-shadow: 0 2px 6px -4px rgba(31,36,48,.12); }
+        .kv span { font-size: .68rem; color: #64748B; font-weight: 600; letter-spacing: .02em; }
+        .kv b { font-size: 1.02rem; color: #0F172A; font-variant-numeric: tabular-nums; }
+
+        .remaining-hero { display: flex; flex-direction: column; align-items: center; gap: .08rem; background: #F0FDF4; border: 1px solid #BBF7D0; color: #0B6F56; border-radius: 14px; padding: .55rem 1rem .7rem; box-shadow: 0 6px 14px -10px rgba(11,111,86,.35); }
+        .remaining-hero span { font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; opacity: .75; }
+        .remaining-hero b { font-size: 1.75rem; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+
+        .half-hero { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .5rem .75rem; border: 1px solid #D3DCE6; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px -6px rgba(31,36,48,.18); }
+        .half-hero span { font-size: .72rem; font-weight: 800; color: #0E8A6C; letter-spacing: .02em; }
+        .half-hero b { font-size: .95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums; }
+
+        .split-div { height: 1px; background: #E7E2D8; margin: .15rem 0 .85rem; }
+
+        body.tool-page #calc-split { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 50px; background: linear-gradient(135deg, #3B82F6 0%, #4F46E5 100%); color: #fff; border: 1px solid #4F46E5; border-radius: 14px; font-weight: 800; font-size: .92rem; box-shadow: 0 8px 18px -8px rgba(79,70,229,.6); transition: all .18s ease; }
+        body.tool-page #calc-split:hover { background: linear-gradient(135deg, #3267D8 0%, #4338CA 100%); transform: translateY(-2px); }
+        #calc-split.active { box-shadow: inset 0 0 0 2px #fff, 0 8px 18px -8px rgba(79,70,229,.6); }
+        .ck-convert-out { margin-top: .7rem; min-height: 46px; font-size: .95rem; border-radius: 12px; box-shadow: 0 12px 22px -12px rgba(224,161,0,.7); }
+
+        .custom-share { display: flex; flex-direction: column; gap: .5rem; }
+        .custom-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+        .custom-label { font-size: .7rem; font-weight: 700; color: #94A3B8; text-align: center; letter-spacing: .06em; text-transform: uppercase; margin: 0; flex: 1; }
+        .clear-split { background: transparent; border: 1px solid #D3DCE6; color: #5A6472; font-size: .7rem; font-weight: 700; padding: .26rem .6rem; border-radius: 8px; cursor: pointer; transition: all .15s ease; white-space: nowrap; }
+        .clear-split:hover { background: #FEE2E2; border-color: #F87171; color: #B91C1C; }
+
+        .share-boxes { display: grid; grid-template-columns: repeat(2, 1fr); gap: .55rem; }
+        .sh-field { margin-bottom: 0; }
+        .sh-field label { text-align: center; }
+        .sh-field input { text-align: center; font-weight: 700; }
+
+        .deduct-row input:focus, .sh-field input:focus, #cc-amount:focus, #cc-from:focus, #cc-to:focus { outline: none; border-color: #C77800; box-shadow: 0 0 0 3px rgba(199,120,0,.16); }
+
+        .share-tile { display: flex; align-items: center; gap: .45rem; padding: .58rem .85rem; border: 1px solid #0B6F56; border-radius: 12px; background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; cursor: pointer; box-shadow: 0 6px 14px -7px rgba(11,111,86,.55); transition: transform .15s ease, filter .15s ease, box-shadow .15s ease; }
+        .share-tile:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 18px -8px rgba(11,111,86,.6); }
+        .share-tile-pct { color: #CFF0E4; font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
+        .share-tile-amt { color: #fff; font-size: 1rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+        .share-tile em { background: rgba(255,255,255,.15); color: #E9FAF4; font-style: normal; font-size: .66rem; font-weight: 700; letter-spacing: .02em; padding: .16rem .5rem; border-radius: 999px; }
+        .share-hint { font-size: .74rem; color: #94A3B8; line-height: 1.55; margin: 0 0 .25rem; }
+
+        body.tool-page #cc-convert,
+        body.tool-page #ck-convert-total { background: linear-gradient(165deg, #FFC200 0%, #F0A400 100%); color: #3A2B00; border: 1px solid #E0A100; border-radius: 14px; min-height: 50px; font-weight: 800; font-size: .95rem; box-shadow: 0 8px 18px -8px rgba(224,161,0,.55); transition: transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+        body.tool-page #cc-convert:hover,
+        body.tool-page #ck-convert-total:hover { background: linear-gradient(165deg, #FFD23F 0%, #FFB300 100%); transform: translateY(-2px); box-shadow: 0 10px 24px -8px rgba(224,161,0,.65); }
+
+        body.tool-page #cc-copy { background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; border-radius: 11px; font-weight: 800; border: 1px solid #0B6F56; box-shadow: 0 6px 14px -7px rgba(11,111,86,.55); }
+        body.tool-page #cc-copy:hover { filter: brightness(1.08); transform: translateY(-2px); }
+
+        body.tool-page #cc-swap { background: #fff; border: 1.5px solid #0E8A6C; color: #0B6F56; border-radius: 10px; font-weight: 800; font-size: 1.05rem; box-shadow: 0 4px 10px -6px rgba(31,36,48,.2); }
+        body.tool-page #cc-swap:hover { background: #E7F6F1; border-color: #0B6F56; color: #0B6F56; transform: translateY(-1px); }
+
+        #clear-split { background: #fff; border: 1.5px solid #CBD5E1; box-shadow: 0 3px 8px -5px rgba(31,36,48,.25); }
+        #clear-split:hover { background: #FEE2E2; border-color: #F87171; color: #B91C1C; }
+
+        .preview-col .field:has(#cc-from),
+        .preview-col .field:has(#cc-to) { margin-bottom: 0; }
+        .preview-col .field:has(#cc-amount) { margin-bottom: .6rem; }
+        .preview-col #cc-from,
+        .preview-col #cc-to { font-size: .84rem; padding-right: 2.1rem; max-width: 100%; }
+        body.tool-page #cc-convert { margin-top: .85rem; }
+
+        .calc-note { margin-top: 1rem; font-size: .76rem; color: #5A6472; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: .6rem .75rem; line-height: 1.55; }
+
+        @media (max-width: 460px) { .ck-btn { height: 48px; } .ck-result { font-size: 1.7rem; } }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page cc-first-mobile">
+<div id="hub-header-slot" data-root="../"></div>
+<main>
+<div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">Currency Converter</span>
+        </div>
+
+
+
+<div class="tool-shell" style="max-width:980px;margin:0 auto">
+    <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-money-bill-transfer" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>Currency Converter</h1>
+                <p>Multiply items, split totals into shares, and convert any amount with live daily exchange rates. Fast, free, and private.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Business</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                    <span class="tool-badge tool-badge-soft">+ calculator</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+
+    <div class="tool-split">
+
+        <!-- left · phone-style multiply keypad -->
+        <div class="entry-col">
+            <div class="calc-panel">
+                <div class="calc-head"><span class="nl-ico">🧮</span>Calculator</div>
+
+                <div class="ck-display">
+                    <div class="ck-expr" id="ck-expr">&nbsp;</div>
+                    <div class="ck-result" id="ck-result">0</div>
+                </div>
+
+                <div class="ck-grid" id="calc-keypad" role="group" aria-label="Calculator keypad">
+                    <button type="button" class="ck-btn ck-fn ck-ac" data-k="AC">AC</button>
+                    <button type="button" class="ck-btn ck-fn" data-k="B" title="Backspace" aria-label="Backspace">⌫</button>
+                    <button type="button" class="ck-btn ck-fn" data-k="00" title="Double zero">00</button>
+                    <button type="button" class="ck-btn ck-op" data-k="÷">÷</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="7">7</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="8">8</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="9">9</button>
+                    <button type="button" class="ck-btn ck-op" data-k="×">×</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="4">4</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="5">5</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="6">6</button>
+                    <button type="button" class="ck-btn ck-op" data-k="−">−</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="1">1</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="2">2</button>
+                    <button type="button" class="ck-btn ck-digit" data-k="3">3</button>
+                    <button type="button" class="ck-btn ck-op" data-k="+">+</button>
+                    <button type="button" class="ck-btn ck-digit ck-zero" data-k="0">0</button>
+                    <button type="button" class="ck-btn ck-digit" data-k=".">.</button>
+                    <button type="button" class="ck-btn ck-op ck-eq" data-k="=">=</button>
+                </div>
+            </div>
+
+            <!-- split · from grand total, below calculator -->
+            <div class="split-panel">
+                <div class="calc-head"><span class="nl-ico">⚖</span>Split from grand total</div>
+
+                <div class="ck-total">
+                    <span>Grand total</span>
+                    <b id="ck-total">0.00</b>
+                </div>
+
+                <div class="deduct-row">
+                    <label for="sh1">Deduct (%)</label>
+                    <input id="sh1" type="text" inputmode="decimal" placeholder="e.g. 30" autocomplete="off" spellcheck="false">
+                </div>
+
+                <div class="deduct-out">
+                    <div class="kv"><span>Deducted</span><b id="deducted">0.00</b></div>
+                    <div class="kv"><span>Remaining</span><b id="remaining">0.00</b></div>
+                </div>
+
+                <div class="remaining-hero">
+                    <span>Remaining</span>
+                    <b id="remaining-hero">0.00</b>
+                </div>
+
+                <div class="split-div" aria-hidden="true"></div>
+
+                <button type="button" id="calc-split" class="btn btn-secondary btn-block split-toggle">⚖ Split remaining by half (50 / 50)</button>
+
+                <div class="half-hero" id="half-box" style="display:none">
+                    <span>50 / 50 · each half</span>
+                    <b id="half-hero">0.00</b>
+                </div>
+
+                <div class="custom-share">
+                    <div class="custom-head">
+                        <p class="custom-label">— or custom shares —</p>
+                        <button type="button" id="clear-split" class="clear-split" title="Clear deduction and custom shares">✕ Clear</button>
+                    </div>
+                    <div class="share-boxes">
+                        <div class="field sh-field"><label for="sh2">Share 1</label><input id="sh2" type="text" inputmode="decimal" placeholder="e.g. 45" autocomplete="off" spellcheck="false"></div>
+                        <div class="field sh-field"><label for="sh3">Share 2</label><input id="sh3" type="text" inputmode="decimal" placeholder="e.g. 55" autocomplete="off" spellcheck="false"></div>
+                    </div>
+                </div>
+                <div id="calc-share-results"></div>
+            </div>
+
+            <!-- convert · outside the calculator -->
+            <button type="button" id="ck-convert-total" class="btn btn-primary btn-block ck-convert-out">💱 Convert</button>
+        </div>
+
+        <!-- right · currency converter -->
+        <div class="preview-col">
+            <div class="field">
+                <label for="cc-amount">Amount</label>
+                <input id="cc-amount" type="number" min="0" step="any" value="1" placeholder="Enter amount">
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:.6rem;align-items:end;margin-top:.75rem">
+                <div class="field"><label for="cc-from">From</label><select id="cc-from"></select></div>
+                <button type="button" id="cc-swap" class="btn btn-ghost" style="height:44px;padding:0 .7rem" title="Swap currencies" aria-label="Swap currencies">⇄</button>
+                <div class="field"><label for="cc-to">To</label><select id="cc-to"></select></div>
+            </div>
+
+            <button id="cc-convert" class="btn btn-primary btn-block">💱 Convert</button>
+
+            <div class="result-box" id="cc-result" style="display:none;text-align:center" aria-live="polite">
+                <div id="cc-eq" style="font-size:1.55rem;font-weight:800;color:var(--primary)"></div>
+                <div id="cc-rate" style="font-size:.8rem;color:var(--muted);margin-top:.4rem"></div>
+                <div id="cc-date" style="font-size:.72rem;color:var(--muted);margin-top:.15rem"></div>
+                <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.85rem">
+                    <button class="btn btn-secondary" id="cc-copy">📋 Copy</button>
+                </div>
+            </div>
+
+            <p id="cc-error" style="display:none;font-size:.8rem;color:#B91C1C;background:#FEF2F2;border:1px solid #FECACA;border-radius:.5rem;padding:.6rem .8rem;margin-top:.9rem"></p>
+
+            <div class="calc-note" id="calc-synced-note">↪ Totals and share amounts from the calculator appear here in the <b>Amount</b> field, ready to convert.</div>
+        </div>
+
+    </div>
+
+    <div class="info-note">
+        <div class="note-sec">
+            <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+            <p>Twin tools on one page. On the left, the calculator does <code>+&nbsp;&nbsp;−&nbsp;&nbsp;×&nbsp;&nbsp;÷</code> with a phone-style keypad and <b>previews the result live</b> as you type — no need to press <code>=</code> (though it's there if you want it) — and feeds the <b>grand total</b> into the converter's <b>Amount</b> in real time. Below it, the split takes that grand total, deducts a share you enter (e.g. <code>30%</code>), shows the <b>deducted</b> and <b>remaining</b> amounts, and splits what's left first by half (<code>50&nbsp;/&nbsp;50</code>) or into any custom shares you type below it (e.g. <code>45&nbsp;/&nbsp;55</code>) — every value lands in the Amount field ready to convert. On conversion, the tool fetches a daily snapshot of mid-market rates (every supported currency measured against the USD base) from <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">exchangerate-api.com</a>, then computes your exact pair with a cross-rate: <code>target&nbsp;÷&nbsp;source</code>. The latest snapshot is cached in this device's <code>localStorage</code>, so already-seen pairs keep converting even offline.</p>
+        </div>
+        <div class="note-sec">
+            <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+            <p>Everything runs locally — your item lists, totals and share splits never leave the page. The only request is an anonymous currency lookup (no account, no key); just the currency symbols needed for the rate table are shared with the rate provider.</p>
+        </div>
+        <div class="note-sec">
+            <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+            <ul>
+                <li>Use the keypad (or keyboard: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>Enter</code>) — the result previews live; tap <code>=</code> only when you want to convert it.</li>
+                <li>Split a lunch, invoice or group bill: deduct a share (e.g. <code>30</code>), tap <b>Split by half</b> for a quick <code>50&nbsp;/&nbsp;50</code> — or type custom shares like <code>45</code> and <code>55</code> below it and convert each tile.</li>
+                <li>Rates are indicative mid-market (daily); banks and card networks typically add their own margin on top.</li>
+                <li>Copy the result line anywhere — paste it into a doc or send it in a message.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</main>
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast, copyText, toolPageInit } = ToolsApp;
+    toolPageInit('currency-converter');
+
+    const CURRENCIES = [
+        ['USD','US Dollar'],['EUR','Euro'],['GBP','British Pound'],['KES','Kenyan Shilling'],
+        ['NGN','Nigerian Naira'],['ZAR','South African Rand'],['EGP','Egyptian Pound'],
+        ['JPY','Japanese Yen'],['CNY','Chinese Yuan'],['INR','Indian Rupee'],['CAD','Canadian Dollar'],
+        ['AUD','Australian Dollar'],['CHF','Swiss Franc'],['SEK','Swedish Krona'],['NOK','Norwegian Krone'],
+        ['DKK','Danish Krone'],['PLN','Polish Zloty'],['CZK','Czech Koruna'],['HUF','Hungarian Forint'],
+        ['RON','Romanian Leu'],['BGN','Bulgarian Lev'],['TRY','Turkish Lira'],['BRL','Brazilian Real'],
+        ['MXN','Mexican Peso'],['AED','UAE Dirham'],['SAR','Saudi Riyal'],['TZS','Tanzanian Shilling'],
+        ['UGX','Ugandan Shilling'],['GHS','Ghanaian Cedi'],['ETB','Ethiopian Birr'],['RWF','Rwandan Franc'],
+        ['MWK','Malawian Kwacha'],['ZMW','Zambian Kwacha'],['MUR','Mauritian Rupee'],['LKR','Sri Lankan Rupee'],
+        ['BDT','Bangladeshi Taka'],['PKR','Pakistani Rupee'],['PHP','Philippine Peso'],['IDR','Indonesian Rupiah'],
+        ['THB','Thai Baht'],['VND','Vietnamese Dong'],['MYR','Malaysian Ringgit'],['SGD','Singapore Dollar'],
+        ['HKD','Hong Kong Dollar'],['NZD','New Zealand Dollar'],['KRW','South Korean Won'],['RUB','Russian Ruble']
+    ];
+
+    const storageKey = 'tools_cc_rates';
+    let ratesCache = loadCache();
+    let lastPair = null;
+
+    function loadCache(){
+        try { return JSON.parse(localStorage.getItem(storageKey)) || null; } catch (e) { return null; }
+    }
+    function saveCache(o){ try { localStorage.setItem(storageKey, JSON.stringify(o)); } catch (e) {} }
+
+    function fetchUsdRates(){
+        const ctrl = new AbortController();
+        const id = setTimeout(() => ctrl.abort(), 15000);
+        return fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal })
+            .then(r => { clearTimeout(id); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then(d => { if (!d || d.result !== 'success' || !d.rates) throw new Error('bad payload'); return d; })
+            .catch(e => { clearTimeout(id); throw e; });
+    }
+
+    function computeRate(data, from, to){
+        const f = data.rates && data.rates[from];
+        const t2 = data.rates && data.rates[to];
+        if (!f || !t2) throw new Error('missing pair');
+        return t2 / f;
+    }
+
+    function fillSelect(){
+        const opts = CURRENCIES.map(([c, n]) => '<option value="' + c + '">' + c + ' — ' + n + '</option>').join('');
+        $('#cc-from').innerHTML = opts;
+        $('#cc-to').innerHTML = opts;
+        $('#cc-from').value = 'USD';
+        $('#cc-to').value = 'KES';
+    }
+
+    function getDefaultFrom(){
+        try { if (Intl.DateTimeFormat().resolvedOptions().locale === 'en-KE') return 'KES'; } catch (e) {}
+        return 'USD';
+    }
+
+    function convert(){
+        const amount = parseFloat($('#cc-amount').value);
+        const from = $('#cc-from').value;
+        const to = $('#cc-to').value;
+        const err = $('#cc-error');
+        if (isNaN(amount) || amount <= 0){ err.textContent = 'Enter a valid amount greater than zero.'; err.style.display = ''; return; }
+        err.style.display = 'none';
+        $('#cc-result').style.display = 'none';
+
+        const cached = ratesCache;
+        if (cached && cached.rates && cached.rates[from] && cached.rates[to]){
+            showResult(amount, from, to, cached.rates[to] / cached.rates[from], cached.date, true);
+            return;
+        }
+
+        fetchUsdRates()
+            .then(data => {
+                ratesCache = { base: 'USD', date: (data.time_last_update_utc || '').replace(' +0000', '').slice(0, 16), rates: data.rates };
+                saveCache(ratesCache);
+                showResult(amount, from, to, computeRate(data, from, to), ratesCache.date, false);
+            })
+            .catch(() => {
+                err.textContent = 'Live rates unavailable right now. ' +
+                    (cached ? 'Showing last saved rates.' : 'Check your connection and retry.');
+                err.style.display = '';
+                if (cached && cached.rates && cached.rates[from] && cached.rates[to]){
+                    showResult(amount, from, to, cached.rates[to] / cached.rates[from], cached.date, true);
+                } else {
+                    $('#cc-result').style.display = 'none';
+                }
+            });
+    }
+
+    function showResult(amount, from, to, rate, date, fromCache){
+        const converted = amount * rate;
+        const fmt = n => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        $('#cc-eq').textContent = fmt(amount) + ' ' + from + ' = ' + fmt(converted) + ' ' + to;
+        $('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
+        $('#cc-date').textContent = 'Rate date: ' + (date || '—');
+        $('#cc-result').style.display = '';
+        lastPair = { amount, from, to, rate, date };
+    }
+
+    $('#cc-result').addEventListener('click', function(e){
+        if (e.target && e.target.id === 'cc-copy'){
+            copyText($('#cc-eq').textContent + ' (' + $('#cc-rate').textContent + ')', e.target);
+        }
+    });
+
+    $('#cc-swap').addEventListener('click', function(){
+        const a = $('#cc-from').value; $('#cc-from').value = $('#cc-to').value; $('#cc-to').value = a;
+        if ($('#cc-result').style.display !== 'none') convert();
+    });
+
+    $('#cc-amount').addEventListener('keydown', function(e){ if (e.key === 'Enter') convert(); });
+    $('#cc-convert').addEventListener('click', convert);
+
+    fillSelect();
+
+    /* ── Phone-style keypad calculator ─────────────────────────────── │
+       Add / subtract / multiply / divide. Result previews live as you
+       type; = confirms and sends to the converter. AC clears all.   │ */
+    const ck = { acc: null, op: null, entry: '', expr: '', done: false };
+
+    function fmtN(n) { return n.toLocaleString(undefined, { maximumFractionDigits: 4 }); }
+    function fmt2(n) { return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function rawN(n) { const r = Math.round(n * 1e6) / 1e6; return Object.is(r, -0) ? 0 : r; }
+    function safeR(r) { return rawN(isFinite(r) && !isNaN(r) ? r : 0); }
+
+    function applyOp(op, a, b) {
+        switch (op) {
+            case '+': return a + b;
+            case '−': return a - b;
+            case '×': return a * b;
+            case '÷': return b === 0 ? NaN : a / b;
+        }
+        return b;
+    }
+
+    function ckCurrent() {
+        if (ck.acc == null) return rawN(parseFloat(ck.entry) || 0);
+        if (ck.op != null && ck.entry !== '') {
+            const v = parseFloat(ck.entry);
+            return safeR(applyOp(ck.op, ck.acc, isNaN(v) ? 0 : v));
+        }
+        return rawN(ck.acc);
+    }
+
+    function ckPaint() {
+        let expr = '';
+        if (ck.done) expr = ck.expr;
+        else if (ck.acc == null) expr = ck.entry || '';
+        else {
+            expr = fmtN(ck.acc);
+            if (ck.op != null) expr += ' ' + ck.op + (ck.entry !== '' ? ' ' + ck.entry : '');
+        }
+        $('#ck-expr').textContent = expr || '\u00A0';
+
+        const cur = ckCurrent();
+        $('#ck-result').textContent = (ck.entry !== '' && ck.acc == null) ? ck.entry : fmtN(cur);
+        $('#ck-total').textContent = fmtN(cur);
+        refreshSplit();
+    }
+
+    function ckOp(op) {
+        if (ck.done) { ck.entry = ''; ck.done = false; }
+        const v = parseFloat(ck.entry);
+        if (ck.acc == null) {
+            ck.acc = rawN(isNaN(v) ? 0 : v);
+        } else if (ck.entry !== '' && ck.op != null) {
+            ck.acc = safeR(applyOp(ck.op, ck.acc, isNaN(v) ? 0 : v));
+        }
+        ck.op = op;
+        ck.entry = '';
+        ck.done = false;
+        ckPaint();
+    }
+
+    function ckEquals() {
+        if (ck.done) return;
+        const v = parseFloat(ck.entry);
+        if (ck.acc == null) {
+            ck.acc = rawN(isNaN(v) ? 0 : v);
+            ck.expr = fmtN(ck.acc) + ' =';
+        } else if (ck.op != null && ck.entry !== '') {
+            const b = isNaN(v) ? 0 : v;
+            ck.expr = fmtN(ck.acc) + ' ' + ck.op + ' ' + fmtN(b) + ' =';
+            ck.acc = safeR(applyOp(ck.op, ck.acc, b));
+        } else {
+            ck.expr = fmtN(ck.acc) + ' =';
+        }
+        ck.op = null;
+        ck.entry = '';
+        ck.done = true;
+        ckPaint();
+        toast('Result ' + fmtN(ck.acc) + ' sent to converter');
+        if (ck.acc != null && ck.acc > 0) convert();
+    }
+
+    function ckReset(all) {
+        ck.acc = null; ck.op = null; ck.entry = ''; ck.expr = ''; ck.done = false;
+        ckPaint();
+        if (all) {
+            $('#sh1').value = ''; $('#sh2').value = ''; $('#sh3').value = '';
+            $('#calc-split').classList.remove('active');
+            $('#calc-share-results').innerHTML = '';
+            $('#deducted').textContent = '0.00';
+            $('#remaining').textContent = '0.00';
+            $('#remaining-hero').textContent = '0.00';
+            $('#remaining-hero').parentElement.style.opacity = '.45';
+            $('#half-box').style.display = 'none';
+            $('#half-hero').textContent = '0.00';
+            syncAmount();
+            $('#cc-error').style.display = 'none';
+            toast('Cleared');
+        }
+    }
+
+    function ckKey(k) {
+        if (/^[0-9]$/.test(k)) {
+            if (ck.done) ckReset(false);
+            if (ck.entry.length < 12) ck.entry = (ck.entry === '0') ? k : ck.entry + k;
+        } else if (k === '.') {
+            if (ck.done) ckReset(false);
+            if (ck.entry.indexOf('.') === -1) ck.entry = (ck.entry === '') ? '0.' : ck.entry + '.';
+        } else if (k === '00') {
+            if (ck.done) ckReset(false);
+            if (ck.entry === '' || ck.entry === '0') { ck.entry = '0'; }
+            else if (ck.entry.length <= 10) ck.entry += '00';
+        } else if (k === 'B') {
+            if (ck.done) { ckReset(false); return; }
+            ck.entry = ck.entry.slice(0, -1);
+        } else if (k === 'AC') { ckReset(true); return; }
+        else if (k === '+') { ckOp('+'); return; }
+        else if (k === '−') { ckOp('−'); return; }
+        else if (k === '×') { ckOp('×'); return; }
+        else if (k === '÷') { ckOp('÷'); return; }
+        else if (k === '=') { ckEquals(); return; }
+        ckPaint();
+    }
+
+    $('#calc-keypad').addEventListener('click', e => {
+        const btn = e.target.closest('.ck-btn');
+        if (btn) ckKey(btn.getAttribute('data-k'));
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        const k = e.key;
+        const map = { 'x': '×', '*': '×', 'X': '×', '/': '÷', '+': '+', '-': '−', '_': '−',
+            'Enter': '=', 'Backspace': 'B', 'c': 'AC', 'C': 'AC', 'Escape': 'AC' };
+        const key = map[k] || k;
+        if (/^[0-9]$/.test(key) || key === '.' || key === '+' || key === '−' || key === '×' ||
+            key === '÷' || key === '=' || key === 'B' || key === 'AC') {
+            e.preventDefault();
+            ckKey(key);
+        }
+    });
+
+    function deductionValue() {
+        const v = parseFloat($('#sh1').value);
+        return isFinite(v) ? Math.min(Math.max(v, 0), 100) : NaN;
+    }
+
+    function toggleSplit() {
+        $('#calc-split').classList.toggle('active');
+        refreshSplit();
+    }
+
+    function customShares() {
+        return ['#sh2', '#sh3']
+            .map(s => parseFloat($(s).value))
+            .filter(n => isFinite(n) && n > 0);
+    }
+
+    function splitActive() {
+        return $('#calc-split').classList.contains('active') || customShares().length >= 2;
+    }
+
+    function currentAmount() {
+        const pct = deductionValue();
+        const total = ckCurrent();
+        const idle = ck.acc == null && ck.op == null && ck.entry === '' && !ck.done;
+        const remaining = total - (isNaN(pct) ? 0 : total * pct / 100);
+        if ($('#calc-split').classList.contains('active') && total > 0 && remaining > 0) return rawN(remaining / 2);
+        if (splitActive() && total > 0) return rawN(Math.max(remaining, 0));
+        if (!isNaN(pct)) return rawN(total - total * pct / 100);
+        if (idle) return 1;
+        return rawN(total);
+    }
+
+    function syncAmount() {
+        $('#cc-amount').value = String(currentAmount());
+        scheduleConvert();
+    }
+
+    let convTimer = null;
+    function scheduleConvert() {
+        clearTimeout(convTimer);
+        convTimer = setTimeout(() => {
+            const v = parseFloat($('#cc-amount').value);
+            if (isFinite(v) && v > 0) convert();
+        }, 350);
+    }
+
+    function refreshSplit() {
+        syncAmount();
+        const total = ckCurrent();
+        const pct = deductionValue();
+        const nums = isNaN(pct) ? { deducted: 0, remaining: total } : { deducted: total * pct / 100, remaining: total - total * pct / 100 };
+
+        $('#deducted').textContent = fmtN(nums.deducted);
+        $('#remaining').textContent = fmtN(nums.remaining);
+        $('#remaining-hero').textContent = fmtN(nums.remaining);
+        $('#remaining-hero').parentElement.style.opacity = nums.remaining > 0 ? '1' : '.45';
+
+        const halfOn = $('#calc-split').classList.contains('active');
+        $('#half-box').style.display = total > 0 ? '' : 'none';
+        $('#half-hero').textContent = fmt2(nums.remaining / 2);
+        $('#half-box').style.opacity = halfOn ? '1' : '.55';
+
+        const box = $('#calc-share-results');
+        box.innerHTML = '';
+        if (!total) {
+            box.innerHTML = '<p class="share-hint">Compute a result first — the grand total is used for the split.</p>';
+            return;
+        }
+
+        const chips = document.createElement('div');
+        chips.style.display = 'flex';
+        chips.style.flexWrap = 'wrap';
+        chips.style.gap = '.5rem';
+        chips.style.marginTop = '.6rem';
+
+        const shares = customShares();
+        if (shares.length >= 2) {
+            const sum = shares.reduce((a, b) => a + b, 0);
+            shares.forEach((n, i) => {
+                const amt = nums.remaining * n / sum;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'share-tile share-custom';
+                btn.title = 'Send ' + fmt2(n) + '% share to the converter';
+                btn.innerHTML = '<span class="share-tile-pct">' + (i + 1) + ' · ' + fmt2(n) + '%</span><b class="share-tile-amt">' + fmt2(amt) + '</b><em>↪ convert</em>';
+                btn.addEventListener('click', () => {
+                    $('#cc-amount').value = String(rawN(amt));
+                    toast(fmt2(n) + '% share sent to converter');
+                    convert();
+                });
+                chips.appendChild(btn);
+            });
+        }
+
+        if (!chips.children.length) {
+            box.innerHTML = '<p class="share-hint">Tap <b>Split by half</b> above, or type custom shares like <b>45 · 55</b>.</p>';
+            return;
+        }
+        box.appendChild(chips);
+    }
+
+    $('#sh1').addEventListener('input', refreshSplit);
+    ['#sh2', '#sh3'].forEach(s => $(s).addEventListener('input', refreshSplit));
+    $('#calc-split').addEventListener('click', toggleSplit);
+    $('#clear-split').addEventListener('click', () => {
+        $('#sh1').value = ''; $('#sh2').value = ''; $('#sh3').value = '';
+        $('#calc-split').classList.remove('active');
+        refreshSplit();
+        toast('Deduction & shares cleared');
+    });
+    $('#ck-convert-total').addEventListener('click', () => {
+        if (convertSharesSplit()) return;
+        $('#cc-amount').value = String(currentAmount());
+        toast('Value sent to converter');
+        convert();
+    });
+
+    async function convertSharesSplit() {
+        const shares = customShares();
+        const total = ckCurrent();
+        const pct = deductionValue();
+        const remaining = total - (isNaN(pct) ? 0 : total * pct / 100);
+        if (shares.length < 2 || !(remaining > 0)) return false;
+
+        const from = $('#cc-from').value, to = $('#cc-to').value;
+        const sum = shares.reduce((a, b) => a + b, 0);
+        const f = x => x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+
+        const render = (rate, date, fromCache) => {
+            const lines = shares.map((n, i) => {
+                const amt = remaining * n / sum;
+                return '<span style="display:block;font-size:1rem;line-height:1.45">Share ' + (i + 1) + ' · ' + f(amt) + ' ' + from + ' → ' + f(amt * rate) + ' ' + to + '</span>';
+            }).join('');
+            $('#cc-eq').innerHTML = lines;
+$('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
+            $('#cc-date').textContent = 'Rate date: ' + (date || '—');
+            $('#cc-result').style.display = '';
+            $('#cc-error').style.display = 'none';
+        };
+
+        const cached = ratesCache;
+        if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
+            render(cached.rates[to] / cached.rates[from], cached.date, true);
+            toast('Shares converted');
+            return true;
+        }
+        try {
+            const data = await fetchUsdRates();
+            ratesCache = { base: 'USD', date: (data.time_last_update_utc || '').replace(' +0000', '').slice(0, 16), rates: data.rates };
+            saveCache(ratesCache);
+            render(computeRate(data, from, to), ratesCache.date, false);
+            toast('Shares converted');
+        } catch (e) {
+            if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
+                render(cached.rates[to] / cached.rates[from], cached.date, true);
+                toast('Shares converted (cached rates)');
+            } else {
+                const err = $('#cc-error');
+                err.textContent = 'Live rates unavailable right now. Check your connection and retry.';
+                err.style.display = '';
+            }
+        }
+        return true;
+    }
+
+    syncAmount();
+})();
+</script>
+</body>
+</html>

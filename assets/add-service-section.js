@@ -1834,19 +1834,16 @@ section:has(.feedbacks-wrap) {
     rail.className = 'svc-contact-rail';
     rail.setAttribute('aria-label', 'Contact links');
     rail.innerHTML =
-      '<button class="svc-contact-rail-tab" type="button" aria-label="Tool-Hub Kit" aria-expanded="false" aria-controls="svc-contact-rail-links">' +
-      '<strong aria-hidden="true">👇</strong><span>Tool-Hub Kit</span><span class="svc-contact-tooltip">DM Solutions Tools Hub is a scalable and flexible collection of free, client-side tools designed to work with the technologies that complement your existing workflows.<br><strong>Tap to open the Tool-Hub Kit.</strong></span></button>' +
+      '<a href="/tool-hub/" class="svc-contact-rail-tab" aria-label="Open Tool-Hub Kit">' +
+      '<strong aria-hidden="true">👇</strong><span>Tool-Hub Kit</span><span class="svc-contact-tooltip">DM Solutions Tools Hub is a scalable and flexible collection of free, client-side tools designed to work with the technologies that complement your existing workflows.<br><strong>Tap to open the Tool-Hub Kit.</strong></span></a>' +
       '<div id="svc-contact-rail-links" class="svc-contact-rail-links" hidden>' +
       '<a href="https://api.whatsapp.com/send?phone=254112401838&text=Hi%20Brian%2C%20I%20would%20like%20to%20get%20in%20touch." target="_blank" rel="noopener" aria-label="Chat with Brian on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>' +
       '<a href="tel:+254112401838" aria-label="Call Brian"><i class="fas fa-phone" aria-hidden="true"></i></a>' +
       '</div>';
     document.body.appendChild(rail);
-    var tab = rail.querySelector('.svc-contact-rail-tab');
-    var links = rail.querySelector('.svc-contact-rail-links');
-    tab.addEventListener('click', function () {
-      var open = rail.classList.toggle('is-open');
-      tab.setAttribute('aria-expanded', String(open));
-      links.hidden = !open;
+    rail.querySelector('.svc-contact-rail-tab').addEventListener('click', function (event) {
+      event.preventDefault();
+      window.location.assign('/tool-hub/');
     });
 
     function revealOnScroll() {
@@ -1891,6 +1888,13 @@ section:has(.feedbacks-wrap) {
         }, 2500);
       }
     });
+  }
+
+  function scrollToHashTarget() {
+    var hash = window.location.hash;
+    if (!hash) return;
+    var target = document.getElementById(hash.slice(1));
+    if (target) target.scrollIntoView({ block: 'start' });
   }
 
   // ── Section 1: "What I Offer" — exact clone of portfolio-main /about service cards
@@ -2491,6 +2495,17 @@ section:has(.feedbacks-wrap) {
     if (document.getElementById('svc-deliver-section')) return;
 
     injectStyles();
+    var navTabs = document.querySelector('.nav-tab-soc ul');
+    if (navTabs && !navTabs.querySelector('a[href="/tool-hub/"]')) {
+      var toolHubTab = document.createElement('li');
+      toolHubTab.className = 'cursor-pointer';
+      toolHubTab.innerHTML = '<a href="/tool-hub/" class="nav-tab">Tool Hub</a>';
+      navTabs.appendChild(toolHubTab);
+      toolHubTab.querySelector('a').addEventListener('click', function (event) {
+        event.preventDefault();
+        window.location.assign('/tool-hub/');
+      });
+    }
     initContactRail();
     injectCalendly();
     var parent = testimonials.parentNode;
@@ -2510,6 +2525,7 @@ section:has(.feedbacks-wrap) {
 
     wirePaymentModals(s4);
     fillNativeContactCard();
+    setTimeout(scrollToHashTarget, 0);
   }
 
   setTimeout(tryInsert, 800);

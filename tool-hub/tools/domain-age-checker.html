@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domain Age Checker — Free Tools Hub</title>
+<meta name="description" content="Check the age and creation date of any domain via public RDAP — client-side.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/site-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">Domain Age Checker</span>
+        </div>
+
+
+
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
+            <span class="tool-meta-icon"><i class="fa-solid fa-globe" aria-hidden="true"></i></span>
+            <div class="tool-meta-body">
+                <h1>Domain Age Checker</h1>
+                <p>Finds the creation date &amp; age of a domain using the authoritative Verisign RDAP registry, plus live DNS records.</p>
+                <div class="tool-meta-row">
+                    <span class="tool-badge">Domains & DNS</span>
+                    <span class="tool-badge tool-badge-soft">client-side</span>
+                </div>
+            </div>
+            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+        </header>
+            
+
+            <!-- Input -->
+            <div class="field">
+                <label for="dac-domain">Enter Domain</label>
+                <input id="dac-domain" type="text" placeholder="example.com" autocomplete="off">
+            </div>
+            <button id="dac-check" class="btn btn-primary btn-block">🔍 Check Domain Age</button>
+
+            <!-- Results -->
+            <div class="result-box" id="dac-result" aria-live="polite">
+                <h2>Result</h2>
+                <p class="output-text" id="dac-output">Enter a domain (e.g. example.com) and click Check. Age + DNS answers load from Verisign RDAP &amp; Google Public DNS.</p>
+            </div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Looks up the domain's registry record through <strong>RDAP</strong> (the modern WHOIS) — <code>rdap.org</code> first, with <code>rdap.verisign.com</code> for <code>.com</code>/<code>.net</code> and <code>rdap.registry.net</code> as fallbacks. This returns the authoritative <code>created</code>, <code>updated</code> and <code>expiry</code> dates plus registrar and nameservers. The tool then makes a second pass over Google Public DNS for common records (<code>A</code>, <code>MX</code>, <code>NS</code>, <code>TXT</code>…) and calculates the domain's age in years from its registry creation date.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>Everything is fetched live from public registries and DNS — only the domain name you type is sent, and nothing is stored locally or tracked.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>Age is the registry's <code>created</code> date — the most reliable indicator of a domain's true age.</li>
+                        <li>A brand-new domain may show few or no DNS records until its owner configures them.</li>
+                        <li>If contact fields look missing, that's registrar GDPR redaction — not a query error.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<div id="toast"></div>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, esc, toast, copyText, fmt } = window.ToolsApp;
+
+    function norm(s){ return s ? esc(String(s)) : '—'; }
+    function dateStr(v){
+        if(!v) return '—';
+        const d = new Date(v);
+        return isNaN(d) ? esc(v) : d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    }
+    function ageBreakdown(from, to){
+        if(!(from instanceof Date) || isNaN(from)) return null;
+        to = to || new Date();
+        let ms = to - from;
+        if (ms < 0) ms = 0;
+        const totalDays = Math.floor(ms / 864e5);
+        const years = Math.floor(totalDays / 365.25);
+        const days = Math.floor(totalDays - years * 365.25);
+        return { years, days, totalDays, months: Math.floor((totalDays % 365.25) / 30.4375) };
+    }
+
+    async function fetchRdap(domain){
+        const candidates = [
+            'https://rdap.org/domain/' + domain,
+            'https://rdap.verisign.com/com/v1/domain/' + domain,
+            'https://rdap.verisign.com/net/v1/domain/' + domain,
+            'https://rdap.registry.net/domain/' + domain
+        ];
+        let lastErr = null;
+        for (const u of candidates) {
+            try {
+                const ctrl = new AbortController();
+                const t = setTimeout(() => ctrl.abort(), 8000);
+                const res = await fetch(u, { signal: ctrl.signal });
+                clearTimeout(t);
+                if (res.ok) return await res.json();
+                lastErr = new Error('HTTP ' + res.status);
+            } catch(e){ lastErr = e; }
+        }
+        throw lastErr || new Error('All RDAP endpoints failed');
+    }
+
+    function findEvent(data, action){
+        const ev = (data.events || []).find(e => (e.eventAction || '').toLowerCase() === action);
+        return ev && ev.eventDate ? new Date(ev.eventDate) : null;
+    }
+    function entityName(data, role){
+        const ent = (data.entities || []).find(e => (e.roles || []).includes(role));
+        if (!ent) return '';
+        try {
+            const fn = ent.vcardArray?.[1]?.find(v => v[0] === 'fn')?.[3];
+            const org = ent.vcardArray?.[1]?.find(v => v[0] === 'org')?.[3];
+            return fn || org || ent.handle || '';
+        } catch(e){ return ent.handle || ''; }
+    }
+
+    function render(data, domain){
+        const created = findEvent(data, 'registration');
+        const updated = findEvent(data, 'last changed');
+        const expiry  = findEvent(data, 'expiration');
+
+        const age = created ? ageBreakdown(created) : null;
+        const now = new Date();
+        const daysUntilExpiry = expiry ? Math.max(0, Math.round((expiry - now) / 864e5)) : null;
+        const daysSinceUpdated = updated ? Math.max(0, Math.round((now - updated) / 864e5)) : null;
+
+        const nameservers = (data.nameservers || []).map(n => n.ldhName || n.unicodeName).filter(Boolean);
+        const status = (data.status || []).join(', ') || '—';
+        const registrar = entityName(data, 'registrar') || '—';
+        const tld = (domain.split('.').pop() || '—').toUpperCase();
+        const hdl = data.handle || domain;
+        const ldh = data.ldhName || domain;
+
+        const expiryPct = (created && expiry) ? Math.round(((now - created) / (expiry - created)) * 100) : null;
+
+        let html = '';
+
+        html += '<div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">';
+        html += '<div class="stat"><div class="num">' + esc(ldh) + '</div><div class="lbl">Domain</div></div>';
+        html += '<div class="stat"><div class="num" style="color:var(--primary)">' + (age ? age.years : '—') + '</div><div class="lbl">Years old</div></div>';
+        html += '<div class="stat"><div class="num" style="color:var(--primary)">' + (age ? age.days : '—') + '</div><div class="lbl">Days</div></div>';
+        html += '<div class="stat"><div class="num" style="color:#15803d">' + (age ? fmt.num(age.totalDays) : '—') + '</div><div class="lbl">Total days</div></div>';
+        if (daysUntilExpiry != null) html += '<div class="stat"><div class="num" style="color:' + (daysUntilExpiry < 60 ? '#b91c1c' : '#0E8A6C') + '">' + fmt.num(daysUntilExpiry) + '</div><div class="lbl">Days to expiry</div></div>';
+        html += '</div>';
+
+        if (expiryPct != null){
+            const barColor = expiryPct > 85 ? '#b91c1c' : expiryPct > 70 ? '#d97706' : '#0E8A6C';
+            html += '<div style="margin:.9rem 0 .3rem;font-size:.75rem;color:var(--muted);display:flex;justify-content:space-between"><span>Registered</span><span>Now</span><span>Expires</span></div>';
+            html += '<div style="height:10px;border-radius:999px;background:#E4E8EF;overflow:hidden"><div style="height:100%;width:' + Math.min(expiryPct, 100) + '%;background:linear-gradient(90deg,#0E8A6C,' + barColor + ');border-radius:999px;transition:width .5s"></div></div>';
+            html += '<p style="font-size:.72rem;color:var(--muted);margin-top:.35rem">' + expiryPct + '% of the current registration life elapsed · TLD: <span class="pill">' + tld + '</span></p>';
+        }
+
+        html += '<table style="width:100%;border-collapse:collapse;font-size:.9rem;margin-top:1.1rem">';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;width:170px;border-bottom:1px solid #E4E8EF">Registrar</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + norm(registrar) + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Created</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + dateStr(created) + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Updated</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + dateStr(updated) + (daysSinceUpdated != null ? ' <span style="color:var(--muted);font-size:.75rem">(' + fmt.num(daysSinceUpdated) + 'd ago)</span>' : '') + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Expiry</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + dateStr(expiry) + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Name Servers</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + (nameservers.length ? nameservers.map(esc).join('<br>') : '—') + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Status</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">' + esc(status) + '</td></tr>';
+        html += '<tr><td style="padding:.45rem .6rem;font-weight:700">Handle</td><td style="padding:.45rem .6rem">' + norm(hdl) + '</td></tr>';
+        html += '</table>';
+
+        html += '<div style="margin-top:1.1rem;display:flex;gap:.5rem;flex-wrap:wrap">'
+            + '<button class="btn btn-secondary" id="dac-copy" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Details</button>'
+            + '</div>';
+
+        $('#dac-output').innerHTML = html;
+        $('#dac-copy').addEventListener('click', e => copyText($('#dac-output').innerText, e.currentTarget));
+    }
+
+    const DNS_TYPES = ['A', 'AAAA', 'NS', 'MX', 'TXT'];
+
+    const dnsTypeName = (t) => ({ A: 'IPv4 (A)', AAAA: 'IPv6 (AAAA)', NS: 'Nameserver', MX: 'Mail Exchange', TXT: 'Text (TXT)' })[t] || t;
+
+    async function fetchDns(domain){
+        const single = async (type) => {
+            try {
+                const ctrl = new AbortController();
+                const t = setTimeout(() => ctrl.abort(), 6000);
+                const res = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(domain) + '&type=' + type, { signal: ctrl.signal });
+                clearTimeout(t);
+                if (!res.ok) return null;
+                const data = await res.json();
+                if (data.Status !== 0 || !Array.isArray(data.Answer)) return null;
+                return { type, rows: data.Answer.map(a => ({ data: a.data, ttl: a.TTL })) };
+            } catch(e){ return null; }
+        };
+        const settled = await Promise.all(DNS_TYPES.map(single));
+        const results = {};
+        for (const s of settled) if (s && s.rows.length) results[s.type] = s.rows;
+        return results;
+    }
+
+    function renderDns(results, domain){
+        const types = Object.keys(results);
+        const total = types.reduce((s, t) => s + results[t].length, 0);
+
+        let html = '<h2 style="font-size:1rem;font-weight:600;margin:1.4rem 0 .5rem;color:var(--primary)">🌐 DNS Records <span style="font-size:.72rem;font-weight:400;color:var(--muted)">(live via Google Public DNS)</span></h2>';
+        if (!types.length){
+            html += '<p style="font-size:.82rem;color:var(--muted)">No records retrieved — the DNS resolver was unreachable. RDAP data above is unaffected.</p>';
+            return html;
+        }
+        html += '<p style="font-size:.75rem;color:var(--muted);margin-bottom:.4rem">' + total + ' record' + (total !== 1 ? 's' : '') + ' for <strong>' + esc(domain) + '</strong></p>';
+        html += '<table style="width:100%;border-collapse:collapse;font-size:.85rem">';
+        html += '<tr style="background:#f8fafc"><th style="text-align:left;padding:.45rem .6rem;border-bottom:2px solid #E4E8EF">Type</th><th style="text-align:left;padding:.45rem .6rem;border-bottom:2px solid #E4E8EF">Data</th><th style="text-align:left;padding:.45rem .6rem;border-bottom:2px solid #E4E8EF;width:90px">TTL</th></tr>';
+        for (const type of DNS_TYPES){
+            if (!results[type] || !results[type].length) continue;
+            for (const r of results[type]){
+                html += '<tr><td style="padding:.4rem .6rem;border-bottom:1px solid #F3F5F9"><span class="pill">' + dnsTypeName(type) + '</span></td><td style="padding:.4rem .6rem;border-bottom:1px solid #F3F5F9;word-break:break-all">' + esc(r.data) + '</td><td style="padding:.4rem .6rem;border-bottom:1px solid #F3F5F9;color:var(--muted)">' + r.ttl + 's</td></tr>';
+            }
+        }
+        html += '</table>';
+        return html;
+    }
+
+    async function doCheck(){
+        const raw = $('#dac-domain').value.trim();
+        if(!raw){ toast('Enter a domain','err'); return; }
+        const domain = raw.replace(/^(https?:\/\/)?(www\.)?/i,'').replace(/\/.*$/,'').toLowerCase().trim();
+        if(!domain || !domain.includes('.')){ toast('Enter a valid domain','err'); return; }
+
+        const btn = $('#dac-check');
+        btn.disabled = true;
+        $('#dac-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Looking up <strong>' + esc(domain) + '</strong>…</p>';
+
+        try {
+            const [data, dns] = await Promise.all([fetchRdap(domain), fetchDns(domain)]);
+            render(data, domain);
+            $('#dac-output').insertAdjacentHTML('beforeend', renderDns(dns, domain));
+        } catch(e){
+            $('#dac-output').innerHTML = '<div class="alert err">⚠️ <strong>Lookup failed:</strong> ' + esc(e.message || 'Could not reach RDAP registries') + '. The domain may not exist or the registry may be unreachable — try again shortly.</div>';
+        }
+        btn.disabled = false;
+    }
+
+    $('#dac-check').addEventListener('click', doCheck);
+    $('#dac-domain').addEventListener('keydown', e => { if(e.key==='Enter') doCheck(); });
+
+    window.ToolsApp.toolPageInit('domain-age-checker');
+})();
+</script>
+</body>
+</html>

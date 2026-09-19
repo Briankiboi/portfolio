@@ -1,0 +1,102 @@
+/* ════════════════════════════════════════════════════════════════════
+   Shared Tool Search (animated suggestions) — used on all tool pages.
+   Requires catalog.js (window.TOOL_CATALOG) + app.js copyText-free.
+   CSS for the widget below; markup injected by assets/js/site-search.js.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* wrapper */
+.tool-search { position: relative; max-width: 1120px; margin: 0 auto 1.35rem; }
+
+/* pill input */
+.tool-search-box {
+    display: flex; align-items: center; gap: .55rem;
+    width: 100%; padding: .6rem 1rem;
+    border-radius: 14px;
+    border: 1.5px solid #dbe2dd;
+    background: #fff;
+    box-shadow: 0 3px 14px -7px rgba(15, 122, 67, .18);
+    transition: border-color .2s ease, box-shadow .25s ease, transform .2s ease;
+}
+.tool-search-box:focus-within {
+    border-color: rgba(20, 200, 107, .65);
+    box-shadow: 0 6px 22px -8px rgba(20, 200, 107, .4);
+    transform: translateY(-1px);
+}
+.tool-search-ico { color: #66737c; flex: none; }
+.tool-search-input {
+    flex: 1 1 auto; min-width: 0; border: none; outline: none; background: none;
+    font-family: inherit; font-size: .95rem; color: #17211c; font-weight: 600;
+}
+.tool-search-input::placeholder { color: #98a29d; font-weight: 500; }
+.tool-search-clear {
+    flex: none; width: 24px; height: 24px; display: none; place-items: center;
+    border: none; background: #eef2f0; color: #5a6b61; border-radius: 50%;
+    cursor: pointer; font-size: .8rem; line-height: 1;
+    transition: background .15s ease, transform .15s ease;
+}
+.tool-search-clear.show { display: grid; }
+.tool-search-clear:hover { background: #dfe7e2; transform: scale(1.1); }
+.tool-search-kbd {
+    flex: none; font-size: .7rem; font-weight: 700; color: #8b9790;
+    border: 1px solid #dde4df; border-bottom-width: 2px; border-radius: 5px;
+    padding: 2px 7px; background: #f6f8f7;
+}
+.tool-search-kbd.hide { display: none; }
+
+/* dropdown */
+.tool-search-drop {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+    background: #fff; border: 1px solid #e2e8e3; border-radius: 14px;
+    box-shadow: 0 18px 48px -14px rgba(10, 40, 25, .35);
+    overflow: hidden;
+    max-height: 320px; overflow-y: auto;
+    z-index: 60;
+    /* entrance animation */
+    opacity: 0; transform: translateY(-6px) scale(.99);
+    visibility: hidden;
+    transition: opacity .18s ease, transform .22s cubic-bezier(.2,.7,.3,1.2), visibility .18s;
+}
+.tool-search-drop.open { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
+
+.tool-search-empty {
+    padding: 1rem 1.1rem; font-size: .85rem; color: #71807a;
+    display: flex; gap: .5rem; align-items: center;
+}
+.tool-search-item {
+    display: flex; align-items: center; gap: .8rem;
+    padding: .65rem 1.1rem; cursor: pointer; width: 100%;
+    border: none; background: none; text-align: left;
+    font-family: inherit; font-size: .9rem; color: #25332c;
+    animation: tssIn .28s ease both;
+    transition: background .15s ease;
+}
+.tool-search-item:hover, .tool-search-item.cur { background: #f0f7f3; }
+.tool-search-item .tss-ico {
+    flex: none; width: 38px; height: 38px; display: grid; place-items: center;
+    border-radius: 10px; background: linear-gradient(135deg, #16c97c, #0e7a43);
+    color: #fff; font-size: .85rem;
+}
+.tool-search-item .tss-meta { min-width: 0; flex: 1 1 auto; }
+.tool-search-item .tss-name { font-weight: 700; }
+.tool-search-item .tss-name mark { background: none; color: #0e9d59; font-weight: 900; }
+.tool-search-item .tss-desc {
+    display: block; font-size: .78rem; color: #7c8983; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tool-search-item .tss-cat {
+    flex: none; font-size: .68rem; font-weight: 800; letter-spacing: .05em;
+    text-transform: uppercase; color: #0e7a43; background: #e6f5ec;
+    border-radius: 999px; padding: 3px 9px; white-space: nowrap;
+}
+.tool-search-item .tss-open-ic { flex: none; color: #9fb0a8; font-size: .75rem; }
+
+@keyframes tssIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+    .tool-search { margin-bottom: 1rem; }
+    .tool-search-kbd { display: none; }
+    .tool-search-item .tss-cat { display: none; }
+}
