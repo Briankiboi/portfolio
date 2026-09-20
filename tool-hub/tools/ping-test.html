@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ping Test — Free Tools Hub</title>
-<meta name="description" content="Measure HTTP round-trip time to any URL with a client-side ping simulation — offline clone.">
+<meta name="description" content="Measure how fast any website responds from your browser  see average, fastest, and slowest response times and how many pings replied. Fully client-side.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -37,7 +37,7 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-tower-cell" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>Ping Test</h1>
-                <p>Measure HTTP round-trip time to any URL. Uses timestamped HEAD requests to simulate ping rounds — results show per-ping latency and aggregate stats.</p>
+                <p>See how fast a site responds from your browser. Runs quick test pings to any URL and shows fastest, average, and slowest response times — plain-language results.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">Network</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -82,18 +82,19 @@
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Sends one <code>HEAD</code> request per round to your URL with a <code>no-cors</code>, <code>no-store</code> cache-buster query (<code>?_ping=timestamp</code>) so repeat pings aren't served from a cache. Each round's round-trip time is measured from your browser; a 5-second timeout marks a round as lost. Results are summarised as <strong>min</strong>, <strong>avg</strong>, <strong>max</strong>, <strong>jitter</strong> (max − min), <strong>packet loss %</strong>, a verdict and a per-round table and bar chart.</p>
+                    <p>The tool sends test requests to your URL from your browser and measures each response time. Choose how many pings to run — more pings provide a steadier average. Results show the fastest, average, slowest, and any lost pings.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>This is an <em>application-layer</em> ping — requests go straight from your browser to the target (not ICMP, and no server or proxy in between).</p>
+                    <p>The test runs entirely in your browser. Requests go directly from your device to the URL. Nothing is stored or tracked.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>If you omit the scheme, <code>https://</code> is added for you.</li>
-                        <li>Because of <code>no-cors</code>, the round-trip is still measurable across origins — good for testing any public site.</li>
-                        <li>High jitter means connection stability issues; run with a higher count for a steadier average.</li>
+                        <li>Works with public <code>https://</code> URLs.</li>
+                        <li>If you omit the scheme, <code>https://</code> is added automatically.</li>
+                        <li>Use 10+ pings for a more reliable average.</li>
+                        <li>Slow or blocked sites may show lost pings.</li>
                     </ul>
                 </div>
             </div>
@@ -116,7 +117,18 @@
 <script>
 (function(){
     'use strict';
-    const { $, esc, toast } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob } = window.ToolsApp;
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+
+    let lastResult = null;
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
 
     let running = false;
 
@@ -146,32 +158,21 @@
 
     function computeStats(times){
         if(!times.length) return null;
-        const sorted = [...times].sort((a,b)=>a-b);
-        const min = sorted[0];
-        const max = sorted[sorted.length-1];
-        const avg = Math.round(times.reduce((s,v)=>s+v,0)/times.length);
-        const jitter = sorted.length > 1 ? Math.round(sorted[sorted.length-1] - sorted[0]) : 0;
-        return { min, max, avg, jitter };
-    }
-
-    function verdict(avg, loss){
-        if(loss > 50) return { text: 'Unreachable / High Loss', color: '#b91c1c', bg: '#fef2f2' };
-        if(avg < 100) return { text: 'Great', color: '#15803d', bg: '#f0fdf4' };
-        if(avg < 300) return { text: 'OK', color: '#1e40af', bg: '#eff6ff' };
-        return { text: 'Slow', color: '#b45309', bg: '#fffbeb' };
-    }
-
-    function renderBars(times, maxMs){
-        if(!times.length) return '';
-        const cappedMax = Math.max(maxMs, 1);
-        let html = '<div style="display:flex;align-items:flex-end;gap:3px;height:60px;margin:1rem 0">';
-        for(let i=0; i<times.length; i++){
-            const pct = Math.min((times[i] / cappedMax) * 100, 100);
-            const color = times[i] < 100 ? '#15803d' : times[i] < 300 ? '#1e40af' : '#b91c1c';
-            html += '<div title="Ping '+(i+1)+': '+times[i]+'ms" style="flex:1;height:'+pct+'%;background:'+color+';border-radius:4px 4px 0 0;min-width:12px;transition:height .3s"></div>';
+        let fastest = times[0], slowest = times[0], sum = 0;
+        for(const t of times){
+            if(t < fastest) fastest = t;
+            if(t > slowest) slowest = t;
+            sum += t;
         }
-        html += '</div>';
-        return html;
+        return { fastest: fastest, average: Math.round(sum / times.length), slowest: slowest };
+    }
+
+    function pingVerdict(avg, replied, count){
+        const lost = ((count - replied) / count) * 100;
+        if(lost > 50) return { text: 'Hard to reach', sub: 'Only ' + replied + ' of ' + count + ' pings replied', color: '#b91c1c', bg: '#fee2e2' };
+        if(avg < 100) return { text: 'Great', sub: 'Average ' + avg + ' ms response time', color: '#15803d', bg: '#dcfce7' };
+        if(avg < 300) return { text: 'OK', sub: 'Average ' + avg + ' ms response time', color: '#1e40af', bg: '#dbeafe' };
+        return { text: 'Slow', sub: 'Average ' + avg + ' ms response time', color: '#b45309', bg: '#fef3c7' };
     }
 
     async function doPing(){
@@ -203,46 +204,71 @@
         running = false;
         $('#ping-start').disabled = false;
 
-        const losses = allResults.filter(r=>!r.ok).length;
-        const lossPct = Math.round((losses/count)*100);
+        const replied = allResults.filter(r=>r.ok).length;
+        const lost = allResults.length - replied;
         const successTimes = allResults.filter(r=>r.ok).map(r=>r.ms);
         const stats = computeStats(successTimes);
-        const v = stats ? verdict(stats.avg, lossPct) : { text: 'Unreachable', color: '#b91c1c', bg: '#fef2f2' };
-        const maxMs = stats ? stats.max : 100;
+        const v = stats ? pingVerdict(stats.average, replied, allResults.length) : { text: 'No replies', sub: 'The site did not respond or blocked the request', color: '#b91c1c', bg: '#fee2e2' };
+        lastResult = { url: raw, count: allResults.length, replied: replied, lost: lost, stats: stats, allResults: allResults };
 
         let html = '';
 
-        // Stats cards
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;align-items:center;padding:1rem 1.2rem;border-radius:14px;background:' + v.bg + ';margin-bottom:1rem">'
+            + '<span style="font-size:1.4rem;font-weight:900;color:' + v.color + '">' + v.text + '</span>'
+            + '<span style="font-size:.86rem;color:' + v.color + ';font-weight:700">' + v.sub + '</span>'
+            + '</div>';
+
         if(stats){
-            html += '<div class="stat-grid">';
-            html += '<div class="stat"><div class="num" style="color:#15803d">'+stats.min+'</div><div class="lbl">Min (ms)</div></div>';
-            html += '<div class="stat"><div class="num">'+stats.avg+'</div><div class="lbl">Avg (ms)</div></div>';
-            html += '<div class="stat"><div class="num" style="color:#b91c1c">'+stats.max+'</div><div class="lbl">Max (ms)</div></div>';
-            html += '<div class="stat"><div class="num" style="color:#0E8A6C">'+stats.jitter+'</div><div class="lbl">Jitter (ms)</div></div>';
+            html += '<div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">';
+            html += '<div class="stat"><div class="num">' + stats.fastest + ' <span style="font-size:.7rem">ms</span></div><div class="lbl">Fastest</div></div>';
+            html += '<div class="stat"><div class="num">' + stats.average + ' <span style="font-size:.7rem">ms</span></div><div class="lbl">Average</div></div>';
+            html += '<div class="stat"><div class="num">' + stats.slowest + ' <span style="font-size:.7rem">ms</span></div><div class="lbl">Slowest</div></div>';
+            html += '<div class="stat"><div class="num" style="color:' + (lost > 0 ? '#b91c1c' : '#15803d') + '">' + replied + '/' + allResults.length + '</div><div class="lbl">Pings replied</div></div>';
             html += '</div>';
         }
 
-        html += '<div class="stat-grid" style="grid-template-columns:1fr 1fr">';
-        html += '<div class="stat"><div class="num" style="color:'+(lossPct>0?'#b91c1c':'#15803d')+'">'+lossPct+'%</div><div class="lbl">Packet Loss</div></div>';
-        html += '<div class="stat"><div style="background:'+v.bg+';color:'+v.color+';font-weight:900;font-size:1.1rem;padding:.5rem;border-radius:10px">'+v.text+'</div><div class="lbl" style="margin-top:.3rem">Verdict</div></div>';
-        html += '</div>';
-
-        // Bar chart
-        html += renderBars(successTimes, maxMs);
-
-        // Per-round table
-        html += '<table style="width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.8rem">';
-        html += '<tr style="background:#F3F5F9"><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Round</th><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">RTT (ms)</th><th style="padding:.4rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Status</th></tr>';
+        html += '<div class="table-scroll" style="margin-top:1rem">'
+            + '<table style="width:100%;border-collapse:collapse;font-size:.85rem;min-width:340px">'
+            + '<tr style="background:#F3F5F9"><th style="padding:.45rem .7rem;text-align:left;border-bottom:2px solid #E4E8EF;width:20%">Ping</th>'
+            + '<th style="padding:.45rem .7rem;text-align:left;border-bottom:2px solid #E4E8EF;width:30%">Response time</th>'
+            + '<th style="padding:.45rem .7rem;text-align:left;border-bottom:2px solid #E4E8EF">Status</th></tr>';
         for(const r of allResults){
             const msColor = r.ms < 100 ? '#15803d' : r.ms < 300 ? '#1e40af' : '#b91c1c';
-            html += '<tr><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF;font-weight:700">'+r.round+'</td><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF;color:'+msColor+';font-weight:700">'+r.ms+'</td><td style="padding:.35rem .6rem;border-bottom:1px solid #E4E8EF">'+(r.ok?'<span style="color:#15803d">✓ Reply</span>':'<span style="color:#b91c1c">✕ '+(r.timeout?'Timeout':'Error')+'</span>')+'</td></tr>';
+            html += '<tr><td style="padding:.4rem .7rem;border-bottom:1px solid #E4E8EF;font-weight:700">#' + r.round + '</td>'
+                + '<td style="padding:.4rem .7rem;border-bottom:1px solid #E4E8EF;font-weight:700;font-variant-numeric:tabular-nums;color:' + (r.ok ? msColor : 'var(--muted)') + '">' + (r.ok ? r.ms + ' ms' : '—') + '</td>'
+                + '<td style="padding:.4rem .7rem;border-bottom:1px solid #E4E8EF">' + (r.ok ? '<span style="color:#15803d;font-weight:700">✓ Replied</span>' : '<span style="color:#b91c1c;font-weight:700">✕ ' + (r.timeout ? 'Timed out' : 'No response') + '</span>') + '</td></tr>';
         }
-        html += '</table>';
+        html += '</table></div>';
 
-        html += '<div style="margin-top:1rem"><button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector(\'#ping-output table\').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Results</button></div>';
+        html += '<div style="margin-top:1rem"><button class="btn btn-secondary" id="ping-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Results (.csv)</button></div>';
 
         $('#ping-output').innerHTML = html;
+        $('#ping-export').addEventListener('click', buildPingCsv);
         toast('Ping test complete');
+    }
+
+    function buildPingCsv(){
+        if(!lastResult) return;
+        const { url, count, replied, lost, stats, allResults } = lastResult;
+        let csv = '\uFEFF';
+        csv += 'Report,Ping Test\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Target,' + csvCell(url) + '\n';
+        csv += 'Pings,' + count + '\n';
+        csv += 'Replies,' + replied + ' of ' + count + '\n';
+        csv += 'Lost,' + lost + '\n';
+        if(stats){
+            csv += 'Fastest (ms),' + stats.fastest + '\n';
+            csv += 'Average (ms),' + stats.average + '\n';
+            csv += 'Slowest (ms),' + stats.slowest + '\n';
+        }
+        csv += '\nPING,RTT (ms),STATUS\n';
+        for(const r of allResults){
+            csv += csvCell(r.round) + ',' + (r.ok ? r.ms : '') + ',' + csvCell(r.ok ? 'Replied' : (r.timeout ? 'Timed out' : 'No response')) + '\n';
+        }
+        let host = 'ping';
+        try { if(url) host = new URL(url).hostname.replace(/\./g, '_'); } catch(e){}
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'ping-' + host + '-' + new Date().toISOString().slice(0, 10) + '.csv');
     }
 
     $('#ping-start').addEventListener('click', doPing);
