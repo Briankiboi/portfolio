@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IP Geolocation &amp; Map Finder — Free Tools Hub</title>
-<meta name="description" content="Discover the city, country, ISP, timezone and coordinates of any IP or domain, with a live map pin — client-side tool.">
+<title>IP Geolocation &amp; Map Finder Free Tools Hub</title>
+<meta name="description" content="Pin your precise device location on a map, get the exact area, coordinates, ISP, timezone and country, and copy a delivery-ready address. Fully client-side.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -37,7 +37,7 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>IP Geolocation &amp; Map Finder</h1>
-                <p>Discover the physical city, country, ISP, timezone, and coordinates of any IP address or domain.</p>
+                <p>Pin your precise device location on a map, get your exact area, coordinates, ISP, timezone and country — then copy a delivery-ready address.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">Network</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -48,31 +48,31 @@
             
 
             <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-                <button id="geo-lookup" class="btn btn-primary" style="flex:1;min-width:180px">📍 Locate</button>
-                <button id="geo-locate-me" class="btn btn-secondary" style="flex:1;min-width:220px">📱 Use My Precise Device Location</button>
+                <button id="geo-locate-me" class="btn btn-primary" style="flex:1;min-width:220px">📱 Use My Precise Device Location</button>
             </div>
 
             <!-- Results -->
             <div class="result-box" id="geo-result" style="margin-top:1.5rem" aria-live="polite">
                 <h2>Result</h2>
-                <div id="geo-output"><p class="output-text">Click 📍 Locate to detect your own IP, or 📱 Use My Precise Device Location to pin your current position.</p></div>
+                <div id="geo-output"><p class="output-text">Click 📱 Use My Precise Device Location to pin your current position — see it on the map and copy a delivery-ready address.</p></div>
             </div>
 
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>📍 <strong>Locate</strong> resolves an IP, domain or URL (domains are answered by querying Google/Cloudflare's public DNS for the host first) and then geolocates it against a stack of free services tried in order: <code>ipwho.is</code> (primary), <code>ipapi.co</code> and <code>ipinfo.io</code> (automatic backups). Fields are normalised across providers and, when coordinates exist, the result is pinned on an embedded OpenStreetMap. <strong>Precise device location</strong> instead uses your browser's own GPS/Wi-Fi geolocation to pin where you physically are.</p>
+                    <p><strong>📱 Use My Precise Device Location</strong> pins where you actually are using your browser's GPS and Wi-Fi, then shows it on a map — with your area, city, country, ISP, timezone, and coordinates.</p>
+                    <p><strong>Copy Location</strong> copies your exact coordinates pin — the precise point on the map, ready to paste into a delivery or ride app. <strong>Download Report (.csv)</strong> saves the full details.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Your query (IP or domain) is sent only to the free provider actually used for the lookup — never stored locally, never tracked by this hub.</p>
+                    <p>Your lookup is sent only to the geolocation service used. This hub does not store or track your searches.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>Leave the field empty and click 📍 Locate to detect your own public IP.</li>
-                        <li>Provider results are approximate — typically city-level accuracy, not street-level.</li>
-                        <li>Precise device location asks for browser permission and generally requires HTTPS or <code>localhost</code>.</li>
+                        <li>Precise device location requires browser permission and HTTPS or <code>localhost</code>.</li>
+                        <li>The exact area is resolved live from map data — it's not guessed.</li>
+                        <li>For delivery or pickup, just hit Copy Location and paste it into the app.</li>
                     </ul>
                 </div>
             </div>
@@ -95,7 +95,19 @@
 <script>
 (function(){
     'use strict';
-    const { $, esc, toast, copyText } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob, copyText } = window.ToolsApp;
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+
+    let lastResult = null;
+    let lastDomain = null;
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
 
     const FLAG_MAP = {
         'AF':'🇿🇦','AL':'🇦🇱','DZ':'🇩🇿','AR':'🇦🇷','AM':'🇦🇲','AU':'🇦🇺','AT':'🇦🇹','AZ':'🇦🇿',
@@ -127,73 +139,81 @@
         return FLAG_MAP[country.toUpperCase()] || '🌍';
     }
 
-    function copyBtn(val){
-        return '<button onclick="window.ToolsApp.copyText(\''+esc(val).replace(/'/g,"\\'")+'\',this)" style="background:#F3F5F9;border:1px solid #C9D2DE;border-radius:7px;padding:.15rem .45rem;font-size:.72rem;cursor:pointer;color:var(--primary);font-weight:700;margin-left:.4rem;white-space:nowrap">📋 Copy</button>';
-    }
-
-    function row(label, value, raw){
+    function row(label, value){
         const v = value ? esc(String(value)) : '—';
-        const r = raw || value || '';
-        return '<tr><td style="padding:.55rem .6rem;font-weight:800;border-bottom:1px solid #E9EDF3;width:140px;color:var(--muted)">'+label+'</td><td style="padding:.55rem .6rem;border-bottom:1px solid #E9EDF3;word-break:break-word">'+v+(r?copyBtn(r):'')+'</td></tr>';
+        return '<tr><td>' + label + '</td><td>' + v + '</td></tr>';
     }
 
     let gpsPinned = false;
     let gpsOverride = null;
     let queriedDomain = null;
 
-    function isIpLike(s){
-        if(/^(\d{1,3}\.){3}\d{1,3}$/.test(s)) return true;
-        if(s.indexOf(':') !== -1) return true;
-        return false;
+    function shareText(d){
+        const lat = d.latitude, lng = d.longitude;
+        if(lat != null && lng != null) return String(lat) + ', ' + String(lng);
+        const cityRegion = [d.city, d.region].filter(Boolean).join(', ');
+        const place = [d.area, cityRegion, d.country_name || d.country].filter(Boolean).join(', ');
+        return place || (d.ip ? '📍 IP located: ' + d.ip : '');
     }
 
-    async function resolveDomain(host){
-        const urls = [
-            'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(host) + '&type=A',
-            'https://dns.google/resolve?name=' + encodeURIComponent(host) + '&type=A'
-        ];
-        for(const url of urls){
-            try {
-                const r = await fetch(url, { headers: { 'accept': 'application/dns-json' } });
-                if(!r.ok) continue;
-                const j = await r.json();
-                if(j.Status === 0 && j.Answer){
-                    const a = j.Answer.find(x => x.type === 1 && x.data);
-                    if(a) return a.data;
-                }
-            } catch(e){ /* try next resolver */ }
-        }
-        return null;
-    }
-
-    function mapIframe(lat, lng){
-        const bbox = (lng-0.08)+','+(lat-0.05)+','+(lng+0.08)+','+(lat+0.05);
-        return '<iframe src="https://www.openstreetmap.org/export/embed.html?bbox='+bbox+'&amp;layer=mapnik&amp;marker='+lat+','+lng+'" title="Map" loading="lazy"></iframe>';
+    function buildCsv(){
+        if(!lastResult) return;
+        const d = lastResult;
+        const cityRegion = [d.city, d.region].filter(Boolean).join(', ');
+        const place = [d.area, cityRegion, d.country_name || d.country].filter(Boolean).join(', ');
+        let csv = '\uFEFF';
+        csv += 'Report,IP Geolocation & Map Finder\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        if(d.ip) csv += 'IP Address,' + csvCell(d.ip) + '\n';
+        if(d.area) csv += 'Nearest Area,' + csvCell(d.area) + '\n';
+        if(place) csv += 'Location,' + csvCell(place) + '\n';
+        if(d.latitude != null && d.longitude != null) csv += 'Coordinates,' + csvCell(d.latitude + ', ' + d.longitude) + '\n';
+        if(d.timezone) csv += 'Timezone,' + csvCell(d.timezone) + '\n';
+        if(d.isp || d.org) csv += 'ISP,' + csvCell(d.isp || d.org) + '\n';
+        if(d.org) csv += 'Organization,' + csvCell(d.org) + '\n';
+        if(d.as || d.asn) csv += 'ASN,' + csvCell(d.as || d.asn) + '\n';
+        if(d.currency) csv += 'Currency,' + csvCell(d.currency) + '\n';
+        if(d.languages) csv += 'Languages,' + csvCell(d.languages) + '\n';
+        let name = 'location';
+        if(d.ip) name = d.ip.replace(/[^A-Za-z0-9]/g, '_');
+        else if(d.latitude != null && d.longitude != null) name = d.latitude + '_' + d.longitude;
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'geolocation-' + name + '-' + new Date().toISOString().slice(0, 10) + '.csv');
     }
 
     function renderResult(d){
         const coords = d.latitude != null && d.longitude != null;
+        const cityRegion = [d.city, d.region].filter(Boolean).join(', ');
+        const place = [d.area, cityRegion, d.country_name || d.country].filter(Boolean).join(', ');
+        const cCode = (d.country_code || '').toUpperCase();
+        const share = shareText(d);
+
         let html = '';
+
+        html += '<div class="geo-head">';
+        if(d.country_name || d.country) html += '<span class="geo-flag">' + flag(cCode, d.flagEmoji) + '</span>';
+        html += '<div class="geo-head-main">';
+        if(d.country_name || d.country) html += '<span class="geo-country">' + esc(d.country_name || d.country) + '</span>';
+        if(cCode) html += '<span class="geo-cc">' + esc(cCode) + '</span>';
+        html += '</div>';
+        html += '<span class="geo-ip">' + esc(queriedDomain || d.ip || '') + '</span>';
+        html += '</div>';
+
+        html += '<div class="geo-body">';
         if(coords){
-            html += '<div class="geo-grid"><div class="geo-map">';
-            if(gpsPinned) html += '<div class="geo-note">📍 Pinned to your precise device location</div>';
+            html += '<div class="geo-map">';
+            if(gpsPinned || d.preciseMode) html += '<div class="geo-note">📍 Pinned to your precise device location</div>';
             html += mapIframe(Number(d.latitude), Number(d.longitude));
-            html += '<a class="geo-open" href="https://www.openstreetmap.org/?mlat='+d.latitude+'&amp;mlon='+d.longitude+'#map=12/'+d.latitude+'/'+d.longitude+'" target="_blank">↗ Open larger map</a>';
-            html += '</div><div class="geo-detail">';
+            html += '<a class="geo-open" href="https://www.openstreetmap.org/?mlat=' + d.latitude + '&amp;mlon=' + d.longitude + '#map=12/' + d.latitude + '/' + d.longitude + '" target="_blank" rel="noopener">↗ Open larger map</a>';
+            html += '</div>';
             gpsPinned = false;
         }
-
-        html += '<table style="width:100%;border-collapse:collapse;font-size:.92rem">';
+        html += '<div class="geo-detail">';
+        html += '<table class="geo-table">';
+        if(place) html += row('Location', place);
+        if(d.area) html += row('Nearest Area', d.area);
         if(d.ip) html += row('IP Address', d.ip);
         if(queriedDomain) html += row('Domain', queriedDomain);
-        const cityRegion = [d.city, d.region].filter(Boolean).join(', ');
-        if(cityRegion) html += row('City / Region', cityRegion, cityRegion);
-        if(d.country_name || d.country){
-            const cName = d.country_name || d.country;
-            const cCode = (d.country_code || '').toUpperCase();
-            html += '<tr><td style="padding:.55rem .6rem;font-weight:800;border-bottom:1px solid #E9EDF3;width:140px;color:var(--muted)">Country</td><td style="padding:.55rem .6rem;border-bottom:1px solid #E9EDF3"><span style="margin-right:.3rem">'+flag(cCode, d.flagEmoji)+'</span> '+esc(cName)+(cCode?copyBtn(cCode):'')+'</td></tr>';
-        }
-        if(d.latitude != null && d.longitude != null) html += row('Coordinates', d.latitude+', '+d.longitude, d.latitude+','+d.longitude);
+        if(coords) html += row('Coordinates', d.latitude + ', ' + d.longitude);
         if(d.timezone) html += row('Timezone', d.timezone);
         if(d.isp || d.org) html += row('ISP', d.isp || d.org);
         if(d.org) html += row('Organization', d.org);
@@ -202,11 +222,27 @@
         if(d.languages) html += row('Languages', d.languages);
         html += '</table>';
 
-        html += '<div style="margin-top:1rem"><button class="btn btn-secondary" onclick="window.ToolsApp.copyText(JSON.stringify('+JSON.stringify(d).replace(/'/g,"\\'").replace(/</g,'&lt;')+'))" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Raw JSON</button></div>';
+        html += '<div class="geo-sharebox">'
+            + '<div class="geo-sharebox-label">Copy to paste into a delivery / ride app:</div>'
+            + '<pre class="geo-share-text">' + esc(share) + '</pre>'
+            + '</div>';
 
-        if(coords) html += '</div></div>';
+        html += '<div style="margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap">'
+            + '<button class="btn btn-secondary" id="geo-share" style="font-size:.82rem;padding:.45rem .9rem">📤 Copy Location</button>'
+            + '<button class="btn btn-secondary" id="geo-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
+            + '</div>';
+
+        html += '</div>';
+        html += '</div>';
 
         $('#geo-output').innerHTML = html;
+        $('#geo-share').addEventListener('click', () => copyText(shareText(d), $('#geo-share')));
+        $('#geo-export').addEventListener('click', buildCsv);
+    }
+
+    function mapIframe(lat, lng){
+        const bbox = (lng-0.08)+','+(lat-0.05)+','+(lng+0.08)+','+(lat+0.05);
+        return '<iframe src="https://www.openstreetmap.org/export/embed.html?bbox='+bbox+'&amp;layer=mapnik&amp;marker='+lat+','+lng+'" title="Map" loading="lazy"></iframe>';
     }
 
     const SERVICES = [
@@ -248,45 +284,13 @@
         return d;
     }
 
-    function cleanTarget(raw){
-        if(!raw) return '';
-        let s = String(raw).trim();
-        s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
-        s = s.replace(/^\/\//, '');
-        const slash = s.indexOf('/');
-        if (slash !== -1) s = s.slice(0, slash);
-        const q = s.indexOf('?');
-        if (q !== -1) s = s.slice(0, q);
-        s = s.replace(/^([^:]+):\d+$/, '$1');
-        return s.replace(/\.$/, '');
-    }
-
-    async function doLookup(forcedTarget){
-        const ip = cleanTarget(forcedTarget != null ? forcedTarget : '');
-        if(ip && /[^\w.:\-]/.test(ip)){
-            $('#geo-output').innerHTML = '<div class="alert err">⚠️ <strong>That doesn\'t look like an IP address or domain.</strong><br>Try <code>8.8.8.8</code>, <code>example.com</code> or a full URL like <code>https://example.com/page</code> — I\'ll clean it. Leave it empty to locate your own IP.</div>';
-            return;
-        }
-        queriedDomain = null;
-        let target = ip;
-        $('#geo-lookup').disabled = true;
-        if(ip && !isIpLike(ip)){
-            $('#geo-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Resolving <strong>' + esc(ip) + '</strong> to an IP address…</p>';
-            const resolved = await resolveDomain(ip);
-            if(!resolved){
-                $('#geo-output').innerHTML = '<div class="alert err">⚠️ <strong>Could not resolve <code>' + esc(ip) + '</code> to an IP address.</strong><br>The domain has no public A record — check the spelling (e.g. <code>example.com</code>), or leave it empty to locate your own IP instead.</div>';
-                $('#geo-lookup').disabled = false;
-                return;
-            }
-            queriedDomain = ip + ' → ' + resolved;
-            target = resolved;
-        }
-        $('#geo-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Locating' + (ip ? ' <strong>' + esc(ip) + '</strong>' : ' your IP') + '…</p>';
+    async function doLookup(){
+        $('#geo-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Locating your connection…</p>';
 
         let data = null, errors = [];
         for(const svc of SERVICES){
             try {
-                data = await tryFetch(svc.url(target), svc.success, svc.errorMsg);
+                data = await tryFetch(svc.url(''), svc.success, svc.errorMsg);
                 break;
             } catch(e){
                 errors.push(svc.name + ': ' + e.message);
@@ -296,47 +300,95 @@
         if(!data){
             gpsOverride = null;
             gpsPinned = false;
-            $('#geo-output').innerHTML = '<div class="alert err">⚠️ <strong>Could not locate ' + esc(ip || 'your IP') + '.</strong><br>' + esc(errors.join(' · ')) + ' — the services had no data for it. Check the spelling (domains need to resolve publicly), or try again in a moment.</div>';
-            $('#geo-lookup').disabled = false;
+            $('#geo-output').innerHTML = '<div class="alert err">⚠️ <strong>Could not locate your connection.</strong><br>' + esc(errors.join(' · ')) + ' — the location services had no data. Try again in a moment.</div>';
             return;
         }
 
         // Normalize fields across ipwho.is / ipapi.co / ipinfo.io shapes
-        let asn = data.asn || data.connection && data.connection.asn;
-        if(!asn && data.org && /^AS\d+/.test(data.org)) asn = data.org.split(' ')[0];
-        const org = data.org || data.connection && data.connection.org;
+        const str = v => {
+            if(v == null) return '';
+            if(typeof v === 'string') return v;
+            if(typeof v === 'number') return String(v);
+            if(typeof v === 'object'){
+                if(typeof v.id === 'string') return v.id;
+                if(typeof v.name === 'string') return v.name;
+                if(typeof v.code === 'string') return v.code;
+                if(typeof v.value === 'string') return v.value;
+                return '';
+            }
+            return '';
+        };
+        const con = data.connection || {};
         const locParts = (data.loc || '').split(',');
+        const latRaw = data.latitude != null ? data.latitude : (data.lat != null ? data.lat : (locParts[0] ? Number(locParts[0]) : null));
+        const lngRaw = data.longitude != null ? data.longitude : (data.lon != null ? data.lon : (data.lng != null ? data.lng : (locParts[1] ? Number(locParts[1]) : null)));
         const normalized = {
-            ip: data.ip,
-            city: data.city || data.city_name,
-            region: data.region || data.region_name,
-            country: data.country || data.country_code,
-            country_name: data.country_name || (data.country && data.country.length === 2 ? '' : data.country),
-            country_code: data.country_code || (data.country && data.country.length === 2 ? data.country : ''),
-            flagEmoji: data.flag && data.flag.emoji,
-            latitude: data.latitude || data.lat || (locParts[0] ? locParts[0] : null),
-            longitude: data.longitude || data.lon || data.lng || (locParts[1] ? locParts[1] : null),
-            isp: data.isp || data.connection && data.connection.isp || org,
-            org: org,
-            asn: asn,
-            timezone: data.timezone || data.time_zone,
-            currency: data.currency || data.currency_name,
-            languages: data.languages || data.language
+            ip: str(data.ip),
+            city: str(data.city) || str(data.city_name),
+            region: str(data.region) || str(data.region_name),
+            country: str(data.country) || str(data.country_code),
+            country_name: str(data.country_name) || (str(data.country).length === 2 ? '' : str(data.country)),
+            country_code: str(data.country_code) || (str(data.country).length === 2 ? str(data.country) : ''),
+            flagEmoji: data.flag && data.flag.emoji ? str(data.flag.emoji) : str(data.flag),
+            latitude: latRaw != null ? Number(latRaw) : null,
+            longitude: lngRaw != null ? Number(lngRaw) : null,
+            isp: str(data.isp) || str(con.isp) || str(con.org),
+            org: str(data.org) || str(con.org),
+            asn: str(data.asn) || str(con.asn),
+            timezone: str(data.timezone) || str(data.time_zone) || str(con.timezone),
+            currency: str(data.currency) || str(data.currency_name) || str(data.currency_code),
+            languages: str(data.languages) || str(data.language),
+            area: ''
         };
 
         if(gpsOverride){
-            normalized.latitude = gpsOverride.lat;
-            normalized.longitude = gpsOverride.lng;
+            const preciseMode = true;
+            normalized.latitude = Number(gpsOverride.lat);
+            normalized.longitude = Number(gpsOverride.lng);
             gpsPinned = true;
             gpsOverride = null;
+            normalized.preciseMode = preciseMode;
         }
 
         renderResult(normalized);
-        $('#geo-lookup').disabled = false;
+        lastResult = normalized;
+        lastDomain = queriedDomain;
+
+        if(normalized.preciseMode && normalized.latitude != null && normalized.longitude != null){
+            reverseGeocode(normalized.latitude, normalized.longitude).then(area => {
+                if(!area) return;
+                if(area.sub) normalized.area = area.sub;
+                if(area.city) normalized.city = area.city;
+                if(area.region) normalized.region = area.region;
+                if(area.country) normalized.country_name = area.country;
+                renderResult(normalized);
+                lastResult = normalized;
+            });
+        }
+
         toast('Location data loaded');
     }
 
-    $('#geo-lookup').addEventListener('click', () => doLookup());
+    async function reverseGeocode(lat, lng){
+        try {
+            const ctrl = new AbortController();
+            const t = setTimeout(() => ctrl.abort(), 7000);
+            const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=16&addressdetails=1&lat=' + lat + '&lon=' + lng, { signal: ctrl.signal, headers: { 'accept': 'application/json' } });
+            clearTimeout(t);
+            if(!res.ok) return null;
+            const j = await res.json();
+            const a = j.address || {};
+            const sub = a.suburb || a.neighbourhood || a.quarter || a.residential || a.road || a.hamlet || '';
+            const city = a.city || a.town || a.village || '';
+            if(!sub && !city) return null;
+            return {
+                sub: sub,
+                city: city,
+                region: a.state || a.region || '',
+                country: a.country || ''
+            };
+        } catch(e){ return null; }
+    }
 
     // Precise device location via browser geolocation
     $('#geo-locate-me').addEventListener('click', function(){
@@ -356,7 +408,7 @@
                 btn.disabled = false;
                 btn.textContent = '📱 Use My Precise Device Location';
                 toast('Location permission denied or unavailable', 'err');
-                $('#geo-output').innerHTML = '<p class="output-text">Could not get your device location. Click 📍 Locate instead.</p>';
+                $('#geo-output').innerHTML = '<p class="output-text">Could not get your device location. Check that location is allowed for this page, then try again.</p>';
             },
             { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
         );
