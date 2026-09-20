@@ -1,4 +1,4 @@
-const CACHE = 'dm-tools-v17';
+const CACHE = 'dm-tools-v18';
 const SHELL = [
   '/tool-hub/',
   '/tool-hub/index.html',

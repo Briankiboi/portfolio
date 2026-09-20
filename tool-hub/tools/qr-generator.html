@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QR Code Generator — Free Tools Hub</title>
-<meta name="description" content="Generate QR codes locally — text, URLs, and more — offline clone.">
+<meta name="description" content="Generate QR codes from text, a URL, or phone number — fully in your browser. Customize size, colors, and error correction, then download PNG or SVG.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -36,7 +36,7 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>QR Code Generator</h1>
-                <p>Generate QR codes from any text or URL. Uses qrcodejs — fully offline.</p>
+                <p>Generate QR codes from any text, URL, or phone number  right in your browser. Pick a size, colors, and error correction, then download PNG or SVG.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">Business</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -88,24 +88,23 @@
                 <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem">
                     <button class="btn btn-primary" id="qrg-dl-png">⬇️ Download PNG</button>
                     <button class="btn btn-secondary" id="qrg-dl-svg">⬇️ Download SVG</button>
-                    <button class="btn btn-ghost" id="qrg-copy-text">📋 Copy Text</button>
                 </div>
             </div>
         <div class="info-note">
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                <p>Renders your text into a QR code entirely in this page using a lightweight QR library loaded from a CDN. You control the <strong>size</strong>, the <strong>dark/light colors</strong> and the <strong>error-correction level</strong> (L / M / Q / H). The type is auto-detected as you type (URL, phone number or plain text). The finished code can be downloaded as <code>PNG</code> or <code>SVG</code>.</p>
+                <p>Enter text, a URL, or phone number to generate a QR code directly in your browser. Customize the <strong>size, colors, and error correction</strong>, then download it as <strong>PNG or SVG</strong>.</p>
             </div>
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                <p>Nothing you enter is uploaded or stored — encoding happens 100% on-device. If the CDN library can't load (offline or <code>file://</code>), a notice tells you to serve the folder with <code>python3 -m http.server</code>.</p>
+                <p>Everything is processed on your device. Your content is not uploaded or stored.</p>
             </div>
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                 <ul>
-                    <li>A higher error-correction level survives damage or partial obstruction, but makes the code denser.</li>
-                    <li>Keep strong dark-on-light contrast for reliable scanning — avoid light dark modules on dark backgrounds.</li>
-                    <li>URLs and phone numbers in a QR trigger the scanner's app to open or dial automatically when scanned.</li>
+                    <li>Higher error correction helps the QR code scan even when partly damaged.</li>
+                    <li>Use strong <strong>dark-on-light contrast</strong> for easier scanning.</li>
+                    <li>URLs and phone numbers can open or dial automatically when scanned.</li>
                 </ul>
             </div>
         </div>
@@ -203,8 +202,6 @@
         const blob = new Blob([svg], { type: 'image/svg+xml' });
         downloadBlob(blob, 'qrcode.svg');
     });
-
-    $('#qrg-copy-text').addEventListener('click', function(){ copyText($('#qrg-text').value, this); });
 })();
 </script>
 </body>
