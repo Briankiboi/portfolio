@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Name Generator — Free Tools Hub</title>
-<meta name="description" content="Generate creative business names from keywords — client-side, offline.">
+<title>Business Name Generator  Free Tools Hub</title>
+<meta name="description" content="Generate creative, brand-ready business name ideas from a keyword. Pick your industry, get a fresh set of names, copy them, and save favorites. Fully client-side.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -19,22 +19,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body class="tool-page">
+
+<!-- Shared Nav -->
 <div id="hub-header-slot" data-root="../"></div>
+
 <main>
-<div class="container">
+    <div class="container">
         <div class="page-crumb">
         <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
         <span class="page-crumb-title">Business Name Generator</span>
         </div>
 
-
-
-<div class="tool-shell" style="max-width:1120px;margin:0 auto" x-data="nameGen()" x-init="init()">
-    <header class="tool-meta">
+        <div class="tool-shell" style="max-width:1060px;margin:0 auto">
+            <header class="tool-meta">
             <span class="tool-meta-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>Business Name Generator</h1>
-                <p>Generate creative business name ideas from keywords. Pick your industry, style, and keyword — we'll brainstorm for you!</p>
+                <p>Turn one keyword into a set of brand-ready name ideas  pick your industry, generate, copy the ones you love, and keep them as favorites. Runs entirely in your browser.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">Business</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -42,92 +43,61 @@
             </div>
             <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
         </header>
-    
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem">
-        <div class="field"><label>Industry / Category</label>
-            <select x-model="industry">
-                <option value="general">General</option>
-                <option value="tech">Technology</option>
-                <option value="realestate">Real Estate</option>
-                <option value="food">Food &amp; Beverage</option>
-                <option value="health">Health &amp; Wellness</option>
-                <option value="fashion">Fashion &amp; Beauty</option>
-                <option value="finance">Finance &amp; Consulting</option>
-                <option value="education">Education</option>
-            </select>
-        </div>
-        <div class="field"><label>Name Style</label>
-            <select x-model="style">
-                <option value="all">All Styles</option>
-                <option value="modern">Modern</option>
-                <option value="classic">Classic</option>
-                <option value="fun">Fun &amp; Playful</option>
-                <option value="luxury">Luxury</option>
-                <option value="short">Short / 2-Letter</option>
-                <option value="alliteration">Alliteration</option>
-            </select>
-        </div>
-        <div class="field"><label>Keyword / Seed Word</label><input type="text" x-model="keyword" placeholder="e.g. Tech, Green, Swift" @keydown.enter="generate()"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:end;margin-top:.5rem">
-        <div class="field"><label>Number of Results: <span x-text="count"></span></label>
-            <input type="range" x-model="count" min="5" max="20" step="1" style="width:100%">
-        </div>
-        <button @click="generate()" class="btn btn-primary" style="height:38px;white-space:nowrap">Generate Names</button>
-    </div>
-
-    <!-- Results -->
-    <div x-show="results.length > 0" style="margin-top:1.5rem">
-        <h2 style="font-size:1rem;font-weight:600;margin:0 0 .75rem;color:var(--primary)">Generated Names</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.5rem">
-            <template x-for="(name, i) in results" :key="i">
-                <div style="background:#fff;border:1px solid #E4E8EF;border-radius:8px;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem">
-                    <div style="flex:1;min-width:0">
-                        <div style="font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" x-text="name"></div>
-                        <div style="font-size:.72rem;color:#10b981;display:flex;align-items:center;gap:.25rem">
-                            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981"></span>
-                            <span x-text="name.toLowerCase().replace(/[^a-z0-9]/g,'') + '.com'"></span>
-                            <span style="color:#6b7280"> — likely available</span>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:.25rem;flex-shrink:0">
-                        <button @click="copyName(name, $el)" title="Copy" style="background:none;border:1px solid #d1d5db;border-radius:4px;padding:.25rem .45rem;cursor:pointer;font-size:.8rem">Copy</button>
-                        <button @click="saveName(name)" title="Save to favorites" :style="saved(name) ? 'background:#fbbf24;border:1px solid #f59e0b' : 'background:none;border:1px solid #d1d5db'" style="border-radius:4px;padding:.25rem .45rem;cursor:pointer;font-size:.8rem">⭐</button>
-                    </div>
+            <!-- Input -->
+            <div class="row row-2">
+                <div class="field">
+                    <label for="bng-industry">Industry / Category</label>
+                    <select id="bng-industry">
+                        <option value="general" selected>General</option>
+                        <option value="tech">Technology</option>
+                        <option value="realestate">Real Estate</option>
+                        <option value="food">Food &amp; Beverage</option>
+                        <option value="health">Health &amp; Wellness</option>
+                        <option value="fashion">Fashion &amp; Beauty</option>
+                        <option value="finance">Finance &amp; Consulting</option>
+                        <option value="education">Education</option>
+                    </select>
                 </div>
-            </template>
-        </div>
-        <div style="margin-top:.75rem;text-align:center">
-            <button @click="generate()" class="btn" style="font-size:.85rem">Regenerate</button>
-        </div>
-    </div>
+                <div class="field">
+                    <label for="bng-keyword">Keyword / Seed Word</label>
+                    <input id="bng-keyword" type="text" placeholder="e.g. Tech, Green, Swift" autocomplete="off">
+                </div>
+            </div>
+            <div class="field" style="margin-top:.75rem">
+                <label for="bng-count">Number of Results: <span id="bng-count-val">10</span></label>
+                <input id="bng-count" type="range" min="5" max="20" step="1" value="10" style="width:100%">
+            </div>
+            <button id="bng-generate" class="btn btn-primary btn-block">✨ Generate Names</button>
 
-    <div x-show="results.length === 0" style="text-align:center;padding:2rem 0;color:#9ca3af;font-size:.9rem">
-        Enter a keyword and click <strong>Generate Names</strong> to get started.
-    </div>
+            <!-- Results -->
+            <div class="result-box" id="bng-result" aria-live="polite" style="margin-top:1.25rem">
+                <h2>Result</h2>
+                <div id="bng-output"><p class="output-text">Enter a keyword and click Generate Names to get started.</p></div>
+            </div>
 
-    <div class="info-note">
-        <div class="note-sec">
-            <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-            <p>Curated word banks of prefixes, suffixes, adjectives and nouns are combined with your industry, chosen style (<code>modern</code>, <code>classic</code>, <code>fun</code>, <code>luxury</code>, <code>short</code>, or all) and an optional keyword to generate fresh name ideas on the spot. Everything is produced locally in your browser — the generator never calls a naming API.</p>
-        </div>
-        <div class="note-sec">
-            <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-            <p>Fully offline. Favorites you save are kept only in this device's <code>localStorage</code> and never leave your browser.</p>
-        </div>
-        <div class="note-sec">
-            <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
-            <ul>
-                <li>Type a keyword (e.g. "coffee", "build", "health") to blend it into the combinations.</li>
-                <li>Names are algorithmic inspiration — always check domain availability and trademark registers before registering.</li>
-                <li>Regenerate or switch styles to surface different combinations; keep the ones you like as favorites.</li>
-            </ul>
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Pick an industry, then add an optional keyword to generate fresh business name ideas. Names are created directly in your browser without using a naming API.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>Everything runs in your browser. Saved favorites stay on your device and are never uploaded.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>Add a keyword like <strong>coffee</strong>, <strong>build</strong>, or <strong>health</strong> for more relevant names.</li>
+                        <li>Regenerate to surface a different batch of combinations.</li>
+                        <li>Check <strong>domain availability and trademarks</strong> before using a name.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 </main>
+
 <!-- Shared Footer -->
 <footer class="site-footer">
     <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
@@ -136,92 +106,195 @@
         <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
     </div>
 </footer>
+
+<div id="toast"></div>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/site-header.js"></script>
 <script>
-var _PREFIXES={
-    modern:['Nova','Apex','Vertex','Lumo','Zync','Onyx','Flux','Axon','Velo','Nimo','Kyro','Vibe','Orbi','Pulse','Echo'],
-    classic:['Prime','Royal','Grand','Apex','Noble','Sterling','Crown','Summit','Heritage','Prestige','Elite','Classic','Paramount','Legacy','United'],
-    fun:['Zippy','Breezy','Happy','Jolly','Spark','Pop','Zest','Snappy','Sunny','Buzzy','Fizzy','Doodle','Wiggly','Pebble','Boo'],
-    luxury:['Maison','Luxe','Opulence','Velvet','Sovereign','Imperial','Platinum','Eclipse','Obsidian','Aurelia','Crown','Regal','Noble','Prestige','Elite'],
-    short:['Go','Up','IQ','Ai','Xo','Zy','Ox','Qv','My','Jo','Nu','Vi','Rx','Za','Pi'],
-    general:['Prime','Nova','Apex','Vertex','Urban','Swift','Bright','Elite','Meta','Core','Zen','Neo','Arc','Max','Pro']
-};
-var _SUFFIXES={
-    tech:['Labs','Tech','Systems','Digital','Bytes','Logic','Code','AI','Hub','Works'],
-    realestate:['Properties','Realty','Estates','Homes','Developments','Builders','Constructions','Living','Spaces','Group'],
-    food:['Kitchen','Bites','Flavors','Table','Eats','Cafe','Feast','Grill','Harvest','Brew'],
-    health:['Wellness','Care','Health','Medic','Vitality','Life','Fit','Heal','Mind','Body'],
-    fashion:['Style','Threads','Wear','Atelier','Boutique','Mode','Chic','Vogue','Couture','Label'],
-    finance:['Capital','Advisors','Partners','Consulting','Wealth','Ventures','Holdings','Finance','Group','Associates'],
-    education:['Academy','Institute','School','Learning','Tutors','Edu','Minds','Scholars','Ed','Pathways'],
-    general:['Solutions','Co','Partners','Hub','House','Works','Studio','Group','Systems','Collective','Labs','Ventures','Global','Intl','Enterprises']
-};
-var _ADJECTIVES=['Alpha','Blue','Core','Deep','Edge','Fast','Green','High','Inner','Keen','Light','Moon','North','Open','Peak','Quick','Rise','Sky','True','Ultra','Vast','Wide','Young','Zero','Bold'];
-var _NOUNS=['Bridge','Circle','Dawn','Forge','Gate','Haven','Island','Jade','Kind','Link','Moon','Nest','Oak','Peak','Quest','Root','Stone','Tide','Wave','Zone','Path','Spark','Tree','Cloud','Wind'];
-var _FILLERS=['The','Our','My','A','One','Top','Best','Go','New','Big','Pro','Zen','Max','All','Eco'];
+(function(){
+    'use strict';
+    const { $, esc, toast, downloadBlob, copyText, toolPageInit, isFavorite, toggleFavorite } = window.ToolsApp;
 
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function pick(a){return a[Math.floor(Math.random()*a.length)];}
-function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
 
-function nameGen(){
-    return {
-        industry:'general',style:'all',keyword:'',count:10,results:[],savedNames:[],
-        init(){window.ToolsApp.toolPageInit('business-name-generator');this.loadSaved();},
-        loadSaved(){try{this.savedNames=JSON.parse(localStorage.getItem('dm_solution_tools_favorites'))||[];}catch(e){this.savedNames=[];}},
-        saved(n){return this.savedNames.includes('business-name-'+n);},
-        saveName(n){window.ToolsApp.toggleFavorite('business-name-'+n);this.loadSaved();},
-        copyName(n,el){window.ToolsApp.copyText(n,el);},
-        generate(){
-            var kw=this.keyword.trim();
-            if(!kw){window.ToolsApp.toast('Enter a keyword first','err');return;}
-            var kwC=capitalize(kw);
-            var allNames=[];
-            var ind=this.industry;
-            var sty=this.style;
-            var prefixes=_PREFIXES.general.concat(_PREFIXES.modern,_PREFIXES.classic,_PREFIXES.luxury,_PREFIXES.short);
-            var suffixes=(_SUFFIXES[ind]||_SUFFIXES.general).concat(_SUFFIXES.general);
-            if(sty==='fun')prefixes=_PREFIXES.fun.concat(_PREFIXES.general);
-            if(sty==='luxury')prefixes=_PREFIXES.luxury;
-            if(sty==='classic')prefixes=_PREFIXES.classic;
-            if(sty==='modern')prefixes=_PREFIXES.modern;
-            if(sty==='short')prefixes=_PREFIXES.short;
-            if(sty==='all'||sty==='alliteration')prefixes=prefixes;
-            prefixes=shuffle(prefixes.slice());
-            suffixes=shuffle(suffixes.slice());
-            var i,n;
-            /* prefix+keyword */
-            for(i=0;i<Math.min(6,prefixes.length);i++){n=prefixes[i]+kwC;allNames.push(n);}
-            /* keyword+suffix */
-            for(i=0;i<Math.min(6,suffixes.length);i++){n=kwC+suffixes[i];allNames.push(n);}
-            /* filler+keyword */
-            for(i=0;i<4;i++){n=pick(_FILLERS)+kwC;allNames.push(n);}
-            /* keyword+adjective */
-            for(i=0;i<3;i++){n=kwC+pick(_ADJECTIVES);allNames.push(n);}
-            /* two-word combos */
-            for(i=0;i<5;i++){n=pick(_ADJECTIVES)+' '+pick(_NOUNS);allNames.push(n);}
-            for(i=0;i<3;i++){n=kwC+' '+pick(_NOUNS);allNames.push(n);}
-            for(i=0;i<3;i++){n=pick(_NOUNS)+' '+kwC;allNames.push(n);}
-            /* alliterations */
-            var letter=kw.charAt(0).toLowerCase();
-            var allitWords=_NOUNS.filter(function(w){return w.charAt(0).toLowerCase()===letter;});
-            allitWords=allitWords.concat(_ADJECTIVES.filter(function(w){return w.charAt(0).toLowerCase()===letter;}));
-            if(allitWords.length>=2){n=capitalize(allitWords[0])+' '+capitalize(allitWords[1]);allNames.push(n);}
-            if(allitWords.length>=2){n=kwC+' '+capitalize(allitWords[0]);allNames.push(n);}
-            /* short forms */
-            if(kw.length>3){n=kw.substring(0,3).toUpperCase()+'r';allNames.push(n);}
-            if(kw.length>2){n=kw.substring(0,2).toUpperCase()+kw.substring(2);allNames.push(n);}
-            /* shuffle and slice */
-            allNames=shuffle(allNames);
-            var unique=[];
-            var seen={};
-            allNames.forEach(function(x){if(!seen[x.toLowerCase()]){seen[x.toLowerCase()]=true;unique.push(x);}});
-            this.results=unique.slice(0,this.count);
-        }
+    let lastMeta = null;
+
+    const _PREFIXES = {
+        modern: ['Nova','Apex','Vertex','Lumo','Zync','Onyx','Flux','Axon','Velo','Kyro','Orbit','Pulse','Echo','Nimbus','Volt','Prism','Stratus','Quantum'],
+        classic: ['Prime','Royal','Grand','Noble','Sterling','Crown','Summit','Heritage','Prestige','Paramount','Legacy','Concord','Dominion','Cavendish','Anchor'],
+        fun: ['Zippy','Breezy','Happy','Jolly','Spark','Pop','Zest','Snappy','Sunny','Buzzy','Fizzy','Doodle','Wiggly','Pebble','Gumdrop','Sprout'],
+        luxury: ['Maison','Luxe','Opulence','Velvet','Sovereign','Imperial','Platinum','Eclipse','Obsidian','Aurelia','Regal','Serenity','Aria','Beyond','Stein'],
+        short: ['Go','Up','IQ','Ai','Xo','Zy','Ox','My','Nu','Vi','Rx','Za','Pi','Lo','Bo','Ti']
     };
-}
+    _PREFIXES.general = ['Nova','Apex','Vertex','Lumo','Onyx','Flux','Vibe','Orbit','Pulse','Echo','Summit','Beacon','Core','Prism','Bolt','Stone','Bright','Swift','Zen','Neo','Arc','Sterling'];
+
+    const _SUFFIXES = {
+        tech: ['Labs','Systems','Digital','Bytes','Logic','Code','Hub','Tech','Works','Sphere','Space'],
+        realestate: ['Properties','Realty','Estates','Homes','Developments','Builders','Construction','Living','Spaces','Partners'],
+        food: ['Kitchen','Bites','Flavors','Table','Eats','Cafe','Feast','Grill','Harvest','Brew','Catering'],
+        health: ['Wellness','Care','Health','Medic','Vitality','Life','Fit','Heal','Mind','Body','Therapy'],
+        fashion: ['Style','Threads','Wear','Atelier','Boutique','Mode','Chic','Vogue','Couture','Label','Studio'],
+        finance: ['Capital','Advisors','Partners','Consulting','Wealth','Ventures','Holdings','Finance','Associates','Group'],
+        education: ['Academy','Institute','School','Learning','Tutors','Minds','Scholars','Pathways','College','Prep'],
+        general: ['Solutions','Works','Partners','Hub','House','Studio','Group','Labs','Co','Collective']
+    };
+
+    const _PLACES = ['Valley','Meadow','Grove','Haven','Summit','Peak','Ridge','Harbor','Crest','Springs','Vista','Village','Falls','Hills','Coast','Range','Bridge','Trail','Garden','Orchard','Loft','Mill','Station'];
+
+    const _PARTNERS = [' & Co',' & Partners','Works','Studio','House','Group'];
+
+    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+    function title(s){ return s.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '); }
+
+    function sanitize(kw){
+        return String(kw == null ? '' : kw).trim().replace(/[^A-Za-z0-9 _-]/g, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function slugOf(name){ return name.toLowerCase().replace(/[^a-z0-9]/g, ''); }
+    function favKey(name){ return 'business-name-' + slugOf(name); }
+
+    function genNames(industry, kw, count){
+        const kwCap = title(kw);
+        const comp = kwCap.replace(/\s+/g, '');
+        const places = shuffle(_PLACES.slice());
+        const suffixes = shuffle((_SUFFIXES[industry] || _SUFFIXES.general).slice());
+        const genSuffixes = shuffle(_SUFFIXES.general.slice());
+        const prefixes = shuffle(_PREFIXES.general.slice());
+        const partners = shuffle(_PARTNERS.slice());
+
+        const groups = [];
+        groups.push(places.map(pl => kwCap + ' ' + pl));
+        groups.push(places.map(pl => 'The ' + kwCap + ' ' + pl));
+        groups.push(suffixes.map(s => kwCap + ' ' + s));
+        groups.push(suffixes.map(s => comp + s));
+        groups.push(partners.map(p => kwCap + p));
+        groups.push(genSuffixes.map(s => kwCap + ' ' + s));
+        groups.push(prefixes.map(p => p + comp));
+        if(comp.length > 2) groups.push([comp.slice(0, 2).toUpperCase() + comp.slice(2)]);
+        if(comp.length > 3) groups.push([comp.slice(0, 3).toUpperCase()]);
+
+        const cand = [];
+        const seen = {};
+        const push = d => {
+            const sl = slugOf(d);
+            if(!sl || seen[sl]) return;
+            seen[sl] = true;
+            cand.push(d);
+        };
+
+        // Interleave one candidate from each pattern so every batch stays blended.
+        let any = true;
+        while(cand.length < count * 2 && any){
+            any = false;
+            for(let i=0; i<groups.length; i++){
+                if(groups[i].length){ any = true; push(groups[i].shift()); }
+            }
+        }
+
+        return shuffle(cand.slice(0, count));
+    }
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
+
+    function industryLabel(v){
+        const m = { tech:'Technology', realestate:'Real Estate', food:'Food & Beverage', health:'Health & Wellness', fashion:'Fashion & Beauty', finance:'Finance & Consulting', education:'Education', general:'General' };
+        return m[v] || v;
+    }
+
+    function renderResults(names){
+        const meta = lastMeta;
+        let html = '';
+
+        html += '<div style="display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;align-items:center;padding:1rem 1.2rem;border-radius:14px;background:var(--bg-soft,rgba(199,120,0,.08));margin-bottom:1rem">'
+            + '<span style="font-size:1.25rem;font-weight:900;color:var(--primary)">' + names.length + ' names</span>'
+            + '<span style="font-size:.86rem;font-weight:700;color:var(--muted)">for <strong style="color:var(--text)">' + esc(meta.keyword) + '</strong></span>'
+            + '<span style="font-size:.78rem;background:var(--bg-soft,#F3F5F9);border:1px solid var(--border,#E4E8EF);border-radius:999px;padding:.22rem .7rem;color:var(--muted)">' + esc(industryLabel(meta.industry)) + '</span>'
+            + '</div>';
+
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.55rem">';
+        names.forEach((name, idx) => {
+            const key = favKey(name);
+            const isFav = isFavorite(key);
+            html += '<div style="background:#fff;border:1px solid #E4E8EF;border-radius:10px;padding:.7rem .85rem;display:flex;align-items:center;gap:.6rem">'
+                + '<span style="font-size:1rem;font-weight:800;color:var(--primary);min-width:1.6rem;opacity:.85">' + (idx + 1) + '</span>'
+                + '<div style="flex:1;min-width:0">'
+                + '<div style="font-weight:700;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(name) + '</div>'
+                + '<div style="font-size:.72rem;color:#6b7280;margin-top:1px">' + esc(slugOf(name) + '.com') + ' <span title="Domain slug hint — always check availability">↗</span></div>'
+                + '</div>'
+                + '<div style="display:flex;gap:.25rem;flex-shrink:0">'
+                + '<button class="bng-copy" data-name="' + esc(name) + '" title="Copy name" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:.3rem .55rem;cursor:pointer;font-size:.78rem;line-height:1">📋</button>'
+                + '<button class="bng-fav" data-name="' + esc(name) + '" data-key="' + esc(key) + '" title="Save to favorites" style="background:' + (isFav ? '#fbbf24' : 'none') + ';border:1px solid ' + (isFav ? '#f59e0b' : '#d1d5db') + ';border-radius:6px;padding:.3rem .55rem;cursor:pointer;font-size:.78rem;line-height:1">⭐</button>'
+                + '</div>'
+                + '</div>';
+        });
+        html += '</div>';
+
+        html += '<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">'
+            + '<button id="bng-regenerate" class="btn btn-secondary" style="font-size:.82rem;padding:.45rem .9rem">↻ Regenerate</button>'
+            + '<button id="bng-copyall" class="btn btn-secondary" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy All</button>'
+            + '<button id="bng-export" class="btn btn-secondary" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Names (.csv)</button>'
+            + '</div>';
+
+        $('#bng-output').innerHTML = html;
+
+        document.querySelectorAll('#bng-output .bng-copy').forEach(btn => {
+            btn.addEventListener('click', () => copyText(btn.dataset.name, btn));
+        });
+        document.querySelectorAll('#bng-output .bng-fav').forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleFavorite(btn.dataset.key);
+                const on = isFavorite(btn.dataset.key);
+                btn.style.background = on ? '#fbbf24' : 'none';
+                btn.style.border = '1px solid ' + (on ? '#f59e0b' : '#d1d5db');
+            });
+        });
+
+        $('#bng-regenerate').addEventListener('click', doGenerate);
+        $('#bng-copyall').addEventListener('click', () => copyText(names.join('\n')));
+        $('#bng-export').addEventListener('click', buildCsv);
+
+        toast('Generated ' + names.length + ' names');
+    }
+
+    function doGenerate(){
+        const raw = $('#bng-keyword').value;
+        const kw = sanitize(raw);
+        if(!kw){ toast('Enter a keyword first', 'err'); return; }
+        const industry = $('#bng-industry').value;
+        const count = parseInt($('#bng-count').value, 10) || 10;
+        lastMeta = { keyword: kw, industry: industry, count: count, names: genNames(industry, kw, count) };
+        $('#bng-keyword').value = kw;
+        renderResults(lastMeta.names);
+    }
+
+    function buildCsv(){
+        if(!lastMeta) return;
+        let csv = '\uFEFF';
+        csv += 'Report,Business Name Generator\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Keyword,' + csvCell(lastMeta.keyword) + '\n';
+        csv += 'Industry,' + csvCell(industryLabel(lastMeta.industry)) + '\n';
+        csv += 'Names generated,' + lastMeta.names.length + '\n';
+        csv += '\n#  ,Name,Domain slug\n';
+        lastMeta.names.forEach((n, i) => {
+            csv += (i + 1) + ',' + csvCell(n) + ',' + csvCell(slugOf(n) + '.com') + '\n';
+        });
+        const file = 'business-names-' + slugOf(lastMeta.keyword) + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), file);
+    }
+
+    $('#bng-generate').addEventListener('click', doGenerate);
+    $('#bng-industry').addEventListener('change', () => { if(lastMeta) doGenerate(); });
+    $('#bng-keyword').addEventListener('keydown', e => { if(e.key === 'Enter') doGenerate(); });
+    $('#bng-count').addEventListener('input', () => { $('#bng-count-val').textContent = $('#bng-count').value; });
+
+    toolPageInit('business_name_generator');
+})();
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 </body>
 </html>
