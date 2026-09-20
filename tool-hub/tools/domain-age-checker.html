@@ -63,18 +63,19 @@
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Looks up the domain's registry record through <strong>RDAP</strong> (the modern WHOIS) — <code>rdap.org</code> first, with <code>rdap.verisign.com</code> for <code>.com</code>/<code>.net</code> and <code>rdap.registry.net</code> as fallbacks. This returns the authoritative <code>created</code>, <code>updated</code> and <code>expiry</code> dates plus registrar and nameservers. The tool then makes a second pass over Google Public DNS for common records (<code>A</code>, <code>MX</code>, <code>NS</code>, <code>TXT</code>…) and calculates the domain's age in years from its registry creation date.</p>
+                    <p>Enter a domain name to retrieve its registry information through <strong>RDAP</strong>, the modern version of <strong>WHOIS</strong>. The tool checks the domain’s creation, update, and expiry dates, registrar, nameservers, and age.</p>
+                    <p>It also checks common DNS records such as <strong>A</strong>, <strong>MX</strong>, <strong>NS</strong>, and <strong>TXT</strong> through Google Public DNS.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Everything is fetched live from public registries and DNS — only the domain name you type is sent, and nothing is stored locally or tracked.</p>
+                    <p>The tool only sends the domain name you enter to public registry and DNS services. No information is stored or tracked.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>Age is the registry's <code>created</code> date — the most reliable indicator of a domain's true age.</li>
-                        <li>A brand-new domain may show few or no DNS records until its owner configures them.</li>
-                        <li>If contact fields look missing, that's registrar GDPR redaction — not a query error.</li>
+                        <li>Domain age is calculated from the official registry creation date.</li>
+                        <li>New domains may not have DNS records until they are configured.</li>
+                        <li>Missing contact details usually result from registrar privacy protection, not an error.</li>
                     </ul>
                 </div>
             </div>
@@ -97,7 +98,11 @@
 <script>
 (function(){
     'use strict';
-    const { $, esc, toast, copyText, fmt } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob, fmt } = window.ToolsApp;
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+
+    let lastResult = null;
 
     function norm(s){ return s ? esc(String(s)) : '—'; }
     function dateStr(v){
@@ -116,21 +121,47 @@
         return { years, days, totalDays, months: Math.floor((totalDays % 365.25) / 30.4375) };
     }
 
+    const RDAP_HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36',
+        'Accept': 'application/rdap+json, application/json, */*'
+    };
+
+    let ianaBootstrap = null;
+    async function tldRdapServers(domain){
+        const tld = (domain.split('.').pop() || '').toLowerCase();
+        if (!tld) return [];
+        if (!ianaBootstrap){
+            const r = await fetch('https://data.iana.org/rdap/dns.json', { signal: AbortSignal.timeout(8000), headers: RDAP_HEADERS });
+            if (!r.ok) return [];
+            ianaBootstrap = await r.json();
+        }
+        const rows = (ianaBootstrap.services || []).filter(sv => sv[0].includes(tld));
+        const servers = [];
+        for (const sv of rows) for (const base of (sv[1] || [])) servers.push(base.replace(/\/+$/, '') + '/domain/' + domain);
+        return servers;
+    }
+
     async function fetchRdap(domain){
-        const candidates = [
-            'https://rdap.org/domain/' + domain,
-            'https://rdap.verisign.com/com/v1/domain/' + domain,
-            'https://rdap.verisign.com/net/v1/domain/' + domain,
-            'https://rdap.registry.net/domain/' + domain
-        ];
+        let candidates = [];
+        try { candidates = await tldRdapServers(domain); } catch(e){ candidates = []; }
+        candidates.push('https://rdap.org/domain/' + domain);
+        candidates.push('https://rdap.verisign.com/com/v1/domain/' + domain);
+        candidates.push('https://rdap.verisign.com/net/v1/domain/' + domain);
+        candidates.push('https://rdap.registry.net/domain/' + domain);
+        const seen = new Set();
+        candidates = candidates.filter(u => !seen.has(u) && seen.add(u));
+
         let lastErr = null;
         for (const u of candidates) {
             try {
                 const ctrl = new AbortController();
                 const t = setTimeout(() => ctrl.abort(), 8000);
-                const res = await fetch(u, { signal: ctrl.signal });
+                const res = await fetch(u, { signal: ctrl.signal, redirect: 'follow', headers: RDAP_HEADERS });
                 clearTimeout(t);
-                if (res.ok) return await res.json();
+                if (res.ok){
+                    const j = await res.json();
+                    if (j && j.objectClassName) return j;
+                }
                 lastErr = new Error('HTTP ' + res.status);
             } catch(e){ lastErr = e; }
         }
@@ -172,7 +203,7 @@
 
         let html = '';
 
-        html += '<div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">';
+        html += '<div class="stat-grid dac-stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">';
         html += '<div class="stat"><div class="num">' + esc(ldh) + '</div><div class="lbl">Domain</div></div>';
         html += '<div class="stat"><div class="num" style="color:var(--primary)">' + (age ? age.years : '—') + '</div><div class="lbl">Years old</div></div>';
         html += '<div class="stat"><div class="num" style="color:var(--primary)">' + (age ? age.days : '—') + '</div><div class="lbl">Days</div></div>';
@@ -198,11 +229,65 @@
         html += '</table>';
 
         html += '<div style="margin-top:1.1rem;display:flex;gap:.5rem;flex-wrap:wrap">'
-            + '<button class="btn btn-secondary" id="dac-copy" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Details</button>'
+            + '<button class="btn btn-secondary" id="dac-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
             + '</div>';
 
         $('#dac-output').innerHTML = html;
-        $('#dac-copy').addEventListener('click', e => copyText($('#dac-output').innerText, e.currentTarget));
+        $('#dac-export').addEventListener('click', () => {
+            if (lastResult) downloadDacCsv(lastResult);
+            else toast('Run a lookup first', 'err');
+        });
+    }
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        return '"' + v.replace(/"/g, '""') + '"';
+    }
+    function csvDate(v){
+        if (!v) return '';
+        const d = new Date(v);
+        return isNaN(d) ? String(v) : d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function downloadDacCsv(last){
+        const { data, domain, dns } = last;
+        const created = findEvent(data, 'registration');
+        const updated = findEvent(data, 'last changed');
+        const expiry  = findEvent(data, 'expiration');
+        const age = created ? ageBreakdown(created) : null;
+        const now = new Date();
+        const daysUntilExpiry = expiry ? Math.max(0, Math.round((expiry - now) / 864e5)) : null;
+        const nameservers = (data.nameservers || []).map(n => n.ldhName || n.unicodeName).filter(Boolean).join('; ');
+        const registrar = entityName(data, 'registrar');
+
+        let csv = '\uFEFF';
+        csv += 'Report,Domain Age Checker\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Domain,' + csvCell(domain) + '\n';
+        csv += 'Created,' + csvCell(csvDate(created)) + '\n';
+        csv += 'Updated,' + csvCell(csvDate(updated)) + '\n';
+        csv += 'Expiry,' + csvCell(csvDate(expiry)) + '\n';
+        csv += 'Age (years),' + (age ? age.years : '') + '\n';
+        csv += 'Age (days),' + (age ? age.days : '') + '\n';
+        csv += 'Total days,' + (age ? age.totalDays : '') + '\n';
+        csv += 'Days to expiry,' + (daysUntilExpiry != null ? daysUntilExpiry : '') + '\n';
+        csv += 'Registrar,' + csvCell(registrar) + '\n';
+        csv += 'Name Servers,' + csvCell(nameservers) + '\n';
+        csv += 'Status,' + csvCell((data.status || []).join(', ')) + '\n';
+        csv += 'Handle,' + csvCell(data.handle || domain) + '\n\n';
+        csv += 'DNS Records\n';
+        csv += 'Type,Data,TTL\n';
+        let any = false;
+        for (const type of DNS_TYPES){
+            if (!dns[type] || !dns[type].length) continue;
+            for (const r of dns[type]){
+                csv += csvCell(dnsTypeName(type)) + ',' + csvCell(r.data) + ',' + csvCell(r.ttl + 's') + '\n';
+                any = true;
+            }
+        }
+        if (!any) csv += '"No records retrieved"\n';
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'domain-age-' + domain.replace(/\./g, '_') + '-' + new Date().toISOString().slice(0, 10) + '.csv');
     }
 
     const DNS_TYPES = ['A', 'AAAA', 'NS', 'MX', 'TXT'];
@@ -262,6 +347,7 @@
 
         try {
             const [data, dns] = await Promise.all([fetchRdap(domain), fetchDns(domain)]);
+            lastResult = { data, domain, dns };
             render(data, domain);
             $('#dac-output').insertAdjacentHTML('beforeend', renderDns(dns, domain));
         } catch(e){

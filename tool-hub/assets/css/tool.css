@@ -421,6 +421,13 @@ body.tool-page .blc-stats .num { white-space: nowrap; font-variant-numeric: tabu
     body.tool-page .blc-stats .stat { padding: .65rem .4rem; }
     body.tool-page .blc-stats .stat:last-child { grid-column: 1 / -1; }
 }
+/* Domain Age Checker summary — tidy responsive grid */
+body.tool-page .dac-stats .stat { min-width: 0; }
+body.tool-page .dac-stats .num { word-break: break-all; }
+@media (max-width: 620px) {
+    body.tool-page .dac-stats { grid-template-columns: repeat(2, 1fr) !important; }
+    body.tool-page .dac-stats .stat:first-child { grid-column: 1 / -1; }
+}
 body.tool-page .stat {
     background: #FFFFFF;
     border: 1px solid var(--border);
