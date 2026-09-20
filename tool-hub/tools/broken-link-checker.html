@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Broken Link Checker — Free Tools Hub</title>
-<meta name="description" content="Scan a page for broken links — working/broken/redirect/CORS-grouped results with response times and CSV export — client-side, offline clone.">
+<title>Broken Link Checker Free Tools Hub</title>
+<meta name="description" content="Scan a page for broken links  working/broken/redirect/CORS-grouped results with response times and a structured Excel report  client-side, offline clone.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -37,7 +37,7 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-unlink" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>Broken Link Checker</h1>
-                <p>Extracts every link on a page and tries to verify it — grouped as Working, Broken/404, Redirect, or Blocked/CORS — with a downloadable CSV.</p>
+                <p>Extracts every link on a page and tries to verify it  grouped as Working, Broken/404, Redirect, or Blocked/CORS — with a downloadable Excel report.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">SEO & Search</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -50,12 +50,8 @@
 
             <!-- Input -->
             <div class="field">
-                <label for="blc-url">Page URL (optional — fetches the page live)</label>
+                <label for="blc-url">Page URL</label>
                 <input id="blc-url" type="text" placeholder="https://example.com/page" autocomplete="off">
-            </div>
-            <div class="field">
-                <label for="blc-html">…or paste raw HTML containing the links</label>
-                <textarea id="blc-html" placeholder="<html>…<a href='https://…'>…</a>…</html>" style="min-height:110px"></textarea>
             </div>
             <button id="blc-check" class="btn btn-primary btn-block">🔍 Check Links</button>
 
@@ -64,24 +60,24 @@
             <!-- Results -->
             <div class="result-box" id="blc-result" aria-live="polite">
                 <h2>Link Report</h2>
-                <p class="output-text" id="blc-output">Enter a URL or paste HTML, then click Check Links.</p>
+                <p class="output-text" id="blc-output">Enter a page URL, then click Check Links.</p>
             </div>
 
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Enter a page URL (fetched live from your browser) or paste the page's raw HTML. All external <code>&lt;a href&gt;</code> links are extracted, resolved against the base URL, then checked one by one with <code>fetch</code> — an <code>HEAD</code> request by default (falling back to <code>GET</code> on <code>405</code>), with an 8-second timeout per link and a retry using <code>no-cors</code> when the browser's CORS policy blocks the normal request. Each link is grouped as <strong>Working</strong>, <strong>Redirect</strong> (e.g. 301/302), <strong>Broken</strong> (4xx/5xx or unreachable), or <strong>Blocked</strong> (timeout or CORS). Internal same-site links are skipped to keep runs fast, and the whole report can be exported as CSV.</p>
+                    <p>Enter a page URL starting with <code>https://</code> or paste the page’s raw HTML. The tool extracts external links and checks whether they are working, redirected, broken, or blocked. You can export the results as an Excel report.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Every request goes directly from <em>your</em> browser to the target site. There is no server, proxy, or log — nothing is stored or tracked.</p>
+                    <p>Links are checked directly from your browser, and nothing is stored or tracked. If browser security prevents access, the tool may use a public relay to retrieve the page. For complete privacy, paste the raw HTML instead.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>When opened from <code>file://</code>, most sites block cross-origin reads — links then appear as "Blocked" but are still extracted so you can review them manually.</li>
-                        <li>A <code>blocked</code> result is <em>not</em> the same as broken; it usually means CORS, not a dead page.</li>
-                        <li>For the most accurate verification, serve this hub over <code>http://localhost</code> instead of opening files directly.</li>
+                        <li>Use an <code>https://</code> URL for the most reliable results.</li>
+                        <li>A “Blocked” link may be affected by CORS or a timeout and is not necessarily broken.</li>
+                        <li>Paste the raw HTML when the page cannot be fetched or when you want to avoid sending the page through a relay.</li>
                     </ul>
                 </div>
             </div>
@@ -97,24 +93,29 @@
         <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
     </div>
 </footer>
+    <script src="../assets/vendor/exceljs.min.js"></script>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/site-header.js"></script>
 <script>
 (function(){
     'use strict';
-    const { $, $$, esc, toast, copyText, downloadBlob, fmt } = window.ToolsApp;
+    const { $, $$, esc, toast, downloadBlob, fmt } = window.ToolsApp;
 
     const TIMEOUT = 8000;
     const CONCURRENCY = 6;
     const MAX_CHECK = 30;
     let results = [];
+    let reportSource = '';
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
 
     const ST_META = {
         working:  ['#16a34a', '#dcfce7', 'Working'],
         broken:   ['#dc2626', '#fee2e2', 'Broken/404'],
         redirect: ['#d97706', '#fef3c7', 'Redirect'],
         blocked:  ['#1e40af', '#dbeafe', 'Blocked/CORS'],
-        internal: ['#64748b', '#E9EDF3', 'Internal (skipped)']
+        internal: ['#64748b', '#E9EDF3', 'Internal (skipped)'],
+        capped:   ['#64748b', '#F1F5F9', 'Not checked (cap)']
     };
     function stBadge(st){
         const [c, b, lbl] = ST_META[st] || ST_META.blocked;
@@ -122,9 +123,29 @@
     }
 
     async function fetchPage(url){
-        const res = await fetch(url, { redirect: 'follow' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return await res.text();
+        try {
+            const res = await fetch(url, { redirect: 'follow' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const t = await res.text();
+            if (t && t.trim().length > 80) return { status: res.status, finalUrl: res.url, text: t };
+            throw new Error('Empty response');
+        } catch (e) {
+            let lastErr = e;
+            const proxies = [
+                { name: 'Jina Reader', make: u => new Request('https://r.jina.ai/' + u, { headers: { 'X-Return-Format': 'html' } }) },
+                { name: 'AllOrigins', make: u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u) }
+            ];
+            for (const p of proxies){
+                try {
+                    const res = await fetch(p.make(url));
+                    if (!res.ok) throw new Error(p.name + ' HTTP ' + res.status);
+                    const t = await res.text();
+                    if (t && t.trim().length > 80) return { status: 200, finalUrl: url, text: t };
+                    throw new Error(p.name + ' empty response');
+                } catch (e2) { lastErr = e2; }
+            }
+            throw lastErr;
+        }
     }
 
     function extractLinks(html, baseUrl){
@@ -210,17 +231,19 @@
             broken: all.filter(r => r.status === 'broken').length,
             redirect: all.filter(r => r.status === 'redirect').length,
             blocked: all.filter(r => r.status === 'blocked').length,
-            internal: all.filter(r => r.status === 'internal').length
+            internal: all.filter(r => r.status === 'internal').length,
+            capped: all.filter(r => r.status === 'capped').length
         };
         const verified = counts.working + counts.broken + counts.redirect;
         const pct = verified ? Math.round(counts.working / verified * 100) : 0;
 
-        let html = '<div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">'
+        let html = '<div class="stat-grid blc-stats" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">'
             + '<div class="stat"><div class="num" style="color:#16a34a">' + counts.working + '</div><div class="lbl">Working</div></div>'
             + '<div class="stat"><div class="num" style="color:#dc2626">' + counts.broken + '</div><div class="lbl">Broken/404</div></div>'
             + '<div class="stat"><div class="num" style="color:#d97706">' + counts.redirect + '</div><div class="lbl">Redirects</div></div>'
             + '<div class="stat"><div class="num" style="color:#1e40af">' + counts.blocked + '</div><div class="lbl">Blocked/CORS</div></div>'
             + '<div class="stat"><div class="num" style="color:#64748b">' + counts.internal + '</div><div class="lbl">Internal</div></div>'
+            + (counts.capped ? '<div class="stat"><div class="num" style="color:#94a3b8">' + counts.capped + '</div><div class="lbl">Not checked</div></div>' : '')
             + '<div class="stat"><div class="num">' + pct + '%</div><div class="lbl">Working (of verified)</div></div>'
             + '</div>';
 
@@ -231,7 +254,8 @@
     }
 
     function renderTable(all, cut){
-        let html = '<table style="width:100%;border-collapse:collapse;font-size:.84rem;margin-top:1rem">'
+        let html = '<div class="table-scroll" style="margin-top:1rem">'
+            + '<table style="width:100%;border-collapse:collapse;font-size:.84rem">'
             + '<thead><tr style="text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em">'
             + '<th style="padding:.4rem .6rem">#</th><th style="padding:.4rem .6rem">URL</th><th style="padding:.4rem .6rem">Anchor text</th><th style="padding:.4rem .6rem">Status</th><th style="padding:.4rem .6rem">Code</th><th style="padding:.4rem .6rem">Time</th>'
             + '</tr></thead><tbody>';
@@ -250,51 +274,149 @@
         if (all.length > cut){
             html += '<tr><td colspan="6" style="padding:.5rem .6rem;color:var(--muted);font-size:.78rem">Only the first ' + cut + ' external links were network-checked — ' + (all.length - cut) + ' more left unprobed.</td></tr>';
         }
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
         return html;
     }
 
-    function downloadCSV(all){
-        let csv = 'anchor_text,url,status,http_code,response_time_ms,note\n';
-        all.forEach(r => {
+    const ST_LABEL = {
+        working: 'Working',
+        broken: 'Broken/404',
+        redirect: 'Redirect',
+        blocked: 'Blocked/CORS',
+        internal: 'Internal (skipped)',
+        capped: 'Not checked (cap)'
+    };
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        return '"' + v.replace(/"/g, '""') + '"';
+    }
+
+    function exportAsCsv(all){
+        let csv = '\uFEFF';
+        csv += 'No.,URL,Anchor Text,Status,HTTP Code,Response Time (ms),Note\n';
+        all.forEach((r, i) => {
             const row = [
-                '"' + String(r.text || '').replace(/"/g, '""') + '"',
-                '"' + String(r.url).replace(/"/g, '""') + '"',
-                r.status, r.code || '', r.ms,
-                '"' + String(r.note || '').replace(/"/g, '""') + '"'
+                i + 1,
+                csvCell(r.url),
+                csvCell(r.text || ''),
+                csvCell(ST_LABEL[r.status] || r.status),
+                r.code == null ? '' : r.code,
+                r.ms == null ? '' : r.ms,
+                csvCell(r.note || '')
             ].join(',');
             csv += row + '\n';
         });
-        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'broken-links-report.csv');
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'broken-links-report-' + new Date().toISOString().slice(0, 10) + '.csv');
+    }
+
+    function downloadReport(all){
+        if (typeof window.ExcelJS === 'undefined'){ exportAsCsv(all); return; }
+        toast('Building Excel report…');
+        const date = new Date().toISOString().slice(0, 10);
+        const c = { working: 0, broken: 0, redirect: 0, blocked: 0, internal: 0, capped: 0 };
+        all.forEach(r => { c[r.status] = (c[r.status] || 0) + 1; });
+        const verified = (c.working || 0) + (c.broken || 0) + (c.redirect || 0);
+        const pct = verified ? Math.round((c.working || 0) / verified * 100) : 0;
+
+        const wb = new window.ExcelJS.Workbook();
+        const sum = wb.addWorksheet('Summary', { properties: { tabColor: { argb: 'FF0E8A6C' } } });
+        sum.getCell('A1').value = 'BROKEN LINK REPORT';
+        sum.getCell('A1').font = { bold: true, size: 14, color: { argb: 'FFFFFFFF' } };
+        sum.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0E8A6C' } };
+        sum.mergeCells('A1:B1');
+        sum.getRow(1).height = 24;
+        sum.getCell('A2').value = 'Source: ' + (reportSource || '—');
+        sum.getCell('A3').value = 'Generated: ' + new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        sum.getColumn(1).width = 26; sum.getColumn(2).width = 30;
+        const sumHead = ['Metric', 'Value'];
+        sum.getRow(5).values = sumHead;
+        ['A', 'B'].forEach(col => {
+            const cell = sum.getCell(col + '5');
+            cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F766E' } };
+        });
+        const sumRows = [
+            ['Links scanned', all.length],
+            ['Links network-checked', verified],
+            ['Working', c.working || 0],
+            ['Broken/404', c.broken || 0],
+            ['Redirects', c.redirect || 0],
+            ['Blocked/CORS', c.blocked || 0],
+            ['Internal (skipped)', c.internal || 0],
+            ['Not checked (cap)', c.capped || 0],
+            ['Working rate (of verified)', pct + '%'],
+            ['Broken rate (of verified)', (verified ? Math.round((c.broken || 0) / verified * 100) : 0) + '%']
+        ];
+        sumRows.forEach((row, i) => {
+            sum.getCell('A' + (6 + i)).value = row[0];
+            sum.getCell('B' + (6 + i)).value = row[1];
+        });
+        sum.getCell('A8').font = { color: { argb: 'FF16A34A' }, bold: true };
+        sum.getCell('A9').font = { color: { argb: 'FFDC2626' }, bold: true };
+
+        const rep = wb.addWorksheet('Link Report');
+        rep.views = [{ state: 'frozen', xSplit: 0, ySplit: 1 }];
+        rep.addTable({
+            name: 'LinkReport',
+            ref: 'A1',
+            headerRow: true,
+            style: { theme: 'TableStyleMedium9', showRowStripes: true },
+            columns: [
+                { name: 'No.', filterButton: true },
+                { name: 'URL', filterButton: true },
+                { name: 'Anchor Text', filterButton: true },
+                { name: 'Status', filterButton: true },
+                { name: 'HTTP Code', filterButton: true },
+                { name: 'Response Time (ms)', filterButton: true },
+                { name: 'Note', filterButton: true }
+            ],
+            rows: all.map((r, i) => [
+                i + 1,
+                r.url,
+                r.text || '',
+                ST_LABEL[r.status] || r.status,
+                r.code == null ? '-' : r.code,
+                r.ms == null ? '-' : r.ms,
+                r.note || ''
+            ])
+        });
+        const widths = [6, 46, 26, 18, 11, 16, 42];
+        rep.columns.forEach((col, i) => { if (widths[i]) col.width = widths[i]; });
+        all.forEach((r, i) => {
+            const cell = rep.getCell('D' + (i + 2));
+            const meta = ST_META[r.status] || ['#334155', '#ffffff'];
+            cell.font = { color: { argb: 'FF' + meta[0].slice(1) }, bold: true };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + meta[1].slice(1) } };
+        });
+
+        wb.xlsx.writeBuffer().then(buf => {
+            downloadBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'broken-links-report-' + date + '.xlsx');
+            toast('Excel report ready');
+        }).catch(() => { toast('Excel build failed, falling back to CSV', 'err'); exportAsCsv(all); });
     }
 
     async function doCheck(){
         const url = $('#blc-url').value.trim();
-        const html = $('#blc-html').value.trim();
-        if (!url && !html){ toast('Enter a URL or paste HTML first', 'err'); return; }
+        if (!url){ toast('Enter a page URL first', 'err'); return; }
         const btn = $('#blc-check');
         btn.disabled = true;
         $('#blc-notice').classList.add('hidden');
-        $('#blc-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ ' + (url && !html ? 'Fetching page ' + esc(url) + ' …' : 'Extracting links…') + '</p>';
+        $('#blc-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ Fetching page ' + esc(url) + ' (auto-retries through a public CORS relay if direct is blocked)…</p>';
 
-        let pageHtml = html;
+        let pageHtml;
         let pageSource = url + ' (fetched live)';
-        let originUrl = url || null;
+        let originUrl = url;
 
-        if (url && !html){
-            try {
-                pageHtml = await fetchPage(url);
-            } catch(e){
-                $('#blc-notice').textContent = 'Live check unavailable from your browser (CORS blocks cross-site fetches from file:// URLs). Paste the page\'s raw HTML below and the link list will still be extracted — but links won\'t be network-verified.';
-                $('#blc-notice').classList.remove('hidden');
-                $('#blc-html').focus();
-                $('#blc-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(url) + ' automatically — paste raw HTML and re-run.</p>';
-                btn.disabled = false;
-                return;
-            }
-        } else {
-            pageSource = 'Pasted HTML' + (url ? ' (URL treats links as internal when matching)' : '');
-            originUrl = url || null;
+        try {
+            pageHtml = (await fetchPage(url)).text;
+        } catch(e){
+            $('#blc-notice').textContent = '⚠️ Could not fetch ' + esc(url) + ' — your browser blocks cross-origin reads (CORS) and the relay services didn\u2019t return the page either.';
+            $('#blc-notice').classList.remove('hidden');
+            $('#blc-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(url) + ' automatically.</p>';
+            btn.disabled = false;
+            return;
         }
         if (!pageHtml || !pageHtml.trim()){ btn.disabled = false; $('#blc-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Nothing to scan.</p>'; return; }
 
@@ -312,36 +434,36 @@
             $('#blc-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ Probing links… ' + done + '/' + total + ' checked</p>';
         });
         let pi = 0;
-        const all = external.map((l, i) => l.status === 'internal' ? l : probed[pi++]);
+        const all = external.map((l) => {
+            if (l.status === 'internal') return l;
+            return probed[pi++] || { ...l, status: 'capped', code: null, ms: 0, note: 'Not network-checked — only the first ' + MAX_CHECK + ' external link(s) were probed (cap)' };
+        });
 
         results = all;
+        reportSource = pageSource;
 
         let out = '<p class="output-text" style="font-size:.95rem;margin-bottom:.4rem">Scanned <strong>' + all.length + '</strong> link(s) from ' + esc(pageSource) + '.</p>';
         out += renderSummary(all);
 
-        /* If everything is blocked/internal we couldn't network-verify — say so clearly. */
+        /* If everything is blocked/internal/capped we couldn't network-verify — say so clearly. */
         const verifiable = all.filter(r => ['working', 'broken', 'redirect'].includes(r.status));
         if (!verifiable.length){
-            out += '<div class="alert info" style="margin:.8rem 0">ℹ️ No external link could be network-verified (browser CORS / offline). The extracted link list below is still useful for manual review.</div>';
+            out += '<div class="alert info" style="margin:.8rem 0">ℹ️ No external link could be network-verified (browser CORS / offline / check cap). The extracted link list below is still useful for manual review.</div>';
         } else {
             const corsCount = all.filter(r => r.status === 'blocked').length;
             if (corsCount) out += '<div class="alert info" style="margin:.8rem 0">ℹ️ ' + corsCount + ' link(s) couldn\'t be verified (CORS block or timeout) — open them manually to double-check.</div>';
+            const capped = all.filter(r => r.status === 'capped').length;
+            if (capped) out += '<div class="alert info" style="margin:.8rem 0">ℹ️ ' + capped + ' more link(s) were left unprobed (cap of ' + MAX_CHECK + ' per run) — open them manually or scan in batches.</div>';
         }
 
         out += renderTable(all, MAX_CHECK + 100);
         out += '<div style="margin-top:1.3rem;display:flex;gap:.5rem;flex-wrap:wrap">'
-            + '<button class="btn btn-secondary" id="blc-csv" style="font-size:.82rem;padding:.5rem 1rem">⬇ Download CSV</button>'
-            + '<button class="btn btn-secondary" id="blc-copy" style="font-size:.82rem;padding:.5rem 1rem">📋 Copy Summary</button>'
+            + '<button class="btn btn-secondary" id="blc-csv" style="font-size:.82rem;padding:.5rem 1rem">' + CSV_ICON + ' Download Report (.xlsx)</button>'
             + '</div>';
 
         $('#blc-output').innerHTML = out;
 
-        $('#blc-csv').addEventListener('click', () => downloadCSV(results));
-        $('#blc-copy').addEventListener('click', e => {
-            const c = results.reduce((m, r) => { m[r.status] = (m[r.status] || 0) + 1; return m; }, {});
-            copyText('BROKEN LINK SCAN\n' + '~'.repeat(30) + '\nSource: ' + pageSource + '\nLinks: ' + results.length +
-                '\nWorking: ' + (c.working || 0) + ' · Broken: ' + (c.broken || 0) + ' · Redirect: ' + (c.redirect || 0) + ' · Blocked/CORS: ' + (c.blocked || 0) + ' · Internal: ' + (c.internal || 0), e.currentTarget);
-        });
+        $('#blc-csv').addEventListener('click', () => downloadReport(results));
 
         const bad = all.filter(r => r.status === 'broken').length;
         toast(bad ? bad + ' broken link(s) found' : 'No broken links found');

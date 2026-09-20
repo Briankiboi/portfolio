@@ -400,7 +400,27 @@ body.tool-page .result-box table td, body.tool-page .result-box table th { borde
 body.tool-page .result-box table tbody tr:nth-child(even) { background: #F8FAFC !important; }
 body.tool-page .result-box table code { background: #F1F5F9 !important; color: #115E59 !important; }
 
+/* Wide result tables: contained horizontal scroll on small screens */
+body.tool-page .result-box .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+body.tool-page .result-box .table-scroll table { min-width: 680px; margin: 0 !important; }
+@media (max-width: 620px) {
+    body.tool-page .result-box .table-scroll { border-radius: 8px; }
+}
+
 body.tool-page .stat-grid { gap: .7rem; margin: .9rem 0; }
+/* Broken Link Checker summary — tidy mobile grid */
+body.tool-page .blc-stats .stat { min-width: 0; }
+body.tool-page .blc-stats .num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (max-width: 620px) {
+    body.tool-page .blc-stats { grid-template-columns: repeat(2, 1fr) !important; }
+    body.tool-page .blc-stats .stat { padding: .65rem .4rem; }
+    body.tool-page .blc-stats .stat:last-child { grid-column: 1 / -1; }
+}
 body.tool-page .stat {
     background: #FFFFFF;
     border: 1px solid var(--border);
@@ -567,9 +587,13 @@ body.tool-page .hamburger { display: none; }
 /* ── Mobile tweaks ───────────────────────────────────────────────── */
 @media (max-width: 620px) {
     body.tool-page main { padding-top: 1rem; }
+    body.tool-page .tool-meta { flex-wrap: wrap; }
+    body.tool-page .tool-meta-body { flex: 1 1 auto; }
     body.tool-page .tool-meta-icon { width: 46px; height: 46px; font-size: 1.3rem; }
     body.tool-page .tool-meta h1 { font-size: 1.25rem; }
     body.tool-page .tool-shell { padding: 1.05rem; }
+    body.tool-page .result-box { padding: .8rem .65rem; }
+    body.tool-page .result-box h2 { margin-bottom: .45rem; }
 
     body.tool-page .tool-shell > div[style*="grid-template-columns:1fr 1fr 1fr"] {
         grid-template-columns: 1fr !important;

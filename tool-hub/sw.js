@@ -1,4 +1,4 @@
-const CACHE = 'dm-tools-v2';
+const CACHE = 'dm-tools-v4';
 const SHELL = [
   '/tool-hub/',
   '/tool-hub/index.html',
@@ -27,6 +27,10 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  /* Never touch cross-origin requests: if a tool calls an API or fetches a
+     page that the browser CORS-blocks, the error must reach the tool's own
+     error handling — not a cached same-origin page substituted here. */
+  if (new URL(event.request.url).origin !== self.location.origin) return;
   event.respondWith(
     fetch(event.request)
       .then((response) => {
