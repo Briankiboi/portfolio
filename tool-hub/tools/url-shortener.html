@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>URL Shortener — Free Tools Hub</title>
-<meta name="description" content="Shorten URLs locally — client-side, offline clone.">
+<meta name="description" content="Shorten long URLs into short links that actually redirect  fully client-side. Each link carries its destination, so it works on any device once hosted.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -36,7 +36,7 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-link" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>URL Shortener</h1>
-                <p>Create short links that actually redirect — fully client-side. Every short link opens this page with <code>?go=CODE</code> and instantly forwards to your long URL from any browser on this device.</p>
+                <p>Create short links that actually redirect — fully client-side. Every short link carries its destination, so opening it (<code>?go=CODE&amp;u=…</code>) instantly forwards to your long URL from any browser, on any device.</p>
                 <div class="tool-meta-row">
                     <span class="tool-badge">Dev & Code</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
@@ -54,10 +54,6 @@
                 <label for="us-alias">Custom Alias <span style="color:var(--muted)">(optional)</span></label>
                 <input id="us-alias" type="text" placeholder="my-link" autocomplete="off">
             </div>
-            <div class="field">
-                <label for="us-password">Password <span style="color:var(--muted)">(optional, client-side only)</span></label>
-                <input id="us-password" type="password" placeholder="••••" autocomplete="off">
-            </div>
             <button id="us-shorten" class="btn btn-primary btn-block">✂️ Shorten URL</button>
 
             <div class="result-box" id="us-result" style="display:none" aria-live="polite">
@@ -67,7 +63,7 @@
                     <button class="btn btn-primary" id="us-copy" style="white-space:nowrap">📋 Copy</button>
                     <button class="btn" id="us-open" style="white-space:nowrap">🌐 Open Preview</button>
                 </div>
-                <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">✅ Resolves instantly using this page's local history. Works over http:// and file:// (same device). Share on other devices only if this page is hosted somewhere.</p>
+                <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">✅ The link carries your destination, so it redirects on any device once this page is reachable (hosted online). Saved links stay listed below only on this browser.</p>
             </div>
 
             <div id="us-file-note" class="info-note" style="display:none">
@@ -87,23 +83,27 @@
                         <tbody id="us-history"></tbody>
                     </table>
                 </div>
-                <button class="btn" id="us-clear-history" style="margin-top:.5rem;font-size:.8rem">🗑️ Clear History</button>
+                <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:.5rem">
+                    <button class="btn" id="us-export" style="font-size:.8rem">Export History (.csv)</button>
+                    <button class="btn" id="us-clear-history" style="font-size:.8rem">🗑️ Clear History</button>
+                </div>
             </div>
         <div class="info-note">
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                <p>Each shortened link is generated locally — an alias you choose, or a random 7-character base-62 code — and stored together with the long URL in this device's <code>localStorage</code> history (up to 50 entries). The short URL is simply this page's address followed by <code>?go=code</code>: opening it reads the code, looks up the stored target and redirects you. Custom aliases and an optional client-side password hint are supported, and the history can be cleared or managed row by row.</p>
+                <p>Enter a long URL and create a short link using a custom alias or a random code. Links are saved in your browser and can be managed or deleted anytime.</p>
             </div>
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                <p>Short links and their targets are stored only in this device's local storage — nothing is uploaded to any service.</p>
+                <p>Short links and their targets are stored only in your browser. Nothing is uploaded to a third-party shortening service.</p>
             </div>
             <div class="note-sec">
                 <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                 <ul>
-                    <li>A generated <code>?go=…</code> link resolves instantly from this page, so share it across devices only while the folder is being served (e.g. a hosted copy or <code>python3 -m http.server</code>).</li>
-                    <li>On <code>file://</code>, everything works offline and stays on the same device.</li>
-                    <li>Custom aliases are faster to type and more memorable; alphanumerics, <code>-</code> and <code>_</code> are kept.</li>
+                    <li>Custom aliases make links easier to remember.</li>
+                    <li>Random codes create unique short links.</li>
+                    <li>Share generated links when this page is hosted online.</li>
+                    <li>Clear your history anytime to remove saved links.</li>
                 </ul>
             </div>
         </div>
@@ -124,8 +124,10 @@
 <script>
 (function(){
     'use strict';
-    const { $, toast, copyText, esc, isHttpUrl, toolPageInit } = ToolsApp;
+    const { $, toast, copyText, esc, isHttpUrl, downloadBlob, toolPageInit } = ToolsApp;
     toolPageInit('url-shortener');
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+    $('#us-export').innerHTML = CSV_ICON + ' Export History (.csv)';
 
     if (location.protocol === 'file:') $('#us-file-note').style.display = '';
 
@@ -133,7 +135,10 @@
     let history = [];
     try { history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch(e){ history = []; }
 
-    const mkShortUrl = code => location.href.split('?')[0] + '?go=' + encodeURIComponent(code);
+    const mkShortUrl = (code, url) => {
+        const base = location.href.split('?')[0].split('#')[0];
+        return base + '?go=' + encodeURIComponent(code) + (url ? '&u=' + encodeURIComponent(url) : '');
+    };
 
     const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     function hashCode(str){
@@ -152,10 +157,17 @@
         return base62(hashCode(url + Date.now()), 7);
     }
 
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
+
     function renderHistory(){
         const wrap = $('#us-history-wrap');
         const tbody = $('#us-history');
-        if (!history.length){ wrap.style.display='none'; return; }
+        if (!history.length){ tbody.innerHTML=''; wrap.style.display='none'; return; }
         wrap.style.display='';
         tbody.innerHTML = history.map((h,i) => `<tr style="border-bottom:1px solid var(--border)">
             <td style="padding:.4rem"><code>${esc(h.code)}</code></td>
@@ -168,7 +180,7 @@
         </tr>`).join('');
     }
 
-    window._usCopyShort = function(i){ copyText(mkShortUrl(history[i].code)); };
+    window._usCopyShort = function(i){ copyText(mkShortUrl(history[i].code, history[i].url)); };
     window._usDelHist = function(i){ history.splice(i,1); localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); renderHistory(); toast('Removed'); };
 
     renderHistory();
@@ -178,12 +190,12 @@
         if (!isHttpUrl(url)){ toast('Please enter a valid http/https URL', 'err'); return; }
         const alias = $('#us-alias').value.trim();
         const code = genCode(url, alias);
-        const shortUrl = mkShortUrl(code);
+        const shortUrl = mkShortUrl(code, url);
 
         $('#us-short-url').textContent = shortUrl;
         $('#us-result').style.display = '';
 
-        history.unshift({ code, url, alias, password: !!$('#us-password').value, created: Date.now() });
+        history.unshift({ code, url, alias, created: Date.now() });
         if (history.length > 50) history.pop();
         localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
         renderHistory();
@@ -198,12 +210,28 @@
     $('#us-clear-history').addEventListener('click', function(){
         history = []; localStorage.removeItem(HISTORY_KEY); renderHistory(); toast('History cleared');
     });
+    $('#us-export').addEventListener('click', function(){
+        if (!history.length){ toast('No history to export', 'err'); return; }
+        let csv = '\uFEFF';
+        csv += 'Report,URL Shortener\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Entries,' + history.length + '\n';
+        csv += '\nCode,Long URL,Alias,Created,Short link\n';
+        history.forEach(h => {
+            csv += csvCell(h.code) + ',' + csvCell(h.url) + ',' + csvCell(h.alias) + ',' + csvCell(new Date(h.created).toLocaleString()) + ',' + csvCell(mkShortUrl(h.code, h.url)) + '\n';
+        });
+        const file = 'short-links-' + new Date().toISOString().slice(0, 10) + '.csv';
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), file);
+    });
 
     /* ── Redirection entry point (?go=CODE) ─────────────────────────── */
     (function resolveGo(){
-        const code = (new URLSearchParams(location.search)).get('go');
-        if (!code) return;
-        const hit = history.find(h => h.code === code);
+        const params = new URLSearchParams(location.search);
+        const code = params.get('go');
+        const embedded = params.get('u');
+        if (!code && !embedded) return;
+        const stored = history.find(h => h.code === code);
+        const hit = (embedded && isHttpUrl(embedded)) ? { url: embedded } : stored;
         if (!hit || !isHttpUrl(hit.url)){
             toast('Short link not found — create it again first', 'err');
             $('#us-short-url').textContent = location.href;
