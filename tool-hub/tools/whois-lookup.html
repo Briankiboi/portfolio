@@ -52,8 +52,8 @@
                 <label for="w-domain">Enter Domain</label>
                 <input id="w-domain" type="text" placeholder="example.com" autocomplete="off">
             </div>
-            <div style="display:flex;gap:.6rem">
-                <button id="w-lookup" class="btn btn-primary" style="flex:1">🔎 Lookup</button>
+            <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+                <button id="w-lookup" class="btn btn-primary" style="flex:1 1 180px">🔎 Lookup</button>
                 <button id="w-open-rdap" class="btn btn-secondary hidden" title="Open full RDAP JSON in new tab">📄 Raw RDAP</button>
             </div>
 
@@ -66,18 +66,19 @@
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Queries the modern WHOIS via public <strong>RDAP</strong> (the registry API that has replaced the old WHOIS) — <code>rdap.org</code> first (CORS-enabled), falling back to <code>rdap.verisign.com</code> for <code>.com</code>/<code>.net</code> when needed. The record shows the registrar, created/updated/expiry dates, domain status flags, nameservers and any published contacts. The <strong>📄 Raw RDAP</strong> button opens the full JSON record in a new tab.</p>
+                    <p>Enter a domain name to query its registration details through public <strong>RDAP</strong>, the modern replacement for WHOIS. The tool automatically finds the correct registry for the domain extension using the IANA RDAP registry.</p>
+                    <p>It displays the registrar, creation, update, and expiry dates, domain status, nameservers, and available contact information. The complete RDAP response is also shown as raw JSON on the page, with an option to open it in a new tab.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Only the domain you enter is shared with the registry's public API — and nothing is stored or tracked.</p>
+                    <p>Only the domain name you enter is sent to the relevant public RDAP registry. Nothing is stored or tracked, and the lookup runs in your browser.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>Contact fields showing "Redacted (GDPR)" is normal registrar policy — not a tool limitation.</li>
-                        <li>Every TLD has its own RDAP provider; <code>rdap.org</code> routes automatically, and Verisign covers <code>.com</code>/<code>.net</code>.</li>
-                        <li>Registration dates come straight from registry data, making this the authoritative source for domain age too.</li>
+                        <li>Contact details marked "Redacted (GDPR)" are hidden by the registrar's privacy policy.</li>
+                        <li>Each domain extension has its own RDAP provider.</li>
+                        <li>.com and .net domains use Verisign, while other extensions use their respective registry operators.</li>
                     </ul>
                 </div>
             </div>
@@ -100,10 +101,81 @@
 <script>
 (function(){
     'use strict';
-    const { $, $$, esc, toast, copyText } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob, fmt } = window.ToolsApp;
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
 
     let lastRdapUrl = '';
     let lastJson = null;
+    let lastResult = null;
+
+    const RDAP_HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36',
+        'Accept': 'application/rdap+json, application/json, */*'
+    };
+
+    let ianaBootstrap = null;
+    async function tldRdapServers(domain){
+        const tld = (domain.split('.').pop() || '').toLowerCase();
+        if (!tld) return [];
+        if (!ianaBootstrap){
+            const r = await fetch('https://data.iana.org/rdap/dns.json', { signal: AbortSignal.timeout(8000), headers: RDAP_HEADERS });
+            if (!r.ok) return [];
+            ianaBootstrap = await r.json();
+        }
+        const rows = (ianaBootstrap.services || []).filter(sv => sv[0].includes(tld));
+        const servers = [];
+        for (const sv of rows) for (const base of (sv[1] || [])) servers.push(base.replace(/\/+$/, '') + '/domain/' + domain);
+        return servers;
+    }
+
+    async function fetchRdap(domain){
+        let candidates = [];
+        try { candidates = await tldRdapServers(domain); } catch(e){ candidates = []; }
+        candidates.push('https://rdap.org/domain/' + domain);
+        candidates.push('https://rdap.verisign.com/com/v1/domain/' + domain);
+        candidates.push('https://rdap.verisign.com/net/v1/domain/' + domain);
+        candidates.push('https://rdap.registry.net/domain/' + domain);
+        const seen = new Set();
+        candidates = candidates.filter(u => !seen.has(u) && seen.add(u));
+
+        let lastErr = null;
+        for (const u of candidates) {
+            try {
+                const ctrl = new AbortController();
+                const t = setTimeout(() => ctrl.abort(), 8000);
+                const res = await fetch(u, { signal: ctrl.signal, redirect: 'follow', headers: RDAP_HEADERS });
+                clearTimeout(t);
+                if (res.ok){
+                    const j = await res.json();
+                    if (j && j.objectClassName){ lastRdapUrl = u; return j; }
+                }
+                lastErr = new Error('HTTP ' + res.status);
+            } catch(e){ lastErr = e; }
+        }
+        throw lastErr || new Error('All RDAP endpoints failed');
+    }
+
+    function evtDate(data, action){
+        const e = (data.events || []).find(x => (x.eventAction || '').toLowerCase() === action.toLowerCase());
+        return e && e.eventDate ? new Date(e.eventDate) : null;
+    }
+    function contactRaw(ent){
+        if (!ent) return '';
+        try {
+            const v = ent.vcardArray ? ent.vcardArray[1] : null;
+            if (!v) return ent.handle || '';
+            const pick = k => { const f = v.find(x => x[0] === k); return f ? f[3] : ''; };
+            return [pick('fn'), pick('org'), pick('email')].filter(Boolean).join(' · ') || ent.handle || '';
+        } catch(e){ return ent.handle || ''; }
+    }
+    function registrarName(data){
+        const ent = (data.entities || []).find(e => (e.roles || []).includes('registrar'));
+        return ent ? (contactRaw(ent) || 'Registrar') : '';
+    }
+    function entityByRole(data, role){
+        return (data.entities || []).find(e => (e.roles || []).includes(role));
+    }
 
     function clean(s){ return s ? esc(String(s)) : '—'; }
 
@@ -113,107 +185,130 @@
         return isNaN(d) ? esc(v) : d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     }
 
+    function statusBadgeClass(s){
+        if (/(hold|deleted|suspend|redemption|pending)/i.test(s)) return 'b-err';
+        if (/(transfer|update|renew|nameserver|restore)/i.test(s)) return 'b-warn';
+        return 'b-ok';
+    }
+
     function renderResult(data, domain){
         lastJson = data;
-        const h = data.handle || domain;
-        const ld = data.ldhName || domain;
+        lastResult = { data, domain };
 
-        const regName = (data.status||[]).join(', ') || '—';
-        const creation = dateStr(data.events?.find(e=>e.eventAction==='registration')?.eventDate);
-        const expiry = dateStr(data.events?.find(e=>e.eventAction==='expiration')?.eventDate);
-        const updated = dateStr(data.events?.find(e=>e.eventAction==='last changed')?.eventDate);
+        const ld = data.ldhName || data.handle || domain;
+        const hdl = data.handle || domain;
+        const tld = (domain.split('.').pop() || '—').toUpperCase();
+        const statuses = (data.status || []).filter(Boolean);
+        const nss = (data.nameservers || []).map(n => n.ldhName || n.unicodeName).filter(Boolean);
+        const created = evtDate(data, 'registration');
+        const expiry = evtDate(data, 'expiration');
+        const updated = evtDate(data, 'last changed');
+        const daysToExpiry = expiry ? Math.max(0, Math.round((expiry - new Date()) / 864e5)) : null;
 
-        const nameservers = (data.nameservers||[]).map(n=>esc(n.ldhName)).join('<br>') || '—';
-        const registrar = esc(data.roles?.includes('registrar') ? (data.publicIds?.find(p=>p.type==='IANA Registrar ID')?.identifier || '') : '');
-        const regEntity = data.entities?.find(e=>(e.roles||[]).includes('registrar'));
-        const regLabel = regEntity ? esc(regEntity.handle || regEntity.vcardArray?.[1]?.find(v=>v[0]==='fn')?.[3] || 'Registrar') : registrar || '—';
+        const registrar = registrarName(data) || '—';
+        const registrant = contactRaw(entityByRole(data, 'registrant')) || 'Redacted (GDPR)';
+        const admin = contactRaw(entityByRole(data, 'administrative')) || 'Redacted (GDPR)';
+        const tech = contactRaw(entityByRole(data, 'technical')) || 'Redacted (GDPR)';
 
-        function contactVal(ent){
-            if(!ent) return 'Redacted (GDPR)';
-            try {
-                const vcard = ent.vcardArray?.[1];
-                if(!vcard) return 'Redacted (GDPR)';
-                const fn = vcard.find(v=>v[0]==='fn')?.[3];
-                const org = vcard.find(v=>v[0]==='org')?.[3];
-                const email = vcard.find(v=>v[0]==='email')?.[3];
-                const parts = [fn, org, email].filter(Boolean);
-                return parts.length ? esc(parts.join(' · ')) : 'Redacted (GDPR)';
-            } catch(e){ return 'Redacted (GDPR)'; }
-        }
+        let html = '';
 
-        const registrant = contactVal(data.entities?.find(e=>(e.roles||[]).includes('registrant')));
-        const admin = contactVal(data.entities?.find(e=>(e.roles||[]).includes('administrative')));
-        const tech = contactVal(data.entities?.find(e=>(e.roles||[]).includes('technical')));
+        /* Hero header — domain + registrar + status flag badges */
+        html += '<div class="whois-hero">'
+            + '<div class="whois-domain">' + clean(ld)
+            + '<span style="font-size:.66rem;font-weight:800;letter-spacing:.03em;padding:.22rem .6rem;border-radius:999px;background:rgba(14,138,108,.25);color:#5EEAD4">' + esc(tld) + '</span>'
+            + '</div>'
+            + '<div style="margin-top:.35rem;font-size:.8rem;color:#9FB3C8;display:flex;flex-wrap:wrap;gap:.2rem 1.2rem">'
+            + '<span>Registrar · <strong style="color:#E6EDF3">' + clean(registrar) + '</strong></span>'
+            + '<span>Handle · <strong style="color:#E6EDF3">' + clean(hdl) + '</strong></span>'
+            + '</div>'
+            + (statuses.length ? '<div class="whois-badges">' + statuses.map(s => '<span class="whois-badge ' + statusBadgeClass(s) + '">' + esc(s) + '</span>').join('') + '</div>' : '')
+            + '</div>';
 
-        let html = `<table style="width:100%;border-collapse:collapse;font-size:.92rem">
-            <tr><td style="padding:.45rem .6rem;font-weight:700;width:160px;border-bottom:1px solid #E4E8EF">Domain</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF;word-break:break-all">${clean(ld)}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Status</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${clean(regName)}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Registrar</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${regLabel}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Created</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${creation}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Expiry</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${expiry}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Updated</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${updated}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Name Servers</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${nameservers}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Registrant</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${registrant}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700;border-bottom:1px solid #E4E8EF">Admin Contact</td><td style="padding:.45rem .6rem;border-bottom:1px solid #E4E8EF">${admin}</td></tr>
-            <tr><td style="padding:.45rem .6rem;font-weight:700">Tech Contact</td><td style="padding:.45rem .6rem">${tech}</td></tr>
-        </table>`;
+        /* Date strip — Created / Updated / Expiry */
+        html += '<div class="whois-dates">'
+            + '<div class="whois-datecard"><div class="lbl">Created</div><div class="val">' + dateStr(created) + '</div></div>'
+            + '<div class="whois-datecard"><div class="lbl">Updated</div><div class="val">' + dateStr(updated) + '</div></div>'
+            + '<div class="whois-datecard"><div class="lbl">Expiry</div><div class="val">' + dateStr(expiry) + (daysToExpiry != null ? '<div class="sub">' + fmt.num(daysToExpiry) + ' days left</div>' : '') + '</div></div>'
+            + '</div>';
 
-        html += `<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
-            <button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector('#w-output table').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Table</button>
-        </div>`;
+        /* Name servers as chips */
+        html += '<div class="whois-ns"><span class="lbl">Name Servers</span>'
+            + (nss.length ? nss.map(n => '<span class="pill">' + esc(n) + '</span>').join('') : '<span class="pill">—</span>')
+            + '</div>';
+
+        /* Contact cards */
+        html += '<div class="whois-contacts">'
+            + '<div class="whois-contact"><h3>Registrant</h3><p>' + clean(registrant) + '</p></div>'
+            + '<div class="whois-contact"><h3>Admin Contact</h3><p>' + clean(admin) + '</p></div>'
+            + '<div class="whois-contact"><h3>Tech Contact</h3><p>' + clean(tech) + '</p></div>'
+            + '</div>';
+
+        html += '<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">'
+            + '<button class="btn btn-secondary" id="w-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
+            + '</div>';
+
+        html += '<div style="margin-top:1.4rem;font-size:.8rem;font-weight:700;color:var(--muted)">📄 Raw RDAP JSON</div>'
+            + '<pre style="background:#0B1020;color:#CBD5E1;padding:.8rem;border-radius:0 0 8px 8px;border-top:2px solid #1E293B;font-size:.7rem;line-height:1.45;overflow:auto;max-height:400px;margin:0">' + esc(JSON.stringify(data, null, 2)) + '</pre>';
 
         $('#w-output').innerHTML = html;
+        $('#w-export').addEventListener('click', () => downloadWhoisCsv(lastResult));
+    }
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        return '"' + v.replace(/"/g, '""') + '"';
+    }
+    function csvDate(v){
+        if (v instanceof Date && !isNaN(v)) return v.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return v ? String(v) : '';
+    }
+    function downloadWhoisCsv(last){
+        const { data, domain } = last;
+        const nss = (data.nameservers || []).map(n => n.ldhName || n.unicodeName).filter(Boolean).join('; ');
+        let csv = '\uFEFF';
+        csv += 'Report,WHOIS / RDAP Lookup\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n\n';
+        csv += 'DOMAIN\n';
+        csv += 'Domain,' + csvCell(domain) + '\n';
+        csv += 'Registrar,' + csvCell(registrarName(data)) + '\n';
+        csv += 'Handle,' + csvCell(data.handle || domain) + '\n';
+        csv += 'Status,' + csvCell((data.status || []).join('; ')) + '\n\n';
+        csv += 'DATES\n';
+        csv += 'Created,' + csvCell(csvDate(evtDate(data, 'registration'))) + '\n';
+        csv += 'Updated,' + csvCell(csvDate(evtDate(data, 'last changed'))) + '\n';
+        csv += 'Expiry,' + csvCell(csvDate(evtDate(data, 'expiration'))) + '\n\n';
+        csv += 'NAME SERVERS\n';
+        csv += 'Name Servers,' + csvCell(nss) + '\n\n';
+        csv += 'CONTACTS\n';
+        csv += 'Registrant,' + csvCell(contactRaw(entityByRole(data, 'registrant'))) + '\n';
+        csv += 'Admin Contact,' + csvCell(contactRaw(entityByRole(data, 'administrative'))) + '\n';
+        csv += 'Tech Contact,' + csvCell(contactRaw(entityByRole(data, 'technical'))) + '\n\n';
+        csv += 'Raw RDAP URL,' + csvCell(lastRdapUrl) + '\n';
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'whois-' + domain.replace(/\./g, '_') + '-' + new Date().toISOString().slice(0, 10) + '.csv');
     }
 
     async function doLookup(){
-        const raw = $('#w-domain').value.trim().replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/.*$/,'');
+        const raw = $('#w-domain').value.trim();
         if(!raw){ toast('Enter a domain','err'); return; }
-        const domain = raw.toLowerCase();
-        $('#w-lookup').disabled = true;
+        const domain = raw.replace(/^(https?:\/\/)?(www\.)?/i,'').replace(/\/.*$/,'').toLowerCase().trim();
+        if(!domain || !domain.includes('.')){ toast('Enter a valid domain','err'); return; }
+
+        const btn = $('#w-lookup');
+        btn.disabled = true;
         $('#w-output').innerHTML = '<p class="output-text" style="color:var(--muted)">Looking up <strong>'+esc(domain)+'</strong>…</p>';
         $('#w-open-rdap').classList.add('hidden');
 
-        let data = null;
-        let rdapUrl = '';
-
         try {
-            rdapUrl = 'https://rdap.org/domain/' + domain;
-            const res = await fetch(rdapUrl);
-            if(res.ok){
-                data = await res.json();
-            } else {
-                throw new Error('rdap.org returned ' + res.status);
-            }
-        } catch(e1){
-            try {
-                const tld = domain.split('.').pop();
-                if(tld === 'com'){
-                    rdapUrl = 'https://rdap.verisign.com/com/v1/domain/' + domain;
-                } else if(tld === 'net'){
-                    rdapUrl = 'https://rdap.verisign.com/net/v1/domain/' + domain;
-                } else if(tld === 'org'){
-                    rdapUrl = 'https://rdap.org/domain/' + domain;
-                } else {
-                    rdapUrl = 'https://rdap.org/domain/' + domain;
-                }
-                const res2 = await fetch(rdapUrl);
-                if(res2.ok){
-                    data = await res2.json();
-                } else {
-                    throw new Error('fallback returned ' + res2.status);
-                }
-            } catch(e2){
-                $('#w-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch RDAP data for <strong>'+esc(domain)+'</strong>. The domain may not exist or the endpoint may be unreachable.</p>';
-                $('#w-lookup').disabled = false;
-                return;
-            }
+            const data = await fetchRdap(domain);
+            $('#w-open-rdap').classList.remove('hidden');
+            renderResult(data, domain);
+            toast('RDAP data loaded');
+        } catch(e){
+            $('#w-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch RDAP data for <strong>'+esc(domain)+'</strong>. The domain may not exist or the registry endpoint may be unreachable.</p>';
+        } finally {
+            btn.disabled = false;
         }
-
-        lastRdapUrl = rdapUrl;
-        $('#w-open-rdap').classList.remove('hidden');
-        renderResult(data, domain);
-        $('#w-lookup').disabled = false;
-        toast('RDAP data loaded');
     }
 
     $('#w-lookup').addEventListener('click', doLookup);

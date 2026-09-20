@@ -428,6 +428,26 @@ body.tool-page .dac-stats .num { word-break: break-all; }
     body.tool-page .dac-stats { grid-template-columns: repeat(2, 1fr) !important; }
     body.tool-page .dac-stats .stat:first-child { grid-column: 1 / -1; }
 }
+/* WHOIS / RDAP Lookup — card-based record layout (distinct from domain age checker) */
+body.tool-page .whois-hero { background: linear-gradient(135deg, #0B1622 0%, #133043 100%); color: #E6EDF3; border-radius: 12px; padding: 1.1rem 1.15rem; margin-bottom: 1.1rem; }
+body.tool-page .whois-domain { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; word-break: break-all; }
+body.tool-page .whois-badges { display: flex; flex-wrap: wrap; gap: .38rem; margin-top: .75rem; }
+body.tool-page .whois-badge { font-size: .66rem; font-weight: 800; letter-spacing: .02em; padding: .2rem .55rem; border-radius: 999px; white-space: nowrap; }
+body.tool-page .whois-badge.b-warn { background: rgba(245, 158, 11, .16); color: #FBBF24; }
+body.tool-page .whois-badge.b-err  { background: rgba(239, 68, 68, .18); color: #F87171; }
+body.tool-page .whois-badge.b-ok   { background: rgba(14, 138, 108, .22); color: #5EEAD4; }
+body.tool-page .whois-dates, body.tool-page .whois-contacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-bottom: 1.1rem; }
+body.tool-page .whois-datecard, body.tool-page .whois-contact { background: #FFFFFF; border: 1px solid var(--border); border-radius: 10px; padding: .8rem .9rem; }
+body.tool-page .whois-datecard .lbl, body.tool-page .whois-contact h3 { margin: 0 0 .25rem; font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--muted); }
+body.tool-page .whois-datecard .val { font-size: 1rem; font-weight: 700; margin-top: .1rem; color: #0F172A; }
+body.tool-page .whois-datecard .sub { font-size: .7rem; color: var(--muted); margin-top: .1rem; }
+body.tool-page .whois-ns { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: 1.1rem; }
+body.tool-page .whois-ns .lbl { font-size: .76rem; font-weight: 700; color: var(--muted); margin-right: .2rem; }
+body.tool-page .whois-contact p { margin: 0; font-size: .85rem; color: #374151; word-break: break-word; line-height: 1.45; }
+@media (max-width: 620px) {
+    body.tool-page .whois-dates, body.tool-page .whois-contacts { grid-template-columns: 1fr; }
+    body.tool-page .whois-datecard { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; padding: .6rem .8rem; }
+}
 body.tool-page .stat {
     background: #FFFFFF;
     border: 1px solid var(--border);
