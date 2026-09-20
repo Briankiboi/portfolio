@@ -18,7 +18,7 @@
     var prompt = document.createElement('aside');
     prompt.id = 'dm-tools-install-prompt';
     prompt.innerHTML = '<button type="button" class="dm-tools-install-close" aria-label="Dismiss install prompt">&times;</button>' +
-      '<div class="dm-tools-install-mark"><img src="assets/icon-512.png" alt=""></div>' +
+      '<div class="dm-tools-install-mark"><img src="assets/icon-install.svg?v=3" alt=""></div>' +
       '<div class="dm-tools-install-copy"><strong>Install DM Solutions Free Tools</strong><span>Install our app for quick access, offline tools, and a faster experience.</span></div>' +
       '<div class="dm-tools-install-actions"><button type="button" class="dm-tools-install-action">Install App</button><button type="button" class="dm-tools-install-later">Not Now</button></div>';
     document.body.appendChild(prompt);

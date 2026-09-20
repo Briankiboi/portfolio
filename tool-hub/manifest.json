@@ -12,9 +12,9 @@
   "categories": ["productivity", "utilities"],
   "icons": [
     {
-      "src": "assets/icon-512.png",
+      "src": "assets/icon-install.svg?v=3",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]

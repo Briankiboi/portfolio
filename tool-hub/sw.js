@@ -1,4 +1,4 @@
-const CACHE = 'dm-tools-v1';
+const CACHE = 'dm-tools-v2';
 const SHELL = [
   '/tool-hub/',
   '/tool-hub/index.html',
@@ -10,7 +10,8 @@ const SHELL = [
   '/tool-hub/assets/js/catalog.js',
   '/tool-hub/assets/js/site-header.js',
   '/tool-hub/assets/js/site-search.js',
-  '/tool-hub/assets/icon-512.png'
+  '/tool-hub/assets/icon-512.png',
+  '/tool-hub/assets/icon-install.svg'
 ];
 
 self.addEventListener('install', (event) => {
