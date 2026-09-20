@@ -454,6 +454,35 @@ body.tool-page .dns-head .dns-count { font-size: .8rem; font-weight: 700; color:
 body.tool-page .dns-head code.mono { padding: .15rem .5rem; background: #F1F5F9; color: #0F172A; border-radius: 6px; }
 body.tool-page .pill.blue { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
 body.tool-page .result-box .pill.table-type { background: #F8FAFC; color: #334155; border-color: #E2E8F0; font-size: .72rem; padding: .18rem .55rem; }
+/* Website Auditor — grouped audit report (distinct from SEO Validation's flat checklist) */
+body.tool-page .wa-hero { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.3rem; }
+body.tool-page .wa-gauge { width: 158px; height: 158px; border-radius: 50%; position: relative; flex: 0 0 auto; }
+body.tool-page .wa-gauge-inner { position: absolute; inset: 14px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px #E4E8EF; }
+body.tool-page .wa-score { font-size: 2.4rem; font-weight: 900; line-height: 1; }
+body.tool-page .wa-slash { font-size: .68rem; color: var(--muted); font-weight: 600; margin-top: .05rem; }
+body.tool-page .wa-grade { font-size: .82rem; font-weight: 800; letter-spacing: .02em; margin-top: .15rem; }
+body.tool-page .wa-hero-side { flex: 1; min-width: 240px; }
+body.tool-page .wa-counts { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: .7rem; }
+body.tool-page .wa-count { font-size: 1.45rem; font-weight: 800; line-height: 1; }
+body.tool-page .wa-count b { font-size: .72rem; font-weight: 700; color: #6B7280; margin-left: .22rem; text-transform: uppercase; letter-spacing: .04em; }
+body.tool-page .wa-count.ok { color: #15803D; }
+body.tool-page .wa-count.warn { color: #B45309; }
+body.tool-page .wa-count.fail { color: #B91C1C; }
+body.tool-page .wa-dist { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: #E9EDF3; margin-bottom: .75rem; }
+body.tool-page .wa-dist i { height: 100%; }
+body.tool-page .wa-secs { display: flex; flex-direction: column; gap: 1rem; margin-top: .4rem; }
+body.tool-page .wa-section { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; }
+body.tool-page .wa-sec-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; padding: .55rem .95rem; background: #F8FAFC; border-bottom: 1px solid var(--border); }
+body.tool-page .wa-sec-head h3 { margin: 0; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: #334155; }
+body.tool-page .wa-sec-score { font-size: .75rem; font-weight: 800; color: var(--muted); white-space: nowrap; }
+body.tool-page .wa-row { display: flex; gap: .75rem; align-items: flex-start; padding: .55rem .95rem; border-bottom: 1px solid #EEF2F7; }
+body.tool-page .wa-row:last-child { border-bottom: none; }
+body.tool-page .wa-check { width: 165px; flex: 0 0 auto; font-weight: 800; font-size: .85rem; color: #0F172A; padding-top: .08rem; }
+body.tool-page .wa-detail { flex: 1; font-size: .82rem; color: #475569; line-height: 1.5; word-break: break-word; }
+@media (max-width: 620px) {
+    body.tool-page .wa-row { flex-wrap: wrap; gap: .3rem .75rem; }
+    body.tool-page .wa-check { width: 100%; }
+}
 body.tool-page .stat {
     background: #FFFFFF;
     border: 1px solid var(--border);

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Website Auditor — Free Tools Hub</title>
-<meta name="description" content="Audit any web page's on-page SEO — score 0-100 with a checklist, badges, and improvement tips — client-side, offline clone.">
+<title>Website Auditor  Free Tools Hub</title>
+<meta name="description" content="Audit any page's technical health  page weight, loading performance, media, structure, accessibility  scored 0-100 with fix-it tips, fully client-side.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -37,9 +37,9 @@
             <span class="tool-meta-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
                 <h1>Website Auditor</h1>
-                <p>Audits a single page's on-page SEO: titles, meta, Open Graph, structure, links, content quality — scored 0–100 with fix-it tips.</p>
+                <p>Audits a page's technical health: page weight and requests, loading performance, media, structure, and accessibility — scored 0–100 with fix-it tips, fully client-side.</p>
                 <div class="tool-meta-row">
-                    <span class="tool-badge">SEO & Search</span>
+                    <span class="tool-badge">Tech Audit</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
                 </div>
             </div>
@@ -50,16 +50,9 @@
 
             <!-- Input -->
             <div class="field">
-                <label for="wa-url">Page URL (optional)</label>
+                <label for="wa-url">Page URL</label>
                 <input id="wa-url" type="text" placeholder="https://example.com/page" autocomplete="off">
             </div>
-            <details style="margin-bottom:1.1rem;border:1.5px dashed rgba(199,120,0,.22);border-radius:13px;padding:.8rem 1rem">
-                <summary style="cursor:pointer;font-size:.85rem;font-weight:700;color:var(--primary)">…or paste raw HTML &mdash; use this when a live fetch is blocked <span style="color:var(--muted);font-weight:600">(e.g. opened from file://)</span></summary>
-                <div style="margin-top:.7rem">
-                    <textarea id="wa-html" placeholder="<html>…</html>" style="min-height:120px"></textarea>
-                    <p style="font-size:.75rem;color:var(--muted);margin-top:.4rem">View Source → Select All → Copy, then paste here. The full audit runs locally with zero network.</p>
-                </div>
-            </details>
             <button id="wa-audit" class="btn btn-primary btn-block">🔍 Audit Page</button>
 
             <div class="alert err hidden" id="wa-notice" style="margin-top:1rem"></div>
@@ -67,24 +60,32 @@
             <!-- Results -->
             <div class="result-box" id="wa-result" aria-live="polite">
                 <h2>Audit Report</h2>
-                <p class="output-text" id="wa-output">Enter a URL or paste HTML, then click Audit Page.</p>
+                <p class="output-text" id="wa-output">Enter a page URL, then click Audit Page.</p>
             </div>
 
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Fetches the URL live (or parses HTML you paste) with <code>DOMParser</code> and runs <strong>16 weighted on-page checks</strong>: title, meta description, viewport, Open Graph, Twitter cards, canonical, H1/H2, image alt, internal vs external links, script/link counts, HTML <code>lang</code>, robots meta, duplicate titles, word count and text/HTML ratio. Each check earns points toward a <strong>score /100</strong> with a grade (Excellent / Good / Fair / Poor), a full checklist with details, improvement tips and a copy-ready report export. To get the page, the tool first tries a direct fetch from your browser; when CORS blocks that, it automatically retries through a public CORS relay (<code>r.jina.ai</code>, then <code>api.allorigins.win</code>).</p>
+                    <p>Enter an <strong>https://</strong> page URL and click <strong>Audit Page</strong>. The tool fetches the page, analyzes it locally, and checks <strong>18 technical factors</strong> related to performance, page structure, media, accessibility, and loading.</p>
+                    <p><strong>You receive:</strong></p>
+                    <ul>
+                        <li>A score out of 100</li>
+                        <li>Pass, Warn, and Fail results</li>
+                        <li>Practical improvement tips</li>
+                        <li>A downloadable CSV report</li>
+                    </ul>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>The page is fetched directly from your browser when possible — no server involved and nothing stored. Only when CORS blocks that does the tool relay the request through a public CORS relay, which simply forwards the page's HTML back to your browser. For a fully private path, paste raw HTML instead and no request is made at all.</p>
+                    <p>The audit runs in your browser. Only the page HTML is fetched, and nothing is stored or tracked.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>Grade bands: 85+ Excellent · 70+ Good · 50+ Fair · below Poor.</li>
-                        <li>The tool auto-retries through a public CORS relay when direct reads are blocked — if even that fails (or you want zero third-party contact), paste the page's HTML (View Source → Copy) and re-run.</li>
-                        <li>Pair this with the <strong>SEO Validation</strong> tool for a two-pass sanity check.</li>
+                        <li>Use an https:// URL.</li>
+                        <li>Fix Fail items first, then address Warn items.</li>
+                        <li>Prioritize page size, requests, scripts, images, and loading performance.</li>
+                        <li>Use the CSV download to save or share the audit report.</li>
                     </ul>
                 </div>
             </div>
@@ -105,9 +106,17 @@
 <script>
 (function(){
     'use strict';
-    const { $, $$, esc, toast, copyText, fmt } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob, fmt } = window.ToolsApp;
 
-    let lastReport = '';
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+    let lastResult = null;
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if (/^[=+\-@]/.test(v)) v = "'" + v;
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
 
     function parseHtml(html){
         let doc;
@@ -128,6 +137,17 @@
         };
         const c = map[st] || map.fail;
         return '<span style="background:' + c[1] + ';color:' + c[0] + ';font-weight:800;font-size:.68rem;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + st.toUpperCase() + '</span>';
+    }
+
+    function safeDetail(s){
+        if (s == null) return '';
+        s = String(s)
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'");
+        return esc(s);
     }
 
     async function fetchUrl(url){
@@ -156,11 +176,9 @@
 
     async function getSource(){
         const url = $('#wa-url').value.trim();
-        const html = $('#wa-html').value.trim();
-        if (!url && !html){ toast('Enter a URL or paste HTML first', 'err'); return null; }
-        if (url && html){ toast('URL ignored — using pasted HTML'); return { url: null, html: html }; }
-        if (html) return { url: null, html: html };
-        return { url: url, html: '' };
+        if (!url){ toast('Enter a page URL first', 'err'); $('#wa-url').focus(); return null; }
+        try { new URL(url); } catch(e){ toast('Enter a valid URL (include https://)', 'err'); $('#wa-url').focus(); return null; }
+        return { url: url };
     }
 
     function grade(score){
@@ -170,32 +188,51 @@
         return score >= 70 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626';
     }
 
-    function renderScore(score){
+    function renderScore(score, checks){
         const c = gaugeColor(score);
-        return '<div style="display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;margin-bottom:1.2rem">'
-            + '<div style="width:150px;height:150px;border-radius:50%;background:conic-gradient(' + c + ' ' + score + '%, #E9EDF3 0);position:relative;flex:0 0 auto">'
-            + '<div style="position:absolute;inset:14px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #E4E8EF">'
-            + '<span style="font-size:2.2rem;font-weight:900;color:' + c + ';line-height:1">' + score + '</span>'
-            + '<span style="font-size:.68rem;color:var(--muted);font-weight:600">/ 100</span>'
+        const pass = checks.filter(x => x.status === 'pass').length;
+        const warn = checks.filter(x => x.status === 'warn').length;
+        const fail = checks.filter(x => x.status === 'fail').length;
+        const totalW = checks.reduce((s, x) => s + x.w, 0);
+        const pct = n => checks.length ? Math.round(n / checks.length * 100) : 0;
+        return '<div class="wa-hero">'
+            + '<div class="wa-gauge" style="background:conic-gradient(' + c + ' ' + score + '%, #E9EDF3 0)"><div class="wa-gauge-inner">'
+            + '<span class="wa-score" style="color:' + c + '">' + score + '</span><span class="wa-slash">/ 100</span><span class="wa-grade" style="color:' + c + '">' + grade(score) + '</span>'
             + '</div></div>'
-            + '<div style="flex:1;min-width:200px"><div class="stat-grid" style="margin:0;grid-template-columns:repeat(auto-fit,minmax(100px,1fr))">'
-            + '<div class="stat"><div class="num">' + score + '</div><div class="lbl">Score</div></div>'
-            + '<div class="stat"><div class="num">' + grade(score) + '</div><div class="lbl">Grade</div></div>'
-            + '<div class="stat"><div class="num">' + fmt.num($$('#ws-body tr').length) + '</div><div class="lbl">Checks</div></div>'
-            + '</div></div></div>';
+            + '<div class="wa-hero-side">'
+            + '<div class="wa-counts">'
+            + '<span class="wa-count ok">' + fmt.num(pass) + ' <b>Pass</b></span>'
+            + '<span class="wa-count warn">' + fmt.num(warn) + ' <b>Warn</b></span>'
+            + '<span class="wa-count fail">' + fmt.num(fail) + ' <b>Fail</b></span>'
+            + '</div>'
+            + '<div class="wa-dist"><i style="width:' + pct(pass) + '%;background:#16a34a"></i><i style="width:' + pct(warn) + '%;background:#d97706"></i><i style="width:' + pct(fail) + '%;background:#dc2626"></i></div>'
+            + '<div style="font-size:.78rem;color:var(--muted);font-weight:600">Weighted score · ' + fmt.num(totalW) + ' pts across ' + fmt.num(checks.length) + ' checks</div>'
+            + '</div></div>';
     }
 
-    function buildReport(data, checks, tips){
-        let r = 'WEBSITE AUDITOR REPORT\n';
-        r += '='.repeat(40) + '\n';
-        r += 'Date: ' + new Date().toISOString() + '\n';
-        r += 'Source: ' + (data.url ? esc(data.url) : 'Pasted HTML') + '\n';
-        r += 'Score: ' + checks.reduce((s, c) => s + c.earn * c.w, 0) + '/100 (' + grade(checks.reduce((s, c) => s + c.earn * c.w, 0)) + ')\n\n';
-        r += 'CHECKLIST\n';
-        checks.forEach(c => r += '[' + c.status.toUpperCase() + '] ' + c.label + ' — ' + strip(c.detail) + '\n');
-        r += '\nIMPROVEMENT TIPS\n';
-        tips.forEach((t, i) => r += (i + 1) + '. ' + strip(t) + '\n');
-        return r;
+    function buildAuditCsv(){
+        if (!lastResult) return;
+        const { data, checks, tips, score } = lastResult;
+        const pass = checks.filter(x => x.status === 'pass').length;
+        const warn = checks.filter(x => x.status === 'warn').length;
+        const fail = checks.filter(x => x.status === 'fail').length;
+        let csv = '\uFEFF';
+        csv += 'Report,Website Auditor\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Source,' + csvCell(data.url) + '\n';
+        csv += 'Score,' + score + '/100 (' + grade(score) + ')\n';
+        csv += 'Checks,' + checks.length + ' (' + pass + ' pass, ' + warn + ' warn, ' + fail + ' fail)\n\n';
+        csv += 'CHECK,STATUS,DETAIL,FIX\n';
+        for (const c of checks){
+            csv += csvCell(c.label) + ',' + csvCell(c.status.toUpperCase()) + ',' + csvCell(strip(c.detail)) + ',' + csvCell(c.tip ? strip(c.tip) : '') + '\n';
+        }
+        if (tips.length){
+            csv += '\nIMPROVEMENT TIPS\n';
+            tips.forEach((t, i) => csv += csvCell((i + 1) + '. ' + strip(t)) + '\n');
+        }
+        let host = 'pasted-html';
+        try { if (data.url) host = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e){}
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'website-auditor-' + host + '-' + new Date().toISOString().slice(0, 10) + '.csv');
     }
     function strip(s){ return s.replace(/<[^>]*>/g, ''); }
 
@@ -203,151 +240,179 @@
         const doc = parseHtml(html);
         if (!doc){ $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not parse the HTML as a document.</p>'; return; }
 
-        const base = data.url;
-        const origin = base ? (function(){ try { return new URL(base).origin; } catch(e){ return 'local'; } })() : 'local';
-
-        const checks = [];
+const checks = [];
         const tips = [];
         const add = (w, status, label, detail, tip) => { checks.push({ w, status, label, detail, tip, earn: status === 'pass' ? 1 : status === 'warn' ? .5 : 0 }); if (tip) tips.push(tip); };
 
-        /* 1. Title */
-        const titles = Array.from(doc.querySelectorAll('title')).map(t => t.textContent.trim());
-        const title = titles[0] || '';
-        if (title.length >= 10 && title.length <= 60) add(10, 'pass', 'Page title', '「' + esc(title) + '」 — ' + title.length + ' chars (ideal 10–60)');
-        else if (title) add(10, 'warn', 'Page title', '「' + esc(title) + '」 — ' + title.length + ' chars', 'Title is ' + title.length + ' chars; aim for 10–60 chars with your primary keyword near the front.');
-        else add(10, 'fail', 'Page title', 'No <title> tag found', 'Add a descriptive <title> tag (10–60 chars) between <head> and </head>.');
-
-        /* 2. Meta description */
-        const desc = metaVal(doc, 'name', 'description');
-        if (desc.length >= 50 && desc.length <= 160) add(9, 'pass', 'Meta description', desc.length + ' chars (ideal 50–160)');
-        else if (desc) add(9, 'warn', 'Meta description', desc.length + ' chars', 'Meta description is ' + desc.length + ' chars; rewrite to 50–160 chars including a call to action.');
-        else add(9, 'fail', 'Meta description', 'No meta description', 'Add a meta description of 50–160 chars summarising the page.');
-
-        /* 3. Viewport */
-        add(5, metaVal(doc, 'name', 'viewport') ? 'pass' : 'fail', 'Meta viewport', metaVal(doc, 'name', 'viewport') ? 'Viewport defined (mobile-friendly)' : 'Missing viewport meta' + (metaVal(doc, 'name', 'viewport') ? '' : ' — page is not declared mobile-friendly'), metaVal(doc, 'name', 'viewport') ? null : 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> for mobile SEO.');
-
-        /* 4. Open Graph */
-        const ogT = metaVal(doc, 'property', 'og:title');
-        const ogD = metaVal(doc, 'property', 'og:description');
-        const ogI = metaVal(doc, 'property', 'og:image');
-        const ogHave = [ogT, ogD, ogI].filter(Boolean).length;
-        if (ogHave === 3) add(10, 'pass', 'Open Graph', 'og:title / og:description / og:image all present');
-        else if (ogHave > 0) add(10, 'warn', 'Open Graph', ogHave + '/3 OG tags present', 'Add missing Open Graph tags so social shares render a rich preview: ' + [['og:title', ogT], ['og:description', ogD], ['og:image', ogI]].filter(x => !x[1]).map(x => x[0]).join(', ') + '.');
-        else add(10, 'fail', 'Open Graph', 'No Open Graph tags', 'Add og:title, og:description and og:image for Facebook/LinkedIn/WhatsApp previews.');
-
-        /* 5. Twitter cards */
-        const twC = metaVal(doc, 'name', 'twitter:card');
-        const twT = metaVal(doc, 'name', 'twitter:title');
-        const twHave = [twC, twT].filter(Boolean).length;
-        if (twHave === 2) add(6, 'pass', 'Twitter cards', 'twitter:card + twitter:title present');
-        else if (twHave === 1) add(6, 'warn', 'Twitter cards', 'Partial Twitter card data', 'Add twitter:card ("summary_large_image") and twitter:title.');
-        else add(6, 'fail', 'Twitter cards', 'No Twitter card tags', 'Add twitter:card and twitter:title meta tags for X/Twitter rich previews.');
-
-        /* 6. Canonical */
-        const canon = doc.querySelector('link[rel="canonical"]');
-        if (canon && canon.getAttribute('href')) add(6, 'pass', 'Canonical tag', 'Points to ' + esc(canon.getAttribute('href')));
-        else add(6, 'warn', 'Canonical tag', 'No canonical URL declared', 'Add <link rel="canonical" href="' + esc(base || '/current-page/') + '"> to prevent duplicate-content dilution.');
-
-        /* 7. H1 */
-        const h1s = Array.from(doc.querySelectorAll('h1'));
-        if (h1s.length === 1) add(9, 'pass', 'H1 heading', 'Exactly one H1: 「' + esc(h1s[0].textContent.trim().slice(0, 60)) + '」');
-        else if (h1s.length > 1) add(9, 'warn', 'H1 heading', h1s.length + ' H1 tags found', 'Keep a single H1 per page; demote the extra ones to H2/H3.');
-        else add(9, 'fail', 'H1 heading', 'No H1 tag', 'Add exactly one H1 describing the page topic; include the primary keyword.');
-
-        /* 8. H2 */
-        const h2s = doc.querySelectorAll('h2').length;
-        if (h2s >= 1) add(4, 'pass', 'H2 headings', h2s + ' H2 heading(s) — good content structure');
-        else add(4, 'warn', 'H2 headings', 'No H2 headings', 'Break content into H2 sections with keyword-rich subheadings.');
-
-        /* 9. Image alt */
+        const htmlLen = html.length;
+        const pageSizeKB = Math.round(htmlLen / 1024);
+        const scripts = Array.from(doc.querySelectorAll('script'));
+        const extScripts = scripts.filter(s => s && s.getAttribute('src'));
+        const styles = Array.from(doc.querySelectorAll('link[rel~="stylesheet"]'));
         const imgs = Array.from(doc.querySelectorAll('img'));
-        let altOK = 0;
-        imgs.forEach(im => { if (im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '') altOK++; });
-        const pct = imgs.length ? Math.round(altOK / imgs.length * 100) : 100;
-        if (!imgs.length) add(8, 'pass', 'Image alt text', 'No images to check');
-        else if (pct >= 95) add(8, 'pass', 'Image alt text', pct + '% of ' + imgs.length + ' images have alt text');
-        else if (pct >= 60) add(8, 'warn', 'Image alt text', pct + '% of ' + imgs.length + ' images have alt text', 'Add descriptive alt text to the remaining ' + (imgs.length - altOK) + ' image(s) for accessibility and image SEO.');
-        else add(8, 'fail', 'Image alt text', 'Only ' + pct + '% of ' + imgs.length + ' images have alt text', 'Give every meaningful image an alt attribute with a short description; leave decorative ones empty.');
+        const requests = extScripts.length + styles.length + imgs.length;
+        const bodyText = doc.body ? (doc.body.innerText || doc.body.textContent || '') : '';
 
-        /* 10. Internal vs external links */
-        const fullLinks = Array.from(doc.querySelectorAll('a[href]')).map(a => (a.getAttribute('href') || '').trim()).filter(h => h && !/^(mailto:|tel:|#|javascript:|data:)/i.test(h));
-        let internal = 0, external = 0;
-        fullLinks.forEach(h => {
-            let u;
-            try { u = new URL(h, base || 'https://local.invalid/'); } catch(e){ return; }
-            if (origin === 'local') { if (u.hostname === 'local.invalid') internal++; else external++; }
-            else { if (u.origin === origin) internal++; else external++; }
+        /* 1. Page size */
+        if (pageSizeKB <= 120) add(9, 'pass', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML');
+        else if (pageSizeKB <= 400) add(9, 'warn', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML — heavy', 'Trim the HTML: drop comments, prune inline styles, and move repeating blocks into templates or sections.');
+        else add(9, 'fail', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML — very heavy', 'A bloated DOM slows parsing. Aim under ~120 KB of raw HTML and audit any generated markup for duplication.');
+
+        /* 2. Script count */
+        if (extScripts.length <= 12) add(6, 'pass', 'Scripts', extScripts.length + ' external script(s)');
+        else if (extScripts.length <= 25) add(6, 'warn', 'Scripts', extScripts.length + ' external scripts', 'Bundling reduces round-trips — combine vendor and app JavaScript where possible.');
+        else add(6, 'fail', 'Scripts', extScripts.length + ' external scripts — too many requests', 'Every <script src> is a network round-trip. Bundle and prune unused libraries.');
+
+        /* 3. Stylesheet count */
+        if (styles.length <= 6) add(4, 'pass', 'Stylesheets', styles.length + ' stylesheet(s)');
+        else if (styles.length <= 12) add(4, 'warn', 'Stylesheets', styles.length + ' stylesheets', 'Merge CSS files and inline critical above-the-fold styles to cut requests and speed rendering.');
+        else add(4, 'fail', 'Stylesheets', styles.length + ' stylesheets — bloated', 'Consolidate stylesheets; too many block rendering and add latency.');
+
+        /* 4. Total requests */
+        if (requests <= 30) add(3, 'pass', 'Total requests', fmt.num(requests) + ' requests (scripts + stylesheets + images)');
+        else if (requests <= 60) add(3, 'warn', 'Total requests', fmt.num(requests) + ' requests', 'Heavy on mobile connections — reduce images and bundle assets.');
+        else add(3, 'fail', 'Total requests', fmt.num(requests) + ' requests — way too many', 'Aim under 30 requests; lazy-load below-the-fold media and merge assets.');
+
+        /* 5. Render-blocking scripts in <head> */
+        const blockingHead = extScripts.filter(s => {
+            if (!s.closest('head')) return false;
+            if (s.getAttribute('type') === 'module') return false;
+            return !(s.getAttribute('async') || s.getAttribute('defer'));
         });
-        if (internal >= 1 && (internal + external) >= 2) add(6, 'pass', 'Internal links', internal + ' internal · ' + external + ' external');
-        else if (internal === 0 && (internal + external) > 0) add(6, 'fail', 'Internal links', 'No internal links — only ' + external + ' external', 'Add internal links to related pages on your site to spread authority and help crawling.');
-        else if (internal + external === 0) add(6, 'warn', 'Internal links', 'No <a> links found', 'Add at least a few internal links to help users and crawlers navigate.');
+        if (blockingHead.length === 0) add(10, 'pass', 'Render-blocking scripts', 'No classic scripts block parsing in <head>');
+        else if (blockingHead.length <= 2) add(10, 'warn', 'Render-blocking scripts', blockingHead.length + ' script(s) block first paint', 'Add async or defer to those head scripts; defer is safest for dependencies.');
+        else add(10, 'fail', 'Render-blocking scripts', blockingHead.length + ' blocking scripts in <head>', 'Classic scripts in <head> stall rendering. Use defer (or async where safe) on external scripts.');
 
-        /* 11. Script / link counts */
-        const scripts = doc.querySelectorAll('script[src]').length;
-        const linkTags = doc.querySelectorAll('link').length;
-        const combined = scripts + linkTags;
-        if (combined <= 30) add(5, 'pass', 'Scripts & links', scripts + ' scripts · ' + linkTags + ' link tags (' + combined + ' total)');
-        else if (combined <= 60) add(5, 'warn', 'Scripts & links', combined + ' assets — leaning heavy', 'Consider deferring scripts and combining CSS/JS to speed up load.');
-        else add(5, 'fail', 'Scripts & links', combined + ' external assets — bloated', 'Audit and remove unused scripts/stylesheets; too many requests hurt Core Web Vitals.');
+        /* 6. Resource hints */
+        const hints = doc.querySelectorAll('link[rel="preload"], link[rel="preconnect"], link[rel="dns-prefetch"]').length;
+        if (hints) add(5, 'pass', 'Resource hints', hints + ' preload / preconnect / dns-prefetch hint(s)');
+        else add(5, 'warn', 'Resource hints', 'No preload or preconnect hints', 'Add <link rel="preconnect"> to critical origins and preload above-the-fold fonts or images.');
 
-        /* 12. HTML lang */
-        if (doc.documentElement.getAttribute('lang')) add(5, 'pass', 'HTML lang', 'lang="' + esc(doc.documentElement.getAttribute('lang')) + '" set');
-        else add(5, 'warn', 'HTML lang', 'No lang attribute on <html>', 'Add lang="en" (or your language) to <html> for accessibility and correct search-language signals.');
+        /* 7. Lazy loading */
+        const lazyImgs = imgs.filter(im => im.getAttribute('loading') === 'lazy').length;
+        if (!imgs.length) add(5, 'pass', 'Lazy loading', 'No images to lazy-load');
+        else if (lazyImgs >= Math.ceil(imgs.length / 2)) add(5, 'pass', 'Lazy loading', lazyImgs + ' of ' + imgs.length + ' images use loading="lazy"');
+        else add(5, 'warn', 'Lazy loading', 'Only ' + lazyImgs + ' of ' + imgs.length + ' images use loading="lazy"', 'Add loading="lazy" to below-the-fold images to save bandwidth.');
 
-        /* 13. Robots meta */
-        const robots = metaVal(doc, 'name', 'robots');
-        if (robots && /noindex/i.test(robots)) add(4, 'warn', 'Robots meta', 'robots — "' + esc(robots) + '" (page blocked from indexing)', 'Your robots meta contains noindex — search engines will not index this page. Remove it if you want the page found.');
-        else add(4, 'pass', 'Robots meta', robots ? 'robots="' + esc(robots) + '"' : 'No robots meta — assumes index,follow');
+        /* 8. Subresource Integrity */
+        const noSri = extScripts.filter(s => !s.getAttribute('integrity'));
+        if (!extScripts.length) add(4, 'pass', 'Subresource Integrity', 'No external scripts to protect');
+        else if (!noSri.length) add(4, 'pass', 'Subresource Integrity', 'All ' + extScripts.length + ' external script(s) carry integrity hashes');
+        else add(4, 'warn', 'Subresource Integrity', noSri.length + ' external script(s) missing integrity', 'Add integrity="sha384-…" plus crossorigin="anonymous" to CDN scripts so a compromised CDN can\u2019t inject code.');
 
-        /* 14. Duplicate titles */
-        if (titles.length === 1) add(4, 'pass', 'Duplicate titles', 'Exactly one <title> tag');
-        else if (titles.length > 1) add(4, 'fail', 'Duplicate titles', titles.length + ' <title> tags — duplicates confuse search engines', 'Remove all but one <title> tag.');
-        else add(4, 'fail', 'Duplicate titles', 'No <title> tag', 'Add a single unique <title> tag.');
+        /* 9. Image alt text */
+        const altOK = imgs.filter(im => im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '').length;
+        const altPct = imgs.length ? Math.round(altOK / imgs.length * 100) : 100;
+        if (!imgs.length) add(8, 'pass', 'Image alt text', 'No images to check');
+        else if (altPct >= 95) add(8, 'pass', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text');
+        else if (altPct >= 60) add(8, 'warn', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text', 'Add descriptive alt text to the remaining ' + (imgs.length - altOK) + ' image(s) — screen readers rely on it.');
+        else add(8, 'fail', 'Image alt text', 'Only ' + altPct + '% of ' + imgs.length + ' images have alt text', 'Every meaningful image needs an alt attribute with a short description; leave decorative ones empty.');
 
-        /* 15. Word count */
-        const words = ((doc.body ? doc.body.innerText || doc.body.textContent : '') || '').trim().split(/\s+/).filter(Boolean).length;
-        if (words >= 300) add(5, 'pass', 'Word count', fmt.num(words) + ' words of content');
-        else if (words >= 100) add(5, 'warn', 'Word count', fmt.num(words) + ' words', 'Content is thin (' + fmt.num(words) + ' words). Expand to at least 300 words where the topic allows.');
-        else add(5, 'fail', 'Word count', 'Only ' + fmt.num(words) + ' words', 'Thin content ranks poorly. Aim for 300+ words of genuinely useful text.');
+        /* 10. Image dimensions */
+        const noSize = imgs.filter(im => !(im.getAttribute('width') && im.getAttribute('height'))).length;
+        if (!imgs.length) add(6, 'pass', 'Image dimensions', 'No images to check');
+        else if (!noSize) add(6, 'pass', 'Image dimensions', 'All images declare width & height');
+        else if (noSize <= Math.ceil(imgs.length / 2)) add(6, 'warn', 'Image dimensions', noSize + ' image(s) missing width/height', 'Declaring dimensions reserves layout space and prevents layout shift (CLS).');
+        else add(6, 'fail', 'Image dimensions', noSize + ' of ' + imgs.length + ' images lack width/height', 'Add width and height attributes to every image to fix Cumulative Layout Shift.');
+
+        /* 11. Image count */
+        if (imgs.length <= 20) add(3, 'pass', 'Image count', imgs.length + ' image(s)');
+        else if (imgs.length <= 50) add(3, 'warn', 'Image count', imgs.length + ' images — heavy page', 'Consider serving from a CDN and lazy-loading most of these.');
+        else add(3, 'fail', 'Image count', imgs.length + ' images — excessive', '50+ images guarantees slow loads on mobile; use sprites, CSS, or lazy loading.');
+
+        /* 12. Optimized formats */
+        const heavy = imgs.filter(im => /\.(png|bmp|tiff|gif)($|\?)/i.test(im.getAttribute('src') || '')).length;
+        if (!imgs.length) add(4, 'pass', 'Image formats', 'No images to check');
+        else if (!heavy) add(4, 'pass', 'Image formats', 'No legacy-heavy formats detected');
+        else add(4, 'warn', 'Image formats', heavy + ' image(s) use PNG / BMP / GIF', 'Serve WebP or AVIF where possible — they typically save 30–50%+ bandwidth.');
+
+        /* 13. Page title */
+        const titleEl = doc.querySelector('title');
+        const titleText = titleEl ? (titleEl.textContent || '').trim() : '';
+        if (titleText && titleText.length >= 10) add(7, 'pass', 'Page title', '「' + esc(titleText.slice(0, 60)) + '」 — ' + titleText.length + ' chars');
+        else if (titleText) add(7, 'warn', 'Page title', 'Title is only ' + titleText.length + ' chars', 'Give the page a proper title (10+ characters) — it names the browser tab.');
+        else add(7, 'fail', 'Page title', 'No <title> tag', 'Every page needs a <title> tag in <head>.');
+
+        /* 14. Heading hierarchy */
+        const h1s = doc.querySelectorAll('h1').length;
+        const h2s = doc.querySelectorAll('h2').length;
+        if (h1s === 1 && h2s >= 1) add(5, 'pass', 'Heading hierarchy', '1 H1 + ' + h2s + ' H2 — clear structure');
+        else if (h1s === 1) add(5, 'warn', 'Heading hierarchy', '1 H1 but no H2 sections', 'Split long content into H2 sections to make it scannable.');
+        else if (h1s > 1) add(5, 'warn', 'Heading hierarchy', h1s + ' H1 tags — use one per page', 'Keep a single H1; demote the rest to H2/H3.');
+        else add(5, 'fail', 'Heading hierarchy', 'No H1 heading', 'Add one H1 that introduces the page.');
+
+        /* 15. Content length */
+        const words = bodyText.trim().split(/\s+/).filter(Boolean).length;
+        if (words >= 300) add(5, 'pass', 'Content length', fmt.num(words) + ' words');
+        else if (words >= 100) add(5, 'warn', 'Content length', fmt.num(words) + ' words', 'Thin pages feel unfinished — aim for 300+ words where the topic allows.');
+        else add(5, 'fail', 'Content length', 'Only ' + fmt.num(words) + ' words', 'Very little readable content; expand it or reconsider the page\u2019s purpose.');
 
         /* 16. Text / HTML ratio */
-        const textLen = ((doc.body ? doc.body.textContent : '') || '').trim().length;
+        const textLen = bodyText.trim().length;
         const ratio = html.length ? textLen / html.length : 0;
         if (ratio >= .10 && ratio <= .70) add(4, 'pass', 'Text / HTML ratio', Math.round(ratio * 100) + '% readable text');
-        else if (ratio < .10) add(4, 'warn', 'Text / HTML ratio', 'Only ' + Math.round(ratio * 100) + '% — mostly markup/scripts', 'Low text ratio suggests a JS-heavy or image-only page; consider server-side content.');
-        else add(4, 'warn', 'Text / HTML ratio', Math.round(ratio * 100) + '% — very high text', 'High text ratio can look like keyword stuffing; add headings, media and structure.');
+        else if (ratio < .10) add(4, 'warn', 'Text / HTML ratio', 'Only ' + Math.round(ratio * 100) + '% — mostly markup', 'A low ratio suggests a JS-rendered or image-heavy page; consider server-side content.');
+        else add(4, 'warn', 'Text / HTML ratio', Math.round(ratio * 100) + '% — mostly text', 'Fine by itself; just make sure headings and media break the text up.');
+
+        /* 17. Meta viewport */
+        const viewport = metaVal(doc, 'name', 'viewport');
+        if (viewport) add(5, 'pass', 'Meta viewport', viewport.length > 50 ? 'Viewport declared' : 'Viewport: ' + esc(viewport));
+        else add(5, 'fail', 'Meta viewport', 'Missing viewport meta', 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> so mobile browsers render properly.');
+
+        /* 18. Lang & charset */
+        const lang = doc.documentElement.getAttribute('lang');
+        const charset = doc.querySelector('meta[charset]');
+        if (lang && charset) add(7, 'pass', 'Lang & charset', 'lang="' + esc(lang) + '" + charset declared');
+        else if (lang && !charset) add(7, 'warn', 'Lang & charset', 'lang set but no <meta charset>', 'Declare utf-8 as the first <meta> to avoid mojibake.');
+        else if (!lang && charset) add(7, 'warn', 'Lang & charset', 'charset declared but lang missing', 'Add lang="' + esc(lang || 'en') + '" to <html> for screen readers and correct hyphenation.');
+        else add(7, 'fail', 'Lang & charset', 'No lang attribute, no charset', 'Add a lang attribute to <html> and <meta charset="utf-8"> as the first meta tag.');
 
         const total = checks.reduce((s, c) => s + c.w, 0);
         const score = Math.round(checks.reduce((s, c) => s + c.earn * c.w, 0));
-        lastReport = buildReport(data, checks, tips);
+        lastResult = { data, checks, tips, score };
 
-        let rows = checks.map(c =>
-            '<tr style="border-bottom:1px solid #E4E8EF">'
-            + '<td style="padding:.5rem .6rem;font-weight:700;white-space:nowrap">' + esc(c.label) + '</td>'
-            + '<td style="padding:.5rem .6rem">' + badge(c.status) + '</td>'
-            + '<td style="padding:.5rem .6rem;color:#374151;word-break:break-word">' + c.detail + '</td>'
-            + '</tr>'
-        ).join('');
+        const CAT = { 'Page size': 'Page Weight & Requests', 'Scripts': 'Page Weight & Requests', 'Stylesheets': 'Page Weight & Requests', 'Total requests': 'Page Weight & Requests', 'Render-blocking scripts': 'Loading & Performance', 'Resource hints': 'Loading & Performance', 'Lazy loading': 'Loading & Performance', 'Subresource Integrity': 'Loading & Performance', 'Image alt text': 'Media & Assets', 'Image dimensions': 'Media & Assets', 'Image count': 'Media & Assets', 'Image formats': 'Media & Assets', 'Page title': 'Structure & Content', 'Heading hierarchy': 'Structure & Content', 'Content length': 'Structure & Content', 'Text / HTML ratio': 'Structure & Content', 'Meta viewport': 'Accessibility & Compatibility', 'Lang & charset': 'Accessibility & Compatibility' };
+        const cats = [];
+        checks.forEach(c => {
+            const name = CAT[c.label] || 'Other';
+            let g = cats.find(x => x.name === name);
+            if (!g){ g = { name: name, items: [] }; cats.push(g); }
+            g.items.push(c);
+        });
+        const catIcons = { 'Page Weight & Requests': '💾', 'Loading & Performance': '⚡', 'Media & Assets': '🖼️', 'Structure & Content': '🧱', 'Accessibility & Compatibility': '♿' };
 
-        let htmlOut = renderScore(score);
+        let htmlOut = renderScore(score, checks);
 
-        htmlOut += '<table style="width:100%;border-collapse:collapse;font-size:.88rem">'
-            + '<thead><tr style="text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em">'
-            + '<th style="padding:.4rem .6rem">Check</th><th style="padding:.4rem .6rem">Status</th><th style="padding:.4rem .6rem">Detail</th>'
-            + '</tr></thead><tbody id="ws-body">' + rows + '</tbody></table>';
+        htmlOut += '<div class="wa-secs">';
+        cats.forEach(cat => {
+            const earned = Math.round(cat.items.reduce((s, c) => s + c.earn * c.w, 0));
+            const cw = cat.items.reduce((s, c) => s + c.w, 0);
+            htmlOut += '<div class="wa-section">'
+                + '<div class="wa-sec-head"><h3>' + (catIcons[cat.name] || '▫') + ' ' + esc(cat.name) + '</h3>'
+                + '<span class="wa-sec-score">' + earned + '/' + cw + ' pts</span></div>';
+            cat.items.forEach(c => {
+                htmlOut += '<div class="wa-row">'
+                    + '<span class="wa-check">' + esc(c.label) + '</span>'
+                    + '<span>' + badge(c.status) + '</span>'
+                    + '<span class="wa-detail">' + safeDetail(c.detail) + '</span>'
+                    + '</div>';
+            });
+            htmlOut += '</div>';
+        });
+        htmlOut += '</div>';
 
         if (tips.length){
             htmlOut += '<h2 style="margin-top:1.4rem">Improvement tips</h2><ul style="margin-left:1.2rem;font-size:.88rem;line-height:1.7;color:#374151">';
-            tips.forEach(t => htmlOut += '<li>' + t + '</li>');
+            tips.forEach(t => htmlOut += '<li>' + safeDetail(t) + '</li>');
             htmlOut += '</ul>';
         }
 
         htmlOut += '<div style="margin-top:1.4rem;display:flex;gap:.5rem;flex-wrap:wrap">'
-            + '<button class="btn btn-secondary" id="wa-export" style="font-size:.82rem;padding:.5rem 1rem">📋 Export Report</button>'
+            + '<button class="btn btn-secondary" id="wa-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
             + '</div>';
 
         $('#wa-output').innerHTML = htmlOut;
-        $('#wa-export').addEventListener('click', e => copyText(lastReport, e.currentTarget));
+        $('#wa-export').addEventListener('click', buildAuditCsv);
         toast('Audit complete — score ' + score + '/100');
     }
 
@@ -357,20 +422,17 @@
         const btn = $('#wa-audit');
         btn.disabled = true;
         $('#wa-notice').classList.add('hidden');
-        $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)" id="wa-progress">⏳ ' + (data.url ? 'Fetching ' + esc(data.url) + ' (auto-retries through a public CORS relay if direct is blocked)…' : 'Auditing pasted HTML…') + '</p>';
+        $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)" id="wa-progress">⏳ Fetching ' + esc(data.url) + ' (auto-retries through a public CORS relay if direct is blocked)…</p>';
 
-        if (data.url && !data.html){
-            try {
-                data.html = await fetchUrl(data.url);
-            } catch(e){
-                $('#wa-progress').innerHTML = '';
-                $('#wa-notice').textContent = '⚠️ Could not read ' + data.url + ' — your browser blocks cross-origin reads (CORS) and the relay services didn\u2019t return the page either. Paste the page\'s raw HTML below instead — the full audit still runs locally, with nothing sent anywhere.';
-                $('#wa-notice').classList.remove('hidden');
-                $('#wa-html').focus();
-                $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(data.url) + ' automatically — please paste raw HTML and re-run.</p>';
-                btn.disabled = false;
-                return;
-            }
+        try {
+            data.html = await fetchUrl(data.url);
+        } catch(e){
+            $('#wa-progress').innerHTML = '';
+            $('#wa-notice').textContent = '⚠️ Could not read ' + data.url + ' — your browser blocks cross-origin reads (CORS) and the relay services didn\u2019t return the page either. Some sites block scraping entirely.';
+            $('#wa-notice').classList.remove('hidden');
+            $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(data.url) + ' automatically.</p>';
+            btn.disabled = false;
+            return;
         }
         if (!data.html || !data.html.trim()){ btn.disabled = false; $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Nothing to audit.</p>'; return; }
         runAudit(data, data.html);
