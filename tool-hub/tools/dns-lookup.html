@@ -78,18 +78,32 @@
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Queries the public <strong>Google DNS-over-HTTPS</strong> API (<code>dns.google/resolve</code>, CORS-enabled) — the exact resolver behind <code>8.8.8.8</code>. Pick a record type and the tool returns every matching record with its name, type, TTL and value. Supported types: <code>A</code>, <code>AAAA</code>, <code>CNAME</code>, <code>MX</code>, <code>NS</code>, <code>TXT</code>, <code>SOA</code> and <code>ANY</code>. Entered domains are cleaned automatically (strips <code>http(s)://</code>, <code>www.</code> and path).</p>
+                    <p>Enter a domain name, choose a DNS record type, and the tool queries Google's public DNS-over-HTTPS API. It returns each matching record with its name, type, TTL, and value.</p>
+                    <p>Supported record types include:</p>
+                    <ul>
+                        <li><code>A</code></li>
+                        <li><code>AAAA</code></li>
+                        <li><code>CNAME</code></li>
+                        <li><code>MX</code></li>
+                        <li><code>NS</code></li>
+                        <li><code>TXT</code></li>
+                        <li><code>SOA</code></li>
+                        <li><code>ANY</code></li>
+                    </ul>
+                    <p>The tool automatically removes <code>http://</code>, <code>https://</code>, <code>www.</code>, and page paths from the domain you enter.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Only the domain and record type you enter are sent to Google's resolver — no personal data — and nothing is stored or tracked.</p>
+                    <p>Only the domain and selected record type are sent to Google's public DNS resolver. No personal data is sent, and nothing is stored or tracked.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>TTL shows how long record values are cached; after DNS changes, allow up to the TTL for propagation.</li>
-                        <li>Use <code>MX</code> to check email routing, <code>TXT</code> for SPF/DKIM/ownership tokens, and <code>NS</code> to confirm your nameservers.</li>
-                        <li><code>ANY</code> returns whatever the resolver happens to have cached for all types — for a complete answer, query each type you care about.</li>
+                        <li>TTL indicates how long a DNS record may remain cached.</li>
+                        <li>Use <strong>MX</strong> to check email servers.</li>
+                        <li>Use <strong>TXT</strong> to inspect SPF, DKIM, and domain-verification records.</li>
+                        <li>Use <strong>NS</strong> to confirm the domain's nameservers.</li>
+                        <li><strong>ANY</strong> may not return every record type. Query each type separately for a complete check.</li>
                     </ul>
                 </div>
             </div>
@@ -112,7 +126,10 @@
 <script>
 (function(){
     'use strict';
-    const { $, esc, toast, copyText } = window.ToolsApp;
+    const { $, esc, toast, downloadBlob, fmt } = window.ToolsApp;
+
+    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
+    let lastResult = null;
 
     const TYPE_MAP = {1:'A',2:'NS',5:'CNAME',6:'SOA',15:'MX',16:'TXT',28:'AAAA',255:'ANY'};
     const TYPE_NAME = {'1':'A','2':'NS','5':'CNAME','6':'SOA','15':'MX','16':'TXT','28':'AAAA','255':'ANY'};
@@ -142,22 +159,59 @@
         return '<code class="mono">' + esc(a.data || JSON.stringify(a)) + '</code>';
     }
 
-    function renderRecords(answers, rrtype){
-        if(!answers || !answers.length){
-            return '<p class="output-text" style="color:var(--muted)">No records found.</p>';
+    function csvValue(type, a){
+        if(type === 'MX') return 'pri ' + a.PRIORITY + ' ' + a.exchange;
+        if(type === 'A') return a.IP || '';
+        if(type === 'AAAA') return a.IPv6 || '';
+        if(type === 'TXT') return decodeTxt(a.data);
+        return a.data || JSON.stringify(a);
+    }
+
+    function csvCell(v){
+        v = String(v == null ? '' : v);
+        if(/^[=+\-@]/.test(v)) v = "'" + v;
+        if(/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+    }
+
+    function downloadDnsCsv(last){
+        const { answers, domain, typeName } = last;
+        let csv = '\uFEFF';
+        csv += 'Report,DNS Lookup\n';
+        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
+        csv += 'Domain,' + csvCell(domain) + '\n';
+        csv += 'Record Type,' + csvCell(typeName) + '\n\n';
+        csv += 'Name,Type,TTL,Data\n';
+        for(const a of answers){
+            csv += csvCell(a.name) + ',' + csvCell(typeName) + ',' + (a.TTL != null ? a.TTL : '') + ',' + csvCell(csvValue(typeName, a)) + '\n';
         }
-        let html = '<div class="t-wrap"><table style="width:100%;border-collapse:collapse;font-size:.88rem">';
-        html += '<tr><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:30%">Name</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:11%">Type</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:10%">TTL</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Data</th></tr>';
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'dns-' + domain.replace(/\./g, '_') + '-' + typeName.toLowerCase() + '-' + new Date().toISOString().slice(0, 10) + '.csv');
+    }
+
+    function renderRecords(answers, typeName, domain){
+        const count = answers ? answers.length : 0;
+        let html = '<div class="dns-head">'
+            + '<span class="pill blue">' + esc(typeName) + '</span>'
+            + '<code class="mono" style="font-size:.86rem">' + esc(domain) + '</code>'
+            + '<span class="dns-count">' + count + ' record' + (count !== 1 ? 's' : '') + ' found</span>'
+            + '</div>';
+
+        if(!count){
+            return html + '<p class="output-text" style="color:var(--muted)">No records found for this type.</p>';
+        }
+
+        html += '<div class="table-scroll"><table style="width:100%;border-collapse:collapse;font-size:.88rem">';
+        html += '<tr><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:26%">Name</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:10%">Type</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF;width:9%">TTL</th><th style="padding:.55rem .6rem;text-align:left;border-bottom:2px solid #E4E8EF">Data</th></tr>';
         for(const a of answers){
             const name = esc(a.name);
             const type = TYPE_MAP[a.type] || a.type;
-            const ttl = a.TTL != null ? a.TTL + 's' : '—';
-            html += '<tr><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;word-break:break-all">' + name + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3"><span class="pill">' + type + '</span></td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;color:var(--muted);white-space:nowrap">' + ttl + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3">' + dataCell(type, a) + '</td></tr>';
+            const ttl = a.TTL != null ? fmt.num(a.TTL) + 's' : '—';
+            html += '<tr><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;word-break:break-all">' + name + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3"><span class="pill table-type">' + esc(type) + '</span></td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3;color:var(--muted);white-space:nowrap">' + ttl + '</td><td style="padding:.5rem .6rem;border-bottom:1px solid #E9EDF3">' + dataCell(type, a) + '</td></tr>';
         }
         html += '</table></div>';
-        html += '<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">';
-        html += '<button class="btn btn-secondary" onclick="window.ToolsApp.copyText(document.querySelector(\'#dns-output table\').innerText)" style="font-size:.82rem;padding:.45rem .9rem">📋 Copy Table</button>';
-        html += '</div>';
+        html += '<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">'
+            + '<button class="btn btn-secondary" id="dns-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
+            + '</div>';
         return html;
     }
 
@@ -179,9 +233,10 @@
                 $('#dns-output').innerHTML = '<div class="alert err">⚠️ <strong>NXDOMAIN</strong> — The domain <strong>'+esc(domain)+'</strong> does not exist. Check the spelling and try again.</div>';
             } else if(data.Status === 0){
                 const answers = Array.isArray(data.Answer) ? data.Answer : (data.Answer ? [data.Answer] : []);
-                const count = answers.length;
-                let header = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem"><span style="font-size:.82rem;color:var(--muted)">' + count + ' record' + (count!==1?'s':'') + ' found</span></div>';
-                $('#dns-output').innerHTML = header + renderRecords(answers, typeName);
+                lastResult = { answers, domain, typeName };
+                const html = renderRecords(answers, typeName, domain);
+                $('#dns-output').innerHTML = html;
+                $('#dns-export').addEventListener('click', () => downloadDnsCsv(lastResult));
             } else if(data.Status === 2){
                 $('#dns-output').innerHTML = '<div class="alert err">⚠️ <strong>SERVFAIL</strong> — The resolver could not process the query. Try again shortly.</div>';
             } else {
