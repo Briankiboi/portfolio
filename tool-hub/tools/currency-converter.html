@@ -22,81 +22,84 @@
     <style>
         /* ── Currency Converter UI · keypad + split ──────────────── */
         .calc-panel,
-        .split-panel { border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFEFB 0%, #FDF9F2 100%); padding: 1.05rem; box-shadow: 0 2px 0 rgba(31,36,48,.02), 0 10px 26px -16px rgba(31,36,48,.18); }
-        .calc-panel { display: flex; flex-direction: column; gap: .75rem; }
-        .split-panel { display: flex; flex-direction: column; gap: .55rem; margin-top: 1.05rem; }
+        .split-panel { border: 1px solid #E7E2D8; border-radius: 20px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF7EE 100%); padding: 1.1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 1px 2px rgba(31,36,48,.04), 0 14px 34px -18px rgba(31,36,48,.28); }
+        .calc-panel { display: flex; flex-direction: column; gap: .8rem; }
+        .split-panel { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.1rem; }
 
-        .calc-head { display: flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #1F2430; margin: 0; }
+        .calc-head { display: flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #1F2430; margin: 0; }
         .calc-panel .nl-ico,
-        .split-panel .nl-ico { width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; font-size: .76rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04); }
-        .calc-panel .nl-ico { background: #E7F6F1; border: 1px solid #C4EAD9; }
-        .split-panel .nl-ico { background: #FFF0CC; border: 1px solid #FFE3A3; }
+        .split-panel .nl-ico { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; font-size: .8rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05), 0 3px 6px -3px rgba(31,36,48,.25); }
+        .calc-panel .nl-ico { background: linear-gradient(160deg, #D9F3E8 0%, #BFEBD9 100%); border: 1px solid #A8DFC9; }
+        .split-panel .nl-ico { background: linear-gradient(160deg, #FFF3D6 0%, #FFE6AD 100%); border: 1px solid #F0D488; }
 
-        .ck-display { background: linear-gradient(165deg, #0B1220 0%, #172033 100%); color: #F8FAFC; border-radius: 14px; padding: .85rem 1.05rem .8rem; text-align: right; box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 8px 18px -12px rgba(11,18,32,.5); }
-        .ck-expr { font-size: .74rem; color: #94A3B8; min-height: 1.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .02em; }
-        .ck-result { font-size: 2.05rem; font-weight: 800; line-height: 1.2; color: #F8FAFC; word-break: break-all; font-variant-numeric: tabular-nums; }
+        .ck-display { position: relative; overflow: hidden; background: linear-gradient(160deg, #101A33 0%, #1D2B52 55%, #16223F 100%); color: #F8FAFC; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: .95rem 1.15rem .9rem; text-align: right; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 14px 26px -14px rgba(11,18,32,.55); }
+        .ck-display::after { content: ""; position: absolute; top: -40%; right: -20%; width: 60%; height: 130%; background: radial-gradient(circle, rgba(96,165,250,.22) 0%, transparent 70%); pointer-events: none; }
+        .ck-expr { position: relative; font-size: .76rem; color: #9FB0CF; min-height: 1.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .03em; }
+        .ck-result { position: relative; font-size: 2.3rem; font-weight: 800; line-height: 1.2; color: #FFFFFF; text-shadow: 0 2px 16px rgba(156,219,255,.28); word-break: break-all; font-variant-numeric: tabular-nums; }
 
-        .ck-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; }
-        .ck-btn { height: 52px; border: none; border-radius: 13px; font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: transform .08s ease, filter .15s ease, box-shadow .15s ease; color: #0F172A; }
-        .ck-btn:active { transform: scale(.94); }
-        .ck-digit { background: #F1F5F9; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
-        .ck-digit:hover { filter: brightness(.96); }
-        .ck-fn { background: #E2E8F0; color: #475569; font-size: .98rem; }
-        .ck-fn:hover { filter: brightness(.97); }
-        .ck-ac { background: #FDE5E5; color: #C0341E; }
-        .ck-ac:hover { background: #FBCCCC; }
-        .ck-op { background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; box-shadow: 0 5px 12px -6px rgba(14,138,108,.55); }
-        .ck-op:hover { background: linear-gradient(165deg, #0B795F 0%, #0A624C 100%); }
-        .ck-eq { background: linear-gradient(165deg, #D98B1A 0%, #B86A00 100%); box-shadow: 0 5px 12px -6px rgba(199,120,0,.6); }
-        .ck-eq:hover { background: linear-gradient(165deg, #C97F10 0%, #A15E00 100%); }
+        .ck-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+        .ck-btn { height: 54px; border: 1px solid rgba(15,23,42,.06); border-radius: 15px; font-size: 1.2rem; font-weight: 700; letter-spacing: .01em; cursor: pointer; transition: transform .08s ease, filter .15s ease, box-shadow .15s ease, background .15s ease; color: #0F172A; font-family: inherit; }
+        .ck-btn:active { transform: scale(.93); }
+        .ck-digit { background: linear-gradient(180deg, #FFFFFF 0%, #F2F5F9 100%); box-shadow: 0 4px 10px -5px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.9); }
+        .ck-digit:hover { filter: brightness(.98); box-shadow: 0 6px 14px -6px rgba(15,23,42,.22); }
+        .ck-fn { background: linear-gradient(180deg, #E6EAF2 0%, #D4DBE6 100%); color: #3A4658; font-size: 1rem; box-shadow: 0 4px 10px -5px rgba(15,23,42,.18); }
+        .ck-fn:hover { filter: brightness(.98); }
+        .ck-ac { background: linear-gradient(165deg, #FF6B6B 0%, #E6354F 100%); color: #fff; border-color: rgba(190,18,60,.35); box-shadow: 0 8px 18px -8px rgba(225,53,79,.6); }
+        .ck-ac:hover { filter: brightness(1.06); }
+        .ck-op { background: linear-gradient(165deg, #12B981 0%, #0E7A5F 100%); color: #fff; border-color: rgba(6,95,70,.4); box-shadow: 0 8px 18px -9px rgba(14,138,108,.65); }
+        .ck-op:hover { filter: brightness(1.06); }
+        .ck-eq { background: linear-gradient(165deg, #FFC23D 0%, #F59E0B 100%); color: #422006; border-color: rgba(194,120,3,.45); box-shadow: 0 8px 20px -9px rgba(245,158,11,.75); }
+        .ck-eq:hover { filter: brightness(1.05); }
         .ck-zero { grid-column: span 2; }
 
-        .ck-total { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-top: 1px dashed #E7E2D8; border-bottom: 1px dashed #E7E2D8; padding: .5rem 0 .55rem; }
-        .ck-total span { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #64748B; }
-        .ck-total b { font-size: 1.4rem; font-weight: 800; color: #0B6F56; font-variant-numeric: tabular-nums; }
+        .ck-total { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-top: 1px dashed #E4DCCB; border-bottom: 1px dashed #E4DCCB; padding: .55rem 0 .6rem; }
+        .ck-total span { font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: #64748B; }
+        .ck-total b { font-size: 1.45rem; font-weight: 800; color: #0E7A5F; font-variant-numeric: tabular-nums; }
 
         .deduct-row { display: flex; align-items: center; gap: .6rem; }
         .deduct-row label { font-size: .78rem; font-weight: 700; color: #1F2430; margin: 0; white-space: nowrap; }
         .deduct-row input { width: 100%; text-align: center; font-weight: 700; }
-        .deduct-out { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
-        .kv { background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: .5rem .75rem; display: flex; flex-direction: column; gap: .1rem; box-shadow: 0 2px 6px -4px rgba(31,36,48,.12); }
-        .kv span { font-size: .68rem; color: #64748B; font-weight: 600; letter-spacing: .02em; }
-        .kv b { font-size: 1.02rem; color: #0F172A; font-variant-numeric: tabular-nums; }
+        .deduct-out { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+        .kv { background: #fff; border: 1px solid #E9E3D6; border-radius: 13px; padding: .55rem .8rem; display: flex; flex-direction: column; gap: .1rem; box-shadow: 0 4px 10px -6px rgba(31,36,48,.15); }
+        .kv span { font-size: .68rem; color: #8A94A6; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+        .kv b { font-size: 1.05rem; color: #0F172A; font-variant-numeric: tabular-nums; }
+        #deducted { color: #E6354F; }
+        #remaining { color: #0E7A5F; }
 
-        .remaining-hero { display: flex; flex-direction: column; align-items: center; gap: .08rem; background: #F0FDF4; border: 1px solid #BBF7D0; color: #0B6F56; border-radius: 14px; padding: .55rem 1rem .7rem; box-shadow: 0 6px 14px -10px rgba(11,111,86,.35); }
-        .remaining-hero span { font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; opacity: .75; }
-        .remaining-hero b { font-size: 1.75rem; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+        .remaining-hero { display: flex; flex-direction: column; align-items: center; gap: .08rem; background: linear-gradient(165deg, #11B87F 0%, #0B7D5E 100%); border: none; color: #fff; border-radius: 16px; padding: .6rem 1rem .75rem; box-shadow: 0 12px 24px -12px rgba(14,138,108,.7); }
+        .remaining-hero span { font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+        .remaining-hero b { font-size: 1.85rem; font-weight: 800; line-height: 1.15; color: #fff; font-variant-numeric: tabular-nums; text-shadow: 0 2px 10px rgba(255,255,255,.18); }
 
-        .half-hero { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .5rem .75rem; border: 1px solid #D3DCE6; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px -6px rgba(31,36,48,.18); }
-        .half-hero span { font-size: .72rem; font-weight: 800; color: #0E8A6C; letter-spacing: .02em; }
-        .half-hero b { font-size: .95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums; }
+        .half-hero { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .55rem .8rem; border: 1px solid #BFEBD9; border-radius: 14px; background: linear-gradient(180deg, #F4FCF8 0%, #E9F8F1 100%); box-shadow: 0 4px 10px -7px rgba(14,138,108,.25); }
+        .half-hero span { font-size: .72rem; font-weight: 800; color: #0E7A5F; letter-spacing: .02em; }
+        .half-hero b { font-size: 1rem; font-weight: 800; color: #0B3A2E; font-variant-numeric: tabular-nums; }
 
-        .split-div { height: 1px; background: #E7E2D8; margin: .15rem 0 .85rem; }
+        .split-div { height: 1px; background: linear-gradient(90deg, transparent, #E4D9C7, transparent); margin: .2rem 0 .9rem; }
 
-        body.tool-page #calc-split { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 50px; background: linear-gradient(135deg, #3B82F6 0%, #4F46E5 100%); color: #fff; border: 1px solid #4F46E5; border-radius: 14px; font-weight: 800; font-size: .92rem; box-shadow: 0 8px 18px -8px rgba(79,70,229,.6); transition: all .18s ease; }
-        body.tool-page #calc-split:hover { background: linear-gradient(135deg, #3267D8 0%, #4338CA 100%); transform: translateY(-2px); }
-        #calc-split.active { box-shadow: inset 0 0 0 2px #fff, 0 8px 18px -8px rgba(79,70,229,.6); }
-        .ck-convert-out { margin-top: .7rem; min-height: 46px; font-size: .95rem; border-radius: 12px; box-shadow: 0 12px 22px -12px rgba(224,161,0,.7); }
+        body.tool-page #calc-split { display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 52px; background: linear-gradient(135deg, #3E8DF6 0%, #4B46E2 100%); color: #fff; border: 1px solid #3A34CC; border-radius: 15px; font-weight: 800; font-size: .92rem; box-shadow: 0 10px 22px -10px rgba(75,70,226,.7); transition: all .18s ease; }
+        body.tool-page #calc-split:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 14px 26px -10px rgba(75,70,226,.75); }
+        #calc-split.active { box-shadow: inset 0 0 0 2px #fff, 0 10px 22px -10px rgba(75,70,226,.7); }
+        .ck-convert-out { margin-top: .75rem; min-height: 48px; font-size: .95rem; border-radius: 14px; box-shadow: 0 12px 22px -12px rgba(224,161,0,.7); }
 
-        .custom-share { display: flex; flex-direction: column; gap: .5rem; }
+        .custom-share { display: flex; flex-direction: column; gap: .55rem; }
         .custom-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
-        .custom-label { font-size: .7rem; font-weight: 700; color: #94A3B8; text-align: center; letter-spacing: .06em; text-transform: uppercase; margin: 0; flex: 1; }
-        .clear-split { background: transparent; border: 1px solid #D3DCE6; color: #5A6472; font-size: .7rem; font-weight: 700; padding: .26rem .6rem; border-radius: 8px; cursor: pointer; transition: all .15s ease; white-space: nowrap; }
-        .clear-split:hover { background: #FEE2E2; border-color: #F87171; color: #B91C1C; }
+        .custom-label { font-size: .7rem; font-weight: 800; color: #A59A83; text-align: center; letter-spacing: .07em; text-transform: uppercase; margin: 0; flex: 1; }
+        .clear-split { background: #fff; border: 1.5px solid #E2DDD0; color: #7A8294; font-size: .7rem; font-weight: 800; padding: .3rem .65rem; border-radius: 999px; cursor: pointer; transition: all .15s ease; white-space: nowrap; box-shadow: 0 3px 8px -5px rgba(31,36,48,.2); }
+        .clear-split:hover { background: #FFF1F1; border-color: #F87171; color: #B91C1C; }
 
-        .share-boxes { display: grid; grid-template-columns: repeat(2, 1fr); gap: .55rem; }
+        .share-boxes { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
         .sh-field { margin-bottom: 0; }
         .sh-field label { text-align: center; }
         .sh-field input { text-align: center; font-weight: 700; }
 
         .deduct-row input:focus, .sh-field input:focus, #cc-amount:focus, #cc-from:focus, #cc-to:focus { outline: none; border-color: #C77800; box-shadow: 0 0 0 3px rgba(199,120,0,.16); }
 
-        .share-tile { display: flex; align-items: center; gap: .45rem; padding: .58rem .85rem; border: 1px solid #0B6F56; border-radius: 12px; background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; cursor: pointer; box-shadow: 0 6px 14px -7px rgba(11,111,86,.55); transition: transform .15s ease, filter .15s ease, box-shadow .15s ease; }
-        .share-tile:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 18px -8px rgba(11,111,86,.6); }
-        .share-tile-pct { color: #CFF0E4; font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
-        .share-tile-amt { color: #fff; font-size: 1rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-        .share-tile em { background: rgba(255,255,255,.15); color: #E9FAF4; font-style: normal; font-size: .66rem; font-weight: 700; letter-spacing: .02em; padding: .16rem .5rem; border-radius: 999px; }
-        .share-hint { font-size: .74rem; color: #94A3B8; line-height: 1.55; margin: 0 0 .25rem; }
+        .share-tile { display: flex; align-items: center; gap: .5rem; padding: .6rem .9rem; border: 1px solid #0B7D5E; border-radius: 14px; background: linear-gradient(165deg, #12B981 0%, #0B7D5E 100%); color: #fff; cursor: pointer; box-shadow: 0 8px 18px -9px rgba(11,125,94,.7); transition: transform .15s ease, filter .15s ease, box-shadow .15s ease; }
+        .share-tile:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 22px -10px rgba(11,125,94,.75); }
+        .share-tile-pct { color: #D4F6EA; font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
+        .share-tile-amt { color: #fff; font-size: 1.05rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+        .share-tile em { background: rgba(255,255,255,.18); color: #EFFFF9; font-style: normal; font-size: .66rem; font-weight: 800; letter-spacing: .02em; padding: .18rem .55rem; border-radius: 999px; }
+        .share-hint { font-size: .74rem; color: #9A9FAD; line-height: 1.55; margin: 0 0 .25rem; }
 
         body.tool-page #cc-convert,
         body.tool-page #ck-convert-total { background: linear-gradient(165deg, #FFC200 0%, #F0A400 100%); color: #3A2B00; border: 1px solid #E0A100; border-radius: 14px; min-height: 50px; font-weight: 800; font-size: .95rem; box-shadow: 0 8px 18px -8px rgba(224,161,0,.55); transition: transform .15s ease, box-shadow .15s ease, filter .15s ease; }
@@ -109,8 +112,8 @@
         body.tool-page #cc-swap { background: #fff; border: 1.5px solid #0E8A6C; color: #0B6F56; border-radius: 10px; font-weight: 800; font-size: 1.05rem; box-shadow: 0 4px 10px -6px rgba(31,36,48,.2); }
         body.tool-page #cc-swap:hover { background: #E7F6F1; border-color: #0B6F56; color: #0B6F56; transform: translateY(-1px); }
 
-        #clear-split { background: #fff; border: 1.5px solid #CBD5E1; box-shadow: 0 3px 8px -5px rgba(31,36,48,.25); }
-        #clear-split:hover { background: #FEE2E2; border-color: #F87171; color: #B91C1C; }
+        #clear-split { background: #fff; border: 1.5px solid #E2DDD0; color: #7A8294; font-weight: 800; border-radius: 999px; box-shadow: 0 3px 8px -5px rgba(31,36,48,.2); }
+        #clear-split:hover { background: #FFF1F1; border-color: #F87171; color: #B91C1C; }
 
         .preview-col .field:has(#cc-from),
         .preview-col .field:has(#cc-to) { margin-bottom: 0; }
@@ -121,7 +124,7 @@
 
         .calc-note { margin-top: 1rem; font-size: .76rem; color: #5A6472; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: .6rem .75rem; line-height: 1.55; }
 
-        @media (max-width: 460px) { .ck-btn { height: 48px; } .ck-result { font-size: 1.7rem; } }
+        @media (max-width: 460px) { .ck-btn { height: 50px; } .ck-result { font-size: 1.9rem; } }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -270,19 +273,19 @@
     <div class="info-note">
         <div class="note-sec">
             <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-            <p>Twin tools on one page. On the left, the calculator does <code>+&nbsp;&nbsp;−&nbsp;&nbsp;×&nbsp;&nbsp;÷</code> with a phone-style keypad and <b>previews the result live</b> as you type — no need to press <code>=</code> (though it's there if you want it) — and feeds the <b>grand total</b> into the converter's <b>Amount</b> in real time. Below it, the split takes that grand total, deducts a share you enter (e.g. <code>30%</code>), shows the <b>deducted</b> and <b>remaining</b> amounts, and splits what's left first by half (<code>50&nbsp;/&nbsp;50</code>) or into any custom shares you type below it (e.g. <code>45&nbsp;/&nbsp;55</code>) — every value lands in the Amount field ready to convert. On conversion, the tool fetches a daily snapshot of mid-market rates (every supported currency measured against the USD base) from <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">exchangerate-api.com</a>, then computes your exact pair with a cross-rate: <code>target&nbsp;÷&nbsp;source</code>. The latest snapshot is cached in this device's <code>localStorage</code>, so already-seen pairs keep converting even offline.</p>
+            <p>Calculate amounts, split bills, and convert currencies in one place. Enter an amount, choose your currencies, and get the converted value using exchange rates.</p>
         </div>
         <div class="note-sec">
             <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-            <p>Everything runs locally — your item lists, totals and share splits never leave the page. The only request is an anonymous currency lookup (no account, no key); just the currency symbols needed for the rate table are shared with the rate provider.</p>
+            <p>Your calculations and split amounts stay in your browser. Currency conversion uses an external exchange-rate service to get the latest rates.</p>
         </div>
         <div class="note-sec">
             <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
             <ul>
-                <li>Use the keypad (or keyboard: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>Enter</code>) — the result previews live; tap <code>=</code> only when you want to convert it.</li>
-                <li>Split a lunch, invoice or group bill: deduct a share (e.g. <code>30</code>), tap <b>Split by half</b> for a quick <code>50&nbsp;/&nbsp;50</code> — or type custom shares like <code>45</code> and <code>55</code> below it and convert each tile.</li>
-                <li>Rates are indicative mid-market (daily); banks and card networks typically add their own margin on top.</li>
-                <li>Copy the result line anywhere — paste it into a doc or send it in a message.</li>
+                <li>Use the calculator to work out totals quickly.</li>
+                <li>Split bills by percentage or custom amounts.</li>
+                <li>Exchange rates may vary from banks or card providers.</li>
+                <li>Copy the result to share or save it.</li>
             </ul>
         </div>
     </div>
@@ -493,7 +496,6 @@
         ck.entry = '';
         ck.done = true;
         ckPaint();
-        toast('Result ' + fmtN(ck.acc) + ' sent to converter');
         if (ck.acc != null && ck.acc > 0) convert();
     }
 
@@ -512,7 +514,6 @@
             $('#half-hero').textContent = '0.00';
             syncAmount();
             $('#cc-error').style.display = 'none';
-            toast('Cleared');
         }
     }
 
@@ -646,7 +647,6 @@
                 btn.innerHTML = '<span class="share-tile-pct">' + (i + 1) + ' · ' + fmt2(n) + '%</span><b class="share-tile-amt">' + fmt2(amt) + '</b><em>↪ convert</em>';
                 btn.addEventListener('click', () => {
                     $('#cc-amount').value = String(rawN(amt));
-                    toast(fmt2(n) + '% share sent to converter');
                     convert();
                 });
                 chips.appendChild(btn);
@@ -667,12 +667,10 @@
         $('#sh1').value = ''; $('#sh2').value = ''; $('#sh3').value = '';
         $('#calc-split').classList.remove('active');
         refreshSplit();
-        toast('Deduction & shares cleared');
     });
     $('#ck-convert-total').addEventListener('click', () => {
         if (convertSharesSplit()) return;
         $('#cc-amount').value = String(currentAmount());
-        toast('Value sent to converter');
         convert();
     });
 
@@ -702,7 +700,6 @@ $('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
         const cached = ratesCache;
         if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
             render(cached.rates[to] / cached.rates[from], cached.date, true);
-            toast('Shares converted');
             return true;
         }
         try {
@@ -710,11 +707,9 @@ $('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
             ratesCache = { base: 'USD', date: (data.time_last_update_utc || '').replace(' +0000', '').slice(0, 16), rates: data.rates };
             saveCache(ratesCache);
             render(computeRate(data, from, to), ratesCache.date, false);
-            toast('Shares converted');
         } catch (e) {
             if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
                 render(cached.rates[to] / cached.rates[from], cached.date, true);
-                toast('Shares converted (cached rates)');
             } else {
                 const err = $('#cc-error');
                 err.textContent = 'Live rates unavailable right now. Check your connection and retry.';

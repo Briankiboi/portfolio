@@ -125,12 +125,12 @@ window.renderSiteHeader = (function () {
                 if (y <= 120) { setHidden(false); }
                 else if (dy > 3) {
                     setHidden(true);
-                    timer = setTimeout(function () { setHidden(false); }, 350);
                 } else if (dy < 0) {
                     setHidden(false);
                     timer = setTimeout(function () { setHidden(false); }, 350);
                 } else {
-                    timer = setTimeout(function () { setHidden(false); }, 350);
+                    /* user is idle after scrolling: leave the header hidden so the
+                       fixed bar cannot cover page content the user is clicking */
                 }
             });
         }
