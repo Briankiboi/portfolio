@@ -649,10 +649,14 @@ body.tool-page .hamburger { display: none; }
 /* ── Mobile tweaks ───────────────────────────────────────────────── */
 @media (max-width: 620px) {
     body.tool-page main { padding-top: 1rem; }
-    body.tool-page .tool-meta { flex-wrap: wrap; }
-    body.tool-page .tool-meta-body { flex: 1 1 auto; }
-    body.tool-page .tool-meta-icon { width: 46px; height: 46px; font-size: 1.3rem; }
-    body.tool-page .tool-meta h1 { font-size: 1.25rem; }
+    body.tool-page .tool-meta { display: block; position: relative; width: 100%; padding: 0 0 .35rem; }
+    body.tool-page .tool-meta::after { content: ""; display: table; clear: both; }
+    body.tool-page .tool-meta-icon { float: left; width: 40px; height: 40px; font-size: 1.1rem; margin: .15rem .7rem .35rem 0; }
+    body.tool-page .tool-meta-body { width: 100%; min-width: 0; }
+    body.tool-page .tool-meta h1 { font-size: 1.12rem; line-height: 1.25; margin: 0 0 .25rem; padding-right: 2.4rem; }
+    body.tool-page .tool-meta p { margin: 0 0 .5rem; font-size: .8rem; line-height: 1.5; max-width: none; }
+    body.tool-page .tool-meta-row { margin-top: .1rem; }
+    body.tool-page .tool-meta .fav-btn { position: absolute; top: .1rem; right: 0; margin: 0; }
     body.tool-page .tool-shell { padding: 1.05rem; }
     body.tool-page .result-box { padding: .8rem .65rem; }
     body.tool-page .result-box h2 { margin-bottom: .45rem; }

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Website Auditor  Free Tools Hub</title>
-<meta name="description" content="Audit any page's technical health  page weight, loading performance, media, structure, accessibility  scored 0-100 with fix-it tips, fully client-side.">
+<title>Website Auditor & SEO Validation — Free Tools Hub</title>
+<meta name="description" content="One pass audit: on-page SEO score /100, item-by-item validation with fixes, and a broken-link report with CSV export — client-side, offline clone.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -14,9 +14,219 @@
     }
 </script>
 <link rel="stylesheet" href="../assets/css/app.css">
-<link rel="stylesheet" href="../assets/css/tool.css">
+    <link rel="stylesheet" href="../assets/css/tool.css">
     <link rel="stylesheet" href="../assets/css/site-header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        .wa-tabs{display:flex;gap:.35rem;flex-wrap:nowrap;overflow-x:auto;margin-bottom:1.1rem;border-bottom:1px solid #D7E3DF;padding:.2rem .2rem 0;scrollbar-width:thin}
+        .wa-tab{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:46px;flex:0 0 auto;padding:.65rem 1rem;border:1px solid transparent;border-bottom:3px solid transparent;border-radius:9px 9px 0 0;background:transparent;color:#475569;font-size:.86rem;font-weight:750;cursor:pointer;transition:background .16s,border-color .16s,color .16s;line-height:1;white-space:nowrap}
+        .wa-tab:hover{background:#F0F7F4;color:#075E54}
+        .wa-tab:focus-visible{outline:3px solid rgba(14,138,108,.3);outline-offset:2px}
+        .wa-tab .tab-badge{font-size:.7rem;font-weight:900;padding:.22rem .52rem;border-radius:999px;background:#E8F2EE;color:#334155;line-height:1}
+        .wa-tab .tab-badge.green{background:#dcfce7;color:#15803d}
+        .wa-tab .tab-badge.blue{background:#dbeafe;color:#1e40af}
+        .wa-tab .tab-badge.teal{background:#ccfbf1;color:#0f766e}
+        .wa-tab.active{border-color:#0E8A6C;border-bottom-color:#0E8A6C;background:#0E8A6C;color:#fff;box-shadow:0 3px 9px rgba(14,138,108,.18)}
+        .wa-tab.active:hover{background:#08745F;color:#fff}
+        .wa-tab.active .tab-badge{background:rgba(255,255,255,.22);color:#fff}
+        .wa-actions{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+        .wa-actions.overview-export{margin-bottom:1.1rem;padding:.8rem 1rem;border:1px solid #DDE9E4;border-radius:10px;background:#F6FAF8}
+        .wa-actions.report-export{margin-top:1.2rem;padding:.75rem .9rem;border:1px solid #DDE9E4;border-radius:10px;background:#F6FAF8}
+        .wa-actions .lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#52635E;margin-right:.25rem}
+        .wa-actions .export-btn{min-height:42px;font-size:.84rem;font-weight:750;padding:.55rem .95rem;border-radius:8px;gap:.5rem}
+        .wa-actions .export-btn i{width:1rem;text-align:center;font-size:.9rem}
+        .wa-actions .export-btn:focus-visible{outline:3px solid rgba(14,138,108,.28);outline-offset:2px}
+        .wa-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem;margin-top:.4rem}
+        .ov-card{display:flex;flex-direction:column;min-width:0;border:1px solid #E1E8E5;border-radius:9px;padding:1rem 1.05rem;background:#fff;margin:0;box-shadow:0 2px 8px rgba(15,23,42,.035)}
+        .ov-card h3{display:flex;align-items:center;gap:.55rem;font-size:.96rem;font-weight:850;color:#13251F;margin:0 0 .7rem;flex-wrap:wrap}
+        .ov-scoreline{display:flex;align-items:baseline;gap:.4rem;margin:0 0 .7rem;color:#64746F;font-size:.82rem;font-weight:650}
+        .ov-scoreline strong{font-size:1.8rem;line-height:1;color:#15372E;font-weight:850}
+        .ov-metrics{display:flex;gap:.35rem;flex-wrap:wrap;margin:0 0 .6rem}
+        .ov-chip{display:inline-flex;align-items:baseline;gap:.32rem;font-size:.72rem;font-weight:650;padding:.35rem .52rem;border:1px solid #E4EBE8;border-radius:6px;background:#F7F9F8;color:#53635E;white-space:nowrap}
+        .ov-chip b{font-family:ui-monospace,monospace;font-size:.88rem;color:#172B25;font-weight:800}
+        .ov-chip.pass{background:#F0FAF3;border-color:#D2EAD9}.ov-chip.pass b{color:#16723A}
+        .ov-chip.warn{background:#FFF8E9;border-color:#F2E1B8}.ov-chip.warn b{color:#9A6100}
+        .ov-chip.fail{background:#FFF1F0;border-color:#F0D0CE}.ov-chip.fail b{color:#AE3028}
+        .ov-findings{margin:.1rem 0 .7rem;padding-left:1.1rem;font-size:.8rem;line-height:1.55;color:#465650}
+        .ov-findings li+li{margin-top:.2rem}
+        .ov-card-note{font-size:.8rem;line-height:1.5;color:#66756F;margin:.1rem 0 .7rem}
+        .ov-card-action{display:flex;justify-content:flex-end;margin-top:auto;padding-top:.15rem}
+        .gobtn{font-size:.75rem;padding:.4rem .78rem;font-weight:800}
+        .dev-toggle{display:inline-flex;border-radius:999px;overflow:hidden;border:1.5px solid var(--primary);background:#fff;margin-right:.2rem}
+        .dev-toggle button{border:0;background:#fff;color:var(--primary);font-weight:800;font-size:.8rem;padding:.42rem .95rem;cursor:pointer;transition:all .15s}
+        .dev-toggle button.on{background:linear-gradient(135deg,var(--primary),var(--primaryDark));color:#fff}
+        .cwv-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.65rem;margin-bottom:.8rem}
+        .cwv-device-switch{display:grid;grid-template-columns:repeat(2,minmax(112px,1fr));gap:4px;padding:4px;border:1px solid #D8E5DF;border-radius:12px;background:#F1F6F3;flex:0 0 auto}
+        .cwv-device-switch button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:44px;padding:.55rem .85rem;border:1px solid transparent;border-radius:8px;background:transparent;color:#42534C;font-size:.85rem;font-weight:800;white-space:nowrap}
+        .cwv-device-switch button:hover{background:#E4EEE9;color:#075E54}
+        .cwv-device-switch button:focus-visible{outline:3px solid rgba(14,138,108,.32);outline-offset:2px;z-index:1}
+        .cwv-device-switch button.on{background:#0E8A6C;color:#fff;box-shadow:0 2px 5px rgba(14,92,73,.2)}
+        .cwv-device-switch button.on:hover{background:#08745F;color:#fff}
+        .cwv-device-note{flex:1 1 260px;min-width:0;font-size:.75rem;line-height:1.45;color:var(--muted)}
+        .cwv-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.25rem;margin-bottom:1.1rem;padding:1.2rem 1.35rem;border:1px solid rgba(13,148,136,.18);border-radius:14px;background:linear-gradient(120deg,#10262b 0%,#12343b 58%,#16434a 100%);color:#f8fafc;box-shadow:0 8px 22px rgba(15,45,48,.12)}
+        .cwv-summary-main{min-width:0}
+        .cwv-summary-top{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.55rem}
+        .cwv-summary-kicker{font-size:.65rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:#a7c6c5}
+        .cwv-summary-badges{display:flex;gap:.4rem;flex-wrap:wrap}
+        .cwv-summary-badge{display:inline-flex;align-items:center;min-height:23px;padding:.2rem .55rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);color:#d8e8f4;font-size:.63rem;font-weight:800;letter-spacing:.035em;white-space:nowrap}
+        .cwv-summary-badge.http{border-color:rgba(52,211,153,.35);background:rgba(16,185,129,.13);color:#6ee7b7}
+        .cwv-summary-url{margin:0;color:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1.08rem;font-weight:800;line-height:1.4;overflow-wrap:anywhere}
+        .cwv-summary-metrics{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:.85rem}
+        .cwv-summary-metric{min-width:130px;padding:.55rem .7rem;border:1px solid rgba(204,231,228,.13);border-radius:8px;background:rgba(2,17,22,.2)}
+        .cwv-summary-metric span{display:block;color:#a9c3c7;font-size:.61rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+        .cwv-summary-metric b{display:block;margin-top:.2rem;color:#fff;font-size:.92rem;font-variant-numeric:tabular-nums}
+        .cwv-summary-score{display:flex;flex-direction:column;align-items:center;min-width:132px;text-align:center}
+        .cwv-score-ring{display:grid;place-items:center;width:96px;aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--cwv-color) var(--cwv-score),rgba(226,245,242,.16) 0);box-shadow:0 0 24px color-mix(in srgb,var(--cwv-color) 24%,transparent)}
+        .cwv-score-core{display:flex;width:78px;height:78px;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.13);border-radius:50%;background:#12343b}
+        .cwv-score-number{font-size:1.75rem;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;color:var(--cwv-color)}
+        .cwv-score-scale{margin-top:.15rem;color:#b7ccca;font-size:.58rem;font-weight:750}
+        .cwv-score-grade{margin-top:.55rem;color:var(--cwv-color);font-size:.72rem;font-weight:850;line-height:1.3}
+        @media(max-width:620px){.cwv-summary{grid-template-columns:minmax(0,1fr) 86px;gap:.65rem;padding:1rem}.cwv-summary-score{min-width:0}.cwv-score-ring{width:76px}.cwv-score-core{width:62px;height:62px}.cwv-score-number{font-size:1.45rem}.cwv-score-grade{font-size:.64rem}.cwv-summary-url{font-size:.88rem}.cwv-summary-metrics{gap:.4rem;margin-top:.65rem}.cwv-summary-metric{flex:1 1 105px;min-width:0;padding:.48rem .55rem}}
+        @media(max-width:380px){.cwv-summary{grid-template-columns:minmax(0,1fr) 72px;gap:.45rem;padding:.8rem}.cwv-score-ring{width:66px}.cwv-score-core{width:54px;height:54px}.cwv-summary-kicker{font-size:.58rem}.cwv-summary-metric b{font-size:.82rem}}
+        @media(max-width:720px){.cwv-toolbar{align-items:stretch}.cwv-device-switch{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:10px}.cwv-device-switch button{min-height:46px}.cwv-device-note{flex-basis:100%}}
+        @media(max-width:720px){.wa-overview-grid{grid-template-columns:1fr}.wa-actions.overview-export .lbl,.wa-actions.report-export .lbl{width:100%}.wa-actions.overview-export .btn,.wa-actions.report-export .btn{flex:1 1 100%}}
+        .aud-diag{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.1rem}
+        .aud-diag .diag{flex:1 1 130px;min-width:0;border:1px solid #E4EBE8;border-radius:8px;background:#FAFCFB;padding:.5rem .7rem}
+        .aud-diag .diag span{display:block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#5d6d68;margin-bottom:.2rem}
+        .aud-diag .diag b{font-family:ui-monospace,monospace;font-size:.9rem;color:#16332b;font-weight:800;word-break:break-word}
+        .aud-diag .diag.crit b{color:#dc2626}
+        .aud-diag .diag.warn b{color:#d97706}
+        .audit-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem;margin-top:1rem}
+        .audit-detail-card{min-width:0;border:1px solid #E1E8E5;border-radius:10px;background:#fff;padding:.9rem}
+        .audit-detail-card .ad-sec{margin:0 0 .7rem;padding-bottom:.65rem;border-bottom:1px solid #E8EEEB}
+        .audit-detail-card .kv{border:0;border-radius:0}
+        .audit-detail-card .kv-row{padding:.55rem .15rem;gap:.6rem}
+        .audit-detail-card .kv-row:first-child{padding-top:.15rem}
+        .audit-detail-card .kv-row:last-child{padding-bottom:.15rem}
+        .audit-detail-card .kv dt{flex:0 0 42%;font-weight:650}
+        .audit-detail-card .kv dd{text-align:right}
+        .ad-sec{display:flex;align-items:center;gap:.5rem;margin:1.2rem 0 .6rem;font-size:.84rem;font-weight:850;color:#13251F;letter-spacing:.02em;text-transform:uppercase}
+        .ad-sec i{color:#0E8A6C}
+        .ad-sec .ad-count{margin-left:auto;font-size:.7rem;font-weight:800;color:#0E8A6C;background:#E6F5EE;padding:.25rem .6rem;border-radius:999px;text-transform:none;letter-spacing:.02em;white-space:nowrap}
+        .audit-findings{margin:.15rem 0 1rem;padding:.9rem 1rem;border:1px solid #DDE5E2;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.035)}
+        .audit-findings-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.75rem}
+        .audit-findings-head .ad-sec{margin:0;font-size:.82rem;letter-spacing:.015em}
+        .audit-findings-head .ad-count{margin-left:auto;font-size:.68rem;font-weight:750;color:#60716B;white-space:nowrap}
+        .audit-findings-list{display:flex;flex-direction:column;gap:.45rem}
+        .audit-passed{margin-top:.7rem;padding-top:.6rem;border-top:1px solid #E6ECE9}
+        .audit-passed summary{display:flex;align-items:center;gap:.5rem;min-height:36px;cursor:pointer;list-style:none;color:#52635E;font-size:.78rem;font-weight:800}
+        .audit-passed summary::-webkit-details-marker{display:none}
+        .audit-passed summary::before{content:"\25B8";color:#0E8A6C;transition:transform .15s}
+        .audit-passed[open] summary::before{transform:rotate(90deg)}
+        .audit-passed-count{margin-left:auto;color:#16723A;font-variant-numeric:tabular-nums}
+        .audit-passed .audit-findings-list{margin-top:.45rem}
+        .audit-all-clear{margin:.25rem 0;color:#16723A;font-size:.82rem;font-weight:700}
+        .links-summary{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:.15rem 0 .85rem}
+        .links-stat{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .55rem;border:1px solid #E3EAE7;border-radius:7px;background:#F8FAF9;color:#52635E;font-size:.72rem;font-weight:750;white-space:nowrap}
+        .links-stat b{font-size:.83rem;color:#172B25;font-variant-numeric:tabular-nums}
+        .links-stat.broken b{color:#B42318}.links-stat.blocked b{color:#1D4ED8}.links-stat.redirect b{color:#A16207}
+        .links-controls{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin:.8rem 0 .55rem}
+        .links-filter{display:inline-flex;align-items:center;gap:.2rem;padding:3px;border:1px solid #DDE7E2;border-radius:9px;background:#F4F8F6}
+        .links-filter button{min-height:36px;padding:.4rem .7rem;border:0;border-radius:6px;background:transparent;color:#52635E;font-size:.75rem;font-weight:800;cursor:pointer}
+        .links-filter button[aria-pressed="true"]{background:#0E8A6C;color:#fff;box-shadow:0 1px 3px #075E5433}
+        .links-search{flex:1 1 190px;min-width:140px;min-height:42px;padding:.55rem .7rem;border:1px solid #DDE7E2;border-radius:8px;background:#fff;color:#172B25;font:inherit;font-size:.82rem}
+        .links-search:focus{outline:3px solid #0E8A6C33;border-color:#0E8A6C}
+        .links-results{display:flex;flex-direction:column;gap:.4rem}
+        .link-result{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.25rem .65rem;align-items:center;padding:.62rem .7rem;border:1px solid #E2E9E6;border-radius:8px;background:#fff;min-width:0}
+        .link-result[data-status="broken"]{background:#FFFAF9}
+        .link-result[data-status="blocked"]{background:#FAFCFF}
+        .link-result[data-status="redirect"]{background:#FFFCF6}
+        .link-result[hidden]{display:none}
+        .link-result-url{display:block;min-width:0;overflow:hidden;color:#174C3F;text-decoration:none;text-overflow:ellipsis;white-space:nowrap;font-size:.8rem;font-weight:750}
+        .link-result-url:hover{text-decoration:underline}
+        .link-result-meta{grid-column:1/-1;display:flex;align-items:center;gap:.4rem .75rem;flex-wrap:wrap;color:#66756F;font-size:.7rem;line-height:1.4}
+        .link-result-anchor{color:#374151;font-weight:650}
+        .link-result-note{overflow-wrap:anywhere}
+        .links-empty{margin:.5rem 0;padding:.7rem .8rem;border:1px solid #D2EAD9;border-radius:8px;background:#F3FBF5;color:#16723A;font-size:.82rem;font-weight:700}
+        .links-more{align-self:center;min-height:40px;margin:.6rem 0 .1rem}
+        .links-working{margin-top:.8rem;border-top:1px solid #E6ECE9;padding-top:.45rem}
+        .links-working summary{display:flex;align-items:center;gap:.5rem;min-height:38px;cursor:pointer;list-style:none;color:#52635E;font-size:.78rem;font-weight:800}
+        .links-working summary::-webkit-details-marker{display:none}
+        .links-working summary::before{content:"\25B8";color:#0E8A6C;transition:transform .15s}
+        .links-working[open] summary::before{transform:rotate(90deg)}
+        .links-working-count{margin-left:auto;color:#16723A;font-variant-numeric:tabular-nums}
+        .ad-row{display:grid;grid-template-columns:18px auto minmax(0,1fr);gap:.55rem;align-items:start;padding:.62rem .7rem;border:1px solid #E6ECE9;border-radius:10px;background:#fff;min-width:0}
+        .ad-row.pass{border-color:#A7F3D0;background:#F4FCF8}
+        .ad-row.warn{border-color:#FCD978;background:#FFFCF3}
+        .ad-row.fail{border-color:#FECACA;background:#FFF7F7}
+        .ad-state-icon{font-size:.88rem;margin-top:.12rem}
+        .ad-row.pass .ad-state-icon{color:#059669}
+        .ad-row.warn .ad-state-icon{color:#D97706}
+        .ad-row.fail .ad-state-icon{color:#DC2626}
+        .ad-cat{justify-self:start;align-self:start;font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.035em;padding:.2rem .45rem;border-radius:5px;line-height:1.3}
+        .ad-cat.seo{background:#E6F5EE;color:#0E7A5C}
+        .ad-cat.acc{background:#E8F0FE;color:#1C5BC7}
+        .ad-cat.mob{background:#F3E8FF;color:#7C3AED}
+        .ad-cat.sec{background:#FFEFEC;color:#C0342A}
+        .ad-cat.perf{background:#FFF3DF;color:#B76900}
+        .ad-copy{min-width:0}
+        .ad-row b{display:block;font-size:.85rem;font-weight:780;color:#18251F;word-break:break-word;line-height:1.35}
+        .ad-detail{font-size:.78rem;color:#4d6059;margin-top:.15rem;line-height:1.5;word-break:break-word}
+        .ad-tip{font-size:.74rem;color:#087A64;margin-top:.3rem;line-height:1.5;border-top:1px dashed #DCE9E3;padding-top:.3rem}
+        .ad-tips{margin:.3rem 0 0;padding-left:1.2rem;font-size:.84rem;line-height:1.7;color:#374151}
+        .ad-tips li+li{margin-top:.2rem}
+        .aud-note{font-size:.75rem;line-height:1.5;color:#66756F;margin:.2rem 0 .5rem}
+        .kv{border:1px solid #E4EBE8;border-radius:8px;margin:0;overflow:hidden}
+        .kv .kv-row{display:flex;gap:.9rem;padding:.55rem .75rem;border-top:1px solid #EEF3F1;min-width:0}
+        .kv .kv-row:first-child{border-top:0}
+        .kv .kv-row:nth-child(odd){background:#FBFDFC}
+        .kv dt{flex:0 0 230px;color:#52635E;font-weight:750;font-size:.82rem;padding-top:.05rem;min-width:0}
+        .kv dd{flex:1;min-width:0;color:#172B25;font-size:.84rem;font-weight:650;word-break:break-word;margin:0;line-height:1.5}
+        .kv dd.ok{color:#15803d;font-weight:800}
+        .kv dd.bad{color:#b91c1c;font-weight:800}
+        @media(max-width:720px){.aud-diag .diag{flex-basis:calc(50% - .5rem)}.audit-findings{padding:.75rem}.audit-findings-head{align-items:flex-start;flex-wrap:wrap}.audit-findings-head .ad-count{width:100%;margin-left:0}.ad-row{grid-template-columns:16px auto minmax(0,1fr);gap:.4rem;padding:.6rem}.ad-cat{font-size:.56rem;padding:.2rem .38rem}.kv .kv-row{flex-direction:column;gap:.25rem}.kv dt{flex:none}.audit-detail-grid{grid-template-columns:1fr}.audit-detail-card .kv dd{text-align:left}.links-controls{align-items:stretch}.links-filter{display:grid;grid-template-columns:1fr 1fr;flex:1 1 100%}.links-filter button{padding:.4rem .45rem}.links-search{flex-basis:100%}.link-result{padding:.6rem}.links-stat{font-size:.68rem}}
+        .val-pills{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 .9rem}
+        .vp{font-size:.72rem;font-weight:800;padding:.3rem .65rem;border-radius:999px;border:1px solid #E2E9E5}
+        .vp.pass{background:#F0FAF3;border-color:#CBE7D4;color:#16723A}
+        .vp.warn{background:#FFF8E9;border-color:#F2E1B8;color:#9A6100}
+        .vp.fail{background:#FFF1F0;border-color:#F0D0CE;color:#AE3028}
+        .vp.info{background:#EEF4F9;border-color:#D5E3EF;color:#3E5E7A}
+        .val-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem;align-items:start}
+        .val-card{min-width:0;border:1px solid #E1E8E5;border-radius:12px;background:#fff;padding:.9rem .95rem;box-shadow:0 1px 3px rgba(15,23,42,.03)}
+        .vc-t{display:flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:850;color:#13251F;letter-spacing:.02em;margin:0 0 .4rem}
+        .vc-t i{color:#0E8A6C}
+        .vc-t .val-ct{margin-left:auto;font-size:.66rem;font-weight:800;color:#0E8A6C;background:#E6F5EE;padding:.22rem .55rem;border-radius:999px;white-space:nowrap;text-transform:none;letter-spacing:.02em}
+        .val-chksec{margin-top:1.4rem}
+        .vc-rows{display:flex;flex-direction:column}
+        .vc-row{display:block;padding:.6rem .15rem;border-top:1px solid #EEF3F1;min-width:0}
+        .vc-row:first-child{border-top:0;padding-top:.4rem}
+        .vc-row:last-child{padding-bottom:.3rem}
+        .vc-line{display:flex;gap:.7rem;align-items:flex-start;min-width:0}
+        .vc-main{flex:1;min-width:0}
+        .vc-main b{font-size:.84rem;font-weight:780;color:#18251F;word-break:break-word;line-height:1.35}
+        .vc-main .vc-r{display:block;font-size:.76rem;color:#5b6b65;margin-top:.12rem;line-height:1.45;word-break:break-word}
+        .vc-pill{flex:0 0 auto;font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:999px;margin-top:.05rem;white-space:nowrap}
+        .vc-pill.pass{background:#dcfce7;color:#15803d}
+        .vc-pill.warn{background:#fef3c7;color:#a16207}
+        .vc-pill.fail{background:#fee2e2;color:#b91c1c}
+        .vc-pill.info{background:#eef2f7;color:#475569}
+        .vc-fix{margin:.4rem 0 0;font-size:.74rem;color:#0a6b55;background:#F3F9F5;border:1px dashed #CFE3DA;border-radius:6px;padding:.34rem .55rem;line-height:1.45;word-break:break-word}
+        .vc-fix b{font-weight:800}
+        .val-chk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem}
+        .chk-card{min-width:0;border:1px solid #E6ECE9;border-radius:14px;background:#fff;padding:.9rem}
+        .chk-card.pass{border-color:#B9E7C8;background:#F3FBF5}
+        .chk-card.warn{border-color:#F0DCA0;background:#FFFBF0}
+        .chk-card.fail{border-color:#F2B8B5;background:#FFF6F5}
+        .chk-ttl{display:flex;align-items:center;gap:.45rem;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.03em;margin:0 0 .7rem}
+        .chk-card.pass .chk-ttl{color:#15803d}
+        .chk-card.warn .chk-ttl{color:#a16207}
+        .chk-card.fail .chk-ttl{color:#b91c1c}
+        .chk-ttl .chk-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:1.5rem;height:1.4rem;padding:0 .35rem;border-radius:999px;font-size:.66rem;font-weight:900}
+        .chk-card.pass .chk-cnt{background:#d1fae5;color:#047857}
+        .chk-card.warn .chk-cnt{background:#fef3c7;color:#a16207}
+        .chk-card.fail .chk-cnt{background:#fee2e2;color:#b91c1c}
+        .chk-list{margin:0;display:flex;flex-direction:column;gap:.45rem}
+        .chk-it{display:flex;gap:.45rem;align-items:flex-start;font-size:.8rem;line-height:1.45;color:#374151;min-width:0}
+        .chk-it .chk-bul{flex:0 0 auto;font-weight:900}
+        .chk-card.pass .chk-bul{color:#059669}
+        .chk-card.warn .chk-bul{color:#d97706}
+        .chk-card.fail .chk-bul{color:#dc2626}
+        .chk-it b{color:#13251F;font-weight:800}
+        .chk-it .chk-r{color:#5b6b65;font-size:.76rem;display:block;word-break:break-word}
+        .chk-empty{font-size:.8rem;color:#6b7280;font-style:italic;margin:0}
+        @media(max-width:900px){.val-grid{grid-template-columns:1fr}}
+        @media(max-width:720px){.vc-t{flex-wrap:wrap}.vc-t .val-ct{margin-left:0}.val-chk{grid-template-columns:1fr}.chk-it{flex-wrap:wrap}}
+    </style>
 </head>
 <body class="tool-page">
 
@@ -27,65 +237,74 @@
     <div class="container">
         <div class="page-crumb">
         <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
-        <span class="page-crumb-title">Website Auditor</span>
+        <span class="page-crumb-title">Website Auditor &amp; SEO Validation</span>
         </div>
 
 
 
-        <div class="tool-shell" style="max-width:1120px;margin:0 auto">
+        <div class="tool-shell" style="max-width:1200px;margin:0 auto">
             <header class="tool-meta">
             <span class="tool-meta-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span>
             <div class="tool-meta-body">
-                <h1>Website Auditor</h1>
-                <p>Audits a page's technical health: page weight and requests, loading performance, media, structure, and accessibility — scored 0–100 with fix-it tips, fully client-side.</p>
+                <h1>Website Auditor &amp; SEO Validation</h1>
+                <p>Analyze your website's <strong>SEO, technical health, links, and performance</strong> in one pass. Get four detailed reports: a <strong>Website Audit</strong> score out of 100, <strong>SEO Validation</strong> with clear reasons and fixes, a <strong>Broken Link Report</strong> with CSV export, and <strong>Core Web Vitals</strong> for mobile and desktop. <strong>Paste your website URL below and get your instant audit report.</strong></p>
                 <div class="tool-meta-row">
-                    <span class="tool-badge">Tech Audit</span>
+                    <span class="tool-badge">SEO & Search</span>
                     <span class="tool-badge tool-badge-soft">client-side</span>
+                    <span class="tool-badge tool-badge-soft">4 reports in 1</span>
                 </div>
             </div>
             <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
         </header>
-            <span id="page-meta-title" data-title="Website Auditor — DM Solution Technologies Toolkits" style="display:none"></span>
-            
+            <span id="page-meta-title" data-title="Website Auditor &amp; SEO Validation — DM Solution Technologies Toolkits" style="display:none"></span>
+
 
             <!-- Input -->
             <div class="field">
-                <label for="wa-url">Page URL</label>
+                <label for="wa-url">Page URL (optional)</label>
                 <input id="wa-url" type="text" placeholder="https://example.com/page" autocomplete="off">
             </div>
-            <button id="wa-audit" class="btn btn-primary btn-block">🔍 Audit Page</button>
+            <details style="margin-bottom:1.1rem;border:1.5px dashed rgba(199,120,0,.22);border-radius:13px;padding:.8rem 1rem">
+                <summary style="cursor:pointer;font-size:.85rem;font-weight:700;color:var(--primary)">…or paste raw HTML &mdash; use this when a live fetch is blocked <span style="color:var(--muted);font-weight:600">(e.g. opened from file://)</span></summary>
+                <div style="margin-top:.7rem">
+                    <textarea id="wa-html" placeholder="<html>…</html>" style="min-height:120px"></textarea>
+                    <p style="font-size:.75rem;color:var(--muted);margin-top:.4rem">View Source → Select All → Copy, then paste here. The full audit runs locally with zero network.</p>
+                </div>
+            </details>
+            <button id="wa-audit" class="btn btn-primary btn-block">🔍 Run Full Audit</button>
 
             <div class="alert err hidden" id="wa-notice" style="margin-top:1rem"></div>
 
             <!-- Results -->
             <div class="result-box" id="wa-result" aria-live="polite">
                 <h2>Audit Report</h2>
-                <p class="output-text" id="wa-output">Enter a page URL, then click Audit Page.</p>
+                <p class="output-text" id="wa-output">Enter a URL or paste HTML, then click Run Full Audit.</p>
             </div>
 
             <div class="info-note">
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>Enter an <strong>https://</strong> page URL and click <strong>Audit Page</strong>. The tool fetches the page, analyzes it locally, and checks <strong>18 technical factors</strong> related to performance, page structure, media, accessibility, and loading.</p>
-                    <p><strong>You receive:</strong></p>
-                    <ul>
-                        <li>A score out of 100</li>
-                        <li>Pass, Warn, and Fail results</li>
-                        <li>Practical improvement tips</li>
-                        <li>A downloadable CSV report</li>
+                    <p style="margin-bottom:.6rem">Enter a website URL or paste the page's HTML, then run the audit. The tool analyzes the page and generates <strong>four detailed reports</strong> from the same page.</p>
+                    <ul style="margin:0;padding-left:0;line-height:1.65;font-size:.86rem;color:var(--text);list-style:none">
+                        <li><strong>1 · Website Audit</strong> - get an overall score out of 100 based on important on-page website factors. The audit checks elements such as the page title, meta description, headings, images, links, canonical URL, Open Graph data, viewport, language, robots settings, content, and page structure.</li>
+                        <li><strong>2 · SEO Validation</strong> - review important SEO elements one by one with a clear Pass, Warn, Fail, or N/A result. Each check explains what was found, why it matters, and what you can do to fix or improve it.</li>
+                        <li><strong>3 · Broken Link Report</strong> — find and review links found on the page. Links are grouped as Working, Redirect, Broken, Blocked, or Internal, with response information where available. You can also export the results as a CSV file.</li>
+                        <li><strong>4 · Core Web Vitals</strong> - check key performance and user-experience metrics for mobile and desktop, including LCP, INP, CLS, FCP, and TTFB where available. Use the results to identify pages that may need performance improvements.</li>
+                        <li style="margin-top:.45rem"><strong>📊 One audit, four reports</strong> - run the audit once and review each report separately using the available tabs. Each report can be downloaded as its own CSV or summary where supported.</li>
                     </ul>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>The audit runs in your browser. Only the page HTML is fetched, and nothing is stored or tracked.</p>
+                    <p>Your audit runs in the browser whenever possible. No audit data is stored on our servers. If direct access is blocked, a relay may be used to retrieve the page for analysis.</p>
                 </div>
                 <div class="note-sec">
                     <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
                     <ul>
-                        <li>Use an https:// URL.</li>
-                        <li>Fix Fail items first, then address Warn items.</li>
-                        <li>Prioritize page size, requests, scripts, images, and loading performance.</li>
-                        <li>Use the CSV download to save or share the audit report.</li>
+                        <li>Use the full website URL for the best results.</li>
+                        <li>Fix <strong>Fail</strong> and <strong>Warn</strong> items first.</li>
+                        <li>Check Core Web Vitals for performance issues.</li>
+                        <li>Blocked links are not necessarily broken.</li>
+                        <li>Run the audit again after making improvements.</li>
                     </ul>
                 </div>
             </div>
@@ -106,55 +325,75 @@
 <script>
 (function(){
     'use strict';
-    const { $, esc, toast, downloadBlob, fmt } = window.ToolsApp;
+    const { $, $$, esc, toast, copyText, downloadBlob, fmt } = window.ToolsApp;
 
-    const CSV_ICON = '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" width="15" height="15" style="flex:none" fill="currentColor" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:currentColor;}</style></defs><title></title><g id="xxx-word"><path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path><path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path><path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z"></path><path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path><path class="cls-1" d="M168.48,217.48l8.91,1a20.84,20.84,0,0,1-6.19,13.18q-5.33,5.18-14,5.18-7.31,0-11.86-3.67a23.43,23.43,0,0,1-7-10,37.74,37.74,0,0,1-2.46-13.87q0-12.19,5.78-19.82t15.9-7.64a18.69,18.69,0,0,1,13.2,4.88q5.27,4.88,6.64,14l-8.91.94q-2.46-12.07-10.86-12.07-5.39,0-8.38,5t-3,14.55q0,9.69,3.2,14.63t8.48,4.94a9.3,9.3,0,0,0,7.19-3.32A13.25,13.25,0,0,0,168.48,217.48Z"></path><path class="cls-1" d="M179.41,223.15l9.34-2q1.68,7.93,12.89,7.93,5.12,0,7.87-2a6.07,6.07,0,0,0,2.75-5,7.09,7.09,0,0,0-1.25-4q-1.25-1.85-5.35-2.91l-10.2-2.66a25.1,25.1,0,0,1-7.73-3.11,12.15,12.15,0,0,1-4-4.9,15.54,15.54,0,0,1-1.5-6.76,14,14,0,0,1,5.31-11.46q5.31-4.32,13.59-4.32a24.86,24.86,0,0,1,12.29,3,13.56,13.56,0,0,1,6.89,8.52l-9.14,2.27q-2.11-6.05-9.84-6.05-4.49,0-6.86,1.88a5.83,5.83,0,0,0-2.36,4.77q0,4.57,7.42,6.41l9.06,2.27q8.24,2.07,11.05,6.11a15.29,15.29,0,0,1,2.81,8.93,14.7,14.7,0,0,1-5.92,12.36q-5.92,4.51-15.33,4.51a28,28,0,0,1-13.89-3.32A16.29,16.29,0,0,1,179.41,223.15Z"></path><path class="cls-1" d="M250.31,236h-9.77L224.1,182.68h10.16l12.23,40.86L259,182.68h8Z"></path></g></g></svg>';
-    let lastResult = null;
+    const TIMEOUT = 8000;
+    const CONCURRENCY = 6;
+    const MAX_CHECK = 30;
 
-    function csvCell(v){
-        v = String(v == null ? '' : v);
-        if (/^[=+\-@]/.test(v)) v = "'" + v;
-        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
-        return v;
+    let auditChecks = [];
+    let valChecks = [];
+    let tips = [];
+    let seoScore = 0;
+    let valScore = 0;
+    let linkResults = [];
+    let lastReport = '';
+    let srcLabel = '';
+    let fetchedStatus = null;
+    let lastHeaders = null;
+    let vitals = null;
+    let cwvDevice = 'mobile';
+    let perf = { ttfb: null, total: null, viaRelay: false };
+    let lastDoc = null;
+    let lastHtml = '';
+    let lastData = null;
+
+    /* ═══════════ helpers ═══════════ */
+    function metaVal(doc, attr, val){
+        const el = doc.querySelector('meta[' + attr + '="' + val.replace(/"/g, '\\"') + '"]');
+        return el && el.getAttribute('content') ? el.getAttribute('content').trim() : '';
     }
-
+    function badge(st){
+        const map = {
+            pass: ['#16a34a', '#dcfce7'],
+            warn: ['#d97706', '#fef3c7'],
+            fail: ['#dc2626', '#fee2e2'],
+            info: ['#1e40af', '#dbeafe']
+        };
+        const c = map[st] || map.info;
+        const label = st === 'info' ? 'N/A' : st.toUpperCase();
+        return '<span style="background:' + c[1] + ';color:' + c[0] + ';font-weight:800;font-size:.68rem;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + label + '</span>';
+    }
+    function stBadge(st){
+        const map = {
+            working:  ['#16a34a', '#dcfce7', 'Working'],
+            broken:   ['#dc2626', '#fee2e2', 'Broken/404'],
+            redirect: ['#d97706', '#fef3c7', 'Redirect'],
+            blocked:  ['#1e40af', '#dbeafe', 'Blocked/CORS'],
+            internal: ['#64748b', '#E9EDF3', 'Internal']
+        };
+        const m = map[st] || map.blocked;
+        return '<span style="background:' + m[1] + ';color:' + m[0] + ';font-weight:800;font-size:.68rem;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + m[2] + '</span>';
+    }
+    function grade(score){
+        return score >= 85 ? 'Excellent' : score >= 70 ? 'Good' : score >= 50 ? 'Fair' : 'Poor';
+    }
     function parseHtml(html){
         let doc;
         try { doc = new DOMParser().parseFromString(html, 'text/html'); } catch(e){ return null; }
         return doc && doc.querySelector('parsererror') ? null : doc;
     }
 
-    function metaVal(doc, attr, val){
-        const el = doc.querySelector('meta[' + attr + '="' + val.replace(/"/g, '\\"') + '"]');
-        return el && el.getAttribute('content') ? el.getAttribute('content').trim() : '';
-    }
-
-    function badge(st){
-        const map = {
-            pass: ['#16a34a', '#dcfce7'],
-            warn: ['#d97706', '#fef3c7'],
-            fail: ['#dc2626', '#fee2e2']
-        };
-        const c = map[st] || map.fail;
-        return '<span style="background:' + c[1] + ';color:' + c[0] + ';font-weight:800;font-size:.68rem;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + st.toUpperCase() + '</span>';
-    }
-
-    function safeDetail(s){
-        if (s == null) return '';
-        s = String(s)
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'");
-        return esc(s);
-    }
-
+    /* ═══════════ fetch (direct → CORS relays) ═══════════ */
     async function fetchUrl(url){
+        const t0 = performance.now();
         try {
-            const res = await fetch(url);
+            const res = await fetch(url, { redirect: 'follow' });
+            const ttfb = Math.round(performance.now() - t0);
+            const text = await res.text();
+            const total = Math.round(performance.now() - t0);
             if (!res.ok) throw new Error('HTTP ' + res.status);
-            return await res.text();
+            return { status: res.status, finalUrl: res.url || url, text: text, ttfb: ttfb, total: total, viaRelay: false, headers: Object.fromEntries((res.headers || new Headers()).entries()) };
         } catch (e) {
             let lastErr = e;
             const proxies = [
@@ -162,11 +401,14 @@
                 { name: 'AllOrigins', make: u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u) }
             ];
             for (const p of proxies){
+                const pt = performance.now();
                 try {
                     const res = await fetch(p.make(url));
+                    const ttfb = Math.round(performance.now() - pt);
                     if (!res.ok) throw new Error(p.name + ' HTTP ' + res.status);
                     const t = await res.text();
-                    if (t && t.trim().length > 80) return t;
+                    const total = Math.round(performance.now() - pt);
+                    if (t && t.trim().length > 80) return { status: 200, finalUrl: url, text: t, ttfb: ttfb, total: total, viaRelay: true, headers: null };
                     throw new Error(p.name + ' empty response');
                 } catch (e2) { lastErr = e2; }
             }
@@ -176,265 +418,1420 @@
 
     async function getSource(){
         const url = $('#wa-url').value.trim();
-        if (!url){ toast('Enter a page URL first', 'err'); $('#wa-url').focus(); return null; }
-        try { new URL(url); } catch(e){ toast('Enter a valid URL (include https://)', 'err'); $('#wa-url').focus(); return null; }
-        return { url: url };
+        const html = $('#wa-html').value.trim();
+        if (!url && !html){ toast('Enter a URL or paste HTML first', 'err'); return null; }
+        if (url && html){ toast('URL ignored — using pasted HTML'); return { url: null, html: html }; }
+        if (html) return { url: null, html: html };
+        return { url: url, html: '' };
     }
 
-    function grade(score){
-        return score >= 85 ? 'Excellent' : score >= 70 ? 'Good' : score >= 50 ? 'Fair' : 'Poor';
-    }
-    function gaugeColor(score){
-        return score >= 70 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626';
-    }
-
-    function renderScore(score, checks){
-        const c = gaugeColor(score);
-        const pass = checks.filter(x => x.status === 'pass').length;
-        const warn = checks.filter(x => x.status === 'warn').length;
-        const fail = checks.filter(x => x.status === 'fail').length;
-        const totalW = checks.reduce((s, x) => s + x.w, 0);
-        const pct = n => checks.length ? Math.round(n / checks.length * 100) : 0;
-        return '<div class="wa-hero">'
-            + '<div class="wa-gauge" style="background:conic-gradient(' + c + ' ' + score + '%, #E9EDF3 0)"><div class="wa-gauge-inner">'
-            + '<span class="wa-score" style="color:' + c + '">' + score + '</span><span class="wa-slash">/ 100</span><span class="wa-grade" style="color:' + c + '">' + grade(score) + '</span>'
-            + '</div></div>'
-            + '<div class="wa-hero-side">'
-            + '<div class="wa-counts">'
-            + '<span class="wa-count ok">' + fmt.num(pass) + ' <b>Pass</b></span>'
-            + '<span class="wa-count warn">' + fmt.num(warn) + ' <b>Warn</b></span>'
-            + '<span class="wa-count fail">' + fmt.num(fail) + ' <b>Fail</b></span>'
-            + '</div>'
-            + '<div class="wa-dist"><i style="width:' + pct(pass) + '%;background:#16a34a"></i><i style="width:' + pct(warn) + '%;background:#d97706"></i><i style="width:' + pct(fail) + '%;background:#dc2626"></i></div>'
-            + '<div style="font-size:.78rem;color:var(--muted);font-weight:600">Weighted score · ' + fmt.num(totalW) + ' pts across ' + fmt.num(checks.length) + ' checks</div>'
-            + '</div></div>';
+    /* ═══════════ section 1 · Website Audit (16 weighted checks) ═══════════ */
+    function auditAdd(w, status, label, detail, tip){
+        auditChecks.push({ w, status, label, detail: detail || '', tip: tip || '', earn: status === 'pass' ? 1 : status === 'warn' ? .55 : 0 });
+        if (tip && status !== 'pass') tips.push(tip);
     }
 
-    function buildAuditCsv(){
-        if (!lastResult) return;
-        const { data, checks, tips, score } = lastResult;
-        const pass = checks.filter(x => x.status === 'pass').length;
-        const warn = checks.filter(x => x.status === 'warn').length;
-        const fail = checks.filter(x => x.status === 'fail').length;
-        let csv = '\uFEFF';
-        csv += 'Report,Website Auditor\n';
-        csv += 'Date,' + csvCell(new Date().toLocaleString()) + '\n';
-        csv += 'Source,' + csvCell(data.url) + '\n';
-        csv += 'Score,' + score + '/100 (' + grade(score) + ')\n';
-        csv += 'Checks,' + checks.length + ' (' + pass + ' pass, ' + warn + ' warn, ' + fail + ' fail)\n\n';
-        csv += 'CHECK,STATUS,DETAIL,FIX\n';
-        for (const c of checks){
-            csv += csvCell(c.label) + ',' + csvCell(c.status.toUpperCase()) + ',' + csvCell(strip(c.detail)) + ',' + csvCell(c.tip ? strip(c.tip) : '') + '\n';
-        }
-        if (tips.length){
-            csv += '\nIMPROVEMENT TIPS\n';
-            tips.forEach((t, i) => csv += csvCell((i + 1) + '. ' + strip(t)) + '\n');
-        }
-        let host = 'pasted-html';
-        try { if (data.url) host = new URL(data.url).hostname.replace(/\./g, '_'); } catch(e){}
-        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'website-auditor-' + host + '-' + new Date().toISOString().slice(0, 10) + '.csv');
-    }
-    function strip(s){ return s.replace(/<[^>]*>/g, ''); }
+    function computeAudit(doc, html, data){
+        auditChecks = [];
+        tips = [];
+        const base = data.url;
+        const origin = base ? (function(){ try { return new URL(base).origin; } catch(e){ return 'local'; } })() : 'local';
 
-    function runAudit(data, html){
-        const doc = parseHtml(html);
-        if (!doc){ $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not parse the HTML as a document.</p>'; return; }
+        /* 1. Title */
+        const titles = Array.from(doc.querySelectorAll('title')).map(t => (t.textContent || '').trim());
+        const title = titles[0] || '';
+        if (title.length >= 10 && title.length <= 60) auditAdd(10, 'pass', 'Page title', '「' + title + '」 — ' + title.length + ' chars (ideal 10–60)');
+        else if (title) auditAdd(10, 'warn', 'Page title', '「' + title + '」 — ' + title.length + ' chars', 'Title is ' + title.length + ' chars; aim for 10–60 chars with your primary keyword near the front.');
+        else auditAdd(10, 'fail', 'Page title', 'No <title> tag found', 'Add a descriptive <title> tag (10–60 chars) between <head> and </head>.');
 
-const checks = [];
-        const tips = [];
-        const add = (w, status, label, detail, tip) => { checks.push({ w, status, label, detail, tip, earn: status === 'pass' ? 1 : status === 'warn' ? .5 : 0 }); if (tip) tips.push(tip); };
+        /* 2. Meta description */
+        const desc = metaVal(doc, 'name', 'description');
+        if (desc.length >= 50 && desc.length <= 160) auditAdd(9, 'pass', 'Meta description', desc.length + ' chars (ideal 50–160)');
+        else if (desc) auditAdd(9, 'warn', 'Meta description', desc.length + ' chars', 'Meta description is ' + desc.length + ' chars; rewrite to 50–160 chars including a call to action.');
+        else auditAdd(9, 'fail', 'Meta description', 'No meta description', 'Add a meta description of 50–160 chars summarising the page.');
 
-        const htmlLen = html.length;
-        const pageSizeKB = Math.round(htmlLen / 1024);
-        const scripts = Array.from(doc.querySelectorAll('script'));
-        const extScripts = scripts.filter(s => s && s.getAttribute('src'));
-        const styles = Array.from(doc.querySelectorAll('link[rel~="stylesheet"]'));
+        /* 3. Viewport */
+        if (metaVal(doc, 'name', 'viewport')) auditAdd(5, 'pass', 'Meta viewport', 'Viewport defined (mobile-friendly)');
+        else auditAdd(5, 'fail', 'Meta viewport', 'Missing viewport meta — page is not declared mobile-friendly', 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> for mobile SEO.');
+
+        /* 4. Open Graph */
+        const ogT = metaVal(doc, 'property', 'og:title');
+        const ogD = metaVal(doc, 'property', 'og:description');
+        const ogI = metaVal(doc, 'property', 'og:image');
+        const ogHave = [ogT, ogD, ogI].filter(Boolean).length;
+        if (ogHave === 3) auditAdd(10, 'pass', 'Open Graph', 'og:title / og:description / og:image all present');
+        else if (ogHave > 0) auditAdd(10, 'warn', 'Open Graph', ogHave + '/3 OG tags present', 'Add missing Open Graph tags so social shares render a rich preview: ' + [['og:title', ogT], ['og:description', ogD], ['og:image', ogI]].filter(x => !x[1]).map(x => x[0]).join(', ') + '.');
+        else auditAdd(10, 'warn', 'Open Graph', 'No Open Graph tags', 'Add og:title, og:description and og:image for Facebook/LinkedIn/WhatsApp previews.');
+
+        /* 5. Twitter cards */
+        const twC = metaVal(doc, 'name', 'twitter:card');
+        const twT = metaVal(doc, 'name', 'twitter:title');
+        const twHave = [twC, twT].filter(Boolean).length;
+        if (twHave === 2) auditAdd(6, 'pass', 'Twitter cards', 'twitter:card + twitter:title present');
+        else if (twHave === 1) auditAdd(6, 'warn', 'Twitter cards', 'Partial Twitter card data', 'Add twitter:card ("summary_large_image") and twitter:title.');
+        else auditAdd(6, 'warn', 'Twitter cards', 'No Twitter card tags', 'Add twitter:card and twitter:title meta tags for X/Twitter rich previews.');
+
+        /* 6. Canonical */
+        const canon = doc.querySelector('link[rel="canonical"]');
+        if (canon && canon.getAttribute('href')) auditAdd(6, 'pass', 'Canonical tag', 'Points to ' + canon.getAttribute('href'));
+        else auditAdd(6, 'warn', 'Canonical tag', 'No canonical URL declared', 'Add <link rel="canonical" href="' + (base || '/current-page/') + '"> to prevent duplicate-content dilution.');
+
+        /* 7. H1 */
+        const h1s = Array.from(doc.querySelectorAll('h1'));
+        if (h1s.length === 1) auditAdd(9, 'pass', 'H1 heading', 'Exactly one H1: 「' + (h1s[0].textContent || '').trim().slice(0, 60) + '」');
+        else if (h1s.length > 1) auditAdd(9, 'warn', 'H1 heading', h1s.length + ' H1 tags found', 'Keep a single H1 per page; demote the extra ones to H2/H3.');
+        else auditAdd(9, 'warn', 'H1 heading', 'No H1 tag', 'Add exactly one H1 describing the page topic; include the primary keyword.');
+
+        /* 8. H2 */
+        const h2s = doc.querySelectorAll('h2').length;
+        if (h2s >= 1) auditAdd(4, 'pass', 'H2 headings', h2s + ' H2 heading(s) — good content structure');
+        else auditAdd(4, 'warn', 'H2 headings', 'No H2 headings', 'Break content into H2 sections with keyword-rich subheadings.');
+
+        /* 9. Image alt */
         const imgs = Array.from(doc.querySelectorAll('img'));
-        const requests = extScripts.length + styles.length + imgs.length;
-        const bodyText = doc.body ? (doc.body.innerText || doc.body.textContent || '') : '';
-
-        /* 1. Page size */
-        if (pageSizeKB <= 120) add(9, 'pass', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML');
-        else if (pageSizeKB <= 400) add(9, 'warn', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML — heavy', 'Trim the HTML: drop comments, prune inline styles, and move repeating blocks into templates or sections.');
-        else add(9, 'fail', 'Page size', fmt.num(pageSizeKB) + ' KB of HTML — very heavy', 'A bloated DOM slows parsing. Aim under ~120 KB of raw HTML and audit any generated markup for duplication.');
-
-        /* 2. Script count */
-        if (extScripts.length <= 12) add(6, 'pass', 'Scripts', extScripts.length + ' external script(s)');
-        else if (extScripts.length <= 25) add(6, 'warn', 'Scripts', extScripts.length + ' external scripts', 'Bundling reduces round-trips — combine vendor and app JavaScript where possible.');
-        else add(6, 'fail', 'Scripts', extScripts.length + ' external scripts — too many requests', 'Every <script src> is a network round-trip. Bundle and prune unused libraries.');
-
-        /* 3. Stylesheet count */
-        if (styles.length <= 6) add(4, 'pass', 'Stylesheets', styles.length + ' stylesheet(s)');
-        else if (styles.length <= 12) add(4, 'warn', 'Stylesheets', styles.length + ' stylesheets', 'Merge CSS files and inline critical above-the-fold styles to cut requests and speed rendering.');
-        else add(4, 'fail', 'Stylesheets', styles.length + ' stylesheets — bloated', 'Consolidate stylesheets; too many block rendering and add latency.');
-
-        /* 4. Total requests */
-        if (requests <= 30) add(3, 'pass', 'Total requests', fmt.num(requests) + ' requests (scripts + stylesheets + images)');
-        else if (requests <= 60) add(3, 'warn', 'Total requests', fmt.num(requests) + ' requests', 'Heavy on mobile connections — reduce images and bundle assets.');
-        else add(3, 'fail', 'Total requests', fmt.num(requests) + ' requests — way too many', 'Aim under 30 requests; lazy-load below-the-fold media and merge assets.');
-
-        /* 5. Render-blocking scripts in <head> */
-        const blockingHead = extScripts.filter(s => {
-            if (!s.closest('head')) return false;
-            if (s.getAttribute('type') === 'module') return false;
-            return !(s.getAttribute('async') || s.getAttribute('defer'));
-        });
-        if (blockingHead.length === 0) add(10, 'pass', 'Render-blocking scripts', 'No classic scripts block parsing in <head>');
-        else if (blockingHead.length <= 2) add(10, 'warn', 'Render-blocking scripts', blockingHead.length + ' script(s) block first paint', 'Add async or defer to those head scripts; defer is safest for dependencies.');
-        else add(10, 'fail', 'Render-blocking scripts', blockingHead.length + ' blocking scripts in <head>', 'Classic scripts in <head> stall rendering. Use defer (or async where safe) on external scripts.');
-
-        /* 6. Resource hints */
-        const hints = doc.querySelectorAll('link[rel="preload"], link[rel="preconnect"], link[rel="dns-prefetch"]').length;
-        if (hints) add(5, 'pass', 'Resource hints', hints + ' preload / preconnect / dns-prefetch hint(s)');
-        else add(5, 'warn', 'Resource hints', 'No preload or preconnect hints', 'Add <link rel="preconnect"> to critical origins and preload above-the-fold fonts or images.');
-
-        /* 7. Lazy loading */
-        const lazyImgs = imgs.filter(im => im.getAttribute('loading') === 'lazy').length;
-        if (!imgs.length) add(5, 'pass', 'Lazy loading', 'No images to lazy-load');
-        else if (lazyImgs >= Math.ceil(imgs.length / 2)) add(5, 'pass', 'Lazy loading', lazyImgs + ' of ' + imgs.length + ' images use loading="lazy"');
-        else add(5, 'warn', 'Lazy loading', 'Only ' + lazyImgs + ' of ' + imgs.length + ' images use loading="lazy"', 'Add loading="lazy" to below-the-fold images to save bandwidth.');
-
-        /* 8. Subresource Integrity */
-        const noSri = extScripts.filter(s => !s.getAttribute('integrity'));
-        if (!extScripts.length) add(4, 'pass', 'Subresource Integrity', 'No external scripts to protect');
-        else if (!noSri.length) add(4, 'pass', 'Subresource Integrity', 'All ' + extScripts.length + ' external script(s) carry integrity hashes');
-        else add(4, 'warn', 'Subresource Integrity', noSri.length + ' external script(s) missing integrity', 'Add integrity="sha384-…" plus crossorigin="anonymous" to CDN scripts so a compromised CDN can\u2019t inject code.');
-
-        /* 9. Image alt text */
         const altOK = imgs.filter(im => im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '').length;
         const altPct = imgs.length ? Math.round(altOK / imgs.length * 100) : 100;
-        if (!imgs.length) add(8, 'pass', 'Image alt text', 'No images to check');
-        else if (altPct >= 95) add(8, 'pass', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text');
-        else if (altPct >= 60) add(8, 'warn', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text', 'Add descriptive alt text to the remaining ' + (imgs.length - altOK) + ' image(s) — screen readers rely on it.');
-        else add(8, 'fail', 'Image alt text', 'Only ' + altPct + '% of ' + imgs.length + ' images have alt text', 'Every meaningful image needs an alt attribute with a short description; leave decorative ones empty.');
+        if (!imgs.length) auditAdd(8, 'pass', 'Image alt text', 'No images to check');
+        else if (altPct >= 95) auditAdd(8, 'pass', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text');
+        else if (altPct >= 60) auditAdd(8, 'warn', 'Image alt text', altPct + '% of ' + imgs.length + ' images have alt text', 'Add descriptive alt text to the remaining ' + (imgs.length - altOK) + ' image(s) for accessibility and image SEO.');
+        else auditAdd(8, 'fail', 'Image alt text', 'Only ' + altPct + '% of ' + imgs.length + ' images have alt text', 'Give every meaningful image an alt attribute with a short description; leave decorative ones empty.');
 
-        /* 10. Image dimensions */
-        const noSize = imgs.filter(im => !(im.getAttribute('width') && im.getAttribute('height'))).length;
-        if (!imgs.length) add(6, 'pass', 'Image dimensions', 'No images to check');
-        else if (!noSize) add(6, 'pass', 'Image dimensions', 'All images declare width & height');
-        else if (noSize <= Math.ceil(imgs.length / 2)) add(6, 'warn', 'Image dimensions', noSize + ' image(s) missing width/height', 'Declaring dimensions reserves layout space and prevents layout shift (CLS).');
-        else add(6, 'fail', 'Image dimensions', noSize + ' of ' + imgs.length + ' images lack width/height', 'Add width and height attributes to every image to fix Cumulative Layout Shift.');
+        /* 10. Internal vs external links */
+        const fullLinks = Array.from(doc.querySelectorAll('a[href]')).map(a => (a.getAttribute('href') || '').trim()).filter(h => h && !/^(mailto:|tel:|#|javascript:|data:)/i.test(h));
+        let internal = 0, external = 0;
+        fullLinks.forEach(h => {
+            let u;
+            try { u = new URL(h, base || 'https://local.invalid/'); } catch(e){ return; }
+            if (origin === 'local') { if (u.hostname === 'local.invalid') internal++; else external++; }
+            else { if (u.origin === origin) internal++; else external++; }
+        });
+        if (internal >= 1 && (internal + external) >= 2) auditAdd(6, 'pass', 'Internal links', internal + ' internal · ' + external + ' external');
+        else if (internal === 0 && (internal + external) > 0) auditAdd(6, 'fail', 'Internal links', 'No internal links — only ' + external + ' external', 'Add internal links to related pages on your site to spread authority and help crawling.');
+        else auditAdd(6, 'warn', 'Internal links', 'No <a> links found', 'Add at least a few internal links to help users and crawlers navigate.');
 
-        /* 11. Image count */
-        if (imgs.length <= 20) add(3, 'pass', 'Image count', imgs.length + ' image(s)');
-        else if (imgs.length <= 50) add(3, 'warn', 'Image count', imgs.length + ' images — heavy page', 'Consider serving from a CDN and lazy-loading most of these.');
-        else add(3, 'fail', 'Image count', imgs.length + ' images — excessive', '50+ images guarantees slow loads on mobile; use sprites, CSS, or lazy loading.');
+        /* 11. Script / link counts */
+        const scripts = doc.querySelectorAll('script[src]').length;
+        const linkTags = doc.querySelectorAll('link').length;
+        const combined = scripts + linkTags;
+        if (combined <= 30) auditAdd(5, 'pass', 'Scripts & links', scripts + ' scripts · ' + linkTags + ' link tags (' + combined + ' total)');
+        else if (combined <= 60) auditAdd(5, 'warn', 'Scripts & links', combined + ' assets — leaning heavy', 'Consider deferring scripts and combining CSS/JS to speed up load.');
+        else auditAdd(5, 'fail', 'Scripts & links', combined + ' external assets — bloated', 'Audit and remove unused scripts/stylesheets; too many requests hurt Core Web Vitals.');
 
-        /* 12. Optimized formats */
-        const heavy = imgs.filter(im => /\.(png|bmp|tiff|gif)($|\?)/i.test(im.getAttribute('src') || '')).length;
-        if (!imgs.length) add(4, 'pass', 'Image formats', 'No images to check');
-        else if (!heavy) add(4, 'pass', 'Image formats', 'No legacy-heavy formats detected');
-        else add(4, 'warn', 'Image formats', heavy + ' image(s) use PNG / BMP / GIF', 'Serve WebP or AVIF where possible — they typically save 30–50%+ bandwidth.');
+        /* 12. HTML lang */
+        if (doc.documentElement.getAttribute('lang')) auditAdd(5, 'pass', 'HTML lang', 'lang="' + doc.documentElement.getAttribute('lang') + '" set');
+        else auditAdd(5, 'warn', 'HTML lang', 'No lang attribute on <html>', 'Add lang="en" (or your language) to <html> for accessibility and correct search-language signals.');
 
-        /* 13. Page title */
-        const titleEl = doc.querySelector('title');
-        const titleText = titleEl ? (titleEl.textContent || '').trim() : '';
-        if (titleText && titleText.length >= 10) add(7, 'pass', 'Page title', '「' + esc(titleText.slice(0, 60)) + '」 — ' + titleText.length + ' chars');
-        else if (titleText) add(7, 'warn', 'Page title', 'Title is only ' + titleText.length + ' chars', 'Give the page a proper title (10+ characters) — it names the browser tab.');
-        else add(7, 'fail', 'Page title', 'No <title> tag', 'Every page needs a <title> tag in <head>.');
+        /* 13. Robots meta */
+        const robots = metaVal(doc, 'name', 'robots');
+        if (robots && /noindex/i.test(robots)) auditAdd(4, 'warn', 'Robots meta', 'robots — "' + robots + '" (page blocked from indexing)', 'Your robots meta contains noindex — search engines will not index this page. Remove it if you want the page found.');
+        else auditAdd(4, 'pass', 'Robots meta', robots ? 'robots="' + robots + '"' : 'No robots meta — assumes index,follow');
 
-        /* 14. Heading hierarchy */
-        const h1s = doc.querySelectorAll('h1').length;
-        const h2s = doc.querySelectorAll('h2').length;
-        if (h1s === 1 && h2s >= 1) add(5, 'pass', 'Heading hierarchy', '1 H1 + ' + h2s + ' H2 — clear structure');
-        else if (h1s === 1) add(5, 'warn', 'Heading hierarchy', '1 H1 but no H2 sections', 'Split long content into H2 sections to make it scannable.');
-        else if (h1s > 1) add(5, 'warn', 'Heading hierarchy', h1s + ' H1 tags — use one per page', 'Keep a single H1; demote the rest to H2/H3.');
-        else add(5, 'fail', 'Heading hierarchy', 'No H1 heading', 'Add one H1 that introduces the page.');
+        /* 14. Duplicate titles */
+        if (titles.length === 1) auditAdd(4, 'pass', 'Duplicate titles', 'Exactly one <title> tag');
+        else if (titles.length > 1) auditAdd(4, 'fail', 'Duplicate titles', titles.length + ' <title> tags — duplicates confuse search engines', 'Remove all but one <title> tag.');
+        else auditAdd(4, 'fail', 'Duplicate titles', 'No <title> tag', 'Add a single unique <title> tag.');
 
-        /* 15. Content length */
-        const words = bodyText.trim().split(/\s+/).filter(Boolean).length;
-        if (words >= 300) add(5, 'pass', 'Content length', fmt.num(words) + ' words');
-        else if (words >= 100) add(5, 'warn', 'Content length', fmt.num(words) + ' words', 'Thin pages feel unfinished — aim for 300+ words where the topic allows.');
-        else add(5, 'fail', 'Content length', 'Only ' + fmt.num(words) + ' words', 'Very little readable content; expand it or reconsider the page\u2019s purpose.');
+        /* 15. Word count */
+        const words = ((doc.body ? doc.body.innerText || doc.body.textContent : '') || '').trim().split(/\s+/).filter(Boolean).length;
+        if (words >= 300) auditAdd(5, 'pass', 'Word count', fmt.num(words) + ' words of content');
+        else if (words >= 100) auditAdd(5, 'warn', 'Word count', fmt.num(words) + ' words', 'Content is thin (' + fmt.num(words) + ' words). Expand to at least 300 words where the topic allows.');
+        else auditAdd(5, 'fail', 'Word count', 'Only ' + fmt.num(words) + ' words', 'Thin content ranks poorly. Aim for 300+ words of genuinely useful text.');
 
         /* 16. Text / HTML ratio */
-        const textLen = bodyText.trim().length;
+        const textLen = ((doc.body ? doc.body.textContent : '') || '').trim().length;
         const ratio = html.length ? textLen / html.length : 0;
-        if (ratio >= .10 && ratio <= .70) add(4, 'pass', 'Text / HTML ratio', Math.round(ratio * 100) + '% readable text');
-        else if (ratio < .10) add(4, 'warn', 'Text / HTML ratio', 'Only ' + Math.round(ratio * 100) + '% — mostly markup', 'A low ratio suggests a JS-rendered or image-heavy page; consider server-side content.');
-        else add(4, 'warn', 'Text / HTML ratio', Math.round(ratio * 100) + '% — mostly text', 'Fine by itself; just make sure headings and media break the text up.');
+        if (ratio >= .10 && ratio <= .70) auditAdd(4, 'pass', 'Text / HTML ratio', Math.round(ratio * 100) + '% readable text');
+        else if (ratio < .10) auditAdd(4, 'warn', 'Text / HTML ratio', 'Only ' + Math.round(ratio * 100) + '% — mostly markup/scripts', 'Low text ratio suggests a JS-heavy or image-only page; consider server-side content.');
+        else auditAdd(4, 'warn', 'Text / HTML ratio', Math.round(ratio * 100) + '% — very high text', 'High text ratio can look like keyword stuffing; add headings, media and structure.');
 
-        /* 17. Meta viewport */
-        const viewport = metaVal(doc, 'name', 'viewport');
-        if (viewport) add(5, 'pass', 'Meta viewport', viewport.length > 50 ? 'Viewport declared' : 'Viewport: ' + esc(viewport));
-        else add(5, 'fail', 'Meta viewport', 'Missing viewport meta', 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> so mobile browsers render properly.');
-
-        /* 18. Lang & charset */
-        const lang = doc.documentElement.getAttribute('lang');
-        const charset = doc.querySelector('meta[charset]');
-        if (lang && charset) add(7, 'pass', 'Lang & charset', 'lang="' + esc(lang) + '" + charset declared');
-        else if (lang && !charset) add(7, 'warn', 'Lang & charset', 'lang set but no <meta charset>', 'Declare utf-8 as the first <meta> to avoid mojibake.');
-        else if (!lang && charset) add(7, 'warn', 'Lang & charset', 'charset declared but lang missing', 'Add lang="' + esc(lang || 'en') + '" to <html> for screen readers and correct hyphenation.');
-        else add(7, 'fail', 'Lang & charset', 'No lang attribute, no charset', 'Add a lang attribute to <html> and <meta charset="utf-8"> as the first meta tag.');
-
-        const total = checks.reduce((s, c) => s + c.w, 0);
-        const score = Math.round(checks.reduce((s, c) => s + c.earn * c.w, 0));
-        lastResult = { data, checks, tips, score };
-
-        const CAT = { 'Page size': 'Page Weight & Requests', 'Scripts': 'Page Weight & Requests', 'Stylesheets': 'Page Weight & Requests', 'Total requests': 'Page Weight & Requests', 'Render-blocking scripts': 'Loading & Performance', 'Resource hints': 'Loading & Performance', 'Lazy loading': 'Loading & Performance', 'Subresource Integrity': 'Loading & Performance', 'Image alt text': 'Media & Assets', 'Image dimensions': 'Media & Assets', 'Image count': 'Media & Assets', 'Image formats': 'Media & Assets', 'Page title': 'Structure & Content', 'Heading hierarchy': 'Structure & Content', 'Content length': 'Structure & Content', 'Text / HTML ratio': 'Structure & Content', 'Meta viewport': 'Accessibility & Compatibility', 'Lang & charset': 'Accessibility & Compatibility' };
-        const cats = [];
-        checks.forEach(c => {
-            const name = CAT[c.label] || 'Other';
-            let g = cats.find(x => x.name === name);
-            if (!g){ g = { name: name, items: [] }; cats.push(g); }
-            g.items.push(c);
-        });
-        const catIcons = { 'Page Weight & Requests': '💾', 'Loading & Performance': '⚡', 'Media & Assets': '🖼️', 'Structure & Content': '🧱', 'Accessibility & Compatibility': '♿' };
-
-        let htmlOut = renderScore(score, checks);
-
-        htmlOut += '<div class="wa-secs">';
-        cats.forEach(cat => {
-            const earned = Math.round(cat.items.reduce((s, c) => s + c.earn * c.w, 0));
-            const cw = cat.items.reduce((s, c) => s + c.w, 0);
-            htmlOut += '<div class="wa-section">'
-                + '<div class="wa-sec-head"><h3>' + (catIcons[cat.name] || '▫') + ' ' + esc(cat.name) + '</h3>'
-                + '<span class="wa-sec-score">' + earned + '/' + cw + ' pts</span></div>';
-            cat.items.forEach(c => {
-                htmlOut += '<div class="wa-row">'
-                    + '<span class="wa-check">' + esc(c.label) + '</span>'
-                    + '<span>' + badge(c.status) + '</span>'
-                    + '<span class="wa-detail">' + safeDetail(c.detail) + '</span>'
-                    + '</div>';
-            });
-            htmlOut += '</div>';
-        });
-        htmlOut += '</div>';
-
-        htmlOut += '<div style="margin-top:1.4rem;display:flex;gap:.5rem;flex-wrap:wrap">'
-            + '<button class="btn btn-secondary" id="wa-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
-            + '</div>';
-
-        $('#wa-output').innerHTML = htmlOut;
-        $('#wa-export').addEventListener('click', buildAuditCsv);
-        toast('Audit complete — score ' + score + '/100');
+        const totalW = auditChecks.reduce((s, c) => s + c.w, 0);
+        seoScore = totalW ? Math.round(auditChecks.reduce((s, c) => s + c.earn * c.w, 0) / totalW * 100) : 0;
     }
 
-    async function doAudit(){
+    /* ═══════════ section 2 · SEO Validation (item-by-item) ═══════════ */
+    function valAdd(label, status, reason, fix){
+        valChecks.push({ label, status, reason: reason || '', fix: fix || '' });
+    }
+    function valPenalty(label, status, detail){
+        if (status === 'pass') return 0;
+        const P = {
+            'Title tag':                  { warn: 6,  fail: 15 },
+            'Meta description':           { warn: 14, fail: 15 },
+            'Meta keywords':              { warn: 1,  fail: 1 },
+            'Canonical':                  { warn: 5,  fail: 0 },
+            'H1 heading':                 { warn: 15, fail: 15 },
+            'H2 headings':                { warn: 2,  fail: 2 },
+            'og:title':                   { warn: 2,  fail: 4 },
+            'og:description':             { warn: 1,  fail: 1 },
+            'og:image':                   { warn: 1,  fail: 2 },
+            'Twitter cards':              { warn: 1,  fail: 2 },
+            'Structured data (JSON-LD)':  { warn: 1,  fail: 8 },
+            'Robots meta':                { warn: 1,  fail: 3 },
+            'Sitemap link':               { warn: 1,  fail: 2 },
+            'Image ALT completeness':     { warn: 6,  fail: 15 },
+            'Favicon':                    { warn: 1,  fail: 1 },
+            'HTTPS':                      { warn: 15, fail: 20 },
+            'HTTP status / headers':      { warn: 10, fail: 20 }
+        };
+        const p = P[label] || { warn: 5, fail: 15 };
+        return status === 'fail' ? p.fail : status === 'warn' ? p.warn : 0;
+    }
+
+    function computeValScore(){
+        const scored = valChecks.filter(i => i.status !== 'info');
+        if (!scored.length) return 0;
+        const penalty = scored.reduce((s, i) => s + valPenalty(i.label, i.status, i.reason), 0);
+        return Math.max(0, Math.min(100, 100 - penalty));
+    }
+
+    async function fileReach(url){
+        const ac = new AbortController();
+        const timer = setTimeout(() => ac.abort(), TIMEOUT);
+        try {
+            const r = await fetch(url, { redirect: 'follow', signal: ac.signal });
+            return { hidden: false, status: r.status };
+        } catch(e){
+            try {
+                const o = await fetch(url, { mode: 'no-cors', redirect: 'follow', signal: ac.signal });
+                if (o.type === 'opaque') return { hidden: true, status: 0 };
+                return { hidden: false, status: o.status };
+            } catch(e2){
+                return { hidden: false, status: 0 };
+            }
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async function computeValidation(doc, data, live){
+        valChecks = [];
+        const titleTag = (doc.querySelector('title') || {}).textContent || '';
+        const title = titleTag.trim();
+        const desc = metaVal(doc, 'name', 'description');
+        const keywords = metaVal(doc, 'name', 'keywords');
+        const canon = doc.querySelector('link[rel="canonical"]');
+        const h1s = Array.from(doc.querySelectorAll('h1'));
+        const h2s = doc.querySelectorAll('h2').length;
+        const ogT = metaVal(doc, 'property', 'og:title');
+        const ogD = metaVal(doc, 'property', 'og:description');
+        const ogI = metaVal(doc, 'property', 'og:image');
+        const twC = metaVal(doc, 'name', 'twitter:card');
+        const twT = metaVal(doc, 'name', 'twitter:title');
+        const robots = metaVal(doc, 'name', 'robots');
+        const smEl = doc.querySelector('link[rel="sitemap"]');
+        const sitemapRel = smEl ? smEl.getAttribute('href') : '';
+        const fav = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+        const imgs = Array.from(doc.querySelectorAll('img'));
+        const altOK = imgs.filter(im => im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '').length;
+        const altPct = imgs.length ? Math.round(altOK / imgs.length * 100) : 100;
+
+        if (title.length >= 10 && title.length <= 60) valAdd('Title tag', 'pass', '「' + title + '」 — ' + title.length + ' chars', 'Keep it 10–60 chars with the primary keyword near the start.');
+        else if (title) valAdd('Title tag', 'warn', '「' + title + '」 — ' + title.length + ' chars', 'Rewrite to 10–60 chars.');
+        else valAdd('Title tag', 'fail', 'Missing <title> tag', 'Add a unique <title> tag (10–60 chars).');
+
+        if (desc.length >= 50 && desc.length <= 160) valAdd('Meta description', 'pass', desc.length + ' chars — good length', 'Consider adding a call to action if you like.');
+        else if (desc) valAdd('Meta description', 'warn', desc.length + ' chars (ideal 50–160)', 'Rewrite to 50–160 chars to avoid truncation in SERPs.');
+        else valAdd('Meta description', 'fail', 'Missing meta description', 'Add a meta description of 50–160 chars.');
+
+        if (keywords) valAdd('Meta keywords', 'warn', 'Present but ignored by Google since 2009', 'Harmless but useless; move effort into title/description/on-page copy.');
+        else valAdd('Meta keywords', 'pass', 'Absent — correct choice (not a ranking factor)', '');
+
+        if (canon && canon.getAttribute('href')) valAdd('Canonical', 'pass', 'Points to ' + canon.getAttribute('href'), '');
+        else valAdd('Canonical', 'warn', 'No canonical URL', 'Add <link rel="canonical" href="' + (live && data.url ? data.url : '/current-page/') + '"> to consolidate duplicate URLs.');
+
+        if (h1s.length === 1) valAdd('H1 heading', 'pass', 'Exactly one H1: 「' + (h1s[0].textContent || '').trim().slice(0, 60) + '」', '');
+        else if (h1s.length > 1) valAdd('H1 heading', 'warn', h1s.length + ' H1 tags — dilutes topic focus', 'Demote extras to H2/H3; keep one H1 per page.');
+        else valAdd('H1 heading', 'warn', 'No H1 heading', 'Add one keyword-rich H1.');
+
+        if (h2s >= 1) valAdd('H2 headings', 'pass', h2s + ' H2 heading(s)', '');
+        else valAdd('H2 headings', 'warn', 'No H2 headings', 'Add H2s to structure content sections.');
+
+        ogT ? valAdd('og:title', 'pass', ogT, '') : valAdd('og:title', 'fail', 'Missing', 'Add <meta property="og:title" content="…">.');
+        ogD ? valAdd('og:description', 'pass', ogD, '') : valAdd('og:description', 'warn', 'Missing', 'Add og:description for richer shared previews.');
+        ogI ? valAdd('og:image', 'pass', ogI, '') : valAdd('og:image', 'warn', 'Missing (no image preview on shares)', 'Add og:image (1200×630 recommended).');
+
+        if (twC && twT) valAdd('Twitter cards', 'pass', 'card + title present', '');
+        else if (twC || twT) valAdd('Twitter cards', 'warn', 'Partial: ' + (twC ? 'card' : '') + (twT ? ' title' : ''), 'Add twitter:card and twitter:title.');
+        else valAdd('Twitter cards', 'warn', 'No twitter card meta (falls back to OG)', 'Most platforms use OG tags; add Twitter tags for best display.');
+
+        const schemas = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'));
+        if (schemas.length){
+            const types = [];
+            let invalid = 0;
+            schemas.forEach(s => {
+                try {
+                    const j = JSON.parse(s.textContent);
+                    const t = Array.isArray(j)
+                        ? j.map(x => x['@type'] || x['@graph']).flat().filter(Boolean)
+                        : (j['@graph'] ? j['@graph'].map(g => g['@type']).filter(Boolean) : (j['@type'] ? [j['@type']] : []));
+                    types.push(...t);
+                } catch(e){ invalid++; }
+            });
+            if (invalid && !types.length) valAdd('Structured data (JSON-LD)', 'fail', 'JSON-LD present but malformed (could not parse)', 'Fix the JSON-LD syntax so rich results can be read.');
+            else valAdd('Structured data (JSON-LD)', 'pass', types.length + (types.length === 1 ? ' type' : ' types') + ' detected: ' + types.join(', '), invalid ? (invalid + ' block(s) failed to parse — check them.') : '');
+        } else {
+            valAdd('Structured data (JSON-LD)', 'warn', 'No schema.org JSON-LD found', 'Add JSON-LD structured data (e.g. Article, Product, FAQ, Organization) for rich results.');
+        }
+
+        if (robots && /noindex/i.test(robots)) valAdd('Robots meta', 'warn', 'robots="' + robots + '" — this page is blocked from indexing', 'Remove noindex if you want this page in Google.');
+        else if (live && data.url && /^https?:/.test(data.url)){
+            const rr = await fileReach(new URL('/robots.txt', data.url).href);
+            if (rr.hidden) valAdd('Robots meta', 'pass', '/robots.txt reachable — status hidden by browser CORS (verify manually)', '');
+            else if (rr.status >= 200 && rr.status < 400) valAdd('Robots meta', 'pass', robots ? 'robots="' + robots + '" · /robots.txt OK (' + rr.status + ')' : '/robots.txt OK (' + rr.status + '), no meta — defaults to index,follow', '');
+            else if (rr.status === 0) valAdd('Robots meta', 'warn', '/robots.txt not reachable from the browser', 'Publish /robots.txt (or add a robots meta tag) to control crawling.');
+            else valAdd('Robots meta', 'warn', '/robots.txt serves HTTP ' + rr.status + ' — crawlers may get no directives', 'Serve /robots.txt at the site root with a 200 status.');
+        } else {
+            valAdd('Robots meta', 'pass', robots ? 'robots="' + robots + '" (allowed)' : 'None — defaults to index,follow', '');
+        }
+
+        if (sitemapRel) valAdd('Sitemap link', 'pass', 'Declared: ' + sitemapRel, '');
+        else if (live && data.url && /^https?:/.test(data.url)){
+            const sr = await fileReach(new URL('/sitemap.xml', data.url).href);
+            if (sr.hidden) valAdd('Sitemap link', 'pass', '/sitemap.xml reachable — status hidden by browser CORS (verify manually)', '');
+            else if (sr.status >= 200 && sr.status < 400) valAdd('Sitemap link', 'pass', '/sitemap.xml OK (' + sr.status + ') at the site root', '');
+            else if (sr.status === 0) valAdd('Sitemap link', 'warn', '/sitemap.xml not reachable from the browser', 'Submit an XML sitemap and reference it in robots.txt.');
+            else valAdd('Sitemap link', 'warn', '/sitemap.xml serves HTTP ' + sr.status + ' (need 200)', 'Submit an XML sitemap and reference it in robots.txt.');
+        } else {
+            valAdd('Sitemap link', 'warn', 'No sitemap rel — consider /sitemap.xml + reference in robots.txt', 'Submit an XML sitemap and reference it in robots.txt.');
+        }
+
+        if (!imgs.length) valAdd('Image ALT completeness', 'pass', 'No images to check', '');
+        else if (altPct >= 95) valAdd('Image ALT completeness', 'pass', altPct + '% of ' + imgs.length + ' images have alt text', '');
+        else if (altPct >= 50) valAdd('Image ALT completeness', 'warn', altPct + '% (' + altOK + '/' + imgs.length + ') have alt text', 'Add alt text to the remaining ' + (imgs.length - altOK) + ' image(s).');
+        else valAdd('Image ALT completeness', 'warn', 'Only ' + altPct + '% (' + altOK + '/' + imgs.length + ') have alt text', 'Add descriptive alt text to every meaningful image.');
+
+        if (fav && fav.getAttribute('href')) valAdd('Favicon', 'pass', 'Favicon declared', '');
+        else valAdd('Favicon', 'warn', 'No favicon link', 'Add a favicon for brand recognition in browser tabs.');
+
+        if (live && data.url){
+            if (/^https:/.test(data.url)) valAdd('HTTPS', 'pass', 'Page served over HTTPS ✓', '');
+            else if (/^http:/.test(data.url)) valAdd('HTTPS', 'warn', 'Page uses plain HTTP — not secure', "Upgrade to HTTPS (Let's Encrypt/Certbot makes it free).");
+            else valAdd('HTTPS', 'info', 'Skipped — not an http(s) URL', '');
+        } else {
+            valAdd('HTTPS', 'info', 'Cannot verify from pasted HTML', 'Enter the URL and re-run for live check.');
+        }
+
+        if (live){
+            if (fetchedStatus){
+                const st = fetchedStatus.status;
+                if (st >= 200 && st < 300) valAdd('HTTP status / headers', 'pass', 'Page returned ' + st + ' OK' + (fetchedStatus.finalUrl && fetchedStatus.finalUrl !== data.url ? ' (redirected to ' + fetchedStatus.finalUrl + ')' : ''), '');
+                else if (st >= 300 && st < 400) valAdd('HTTP status / headers', 'warn', 'Redirect (' + st + ') to ' + fetchedStatus.finalUrl, 'Fine for moves, but ensure the final URL is indexed.');
+                else if (st >= 400) valAdd('HTTP status / headers', 'fail', 'Page returned HTTP ' + st, 'Fix the server error / 404 before worrying about SEO.');
+                else valAdd('HTTP status / headers', 'info', 'Could not read status (' + st + ')', '');
+            } else {
+                valAdd('HTTP status / headers', 'info', 'Relayed fetch — status unavailable', '');
+            }
+        } else {
+            valAdd('HTTP status / headers', 'info', 'Not checked — requires fetching the URL live', "Paste-only validation can't read headers.");
+        }
+
+        valScore = computeValScore();
+    }
+
+    /* ═══════════ section 3 · Broken Link Report ═══════════ */
+    function isUnresolved(url){
+        try { return new URL(url).hostname === 'local.invalid'; } catch(e){ return false; }
+    }
+    function isInternal(url, baseUrl){
+        if (!baseUrl) return false;
+        try { return new URL(url).origin === new URL(baseUrl).origin; }
+        catch(e){ return false; }
+    }
+    function normalize(u){
+        try { return String(new URL(u)).replace(/\/$/, ''); } catch(e){ return String(u); }
+    }
+
+    async function probe(url){
+        const t0 = performance.now();
+        const ac = new AbortController();
+        const timer = setTimeout(() => ac.abort(), TIMEOUT);
+        const ms = () => Math.round(performance.now() - t0);
+        try {
+            let res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: ac.signal });
+            if (!res.ok && (res.status === 405 || res.status === 501)){
+                res = await fetch(url, { method: 'GET', redirect: 'follow', signal: ac.signal });
+            }
+            if (res.status === 0) return { status: 'blocked', code: 0, ms: ms(), note: 'Opaque response (CORS)' };
+            if (res.status >= 200 && res.status < 300){
+                const redirected = res.url && normalize(res.url) !== normalize(url);
+                return redirected
+                    ? { status: 'redirect', code: res.status, ms: ms(), note: 'Reached via redirect → ' + res.url }
+                    : { status: 'working', code: res.status, ms: ms(), note: '' };
+            }
+            if (res.status >= 300 && res.status < 400) return { status: 'redirect', code: res.status, ms: ms(), note: '→ ' + res.url };
+            if (res.status >= 400) return { status: 'broken', code: res.status, ms: ms(), note: 'HTTP error' };
+            return { status: 'working', code: res.status, ms: ms(), note: '' };
+        } catch(e){
+            if (e && e.name === 'AbortError') return { status: 'blocked', code: 0, ms: ms(), note: 'Timed out after 8s' };
+            try {
+                const r2 = await fetch(url, { mode: 'no-cors', redirect: 'follow' });
+                if (r2.status === 0 || r2.type === 'opaque') return { status: 'blocked', code: 0, ms: ms(), note: 'Reachable but CORS-blocked' };
+                return { status: 'working', code: r2.status, ms: ms(), note: '' };
+            } catch(e2){
+                return { status: 'broken', code: 0, ms: ms(), note: 'Unreachable (network/DNS error or offline)' };
+            }
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async function processQueue(urls, onProgress){
+        const out = new Array(urls.length);
+        let next = 0;
+        const worker = async () => {
+            while (next < urls.length){
+                const i = next++;
+                out[i] = { ...urls[i], ...(await probe(urls[i].url)) };
+                onProgress(i + 1, urls.length);
+            }
+        };
+        await Promise.all(Array.from({ length: Math.min(CONCURRENCY, urls.length) }, worker));
+        return out;
+    }
+
+    async function runLinks(doc, baseUrl, onProgress){
+        const all = [];
+        const seen = new Set();
+        doc.querySelectorAll('a[href]').forEach(a => {
+            const href = (a.getAttribute('href') || '').trim();
+            if (!href) return;
+            if (/^(mailto:|tel:|#|javascript:|data:|ftp:|file:)/i.test(href)) return;
+            let abs;
+            try { abs = new URL(href, baseUrl || 'https://local.invalid/').href; } catch(e){ return; }
+            if (seen.has(abs)) return;
+            seen.add(abs);
+            all.push({ url: abs, text: (a.textContent || '').trim().slice(0, 80) });
+        });
+
+        if (!all.length) return [];
+
+        const toProbe = [];
+        const mapped = all.map(l => {
+            if (isUnresolved(l.url)) return { ...l, status: 'internal', code: null, ms: 0, note: 'Relative link — no base URL to resolve against' };
+            if (isInternal(l.url, baseUrl)) return { ...l, status: 'internal', code: null, ms: 0, note: 'Same-site link — skipped' };
+            if (toProbe.length >= MAX_CHECK) return { ...l, status: 'blocked', code: null, ms: 0, note: 'Not probed — limit of ' + MAX_CHECK + ' external links per run' };
+            toProbe.push(l);
+            return null;
+        });
+
+        const probed = await processQueue(toProbe, onProgress);
+        let pi = 0;
+        return mapped.map(m => m || probed[pi++]);
+    }
+
+    function linkCounts(all){
+        return {
+            working:  all.filter(r => r.status === 'working').length,
+            broken:   all.filter(r => r.status === 'broken').length,
+            redirect: all.filter(r => r.status === 'redirect').length,
+            blocked:  all.filter(r => r.status === 'blocked').length,
+            internal: all.filter(r => r.status === 'internal').length
+        };
+    }
+
+    /* ═══════════ section 4 · Core Web Vitals (real, per-page) ═══════════ */
+    function metricScore(v, good, poor){
+        if (v == null || isNaN(v)) return null;
+        if (v <= good) return Math.round(100 - (v / good) * 20);
+        if (v < poor)  return Math.round(80 - ((v - good) / (poor - good)) * 50);
+        return Math.max(3, Math.round(30 - ((v - poor) / poor) * 30));
+    }
+    function vitalStatus(v, good, poor){
+        if (v == null || isNaN(v)) return { label: 'N/A', color: '#1e40af', bg: '#dbeafe' };
+        if (v <= good) return { label: 'Good', color: '#16a34a', bg: '#dcfce7' };
+        if (v < poor)  return { label: 'Needs work', color: '#d97706', bg: '#fef3c7' };
+        return { label: 'Poor', color: '#dc2626', bg: '#fee2e2' };
+    }
+
+    function computeVitals(doc, html, data){
+        const M = cwvDevice === 'mobile' ? 1.2 : 1.0;
+        const htmlKb = (html || '').length / 1024;
+        const bodyText = ((doc.body ? doc.body.textContent : '') || '').trim();
+
+        /* real measured values (live only) */
+        const ttfbS = perf.ttfb != null ? perf.ttfb / 1000 : null;
+        const totalS = perf.total != null ? perf.total / 1000 : null;
+
+        /* resource census — all real counts from the actual document */
+        const allScripts = Array.from(doc.querySelectorAll('script'));
+        const srcScripts = allScripts.filter(s => s.getAttribute('src'));
+        const inlineScripts = allScripts.filter(s => !s.getAttribute('src'));
+        const inlineBytes = inlineScripts.reduce((n, s) => n + (s.textContent || '').length, 0);
+        const inlineKb = inlineBytes ? inlineBytes / 1024 : 0;
+        const headBlocking = Array.from((doc.head || doc).querySelectorAll('script[src]')).filter(s => !s.getAttribute('async') && !s.getAttribute('defer'));
+        const linkEls = Array.from(doc.querySelectorAll('link'));
+        const stylesheets = linkEls.filter(l => /stylesheet/i.test(l.getAttribute('rel') || ''));
+        const externalFonts = linkEls.filter(l => /font|stylesheet/i.test(l.getAttribute('rel') || '') && /fonts\.(googleapis|gstatic|bunny|fontawesome)/i.test(l.getAttribute('href') || ''));
+        const preloads = linkEls.filter(l => /preload/i.test(l.getAttribute('rel') || ''));
+        const images = Array.from(doc.querySelectorAll('img'));
+        const imgNoDims = images.filter(i => !(parseInt(i.getAttribute('width') || '0', 10) > 0 && parseInt(i.getAttribute('height') || '0', 10) > 0));
+        const lazyCount = images.filter(i => String(i.getAttribute('loading')).toLowerCase() === 'lazy').length;
+        const iframes = doc.querySelectorAll('body iframe').length;
+
+        /* FCP: real TTFB when a live fetch happened, else weight-based estimate */
+        const renderExtra = 0.12 + (htmlKb / 100) * 0.06 + (headBlocking.length > 3 ? 0.18 : 0) + (inlineKb > 40 ? 0.12 : 0);
+        const fcpBase = ttfbS != null ? ttfbS : Math.min(2.5, 0.5 + htmlKb / 150 + (headBlocking.length ? 0.15 : 0));
+        const fcp = +(fcpBase + renderExtra * M).toFixed(2);
+
+        /* LCP estimate from the largest contentful candidate in the DOM */
+        let lcpW = 0, lcpEl = null;
+        doc.querySelectorAll('h1,h2,h3,p,li,img,video,blockquote').forEach(el => {
+            let w = 0;
+            if (/^(IMG|VIDEO)$/.test(el.tagName)){
+                const wd = parseInt(el.getAttribute('width') || '0', 10);
+                const ht = parseInt(el.getAttribute('height') || '0', 10);
+                w = wd && ht ? wd * ht / 25000 : (wd || ht ? 120 : 280);
+            } else {
+                const t = (el.textContent || '').trim().length;
+                w = t > 120 ? t / 70 : t / 2;
+            }
+            if (w > lcpW){ lcpW = w; lcpEl = el; }
+        });
+        const lcpIsMedia = !!(lcpEl && /^(IMG|VIDEO)$/.test(lcpEl.tagName));
+        const lcpDelta = lcpIsMedia ? (0.25 + lcpW / 800) : (0.10 + lcpW / 750);
+        const lcp = fcp != null ? +(fcp + lcpDelta * M).toFixed(2) : null;
+
+        /* CLS risk estimate from real layout-shift triggers */
+        let clsRisk = 0;
+        if (imgNoDims.length) clsRisk += Math.min(0.15, imgNoDims.length * 0.015);
+        if (externalFonts.length) clsRisk += 0.05;
+        if (headBlocking.length) clsRisk += Math.min(0.06, headBlocking.length * 0.02);
+        if (images.length > 6 && !lazyCount) clsRisk += 0.04;
+        if (iframes) clsRisk += Math.min(0.05, iframes * 0.02);
+        clsRisk = Math.round(clsRisk * 100) / 100;
+        const cls = clsRisk ? Math.min(0.5, clsRisk) : 0.02;
+
+        /* INP/FID estimate from main-thread blocking signals */
+        let inpEst = 14 + headBlocking.length * 30 + inlineKb * 6 + (srcScripts.length > 6 ? 20 : 0) + (bodyText.length < 400 ? 15 : 0);
+        inpEst = Math.min(950, Math.round(inpEst * M));
+        const fid = inpEst;
+
+        /* score each available metric against Google thresholds */
+        const scored = {};
+        scored.ttfb = ttfbS != null ? metricScore(ttfbS, 0.8, 1.8) : null;
+        scored.fcp  = fcp   != null ? metricScore(fcp, 1.8, 3.0) : null;
+        scored.lcp  = lcp   != null ? metricScore(lcp, 2.5, 4.0) : null;
+        scored.fid  = metricScore(fid, 100, 300);
+        scored.cls  = metricScore(cls, 0.1, 0.25);
+
+        const weights = { ttfb: .2, fcp: .2, lcp: .25, fid: .15, cls: .2 };
+        let wsum = 0, psum = 0;
+        Object.keys(weights).forEach(k => {
+            if (scored[k] != null){ psum += scored[k] * weights[k]; wsum += weights[k]; }
+        });
+        const overall = wsum ? Math.round(psum / wsum) : null;
+
+        /* recommendations — every item derived from a real finding */
+        const recs = [];
+        if (ttfbS != null && ttfbS > 1.8) recs.push({ title: 'High server response time (TTFB)', desc: 'TTFB measured at ' + Math.round(ttfbS * 1000) + ' ms. Use a CDN, upgrade hosting, enable gzip/brotli and add server-side cache to cut time to first byte.' });
+        if (imgNoDims.length) recs.push({ title: imgNoDims.length + ' image(s) missing explicit dimensions', desc: 'Add width/height to every image — reserved space prevents layout shift (CLS) and speeds up layout.' });
+        if (headBlocking.length) recs.push({ title: headBlocking.length + ' render-blocking script(s) in <head>', desc: 'Mark non-critical scripts async/defer so parsing and First Contentful Paint are not delayed.' });
+        if (inlineKb > 50) recs.push({ title: '~' + Math.round(inlineKb) + ' KB of inline JavaScript', desc: 'Move large inline scripts to external, cached files to shrink the initial HTML and parse time.' });
+        if (externalFonts.length) recs.push({ title: 'Third-party font stylesheet detected', desc: 'Self-host fonts or preload the font file — external font loads block rendering and can cause layout shift.' });
+        if (lcpEl && !preloads.length && lcpIsMedia) recs.push({ title: 'Largest element is an image but nothing is preloaded', desc: 'Add <link rel="preload" as="image" href="' + lcpEl.getAttribute('src') + '"> to prioritise the LCP resource.' });
+        if (images.length > 8 && !lazyCount) recs.push({ title: images.length + ' images, none lazy-loaded', desc: 'Add loading="lazy" to below-the-fold images so the LCP image and CSS load first.' });
+        if (stylesheets.length > 10) recs.push({ title: stylesheets.length + ' stylesheet assets', desc: 'Merge, minify and defer non-critical CSS to cut render-blocking requests.' });
+        if ((doc.querySelector('h1,h2,p') == null)) recs.push({ title: 'Very little textual content', desc: 'Thin content indicates a JS-heavy or image-only page — consider server-side rendering for faster paints.' });
+        if (!recs.length && overall >= 90) recs.push({ title: 'No major red flags from static analysis', desc: 'This page looks healthy. For lab-accurate field scores, confirm with Google PageSpeed Insights and CrUX data.' });
+        if (!recs.length && overall < 90) recs.push({ title: 'Minor optimisations found', desc: 'The page has no big red flags but still leaves performance headroom — review Core Web Vitals in DevTools while loading.' });
+
+        const timestamp = new Date().toISOString();
+        const mke = key => scored[key] != null ? scored[key] : null;
+        vitals = {
+            url: data.url || 'Pasted HTML',
+            device: cwvDevice,
+            http: fetchedStatus ? fetchedStatus.status : null,
+            relay: !!perf.viaRelay,
+            total: totalS, htmlKb,
+            ttfb: ttfbS, fcp, lcp, fid, cls,
+            score: scored, overall,
+            resources: {
+                scripts: srcScripts.length, inline: inlineKb, blocking: headBlocking.length,
+                stylesheets: stylesheets.length, fonts: externalFonts.length, preloads: preloads.length,
+                images: images.length, noDims: imgNoDims.length, lazy: lazyCount, iframes
+            },
+            largest: lcpEl ? { tag: lcpEl.tagName, media: lcpIsMedia } : null,
+            recs, timestamp
+        };
+    }
+
+    function vitalCard(icon, hLabel, title, sub, value, unit, goal, metaSt){
+        const st = metaSt || { color: '#64748b', bg: '#E9EDF3', label: '—' };
+        return '<div style="border:1.5px solid ' + st.color + '33;border-radius:15px;padding:1rem 1.1rem;background:#fff;display:flex;flex-direction:column;justify-content:space-between;gap:1rem">'
+            + '<div><div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem">'
+            +   '<span style="font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)"><i class="' + icon + '" aria-hidden="true"></i> ' + hLabel + '</span>'
+            +   '<span style="background:' + st.bg + ';color:' + st.color + ';font-weight:800;font-size:.64rem;padding:.18rem .5rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap">' + st.label + '</span>'
+            + '</div>'
+            + '<div style="font-weight:800;color:#0F172A;margin:.3rem 0 .15rem">' + title + '</div>'
+            + '<div style="font-size:.72rem;color:var(--muted)">' + sub + '</div></div>'
+            + '<div><div style="display:flex;align-items:baseline;justify-content:space-between">'
+            +   '<span style="font-size:1.7rem;font-weight:900;font-family:ui-monospace,monospace;color:' + st.color + '">' + value + '</span>'
+            +   '<span style="font-size:.68rem;font-family:ui-monospace;color:var(--muted)">Goal: ' + goal + '</span>'
+            + '</div>'
+            + '<div style="height:8px;border-radius:999px;background:#E9EDF3;overflow:hidden;margin-top:.5rem;display:flex">'
+            +   '<div style="width:55%;background:#16a34a"></div><div style="width:25%;background:#d97706"></div><div style="width:20%;background:#dc2626"></div>'
+            + '</div></div></div>';
+    }
+
+    function renderCoreWebVitals(){
+        if (!vitals){ return '<p class="output-text" style="color:var(--muted)">Performance analysis is included when you run a full audit.</p>'; }
+        const vColor = vitals.overall == null ? '#64748b' : vitals.overall >= 90 ? '#16a34a' : vitals.overall >= 50 ? '#d97706' : '#dc2626';
+        const vGrade = vitals.overall == null ? 'N/A' : vitals.overall >= 90 ? 'Fast & Compliant' : vitals.overall >= 50 ? 'Needs Optimization' : 'Critical Lag';
+
+        const lcpSt = vitalStatus(vitals.lcp, 2.5, 4.0);
+        const fidSt = vitalStatus(vitals.fid, 100, 300);
+        const clsSt = vitalStatus(vitals.cls, 0.1, 0.25);
+        const ttfbSt = vitalStatus(vitals.ttfb, 0.8, 1.8);
+        const fcpSt  = vitalStatus(vitals.fcp, 1.8, 3.0);
+
+        let html = '<div class="cwv-toolbar">'
+            + '<div class="dev-toggle cwv-device-switch" role="group" aria-label="Device view">'
+            +   '<button type="button" class="cwv-dev' + (cwvDevice === 'mobile' ? ' on' : '') + '" data-dev="mobile" aria-pressed="' + (cwvDevice === 'mobile') + '">📱 <span>Mobile</span></button>'
+            +   '<button type="button" class="cwv-dev' + (cwvDevice === 'desktop' ? ' on' : '') + '" data-dev="desktop" aria-pressed="' + (cwvDevice === 'desktop') + '">💻 <span>Desktop</span></button>'
+            + '</div>'
+            + '<span class="cwv-device-note">Core Web Vitals are estimated from static analysis; TTFB and total load time are measured.</span>'
+            + '</div>';
+
+        html += '<section class="cwv-summary" style="--cwv-color:' + vColor + ';--cwv-score:' + (vitals.overall == null ? 0 : vitals.overall) + '%" aria-label="Core Web Vitals performance summary">'
+            + '<div class="cwv-summary-main">'
+            +   '<div class="cwv-summary-top"><span class="cwv-summary-kicker">Performance snapshot</span><div class="cwv-summary-badges">'
+            +     (vitals.http ? '<span class="cwv-summary-badge http">HTTP ' + vitals.http + '</span>' : '')
+            +     '<span class="cwv-summary-badge">' + (vitals.device === 'mobile' ? 'Mobile emulation' : 'Desktop viewport') + (vitals.relay ? ' · Relay' : '') + '</span>'
+            +   '</div></div>'
+            +   '<h3 class="cwv-summary-url">' + esc(vitals.url) + '</h3>'
+            +   '<div class="cwv-summary-metrics">'
+            +     '<div class="cwv-summary-metric"><span>Total load</span><b>' + (vitals.total != null ? vitals.total + ' s' : '—') + '</b></div>'
+            +     '<div class="cwv-summary-metric"><span>HTML weight</span><b>' + fmt.num(vitals.htmlKb, 1) + ' KB</b></div>'
+            +   '</div>'
+            + '</div>'
+            + '<div class="cwv-summary-score" role="img" aria-label="Score ' + (vitals.overall == null ? 'not available' : vitals.overall + ' out of 100') + ', ' + vGrade + '">'
+            +   '<div class="cwv-score-ring"><div class="cwv-score-core"><span class="cwv-score-number">' + (vitals.overall == null ? '—' : vitals.overall) + '</span><span class="cwv-score-scale">OUT OF 100</span></div></div>'
+            +   '<div class="cwv-score-grade">' + vGrade + '</div>'
+            + '</div></section>';
+
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;margin-bottom:1rem">'
+            + vitalCard('fa-solid fa-compress-arrows-alt', 'Loading Speed', 'Largest Contentful Paint (LCP)', 'Largest visible image or text block render time.', vitals.lcp != null ? vitals.lcp + 's' : 'N/A', '', '≤ 2.5s', { color: lcpSt.color, bg: lcpSt.bg, label: lcpSt.label })
+            + vitalCard('fa-solid fa-hand-pointer', 'Interactivity', 'First Input Delay (FID / INP)', 'Estimated main-thread blocking before interaction.', vitals.fid + ' ms', '', '≤ 100ms', { color: fidSt.color, bg: fidSt.bg, label: fidSt.label })
+            + vitalCard('fa-solid fa-shuffle', 'Visual Stability', 'Cumulative Layout Shift (CLS)', 'Estimated shift risk from real layout triggers.', vitals.cls, '', '≤ 0.1', { color: clsSt.color, bg: clsSt.bg, label: clsSt.label })
+            + '</div>';
+
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin-bottom:1.1rem">'
+            + vitalMini('Server TTFB', vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + ' ms' : 'N/A', ttfbSt)
+            + vitalMini('First Contentful Paint', vitals.fcp != null ? vitals.fcp + 's' : 'N/A', fcpSt)
+            + vitalMini('JavaScript scripts', vitals.resources.scripts + ' (≈' + Math.round(vitals.resources.inline) + ' KB inline)', { color: vitals.resources.blocking ? '#d97706' : '#16a34a', bg: vitals.resources.blocking ? '#fef3c7' : '#dcfce7', label: vitals.resources.blocking ? vitals.resources.blocking + ' blocking' : 'deferred' })
+            + vitalMini('Images & media', vitals.resources.images + ' imgs · ' + vitals.resources.noDims + ' no dims', { color: vitals.resources.noDims ? '#d97706' : '#16a34a', bg: vitals.resources.noDims ? '#fef3c7' : '#dcfce7', label: vitals.resources.noDims ? 'CLS risk' : 'ok' })
+            + '</div>';
+
+        if (vitals.recs.length){
+            html += '<h2 style="font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.7rem">Actionable optimisation guide</h2>';
+            html += '<div style="display:flex;flex-direction:column;gap:.45rem">';
+            vitals.recs.forEach(r => {
+                html += '<div style="border:1px solid #E4E8EF;border-radius:12px;padding:.7rem .9rem;background:#fff">'
+                    + '<div style="font-weight:800;font-size:.86rem;color:#0F172A">' + esc(r.title) + '</div>'
+                    + '<div style="font-size:.78rem;color:#6b7280;line-height:1.55;margin-top:.15rem">' + esc(r.desc) + '</div>'
+                    + '</div>';
+            });
+            html += '</div>';
+        }
+
+        html += '<div class="alert info" style="margin:1rem 0">ℹ️ LCP, FID/INP and CLS are <strong>estimates</strong> derived from the fetched document (resource census, dimensions, blocking assets, weight). TTFB and total load time are <strong>measured</strong> from the live fetch. For lab-accurate field scores, cross-check with Google PageSpeed Insights / CrUX.</div>';
+
+        html += '<div class="wa-actions report-export">'
+            + '<span class="lbl">Core Web Vitals export</span>'
+            + '<button class="btn btn-primary export-btn" id="csv-vitals"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CSV</button>'
+            + '<button class="btn btn-secondary export-btn" id="sum-vitals"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>'
+            + '</div>';
+        return html;
+    }
+
+    function vitalMini(label, value, st){
+        return '<div style="border:1px solid #E4E8EF;border-radius:12px;padding:.6rem .8rem;background:#fff">'
+            + '<div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">' + label + '</div>'
+            + '<div style="font-size:1.05rem;font-weight:900;font-family:ui-monospace,monospace;color:#0F172A;margin-top:.2rem">' + value + '</div>'
+            + '<div style="font-size:.62rem;font-weight:800;margin-top:.15rem"><span style="color:' + st.color + ';background:' + st.bg + ';padding:.1rem .45rem;border-radius:999px">' + st.label + '</span></div>'
+            + '</div>';
+    }
+
+    /* ═══════════ section rendering (each mirrors the original tool) ═══════════ */
+    function renderScoreGauge(){
+        const c = seoScore >= 70 ? '#16a34a' : seoScore >= 50 ? '#d97706' : '#dc2626';
+        return '<div style="display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;margin-bottom:1.2rem">'
+            + '<div style="width:150px;height:150px;border-radius:50%;background:conic-gradient(' + c + ' ' + seoScore + '%, #E9EDF3 0);position:relative;flex:0 0 auto">'
+            + '<div style="position:absolute;inset:14px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #E4E8EF">'
+            + '<span style="font-size:2.2rem;font-weight:900;color:' + c + ';line-height:1">' + seoScore + '</span>'
+            + '<span style="font-size:.68rem;color:var(--muted);font-weight:600">/ 100</span>'
+            + '</div></div>'
+            + '<div style="flex:1;min-width:200px"><div class="stat-grid" style="margin:0;grid-template-columns:repeat(auto-fit,minmax(100px,1fr))">'
+            + '<div class="stat"><div class="num">' + seoScore + '</div><div class="lbl">Score</div></div>'
+            + '<div class="stat"><div class="num">' + grade(seoScore) + '</div><div class="lbl">Grade</div></div>'
+            + '<div class="stat"><div class="num">' + auditChecks.length + '</div><div class="lbl">Checks</div></div>'
+            + '</div></div></div>';
+    }
+
+    function valGrade(v){
+        return v >= 90 ? 'A+ (Excellent)' : v >= 80 ? 'A (Very Good)' : v >= 70 ? 'B (Good)' : v >= 60 ? 'C (Fair)' : v >= 50 ? 'D (Poor)' : 'Needs Work';
+    }
+
+    function renderValScore(){
+        const c = valScore >= 80 ? '#16a34a' : valScore >= 50 ? '#d97706' : '#dc2626';
+        const scored = valChecks.filter(i => i.status !== 'info');
+        const pass = scored.filter(i => i.status === 'pass').length;
+        const warn = scored.filter(i => i.status === 'warn').length;
+        const fail = scored.filter(i => i.status === 'fail').length;
+        const na = valChecks.length - scored.length;
+        return '<div style="margin-bottom:1.2rem">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.4rem">'
+            + '<span style="font-weight:800;font-size:.95rem">Validation score: <span style="color:' + c + '">' + valScore + '/100</span> <span style="color:' + c + ';background:' + c + '14;padding:.12rem .5rem;border-radius:999px;font-weight:800;font-size:.7rem">' + valGrade(valScore) + '</span></span>'
+            + '<span style="font-size:.75rem;color:var(--muted)">' + pass + ' pass · ' + warn + ' warn · ' + fail + ' fail · ' + na + ' not checked</span>'
+            + '</div>'
+            + '<div style="height:12px;border-radius:999px;background:#E9EDF3;overflow:hidden"><div style="height:100%;width:' + valScore + '%;border-radius:999px;background:linear-gradient(90deg,' + c + ',#0E8A6C);transition:width .4s"></div></div>'
+            + '</div>';
+    }
+
+    function auditCategory(label){
+        const map = {
+            'Page title': 'SEO', 'Meta description': 'SEO', 'Open Graph': 'SEO',
+            'Twitter cards': 'SEO', 'Canonical tag': 'SEO', 'H1 heading': 'SEO',
+            'H2 headings': 'SEO', 'Internal links': 'SEO', 'Robots meta': 'SEO',
+            'Duplicate titles': 'SEO', 'Word count': 'SEO', 'Text / HTML ratio': 'SEO',
+            'Meta viewport': 'Mobile UX', 'Image alt text': 'Accessibility',
+            'HTML lang': 'Accessibility', 'Scripts & links': 'Performance'
+        };
+        return map[label] || 'SEO';
+    }
+    function categoryCls(cat){
+        const map = { 'SEO': 'seo', 'Accessibility': 'acc', 'Mobile UX': 'mob', 'Security': 'sec', 'Performance': 'perf' };
+        return map[cat] || 'seo';
+    }
+    function adRow(c){
+        const cat = auditCategory(c.label);
+        const state = c.status === 'pass' ? 'pass' : c.status === 'warn' ? 'warn' : 'fail';
+        const stateIcon = state === 'pass' ? 'fa-circle-check' : state === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-xmark';
+        const stateLabel = state === 'pass' ? 'Pass' : state === 'warn' ? 'Warning' : 'Fail';
+        return '<article class="ad-row ' + state + '">'
+            + '<i class="ad-state-icon fa-solid ' + stateIcon + '" role="img" aria-label="' + stateLabel + '" title="' + stateLabel + '"></i>'
+            + '<span class="ad-cat ' + categoryCls(cat) + '">' + esc(cat) + '</span>'
+            + '<div class="ad-copy">'
+            + '<b>' + esc(c.label) + '</b>' + (c.detail ? '<div class="ad-detail">' + esc(c.detail) + '</div>' : '')
+            + (c.tip ? '<div class="ad-tip">' + esc(c.tip) + '</div>' : '')
+            + '</div>'
+            + '</article>';
+    }
+    function kvRow(label, value, cls){
+        return '<div class="kv-row"><dt>' + esc(label) + '</dt><dd class="' + (cls || '') + '">' + value + '</dd></div>';
+    }
+    function onPageRows(doc, base){
+        if (!doc) return '';
+        const titles = Array.from(doc.querySelectorAll('title')).map(t => (t.textContent || '').trim());
+        const title = titles[0] || 'None';
+        const desc = metaVal(doc, 'name', 'description') || 'None';
+        const h1s = doc.querySelectorAll('h1').length;
+        const h2s = doc.querySelectorAll('h2').length;
+        const imgs = Array.from(doc.querySelectorAll('img'));
+        const miss = imgs.filter(im => !(im.getAttribute('alt') != null && im.getAttribute('alt').trim() !== '')).length;
+        const fullLinks = Array.from(doc.querySelectorAll('a[href]')).map(a => (a.getAttribute('href') || '').trim()).filter(h => h && !/^(mailto:|tel:|#|javascript:|data:)/i.test(h));
+        const origin = base ? (function(){ try { return new URL(base).origin; } catch(e){ return 'local'; } })() : 'local';
+        let internal = 0, external = 0;
+        fullLinks.forEach(h => {
+            let u;
+            try { u = new URL(h, base || 'https://local.invalid/'); } catch(e){ return; }
+            if (origin === 'local') { if (u.hostname === 'local.invalid') internal++; else external++; }
+            else { if (u.origin === origin) internal++; else external++; }
+        });
+        const canon = doc.querySelector('link[rel="canonical"]');
+        const robots = metaVal(doc, 'name', 'robots') || 'None';
+        const lang = doc.documentElement.getAttribute('lang');
+        return kvRow('Page Title', esc(title))
+            + kvRow('Meta Description', esc(desc), desc === 'None' ? 'bad' : '')
+            + kvRow('H1 / H2 Headings', h1s + ' H1' + (h1s === 1 ? '' : 's') + ' / ' + h2s + ' H2' + (h2s === 1 ? '' : 's'), h1s ? '' : 'bad')
+            + kvRow('Images (Missing ALT)', imgs.length + ' (' + miss + ' missing)', miss ? 'bad' : 'ok')
+            + kvRow('Internal / External Links', internal + ' int / ' + external + ' ext')
+            + kvRow('Canonical Tag', canon && canon.getAttribute('href') ? esc(canon.getAttribute('href')) : 'None', canon ? '' : 'bad')
+            + kvRow('Robots Directive', esc(robots), robots === 'None' ? 'bad' : '')
+            + (lang ? kvRow('HTML Lang', esc(lang)) : '');
+    }
+    function securityRows(){
+        const url = lastData && lastData.url ? lastData.url : '';
+        const isHttp = /^https?:/i.test(url);
+        const https = /^https:/i.test(url);
+        const httpsCls = isHttp ? (https ? 'ok' : 'bad') : '';
+        let rows = kvRow('HTTPS Encryption', isHttp ? (https ? 'Active (HTTPS)' : 'Not enforced — served over HTTP') : '—', httpsCls);
+        const names = [
+            ['Content-Security-Policy', 'content-security-policy'],
+            ['Strict-Transport-Security (HSTS)', 'strict-transport-security'],
+            ['X-Frame-Options', 'x-frame-options'],
+            ['X-Content-Type-Options', 'x-content-type-options'],
+            ['Referrer-Policy', 'referrer-policy'],
+            ['Permissions-Policy', 'permissions-policy']
+        ];
+        names.forEach(([label, key]) => {
+            if (!lastHeaders){
+                rows += kvRow(label, 'Not readable — live fetch blocked (CORS)');
+                return;
+            }
+            const v = lastHeaders[key];
+            if (v && v.trim() !== '') rows += kvRow(label, esc(v.trim()), 'ok');
+            else rows += kvRow(label, 'MISSING', 'bad');
+        });
+        const server = lastHeaders ? (lastHeaders['server'] || '') : '';
+        rows += kvRow('Server Signature', lastHeaders ? (esc(server) || 'Not exposed') : '—', lastHeaders ? (server ? '' : 'bad') : '');
+        return rows;
+    }
+    function renderSiteAudit(){
+        let html = renderScoreGauge();
+        const status = fetchedStatus ? String(fetchedStatus.status) : '—';
+        const resp = perf && perf.ttfb != null ? Math.round(perf.ttfb) + ' ms' : '—';
+        const size = lastHtml ? (lastHtml.length / 1024).toFixed(1) + ' KB' : '—';
+        const failCount = auditChecks.filter(c => c.status === 'fail').length;
+        const warnCount = auditChecks.filter(c => c.status === 'warn').length;
+        const passCount = auditChecks.filter(c => c.status === 'pass').length;
+        const attentionChecks = auditChecks.filter(c => c.status === 'fail').concat(auditChecks.filter(c => c.status === 'warn'));
+        const passedChecks = auditChecks.filter(c => c.status === 'pass');
+        html += '<div class="aud-diag">'
+            + '<div class="diag crit"><span>Critical Issues</span><b>' + failCount + '</b></div>'
+            + '<div class="diag warn"><span>Warnings</span><b>' + warnCount + '</b></div>'
+            + '<div class="diag"><span>Response</span><b>' + esc(resp) + '</b></div>'
+            + '<div class="diag"><span>HTML Size</span><b>' + esc(size) + '</b></div>'
+            + '<div class="diag"><span>HTTP Status</span><b>' + esc(status) + (fetchedStatus && fetchedStatus.viaRelay ? ' (via relay)' : '') + '</b></div>'
+            + '<div class="diag"><span>Checks</span><b>' + auditChecks.length + '</b></div>'
+            + '</div>';
+
+        html += '<section class="audit-findings" aria-labelledby="audit-findings-title">'
+            + '<div class="audit-findings-head"><h3 class="ad-sec" id="audit-findings-title"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Audit Diagnostics &amp; Recommendations</h3>'
+            + '<span class="ad-count">' + failCount + ' failed · ' + warnCount + ' warnings · ' + passCount + ' passed</span></div>';
+        if (attentionChecks.length){
+            html += '<div class="audit-findings-list">';
+            attentionChecks.forEach(c => { html += adRow(c); });
+            html += '</div>';
+        } else {
+            html += '<p class="audit-all-clear">All checks passed. Expand below to review the results.</p>';
+        }
+        if (passedChecks.length){
+            html += '<details class="audit-passed"><summary>Passed checks <span class="audit-passed-count">' + passedChecks.length + '</span></summary><div class="audit-findings-list">';
+            passedChecks.forEach(c => { html += adRow(c); });
+            html += '</div></details>';
+        }
+        html += '</section>';
+
+        html += '<div class="audit-detail-grid">'
+            + '<section class="audit-detail-card" aria-labelledby="audit-onpage-title">'
+            + '<h3 class="ad-sec" id="audit-onpage-title"><i class="fa-solid fa-table-list" aria-hidden="true"></i> On-Page SEO &amp; Structure</h3>'
+            + '<dl class="kv">' + onPageRows(lastDoc, lastData ? lastData.url : '') + '</dl>'
+            + '</section>'
+            + '<section class="audit-detail-card" aria-labelledby="audit-security-title">'
+            + '<h3 class="ad-sec" id="audit-security-title"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Security &amp; Technical Headers</h3>'
+            + (!lastHeaders ? '<p class="aud-note">Security headers are readable only from an accessible live response; pasted HTML, CORS-blocked hosts, and relay fetches cannot expose them.</p>' : '')
+            + '<dl class="kv">' + securityRows() + '</dl>'
+            + '</section>'
+            + '</div>';
+
+        html += '<div class="wa-actions report-export">'
+            + '<span class="lbl">Website Audit export</span>'
+            + '<button class="btn btn-primary export-btn" id="csv-audit"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CSV</button>'
+            + '<button class="btn btn-secondary export-btn" id="sum-audit"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>'
+            + '</div>';
+        return html;
+    }
+
+    function valSection(label){
+        return ['Title tag', 'Meta description', 'Meta keywords', 'Canonical', 'H1 heading', 'H2 headings', 'Image ALT completeness'].includes(label) ? 'meta' : 'tech';
+    }
+    function valCard(it, i){
+        const warnRow = it.status === 'warn';
+        const pillCls = it.status === 'pass' ? 'pass' : it.status === 'warn' ? 'warn' : it.status === 'fail' ? 'fail' : 'info';
+        return '<div class="vc-row' + (warnRow ? ' sv-warn' : '') + '" data-i="' + i + '">'
+            + '<div class="vc-line"><div class="vc-main"><b>' + esc(it.label) + '</b>' + (it.reason ? '<span class="vc-r">' + esc(it.reason) + '</span>' : '') + '</div>'
+            + '<span class="vc-pill ' + pillCls + '">' + (it.status === 'info' ? 'N/A' : it.status.toUpperCase()) + '</span></div>'
+            + (it.fix && it.status !== 'pass' ? '<div class="vc-fix"><b>Recommended fix:</b> ' + esc(it.fix) + '</div>' : '')
+            + '</div>';
+    }
+    function chkItem(it){
+        return '<div class="chk-it"><span class="chk-bul">•</span><span><b>' + esc(it.label) + '</b>' + (it.reason ? '<span class="chk-r">' + esc(it.reason) + '</span>' : '') + '</span></div>';
+    }
+    function renderValidation(){
+        let html = renderValScore();
+        const scored = valChecks.filter(i => i.status !== 'info');
+        const pass = scored.filter(i => i.status === 'pass').length;
+        const warn = scored.filter(i => i.status === 'warn').length;
+        const krit = scored.filter(i => i.status === 'fail').length;
+        const na = valChecks.length - scored.length;
+        html += '<div class="val-pills">'
+            + '<span class="vp pass">' + pass + ' Passed</span>'
+            + '<span class="vp warn">' + warn + ' Warnings</span>'
+            + '<span class="vp fail">' + krit + ' Critical</span>'
+            + (na ? '<span class="vp info">' + na + ' Not checked</span>' : '')
+            + '</div>';
+        html += '<label style="display:flex;align-items:center;gap:.45rem;font-size:.85rem;font-weight:600;color:#374151;margin:0 0 .9rem;cursor:pointer">'
+            + '<input type="checkbox" id="wa-show-warn" checked style="width:auto"> Show all warnings'
+            + '</label>';
+
+        html += '<div class="val-grid">';
+        const groups = [
+            ['meta', 'Meta &amp; Content Directives', 'fa-quote-right'],
+            ['tech', 'Technical &amp; Social Graph', 'fa-share-nodes']
+        ];
+        groups.forEach(([id, name, ico]) => {
+            const items = valChecks.map((it, i) => ({ it, i })).filter(g => valSection(g.it.label) === id);
+            if (!items.length) return;
+            const p = items.filter(g => g.it.status === 'pass').length;
+            const w = items.filter(g => g.it.status === 'warn').length;
+            const f = items.filter(g => g.it.status === 'fail').length;
+            const n = items.length - p - w - f;
+            html += '<section class="val-card" aria-labelledby="val-sec-' + id + '-title">'
+                + '<h3 class="vc-t" id="val-sec-' + id + '-title"><i class="fa-solid ' + ico + '" aria-hidden="true"></i> ' + name
+                + '<span class="val-ct">' + p + ' pass · ' + w + ' warn · ' + f + ' fail' + (n ? ' · ' + n + ' n/a' : '') + '</span></h3>'
+                + '<div class="vc-rows">';
+            items.forEach(g => { html += valCard(g.it, g.i); });
+            html += '</div></section>';
+        });
+        html += '</div>';
+
+        html += '<section class="val-chksec" aria-labelledby="val-checklist-title">'
+            + '<h3 class="vc-t" id="val-checklist-title"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Validation Audit Checklist</h3>'
+            + '<div class="val-chk">'
+            + '<div class="chk-card pass"><h4 class="chk-ttl"><span class="chk-cnt">' + pass + '</span> Passed Checks</h4>'
+            + (pass ? '<div class="chk-list">' + scored.filter(i => i.status === 'pass').map(chkItem).join('') + '</div>' : '<p class="chk-empty">No passed checks.</p>')
+            + '</div>'
+            + '<div class="chk-card warn"><h4 class="chk-ttl"><span class="chk-cnt">' + warn + '</span> Recommendations</h4>'
+            + (warn ? '<div class="chk-list">' + scored.filter(i => i.status === 'warn').map(chkItem).join('') + '</div>' : '<p class="chk-empty">Nothing to recommend — every checked item validated.</p>')
+            + '</div>'
+            + '<div class="chk-card fail"><h4 class="chk-ttl"><span class="chk-cnt">' + krit + '</span> Critical Fixes</h4>'
+            + (krit ? '<div class="chk-list">' + scored.filter(i => i.status === 'fail').map(chkItem).join('') + '</div>' : '<p class="chk-empty">No critical errors found.</p>')
+            + '</div>'
+            + '</div>'
+            + '</section>';
+
+        html += '<div class="wa-actions report-export">'
+            + '<span class="lbl">SEO Validation export</span>'
+            + '<button class="btn btn-primary export-btn" id="csv-val"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CSV</button>'
+            + '<button class="btn btn-secondary export-btn" id="sum-val"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>'
+            + '</div>';
+        return html;
+    }
+
+    function renderBrokenLinks(){
+        const c = linkCounts(linkResults);
+        const verified = c.working + c.broken + c.redirect;
+        const pct = verified ? Math.round(c.working / verified * 100) : 0;
+        const needsReview = linkResults.filter(r => ['broken', 'blocked', 'redirect'].includes(r.status));
+        const internal = linkResults.filter(r => r.status === 'internal');
+        const verifiable = linkResults.filter(r => ['working', 'broken', 'redirect'].includes(r.status));
+        const renderLinkCards = (items, prefix) => items.map((r, i) => {
+            const searchText = (r.url + ' ' + (r.text || '') + ' ' + (r.note || '')).toLowerCase();
+            return '<article class="link-result" data-link-item data-status="' + r.status + '" data-search="' + esc(searchText) + '" hidden>'
+                + '<a class="link-result-url" href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer" title="' + esc(r.url) + '">' + esc(r.url) + '</a>'
+                + stBadge(r.status)
+                + '<div class="link-result-meta">'
+                + (r.text ? '<span class="link-result-anchor">“' + esc(r.text) + '”</span>' : '')
+                + (r.code ? '<span>HTTP ' + esc(String(r.code)) + '</span>' : '')
+                + (r.ms ? '<span>' + fmt.num(r.ms) + ' ms</span>' : '')
+                + (r.note ? '<span class="link-result-note">' + esc(r.note) + '</span>' : '')
+                + '</div></article>';
+        }).join('');
+
+        let html = '<div class="links-summary" aria-label="Link status summary">'
+            + '<span class="links-stat broken"><b>' + c.broken + '</b> broken</span>'
+            + '<span class="links-stat blocked"><b>' + c.blocked + '</b> unverified</span>'
+            + '<span class="links-stat redirect"><b>' + c.redirect + '</b> redirects</span>'
+            + '<span class="links-stat"><b>' + c.working + '</b> working</span>'
+            + '<span class="links-stat"><b>' + c.internal + '</b> internal</span>'
+            + '<span class="links-stat"><b>' + pct + '%</b> verified healthy</span>'
+            + '</div>';
+
+        if (!linkResults.length){
+            html += '<p class="output-text" style="margin-top:.8rem">No usable <code>&lt;a href&gt;</code> links found (mailto:, tel:, javascript:, # and data: links are skipped).</p>';
+        } else {
+            if (!verifiable.length){
+                html += '<div class="alert info" style="margin:.6rem 0">No external link could be network-verified (browser CORS / offline). Use search to review the extracted links manually.</div>';
+            } else if (c.blocked){
+                html += '<div class="alert info" style="margin:.6rem 0">' + c.blocked + ' link(s) could not be verified due to CORS, timeout, or the probe limit.</div>';
+            }
+            if (needsReview.length){
+                html += '<div class="links-controls">'
+                    + '<div class="links-filter" role="group" aria-label="Link result filter">'
+                    + '<button type="button" data-link-filter="review" aria-pressed="true">Needs review <span>(' + needsReview.length + ')</span></button>'
+                    + '<button type="button" data-link-filter="all" aria-pressed="false">All links <span>(' + linkResults.length + ')</span></button>'
+                    + '</div>'
+                    + '<input class="links-search" id="links-search" type="search" placeholder="Search URL or anchor text" aria-label="Search links">'
+                    + '</div>'
+                    + '<div class="links-results" id="links-results">' + renderLinkCards(linkResults, 'review') + '</div>'
+                    + '<button class="btn btn-secondary links-more" id="links-more" type="button" hidden>Show 12 more</button>';
+            } else {
+                html += '<p class="links-empty">All external links that could be checked are clear.</p>';
+            }
+            if (c.working){
+                html += '<details class="links-working"><summary>Working links <span class="links-working-count">' + c.working + '</span></summary>'
+                    + '<div class="links-controls"><input class="links-search" id="working-search" type="search" placeholder="Search working URLs" aria-label="Search working links"></div>'
+                    + '<div class="links-results" id="working-results">' + renderLinkCards(linkResults.filter(r => r.status === 'working'), 'working') + '</div>'
+                    + '<button class="btn btn-secondary links-more" id="working-more" type="button" hidden>Show 12 more</button></details>';
+            }
+            if (internal.length){
+                html += '<details class="links-working"><summary>Internal links <span class="links-working-count">' + internal.length + '</span></summary>'
+                    + '<div class="links-controls"><input class="links-search" id="internal-search" type="search" placeholder="Search internal URLs" aria-label="Search internal links"></div>'
+                    + '<div class="links-results" id="internal-results">' + renderLinkCards(internal, 'internal') + '</div>'
+                    + '<button class="btn btn-secondary links-more" id="internal-more" type="button" hidden>Show 12 more</button></details>';
+            }
+            html += '<div class="wa-actions report-export">'
+                + '<span class="lbl">Broken Links export</span>'
+                + '<button class="btn btn-primary export-btn" id="csv-links"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CSV</button>'
+                + '<button class="btn btn-secondary export-btn" id="sum-links"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>'
+                + '</div>';
+        }
+        return html;
+    }
+
+    function renderOverview(){
+        const c = linkCounts(linkResults);
+        const vPass = valChecks.filter(i => i.status === 'pass').length;
+        const vWarn = valChecks.filter(i => i.status === 'warn').length;
+        const vFail = valChecks.filter(i => i.status === 'fail').length;
+        const scored = valChecks.filter(i => i.status !== 'info');
+        const aPass = auditChecks.filter(i => i.status === 'pass').length;
+        const aWarn = auditChecks.filter(i => i.status === 'warn').length;
+        const aFail = auditChecks.filter(i => i.status === 'fail').length;
+
+        let html = '<div class="wa-actions overview-export">'
+            + '<span class="lbl">Full overview export</span>'
+            + '<button class="btn btn-primary export-btn" id="csv-overview"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CSV</button>'
+            + '<button class="btn btn-secondary export-btn" id="sum-overview"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>'
+            + '</div>';
+
+        html += renderScoreGauge();
+        html += '<div class="wa-overview-grid">';
+
+        html += '<div class="ov-card">'
+            + '<h3><i class="fa-solid fa-clipboard-list" style="color:#16a34a"></i> Website Audit (' + auditChecks.length + ')</h3>'
+            + '<div class="ov-scoreline"><strong>' + seoScore + '</strong><span>/ 100 · ' + grade(seoScore) + '</span></div>'
+            + '<div class="ov-metrics">'
+            + ovChip('pass', aPass) + ovChip('warn', aWarn) + ovChip('fail', aFail)
+            + '</div>';
+        if (tips.length){
+            html += '<ul class="ov-findings">';
+            tips.slice(0, 3).forEach(t => html += '<li>' + esc(t) + '</li>');
+            html += '</ul>';
+        }
+        html += '<div class="ov-card-action">' + golink('audit') + '</div></div>';
+
+        html += '<div class="ov-card">'
+            + '<h3><i class="fa-solid fa-circle-check" style="color:#0E8A6C"></i> SEO Validation (' + valChecks.length + ')</h3>'
+            + '<div class="ov-scoreline"><strong>' + valScore + '</strong><span>/ 100 · ' + valGrade(valScore).replace(/ \(.*\)/, '') + '</span></div>'
+            + '<div class="ov-metrics">'
+            + ovChip('pass', vPass) + ovChip('warn', vWarn) + ovChip('fail', vFail) + ovChip('not checked', valChecks.length - scored.length)
+            + '</div>';
+        const worst = valChecks.filter(i => i.status === 'fail');
+        if (worst.length){
+            html += '<ul class="ov-findings">';
+            worst.slice(0, 3).forEach(w => html += '<li><b>' + esc(w.label) + '</b> — ' + esc(w.reason) + '</li>');
+            html += '</ul>';
+        } else {
+            html += '<p class="ov-card-note">No failing items — every checked item validated.</p>';
+        }
+        html += '<div class="ov-card-action">' + golink('val') + '</div></div>';
+
+        html += '<div class="ov-card">'
+            + '<h3><i class="fa-solid fa-link" style="color:#1e40af"></i> Broken Links (' + linkResults.length + ')</h3>'
+            + '<div class="ov-metrics">'
+            + ovChip('working', c.working) + ovChip('broken', c.broken) + ovChip('redirects', c.redirect)
+            + ovChip('blocked', c.blocked) + ovChip('internal', c.internal)
+            + '</div>';
+        const broken = linkResults.filter(r => r.status === 'broken');
+        if (broken.length){
+            html += '<ul class="ov-findings">';
+            broken.slice(0, 3).forEach(b => html += '<li>' + esc(b.url) + (b.code ? ' <span style="color:var(--muted)">(HTTP ' + b.code + ')</span>' : '') + '</li>');
+            html += '</ul>';
+        } else {
+            html += '<p class="ov-card-note">No broken links in the checked set.</p>';
+        }
+        html += '<div class="ov-card-action">' + golink('links') + '</div></div>';
+
+        html += '<div class="ov-card">'
+            + '<h3><i class="fa-solid fa-bolt" style="color:#C77800"></i> Core Web Vitals</h3>';
+        if (vitals && vitals.overall != null){
+            const cc = vitals.overall >= 90 ? '#16a34a' : vitals.overall >= 50 ? '#d97706' : '#dc2626';
+            html += '<div class="ov-scoreline"><strong style="color:' + cc + '">' + vitals.overall + '</strong><span>/ 100 · ' + vitals.device + '</span></div>'
+                + '<div class="ov-metrics">'
+                + ovChip('LCP', vitals.lcp != null ? vitals.lcp + 's' : '—')
+                + ovChip('FID/INP', vitals.fid + 'ms')
+                + ovChip('CLS', vitals.cls)
+                + ovChip('TTFB', vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + 'ms' : '—')
+                + '</div>';
+            html += '<p class="ov-card-note">' + vitals.recs.length + ' recommended optimisation(s) · mobile &amp; desktop switchable in the report.</p>';
+        } else {
+            html += '<p class="ov-card-note">Performance analysis is computed on every run.</p>';
+        }
+        html += '<div class="ov-card-action">' + golink('vitals') + '</div></div></div>';
+
+        html += c.broken
+            ? '<div class="alert err" style="margin:.8rem 0">' + c.broken + ' broken link(s) found — open the Broken Links tab for the full list.</div>'
+            : '<div class="alert ok" style="margin:.8rem 0">No broken links detected in the checked set.</div>';
+        return html;
+    }
+
+    function tabBtn(id, label, ico, cls, count){
+        return '<button type="button" class="wa-tab" data-tab="' + id + '"><i class="' + ico + '" aria-hidden="true"></i> ' + label
+            + (count != null && count !== '' ? ' <span class="tab-badge ' + (cls || '') + '">' + count + '</span>' : '')
+            + '</button>';
+    }
+
+    function ovChip(label, value){
+        const statusClass = /^(pass|working)$/i.test(label) ? ' pass' : /^(warn|redirects?)$/i.test(label) ? ' warn' : /^(fail|broken)$/i.test(label) ? ' fail' : '';
+        return '<span class="ov-chip' + statusClass + '"><b>' + value + '</b><span>' + label + '</span></span>';
+    }
+    function golink(id){
+        return '<button type="button" class="gobtn btn btn-secondary ow-goto" data-goto="' + id + '">Open tab →</button>';
+    }
+
+    function buildReport(){
+        let r = 'WEBSITE AUDITOR & SEO VALIDATION REPORT\n';
+        r += '='.repeat(46) + '\n';
+        r += 'Date: ' + new Date().toISOString() + '\n';
+        r += 'Source: ' + srcLabel + '\n';
+        r += 'Audit score: ' + seoScore + '/100 (' + grade(seoScore) + ') · Validation score: ' + valScore + '/100\n\n';
+
+        r += '── WEBSITE AUDIT (16 weighted checks) ──\n';
+        auditChecks.forEach(c => {
+            r += '[' + c.status.toUpperCase() + '] ' + c.label + ' — ' + c.detail + '\n';
+        });
+        r += '\n── SEO VALIDATION ──\n';
+        valChecks.forEach(c => {
+            r += '[' + (c.status === 'info' ? 'NA' : c.status.toUpperCase()) + '] ' + c.label + ' — ' + c.reason
+                + (c.fix ? ' | Fix: ' + c.fix : '') + '\n';
+        });
+
+        const c = linkCounts(linkResults);
+        r += '\n── BROKEN LINK REPORT ──\n';
+        r += 'Total: ' + linkResults.length + ' · Working: ' + c.working + ' · Broken: ' + c.broken
+            + ' · Redirect: ' + c.redirect + ' · Blocked/CORS: ' + c.blocked + ' · Internal: ' + c.internal + '\n';
+        const broken = linkResults.filter(x => x.status === 'broken');
+        if (broken.length){
+            r += '\nBroken links:\n';
+            broken.slice(0, 30).forEach(b => r += '- ' + b.url + (b.code ? ' (HTTP ' + b.code + ')' : '') + '\n');
+        }
+        if (vitals){
+            r += '\n── CORE WEB VITALS (static-analysis estimates) ──\n';
+            r += 'Overall: ' + (vitals.overall == null ? 'N/A' : vitals.overall) + '/100 on ' + vitals.device
+                + ' · TTFB: ' + (vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + ' ms (measured)' : 'N/A')
+                + ' · FCP: ' + (vitals.fcp != null ? vitals.fcp + ' s' : 'N/A')
+                + ' · LCP: ' + (vitals.lcp != null ? vitals.lcp + ' s' : 'N/A')
+                + ' · FID/INP: ' + vitals.fid + ' ms · CLS: ' + vitals.cls + '\n';
+            vitals.recs.forEach((x, i) => r += (i + 1) + '. ' + x.title + ' — ' + x.desc + '\n');
+        }
+        return r;
+    }
+
+    function downloadCsv(){
+        let csv = 'anchor_text,url,status,http_code,response_time_ms,note\n';
+        linkResults.forEach(r => {
+            csv += [
+                '"' + String(r.text || '').replace(/"/g, '""') + '"',
+                '"' + String(r.url).replace(/"/g, '""') + '"',
+                r.status, r.code || '', r.ms || 0,
+                '"' + String(r.note || '').replace(/"/g, '""') + '"'
+            ].join(',') + '\n';
+        });
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'website-audit-links.csv');
+    }
+
+    function buildVitalsText(){
+        if (!vitals) return 'No Core Web Vitals data yet.';
+        const grade = vitals.overall == null ? 'N/A' : vitals.overall >= 90 ? 'Fast & Compliant' : vitals.overall >= 50 ? 'Needs Optimization' : 'Critical Lag';
+        let r = 'CORE WEB VITALS REPORT\n' + '='.repeat(46) + '\n';
+        r += 'Date: ' + vitals.timestamp + '\n';
+        r += 'Page: ' + vitals.url + ' (' + vitals.device + (vitals.relay ? ' · via relay' : '') + ')\n';
+        r += 'Overall: ' + (vitals.overall == null ? 'N/A' : vitals.overall) + '/100 (' + grade + ')\n';
+        r += 'HTTP: ' + (vitals.http != null ? vitals.http : 'N/A') + ' · Total load: ' + (vitals.total != null ? vitals.total + ' s' : 'N/A') + ' · HTML weight: ' + fmt.num(vitals.htmlKb, 1) + ' KB\n\n';
+        r += '── METRICS ──\n';
+        r += 'LCP: ' + (vitals.lcp != null ? vitals.lcp + ' s' : 'N/A') + ' (goal ≤ 2.5 s)\n';
+        r += 'FID/INP: ' + vitals.fid + ' ms (goal ≤ 100 ms)\n';
+        r += 'CLS: ' + vitals.cls + ' (goal ≤ 0.1)\n';
+        r += 'TTFB: ' + (vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + ' ms' : 'N/A') + ' (measured)\n';
+        r += 'FCP: ' + (vitals.fcp != null ? vitals.fcp + ' s' : 'N/A') + '\n';
+        r += '\n── RESOURCES ──\n';
+        r += 'Scripts: ' + vitals.resources.scripts + ' (≈' + Math.round(vitals.resources.inline) + ' KB inline, ' + vitals.resources.blocking + ' render-blocking) · Stylesheets: ' + vitals.resources.stylesheets + ' · Preloads: ' + vitals.resources.preloads + ' · Fonts: ' + vitals.resources.fonts + '\n';
+        r += 'Images: ' + vitals.resources.images + ' (' + vitals.resources.noDims + ' missing dimensions, ' + vitals.resources.lazy + ' lazy) · Iframes: ' + vitals.resources.iframes + '\n';
+        r += '\n── RECOMMENDATIONS ──\n';
+        vitals.recs.forEach((x, i) => r += (i + 1) + '. ' + x.title + ' — ' + x.desc + '\n');
+        r += '\nNote: LCP, FID/INP and CLS are static-analysis estimates; TTFB and load time are measured from the live fetch.\n';
+        return r;
+    }
+
+    function csvCell(v){ return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+
+    function downloadOverviewCsv(){
+        let csv = 'section,item,status,detail\n';
+        auditChecks.forEach(c => csv += 'WEBSITE AUDIT,' + csvCell(c.label) + ',' + csvCell(c.status) + ',' + csvCell(c.detail) + '\n');
+        valChecks.forEach(c => csv += 'SEO VALIDATION,' + csvCell(c.label) + ',' + csvCell(c.status === 'info' ? 'na' : c.status) + ',' + csvCell(c.reason + (c.fix ? ' | Fix: ' + c.fix : '')) + '\n');
+        linkResults.forEach(r => {
+            csv += 'BROKEN LINKS,' + csvCell(r.url) + ',' + csvCell(r.status) + ','
+                + csvCell((r.text ? 'Anchor: ' + r.text + ' ' : '') + (r.code ? 'HTTP ' + r.code + ' ' : '') + (r.ms ? r.ms + ' ms ' : '') + (r.note || '')) + '\n';
+        });
+        if (vitals){
+            const vRow = (name, value, status, detail) => csv += 'CORE WEB VITALS,' + csvCell(name) + ',' + csvCell(status) + ',' + csvCell(value + (detail ? ' | ' + detail : '')) + '\n';
+            vRow('Overall score (' + vitals.device + ')', (vitals.overall == null ? 'N/A' : vitals.overall + '/100'), (vitals.overall == null ? '' : vitals.overall >= 90 ? 'Fast & Compliant' : vitals.overall >= 50 ? 'Needs Optimization' : 'Critical Lag'), '');
+            vRow('LCP', vitals.lcp != null ? vitals.lcp + 's' : 'N/A', vitalStatus(vitals.lcp, 2.5, 4.0).label, 'goal ≤2.5s');
+            vRow('FID/INP', vitals.fid + 'ms', vitalStatus(vitals.fid, 100, 300).label, 'goal ≤100ms');
+            vRow('CLS', vitals.cls, vitalStatus(vitals.cls, 0.1, 0.25).label, 'goal ≤0.1');
+            vRow('TTFB', vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + 'ms' : 'N/A', vitalStatus(vitals.ttfb, 0.8, 1.8).label, 'measured');
+            vRow('FCP', vitals.fcp != null ? vitals.fcp + 's' : 'N/A', vitalStatus(vitals.fcp, 1.8, 3.0).label, 'goal ≤1.8s');
+            vRow('Resources', 'scripts=' + vitals.resources.scripts + ' inline=~' + Math.round(vitals.resources.inline) + 'KB blocking=' + vitals.resources.blocking + ' css=' + vitals.resources.stylesheets + ' fonts=' + vitals.resources.fonts, '', 'images=' + vitals.resources.images + ' no_dims=' + vitals.resources.noDims + ' lazy=' + vitals.resources.lazy + ' iframes=' + vitals.resources.iframes);
+            vitals.recs.forEach((r, i) => vRow('Recommendation ' + (i + 1), r.title, '', r.desc));
+        }
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'website-auditor-full-overview.csv');
+    }
+
+    function downloadAuditCsv(){
+        let csv = 'check,status,detail\n';
+        auditChecks.forEach(c => csv += csvCell(c.label) + ',' + csvCell(c.status) + ',' + csvCell(c.detail) + '\n');
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'website-audit-checks.csv');
+    }
+
+    function downloadValCsv(){
+        let csv = 'check,status,reason,recommended_fix\n';
+        valChecks.forEach(c => csv += csvCell(c.label) + ',' + csvCell(c.status === 'info' ? 'na' : c.status) + ',' + csvCell(c.reason) + ',' + csvCell(c.fix || '') + '\n');
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'seo-validation.csv');
+    }
+
+    function downloadVitalsCsv(){
+        if (!vitals) return;
+        let csv = 'metric,value,status\n';
+        const m = (k, v, s) => csv += csvCell(k) + ',' + csvCell(v) + ',' + csvCell(s) + '\n';
+        m('Overall score (' + vitals.device + ')', vitals.overall == null ? 'N/A' : vitals.overall + '/100', vitals.overall == null ? '' : vitals.overall >= 90 ? 'Fast & Compliant' : vitals.overall >= 50 ? 'Needs Optimization' : 'Critical Lag');
+        m('LCP', vitals.lcp != null ? vitals.lcp + 's' : 'N/A', vitalStatus(vitals.lcp, 2.5, 4.0).label);
+        m('FID/INP', vitals.fid + 'ms', vitalStatus(vitals.fid, 100, 300).label);
+        m('CLS', vitals.cls, vitalStatus(vitals.cls, 0.1, 0.25).label);
+        m('TTFB', vitals.ttfb != null ? (vitals.ttfb * 1000 | 0) + 'ms' : 'N/A', vitalStatus(vitals.ttfb, 0.8, 1.8).label);
+        m('FCP', vitals.fcp != null ? vitals.fcp + 's' : 'N/A', vitalStatus(vitals.fcp, 1.8, 3.0).label);
+        m('Total load', vitals.total != null ? vitals.total + 's' : 'N/A', '');
+        m('HTML weight', fmt.num(vitals.htmlKb, 1) + ' KB', '');
+        m('Scripts', vitals.resources.scripts + ' (~' + Math.round(vitals.resources.inline) + ' KB inline, ' + vitals.resources.blocking + ' blocking)', '');
+        m('Stylesheets', vitals.resources.stylesheets, '');
+        m('Images', vitals.resources.images + ' (' + vitals.resources.noDims + ' no dims, ' + vitals.resources.lazy + ' lazy)', '');
+        m('Iframes', vitals.resources.iframes, '');
+        m('External fonts', vitals.resources.fonts, '');
+        vitals.recs.forEach((r, i) => m('Recommendation ' + (i + 1), r.title + ' — ' + r.desc, ''));
+        downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'core-web-vitals.csv');
+    }
+
+    function buildAuditText(){
+        let r = 'WEBSITE AUDIT REPORT (' + auditChecks.length + ' weighted checks)\n' + '='.repeat(46) + '\n';
+        r += 'Date: ' + new Date().toISOString() + '\nSource: ' + srcLabel + '\nScore: ' + seoScore + '/100 (' + grade(seoScore) + ')\n';
+        r += 'Response: ' + (perf && perf.ttfb != null ? Math.round(perf.ttfb) + ' ms' : '—')
+            + ' · HTML size: ' + (lastHtml ? (lastHtml.length / 1024).toFixed(1) + ' KB' : '—')
+            + ' · HTTP status: ' + (fetchedStatus ? fetchedStatus.status : '—') + '\n\n';
+        auditChecks.forEach(c => r += '[' + c.status.toUpperCase() + '] ' + c.label + ' — ' + c.detail + '\n');
+        if (tips.length){
+            r += '\nImprovement tips:\n';
+            tips.forEach(t => r += '- ' + t + '\n');
+        }
+        return r;
+    }
+
+    function buildValText(){
+        let r = 'SEO VALIDATION REPORT (' + valChecks.length + ' items)\n' + '='.repeat(46) + '\n';
+        r += 'Date: ' + new Date().toISOString() + '\nSource: ' + srcLabel + '\nScore: ' + valScore + '/100\n\n';
+        valChecks.forEach(c => {
+            r += '[' + (c.status === 'info' ? 'NA' : c.status.toUpperCase()) + '] ' + c.label + ' — ' + c.reason + (c.fix ? ' | Fix: ' + c.fix : '') + '\n';
+        });
+        return r;
+    }
+
+    function buildLinksText(){
+        const c = linkCounts(linkResults);
+        let r = 'BROKEN LINK REPORT\n' + '='.repeat(46) + '\n';
+        r += 'Date: ' + new Date().toISOString() + '\nSource: ' + srcLabel + '\n';
+        r += 'Links: ' + linkResults.length + ' total · Working: ' + c.working + ' · Broken: ' + c.broken
+            + ' · Redirect: ' + c.redirect + ' · Blocked/CORS: ' + c.blocked + ' · Internal: ' + c.internal + '\n\n';
+        linkResults.slice(0, 200).forEach((b, i) => {
+            r += (i + 1) + '. ' + b.url + ' → ' + b.status.toUpperCase() + (b.code ? ' (HTTP ' + b.code + ')' : '') + (b.ms ? ' ' + b.ms + ' ms' : '') + '\n';
+        });
+        return r;
+    }
+
+    function render(){
+        let html = '<nav class="wa-tabs" aria-label="Audit report sections">'
+            + tabBtn('overview', 'Overview', 'fa-solid fa-gauge-high', null, '')
+            + tabBtn('audit', 'Website Audit', 'fa-solid fa-magnifying-glass-chart', 'green', auditChecks.length)
+            + tabBtn('val', 'SEO Validation', 'fa-solid fa-circle-check', 'teal', valChecks.length)
+            + tabBtn('links', 'Broken Links', 'fa-solid fa-link', 'blue', linkResults.length)
+            + tabBtn('vitals', 'Core Web Vitals', 'fa-solid fa-bolt')
+            + '</nav>';
+
+        html += '<div class="wa-panel" data-panel="overview">' + renderOverview() + '</div>';
+        html += '<div class="wa-panel" data-panel="audit" hidden>' + renderSiteAudit() + '</div>';
+        html += '<div class="wa-panel" data-panel="val" hidden>' + renderValidation() + '</div>';
+        html += '<div class="wa-panel" data-panel="links" hidden>' + renderBrokenLinks() + '</div>';
+        html += '<div class="wa-panel" data-panel="vitals" hidden>' + renderCoreWebVitals() + '</div>';
+
+        $('#wa-output').innerHTML = html;
+
+        const showWarn = $('#wa-show-warn');
+        if (showWarn) showWarn.addEventListener('change', () => {
+            $$('.sv-warn').forEach(r => r.style.display = showWarn.checked ? '' : 'none');
+        });
+
+        const selectTab = (name) => {
+            $$('.wa-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            $$('.wa-panel').forEach(p => { p.hidden = p.dataset.panel !== name; });
+        };
+        $$('.wa-tab').forEach(btn => btn.addEventListener('click', () => selectTab(btn.dataset.tab)));
+        const first = $('.wa-tab');
+        if (first) selectTab(first.dataset.tab);
+
+        const outEl = $('#wa-output');
+        if (!outEl._waDelegated){
+            outEl._waDelegated = true;
+            outEl.addEventListener('click', (ev) => {
+                const dev = ev.target.closest('.cwv-dev');
+                if (dev){
+                    cwvDevice = dev.getAttribute('data-dev');
+                    if (lastDoc) computeVitals(lastDoc, lastHtml, lastData);
+                    const panel = $('[data-panel="vitals"]');
+                    if (panel) panel.innerHTML = renderCoreWebVitals();
+                    bind('#csv-vitals', downloadVitalsCsv);
+                    bind('#sum-vitals', e => copyText(buildVitalsText(), e.currentTarget));
+                    selectTab('vitals');
+                    return;
+                }
+                const go = ev.target.closest('.ow-goto');
+                if (go){ selectTab(go.getAttribute('data-goto')); }
+            });
+        }
+
+        const bind = (id, fn) => { const el = $(id); if (el) el.addEventListener('click', fn); };
+        bind('#csv-overview', downloadOverviewCsv);
+        bind('#sum-overview', e => copyText(lastReport, e.currentTarget));
+        bind('#csv-audit', downloadAuditCsv);
+        bind('#sum-audit', e => copyText(buildAuditText(), e.currentTarget));
+        bind('#csv-val', downloadValCsv);
+        bind('#sum-val', e => copyText(buildValText(), e.currentTarget));
+        bind('#csv-links', downloadCsv);
+        bind('#sum-links', e => copyText(buildLinksText(), e.currentTarget));
+        const setupLinkList = (searchId, resultsId, moreId, pageSize) => {
+            const search = $(searchId);
+            const list = $(resultsId);
+            const more = $(moreId);
+            if (!list) return;
+            let shown = pageSize;
+            const update = () => {
+                const query = search ? search.value.trim().toLowerCase() : '';
+                const items = Array.from(list.querySelectorAll('[data-link-item]'));
+                const matches = items.filter(item => !query || item.dataset.search.includes(query));
+                items.forEach(item => { item.hidden = true; });
+                matches.slice(0, shown).forEach(item => { item.hidden = false; });
+                if (more){
+                    const remaining = matches.length - shown;
+                    more.hidden = remaining <= 0;
+                    more.textContent = 'Show ' + Math.min(pageSize, remaining) + ' more';
+                }
+            };
+            if (search) search.addEventListener('input', () => { shown = pageSize; update(); });
+            if (more) more.addEventListener('click', () => { shown += pageSize; update(); });
+            update();
+        };
+        setupLinkList('#working-search', '#working-results', '#working-more', 5);
+        setupLinkList('#internal-search', '#internal-results', '#internal-more', 5);
+        const linkFilters = $$('[data-link-filter]');
+        const mainLinkSearch = $('#links-search');
+        const mainLinkList = $('#links-results');
+        const mainLinkMore = $('#links-more');
+        if (mainLinkList){
+            let mode = 'review';
+            let shown = 5;
+            const updateMainLinks = () => {
+                const query = mainLinkSearch ? mainLinkSearch.value.trim().toLowerCase() : '';
+                const items = Array.from(mainLinkList.querySelectorAll('[data-link-item]'));
+                const matches = items.filter(item => {
+                    const statusMatch = mode === 'all' || ['broken', 'blocked', 'redirect'].includes(item.dataset.status);
+                    return statusMatch && (!query || item.dataset.search.includes(query));
+                });
+                items.forEach(item => { item.hidden = true; });
+                matches.slice(0, shown).forEach(item => { item.hidden = false; });
+                if (mainLinkMore){
+                    const remaining = matches.length - shown;
+                    mainLinkMore.hidden = remaining <= 0;
+                    mainLinkMore.textContent = 'Show ' + Math.min(12, remaining) + ' more';
+                }
+            };
+            if (mainLinkSearch) mainLinkSearch.addEventListener('input', () => { shown = 5; updateMainLinks(); });
+            if (mainLinkMore) mainLinkMore.addEventListener('click', () => { shown += 12; updateMainLinks(); });
+            linkFilters.forEach(button => button.addEventListener('click', () => {
+                mode = button.dataset.linkFilter;
+                shown = 5;
+                linkFilters.forEach(filterButton => filterButton.setAttribute('aria-pressed', String(filterButton === button)));
+                if (mainLinkSearch) mainLinkSearch.value = '';
+                updateMainLinks();
+            }));
+            updateMainLinks();
+        }
+        bind('#csv-vitals', downloadVitalsCsv);
+        bind('#sum-vitals', e => copyText(buildVitalsText(), e.currentTarget));
+    }
+
+    /* ═══════════ orchestrator ═══════════ */
+    async function doRun(){
         const data = await getSource();
         if (!data) return;
+        lastHeaders = null;
         const btn = $('#wa-audit');
         btn.disabled = true;
         $('#wa-notice').classList.add('hidden');
-        $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)" id="wa-progress">⏳ Fetching ' + esc(data.url) + ' (auto-retries through a public CORS relay if direct is blocked)…</p>';
+        $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ ' + (data.url && !data.html ? 'Fetching ' + esc(data.url) + ' (auto-retries through a public CORS relay if direct is blocked)…' : 'Auditing pasted HTML…') + '</p>';
 
-        try {
-            data.html = await fetchUrl(data.url);
-        } catch(e){
-            $('#wa-progress').innerHTML = '';
-            $('#wa-notice').textContent = '⚠️ Could not read ' + data.url + ' — your browser blocks cross-origin reads (CORS) and the relay services didn\u2019t return the page either. Some sites block scraping entirely.';
-            $('#wa-notice').classList.remove('hidden');
-            $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(data.url) + ' automatically.</p>';
+        if (data.url && !data.html){
+            try {
+                const r = await fetchUrl(data.url);
+                fetchedStatus = r;
+                lastHeaders = r.headers || null;
+                perf = { ttfb: r.ttfb, total: r.total, viaRelay: !!r.viaRelay };
+                data.html = r.text;
+            } catch(e){
+                fetchedStatus = null;
+                perf = { ttfb: null, total: null, viaRelay: false };
+                $('#wa-notice').textContent = '⚠️ Could not read ' + data.url + ' — your browser blocks cross-origin reads (CORS) and the relay services didn’t return the page either. Paste the page’s raw HTML below instead — the audit and validation still run locally, and links are extracted but not network-probed.';
+                $('#wa-notice').classList.remove('hidden');
+                $('#wa-html').focus();
+                $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not fetch ' + esc(data.url) + ' automatically — please paste raw HTML and re-run.</p>';
+                btn.disabled = false;
+                return;
+            }
+        }
+        if (!data.html || !data.html.trim()){
             btn.disabled = false;
+            $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Nothing to audit.</p>';
             return;
         }
-        if (!data.html || !data.html.trim()){ btn.disabled = false; $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Nothing to audit.</p>'; return; }
-        runAudit(data, data.html);
+
+        const doc = parseHtml(data.html);
+        if (!doc){
+            btn.disabled = false;
+            $('#wa-output').innerHTML = '<p class="output-text" style="color:#b91c1c">⚠ Could not parse the HTML as a document.</p>';
+            return;
+        }
+
+        srcLabel = data.url ? data.url + (fetchedStatus ? ' (fetched live)' : '') : 'Pasted HTML';
+        lastDoc = doc;
+        lastHtml = data.html;
+        lastData = data;
+
+        computeAudit(doc, data.html, data);
+        await computeValidation(doc, data, !!fetchedStatus && !!data.url);
+        computeVitals(doc, data.html, data);
+
+        $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ Audit done (score ' + seoScore + '/100). Checking links… 0/' + MAX_CHECK + '</p>';
+        linkResults = await runLinks(doc, data.url, (done, total) => {
+            $('#wa-output').innerHTML = '<p class="output-text" style="color:var(--muted)">⏳ Audit done (score ' + seoScore + '/100). Checking links… ' + done + '/' + total + '</p>';
+        });
+
+        lastReport = buildReport();
+        render();
+
+        const c = linkCounts(linkResults);
+        toast(c.broken ? seoScore + '/100 · ' + c.broken + ' broken link(s) found' : 'Audit complete — score ' + seoScore + '/100');
         btn.disabled = false;
     }
 
-    $('#wa-audit').addEventListener('click', doAudit);
-    $('#wa-url').addEventListener('keydown', e => { if (e.key === 'Enter') doAudit(); });
+    $('#wa-audit').addEventListener('click', doRun);
+    $('#wa-url').addEventListener('keydown', e => { if (e.key === 'Enter') doRun(); });
 
     const KEY = 'website-auditor';
     window.ToolsApp.toolPageInit(KEY);

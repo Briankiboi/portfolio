@@ -47,21 +47,6 @@ window.TOOL_CATALOG = [
     "tick_n": 4
   },
   {
-    "key": "business-name-generator",
-    "name": "Business Name Generator",
-    "category": "business",
-    "category_label": "Business",
-    "icon": "fa-solid fa-lightbulb",
-    "grad": "from-amber-500 to-orange-600",
-    "desc": "Generate catchy business name ideas.",
-    "usage_count": 70,
-    "url": "tools/business-name-generator.html",
-    "url_name": "tools:business-name-generator",
-    "is_available": true,
-    "is_clone": true,
-    "tick_n": 5
-  },
-  {
     "key": "website-auditor",
     "name": "Website Auditor",
     "category": "seo",
@@ -92,21 +77,6 @@ window.TOOL_CATALOG = [
     "tick_n": 7
   },
   {
-    "key": "broken-link-checker",
-    "name": "Broken Link Checker",
-    "category": "seo",
-    "category_label": "SEO & Search",
-    "icon": "fa-solid fa-unlink",
-    "grad": "from-emerald-600 to-teal-600",
-    "desc": "Find broken links on your webpage.",
-    "usage_count": 46,
-    "url": "tools/broken-link-checker.html",
-    "url_name": "tools:broken-link-checker",
-    "is_available": true,
-    "is_clone": true,
-    "tick_n": 8
-  },
-  {
     "key": "ping-test",
     "name": "Ping Test",
     "category": "network",
@@ -120,36 +90,6 @@ window.TOOL_CATALOG = [
     "is_available": true,
     "is_clone": true,
     "tick_n": 9
-  },
-  {
-    "key": "seo-validation",
-    "name": "SEO Validation",
-    "category": "seo",
-    "category_label": "SEO & Search",
-    "icon": "fa-solid fa-circle-check",
-    "grad": "from-emerald-600 to-teal-600",
-    "desc": "Validate on-page SEO elements instantly.",
-    "usage_count": 30,
-    "url": "tools/seo-validation.html",
-    "url_name": "tools:seo-validation",
-    "is_available": true,
-    "is_clone": true,
-    "tick_n": 10
-  },
-  {
-    "key": "qr-scanner",
-    "name": "QR & Barcode Scanner",
-    "category": "business",
-    "category_label": "Business",
-    "icon": "fa-solid fa-camera-retro",
-    "grad": "from-amber-500 to-orange-600",
-    "desc": "Scan QR codes and barcodes with your camera.",
-    "usage_count": 7,
-    "url": "tools/qr-scanner.html",
-    "url_name": "tools:qr-scanner",
-    "is_available": true,
-    "is_clone": true,
-    "tick_n": 17
   },
   {
     "key": "receipt-generator",
