@@ -401,12 +401,6 @@ const checks = [];
         });
         htmlOut += '</div>';
 
-        if (tips.length){
-            htmlOut += '<h2 style="margin-top:1.4rem">Improvement tips</h2><ul style="margin-left:1.2rem;font-size:.88rem;line-height:1.7;color:#374151">';
-            tips.forEach(t => htmlOut += '<li>' + safeDetail(t) + '</li>');
-            htmlOut += '</ul>';
-        }
-
         htmlOut += '<div style="margin-top:1.4rem;display:flex;gap:.5rem;flex-wrap:wrap">'
             + '<button class="btn btn-secondary" id="wa-export" style="font-size:.82rem;padding:.45rem .9rem">' + CSV_ICON + ' Download Report (.csv)</button>'
             + '</div>';
