@@ -25,7 +25,7 @@ Every page is a self-contained HTML tool with its own clear **How it works / Pri
 | [DNS Lookup](tools/dns-lookup.html) | A / AAAA / CNAME / MX / NS / TXT / SOA / ANY via Google DoH |
 | [IP Geolocation & Map Finder](tools/ip-geolocation.html) | IP/domain → location with map pin + precise device GPS |
 | [Ping Test](tools/ping-test.html) | HTTP round-trip, min/avg/max/jitter, packet loss & verdict |
-| [Internet Speed Test](tools/speed-test.html) | Download/upload speed & latency measured via parallel streams |
+| [URL Shortener](tools/url-shortener.html) | Local short links (`?go=code`) stored in browser history |
 
 ### SEO & Analysis
 | Tool | What it does |
@@ -34,15 +34,11 @@ Every page is a self-contained HTML tool with its own clear **How it works / Pri
 | [SEO Validation](tools/seo-validation.html) | Pass/Warn/Fail checks for title, meta, OG, JSON-LD, schema, alt… |
 | [Broken Link Checker](tools/broken-link-checker.html) | Crawl links in any page, classify Working/Redirect/Broken/Blocked |
 
-### Developer & Design
-| Tool | What it does |
-| --- | --- |
-| [Color Picker & Converter](tools/color-picker.html) | Pick or search colours, compare a pair with website preview, copy HEX / RGB / HSL codes |
-
 ### Business & Everyday
 | Tool | What it does |
 | --- | --- |
 | [Currency Converter](tools/currency-converter.html) | 40+ currencies, live daily rates, offline cache & swap |
+| [Document Converter](tools/document-converter.html) | DOCX→PDF, fully on-device (mammoth + html2pdf), drag & drop |
 | [QR Code Generator](tools/qr-generator.html) | Text/URL/phone into PNG or SVG, colors + error correction |
 | [QR & Barcode Scanner](tools/qr-scanner.html) | Decode from camera or image, fully on-device |
 | [Business Name Generator](tools/business-name-generator.html) | Industry + style combos with saved favorites |
