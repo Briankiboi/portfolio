@@ -21,35 +21,40 @@
     <link rel="stylesheet" href="../assets/css/site-header.css">
     <style>
         /* ── Currency Converter UI · keypad + split ──────────────── */
-        .calc-panel,
-        .split-panel { border: 1px solid #E7E2D8; border-radius: 20px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF7EE 100%); padding: 1.1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 1px 2px rgba(31,36,48,.04), 0 14px 34px -18px rgba(31,36,48,.28); }
-        .calc-panel { display: flex; flex-direction: column; gap: .8rem; }
-        .split-panel { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.1rem; }
+        .split-panel { border: 1px solid #E7E2D8; border-radius: 20px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF7EE 100%); padding: 1.1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 1px 2px rgba(31,36,48,.04), 0 14px 34px -18px rgba(31,36,48,.28); display: flex; flex-direction: column; gap: .6rem; margin-top: 1.1rem; }
+        .calc-panel { display: flex; flex-direction: column; gap: 1.05rem; background: #FFFFFF; border: 1px solid #E2EAF6; border-radius: 24px; padding: 1.15rem; box-shadow: inset 0 1px 0 #FFFFFF, 0 24px 48px -30px rgba(20,36,67,.4); }
 
         .calc-head { display: flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #1F2430; margin: 0; }
-        .calc-panel .nl-ico,
-        .split-panel .nl-ico { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; font-size: .8rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05), 0 3px 6px -3px rgba(31,36,48,.25); }
-        .calc-panel .nl-ico { background: linear-gradient(160deg, #D9F3E8 0%, #BFEBD9 100%); border: 1px solid #A8DFC9; }
-        .split-panel .nl-ico { background: linear-gradient(160deg, #FFF3D6 0%, #FFE6AD 100%); border: 1px solid #F0D488; }
+        .split-panel .nl-ico { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; font-size: .8rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05), 0 3px 6px -3px rgba(31,36,48,.25); background: linear-gradient(160deg, #FFF3D6 0%, #FFE6AD 100%); border: 1px solid #F0D488; }
+        .calc-panel .calc-head { text-transform: none; letter-spacing: 0; gap: .7rem; }
+        .calc-head-ico { width: 44px; height: 44px; flex: none; border-radius: 14px; display: grid; place-items: center; color: #fff; font-size: 1.15rem; background: linear-gradient(160deg, #3B82F6 0%, #1E40AF 100%); box-shadow: 0 12px 22px -12px rgba(30,64,175,.9); }
+        .calc-head-text { display: flex; flex-direction: column; line-height: 1.15; }
+        .calc-head-title { font-size: clamp(1.3rem, 3vw, 1.7rem); font-weight: 800; color: #142443; letter-spacing: -.01em; }
+        .calc-head-sub { font-size: .8rem; font-weight: 600; color: #7183A3; }
 
-        .ck-display { position: relative; overflow: hidden; background: linear-gradient(160deg, #101A33 0%, #1D2B52 55%, #16223F 100%); color: #F8FAFC; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: .95rem 1.15rem .9rem; text-align: right; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 14px 26px -14px rgba(11,18,32,.55); }
-        .ck-display::after { content: ""; position: absolute; top: -40%; right: -20%; width: 60%; height: 130%; background: radial-gradient(circle, rgba(96,165,250,.22) 0%, transparent 70%); pointer-events: none; }
-        .ck-expr { position: relative; font-size: .76rem; color: #9FB0CF; min-height: 1.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .03em; }
-        .ck-result { position: relative; font-size: 2.3rem; font-weight: 800; line-height: 1.2; color: #FFFFFF; text-shadow: 0 2px 16px rgba(156,219,255,.28); word-break: break-all; font-variant-numeric: tabular-nums; }
+        .cc-method { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .02em; color: #64748B; background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 10px; padding: .35rem .6rem; margin: 0 0 .45rem; }
+        .cc-method:last-of-type { margin-bottom: .7rem; }
+        #cc-eq > #cc-eq-val { margin-top: 0; }
 
-        .ck-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
-        .ck-btn { height: 54px; border: 1px solid rgba(15,23,42,.06); border-radius: 15px; font-size: 1.2rem; font-weight: 700; letter-spacing: .01em; cursor: pointer; transition: transform .08s ease, filter .15s ease, box-shadow .15s ease, background .15s ease; color: #0F172A; font-family: inherit; }
-        .ck-btn:active { transform: scale(.93); }
-        .ck-digit { background: linear-gradient(180deg, #FFFFFF 0%, #F2F5F9 100%); box-shadow: 0 4px 10px -5px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.9); }
-        .ck-digit:hover { filter: brightness(.98); box-shadow: 0 6px 14px -6px rgba(15,23,42,.22); }
-        .ck-fn { background: linear-gradient(180deg, #E6EAF2 0%, #D4DBE6 100%); color: #3A4658; font-size: 1rem; box-shadow: 0 4px 10px -5px rgba(15,23,42,.18); }
-        .ck-fn:hover { filter: brightness(.98); }
-        .ck-ac { background: linear-gradient(165deg, #FF6B6B 0%, #E6354F 100%); color: #fff; border-color: rgba(190,18,60,.35); box-shadow: 0 8px 18px -8px rgba(225,53,79,.6); }
-        .ck-ac:hover { filter: brightness(1.06); }
-        .ck-op { background: linear-gradient(165deg, #12B981 0%, #0E7A5F 100%); color: #fff; border-color: rgba(6,95,70,.4); box-shadow: 0 8px 18px -9px rgba(14,138,108,.65); }
-        .ck-op:hover { filter: brightness(1.06); }
-        .ck-eq { background: linear-gradient(165deg, #FFC23D 0%, #F59E0B 100%); color: #422006; border-color: rgba(194,120,3,.45); box-shadow: 0 8px 20px -9px rgba(245,158,11,.75); }
-        .ck-eq:hover { filter: brightness(1.05); }
+        .ck-display { position: relative; overflow: hidden; background: linear-gradient(160deg, #1D2D4D 0%, #0B1630 100%); color: #F6F9FF; border: 1px solid rgba(255,255,255,.06); border-radius: 26px; padding: 1.15rem 1.3rem 1rem; text-align: right; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 18px 34px -20px rgba(11,22,48,.85); }
+        .ck-display::after { content: ""; position: absolute; top: -45%; right: -15%; width: 55%; height: 130%; background: radial-gradient(circle, rgba(96,165,250,.18) 0%, transparent 70%); pointer-events: none; }
+        .ck-expr { position: relative; font-size: .78rem; color: #93A4C6; min-height: 1.1em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .03em; }
+        .ck-result { position: relative; font-size: clamp(2rem, 6vw, 2.6rem); font-weight: 800; line-height: 1.15; color: #FFFFFF; text-shadow: 0 2px 16px rgba(156,219,255,.22); word-break: break-all; font-variant-numeric: tabular-nums; }
+
+        .ck-keys { display: flex; flex-direction: column; gap: .55rem; }
+        .ck-top { display: grid; grid-template-columns: repeat(5, 1fr); gap: .55rem; }
+        .ck-numpad { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; }
+        .ck-btn { height: 58px; border: 1px solid #DCE6F5; border-radius: 18px; font-size: 1.25rem; font-weight: 700; letter-spacing: .01em; cursor: pointer; transition: transform .08s ease, box-shadow .15s ease, filter .15s ease; color: #142443; font-family: inherit; }
+        .ck-btn:hover { transform: translateY(-1px); }
+        .ck-btn:active { transform: scale(.94); }
+        .ck-btn:focus-visible { outline: 3px solid rgba(32,201,151,.35); outline-offset: 2px; }
+        .ck-digit { background: linear-gradient(180deg, #FFFFFF 0%, #F0F4FC 100%); box-shadow: 0 5px 12px -7px rgba(20,36,67,.3), inset 0 1px 0 #FFFFFF; }
+        .ck-digit:hover { box-shadow: 0 8px 16px -8px rgba(20,36,67,.35); }
+        .ck-fn { background: linear-gradient(180deg, #E9EFF9 0%, #DCE5F4 100%); color: #43547A; font-size: 1.05rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
+        .ck-op { background: linear-gradient(165deg, #20C997 0%, #008F78 100%); color: #fff; border-color: transparent; box-shadow: 0 8px 18px -9px rgba(0,143,120,.7); }
+        .ck-eq { background: linear-gradient(165deg, #FFBE32 0%, #FF8616 100%); color: #fff; border-color: transparent; box-shadow: 0 8px 20px -9px rgba(255,134,22,.8); }
+        .ck-clear { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; line-height: 1; font-size: 1.05rem; background: linear-gradient(165deg, #FF6678 0%, #F42F55 100%); color: #fff; border-color: transparent; box-shadow: 0 8px 18px -9px rgba(244,47,85,.7); }
+        .ck-clear small { font-size: .52rem; font-weight: 700; letter-spacing: .05em; opacity: .92; }
         .ck-zero { grid-column: span 2; }
 
         .ck-total { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-top: 1px dashed #E4DCCB; border-bottom: 1px dashed #E4DCCB; padding: .55rem 0 .6rem; }
@@ -106,8 +111,6 @@
         body.tool-page #cc-convert:hover,
         body.tool-page #ck-convert-total:hover { background: linear-gradient(165deg, #FFD23F 0%, #FFB300 100%); transform: translateY(-2px); box-shadow: 0 10px 24px -8px rgba(224,161,0,.65); }
 
-        body.tool-page #cc-copy { background: linear-gradient(165deg, #0E8A6C 0%, #0B6F56 100%); color: #fff; border-radius: 11px; font-weight: 800; border: 1px solid #0B6F56; box-shadow: 0 6px 14px -7px rgba(11,111,86,.55); }
-        body.tool-page #cc-copy:hover { filter: brightness(1.08); transform: translateY(-2px); }
 
         body.tool-page #cc-swap { background: #fff; border: 1.5px solid #0E8A6C; color: #0B6F56; border-radius: 10px; font-weight: 800; font-size: 1.05rem; box-shadow: 0 4px 10px -6px rgba(31,36,48,.2); }
         body.tool-page #cc-swap:hover { background: #E7F6F1; border-color: #0B6F56; color: #0B6F56; transform: translateY(-1px); }
@@ -124,7 +127,19 @@
 
         .calc-note { margin-top: 1rem; font-size: .76rem; color: #5A6472; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: .6rem .75rem; line-height: 1.55; }
 
-        @media (max-width: 460px) { .ck-btn { height: 50px; } .ck-result { font-size: 1.9rem; } }
+        @media (max-width: 560px) { .calc-panel { padding: .85rem; } .ck-keys { gap: .45rem; } .ck-btn { height: 52px; border-radius: 15px; font-size: 1.1rem; } }
+        @media (max-width: 380px) { .ck-btn { height: 46px; } .calc-head-ico { width: 38px; height: 38px; } }
+
+        /* rate line + timezone chips */
+        .cc-rate-line { font-size: .85rem; color: #5A6472; margin-top: .55rem; font-weight: 700; }
+        .cc-rate-line b { color: var(--primary); font-weight: 800; font-variant-numeric: tabular-nums; }
+        .cc-times { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; align-items: center; margin-top: .6rem; }
+        .cc-tz { display: inline-flex; align-items: baseline; gap: .4rem; font-size: .7rem; font-weight: 700; color: #475569; background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 999px; padding: .3rem .65rem; font-variant-numeric: tabular-nums; }
+        .cc-tz b { font-weight: 800; color: #0B6F56; font-size: .64rem; letter-spacing: .04em; }
+        .cc-status { display: inline-flex; align-items: center; gap: .35rem; font-size: .64rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: .3rem .6rem; border-radius: 999px; }
+        .cc-status::before { content: ''; width: .42rem; height: .42rem; border-radius: 50%; background: currentColor; }
+        .cc-status.live { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+        .cc-status.cached { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -159,33 +174,44 @@
         <!-- left · phone-style multiply keypad -->
         <div class="entry-col">
             <div class="calc-panel">
-                <div class="calc-head"><span class="nl-ico">🧮</span>Calculator</div>
+                <div class="calc-head">
+                    <span class="calc-head-ico"><i class="fa-solid fa-calculator" aria-hidden="true"></i></span>
+                    <div class="calc-head-text">
+                        <span class="calc-head-title">Calculator</span>
+                        <span class="calc-head-sub">Simple · Fast · Reliable</span>
+                    </div>
+                </div>
 
                 <div class="ck-display">
                     <div class="ck-expr" id="ck-expr">&nbsp;</div>
                     <div class="ck-result" id="ck-result">0</div>
                 </div>
 
-                <div class="ck-grid" id="calc-keypad" role="group" aria-label="Calculator keypad">
-                    <button type="button" class="ck-btn ck-fn ck-ac" data-k="AC">AC</button>
-                    <button type="button" class="ck-btn ck-fn" data-k="B" title="Backspace" aria-label="Backspace">⌫</button>
-                    <button type="button" class="ck-btn ck-fn" data-k="00" title="Double zero">00</button>
-                    <button type="button" class="ck-btn ck-op" data-k="÷">÷</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="7">7</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="8">8</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="9">9</button>
-                    <button type="button" class="ck-btn ck-op" data-k="×">×</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="4">4</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="5">5</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="6">6</button>
-                    <button type="button" class="ck-btn ck-op" data-k="−">−</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="1">1</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="2">2</button>
-                    <button type="button" class="ck-btn ck-digit" data-k="3">3</button>
-                    <button type="button" class="ck-btn ck-op" data-k="+">+</button>
-                    <button type="button" class="ck-btn ck-digit ck-zero" data-k="0">0</button>
-                    <button type="button" class="ck-btn ck-digit" data-k=".">.</button>
-                    <button type="button" class="ck-btn ck-op ck-eq" data-k="=">=</button>
+                <div class="ck-keys" id="calc-keypad" role="group" aria-label="Calculator keypad">
+                    <div class="ck-top">
+                        <button type="button" class="ck-btn ck-clear" data-k="C" aria-label="Clear"><span>C</span><small>Clear</small></button>
+                        <button type="button" class="ck-btn ck-fn" data-k="B" title="Backspace" aria-label="Backspace">⌫</button>
+                        <button type="button" class="ck-btn ck-fn" data-k="sign" title="Toggle sign" aria-label="Toggle sign">+/−</button>
+                        <button type="button" class="ck-btn ck-fn" data-k="%" title="Percent" aria-label="Percent">%</button>
+                        <button type="button" class="ck-btn ck-op" data-k="÷" aria-label="Divide">÷</button>
+                    </div>
+                    <div class="ck-numpad">
+                        <button type="button" class="ck-btn ck-digit" data-k="7">7</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="8">8</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="9">9</button>
+                        <button type="button" class="ck-btn ck-op" data-k="×" aria-label="Multiply">×</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="4">4</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="5">5</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="6">6</button>
+                        <button type="button" class="ck-btn ck-op" data-k="−" aria-label="Subtract">−</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="1">1</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="2">2</button>
+                        <button type="button" class="ck-btn ck-digit" data-k="3">3</button>
+                        <button type="button" class="ck-btn ck-op" data-k="+" aria-label="Add">+</button>
+                        <button type="button" class="ck-btn ck-digit ck-zero" data-k="0">0</button>
+                        <button type="button" class="ck-btn ck-digit" data-k=".">.</button>
+                        <button type="button" class="ck-btn ck-op ck-eq" data-k="=" aria-label="Equals">=</button>
+                    </div>
                 </div>
             </div>
 
@@ -218,7 +244,7 @@
                 <button type="button" id="calc-split" class="btn btn-secondary btn-block split-toggle">⚖ Split remaining by half (50 / 50)</button>
 
                 <div class="half-hero" id="half-box" style="display:none">
-                    <span>50 / 50 · each half</span>
+                    <span>Person 1 &amp; Person 2 · 50% each</span>
                     <b id="half-hero">0.00</b>
                 </div>
 
@@ -256,10 +282,10 @@
 
             <div class="result-box" id="cc-result" style="display:none;text-align:center" aria-live="polite">
                 <div id="cc-eq" style="font-size:1.55rem;font-weight:800;color:var(--primary)"></div>
-                <div id="cc-rate" style="font-size:.8rem;color:var(--muted);margin-top:.4rem"></div>
-                <div id="cc-date" style="font-size:.72rem;color:var(--muted);margin-top:.15rem"></div>
+                <div id="cc-rate" class="cc-rate-line"></div>
+                <div id="cc-date" class="cc-times" aria-live="polite"></div>
                 <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.85rem">
-                    <button class="btn btn-secondary" id="cc-copy">📋 Copy</button>
+                    <button class="btn btn-secondary export-btn" id="cc-copy"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>
                 </div>
             </div>
 
@@ -332,6 +358,14 @@
     }
     function saveCache(o){ try { localStorage.setItem(storageKey, JSON.stringify(o)); } catch (e) {} }
 
+    function buildCache(data){
+        const raw = data.time_last_update_utc || '';
+        const d = raw ? new Date(raw) : null;
+        const valid = d && !isNaN(d);
+        const pretty = valid ? d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : raw;
+        return { base: 'USD', date: pretty, updated: valid ? d.toISOString() : null, rates: data.rates };
+    }
+
     function fetchUsdRates(){
         const ctrl = new AbortController();
         const id = setTimeout(() => ctrl.abort(), 15000);
@@ -371,42 +405,204 @@
         $('#cc-result').style.display = 'none';
 
         const cached = ratesCache;
-        if (cached && cached.rates && cached.rates[from] && cached.rates[to]){
-            showResult(amount, from, to, cached.rates[to] / cached.rates[from], cached.date, true);
-            return;
-        }
+        const hasCache = cached && cached.rates && cached.rates[from] && cached.rates[to];
+
+        // Show last cached rates instantly (if any), then always refresh from the live API.
+        if (hasCache) showResult(amount, from, to, cached.rates[to] / cached.rates[from], cached, true);
 
         fetchUsdRates()
             .then(data => {
-                ratesCache = { base: 'USD', date: (data.time_last_update_utc || '').replace(' +0000', '').slice(0, 16), rates: data.rates };
+                ratesCache = buildCache(data);
                 saveCache(ratesCache);
-                showResult(amount, from, to, computeRate(data, from, to), ratesCache.date, false);
+                if (splitActive() && ckCurrent() > 0) return;
+                showResult(amount, from, to, computeRate(data, from, to), ratesCache, false);
+                err.style.display = 'none';
             })
             .catch(() => {
                 err.textContent = 'Live rates unavailable right now. ' +
-                    (cached ? 'Showing last saved rates.' : 'Check your connection and retry.');
+                    (hasCache ? 'Showing last saved rates.' : 'Check your connection and retry.');
                 err.style.display = '';
-                if (cached && cached.rates && cached.rates[from] && cached.rates[to]){
-                    showResult(amount, from, to, cached.rates[to] / cached.rates[from], cached.date, true);
-                } else {
-                    $('#cc-result').style.display = 'none';
-                }
+                if (!hasCache) $('#cc-result').style.display = 'none';
             });
     }
 
-    function showResult(amount, from, to, rate, date, fromCache){
+    const ZONES = [
+        { tz: 'Africa/Nairobi', label: 'EAT', abbr: 'EAT' },
+        { tz: 'America/Los_Angeles', label: 'PT', abbr: null }
+    ];
+    let rateLive = false;
+
+    function clockHTML(){
+        const status = '<span class="cc-status ' + (rateLive ? 'live' : 'cached') + '">' + (rateLive ? 'live' : 'cached') + '</span>';
+        const chip = (tz, label) => {
+            const s = new Date().toLocaleString('en-US', { timeZone: tz, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' });
+            return '<span class="cc-tz"><b>' + label + '</b>' + s + '</span>';
+        };
+        return status + ZONES.map(z => chip(z.tz, z.label)).join('');
+    }
+
+    function paintTimes(){
+        const el = $('#cc-date');
+        if (el) el.innerHTML = clockHTML();
+    }
+    setInterval(paintTimes, 1000);
+
+    function showResult(amount, from, to, rate, entry, fromCache){
         const converted = amount * rate;
         const fmt = n => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
-        $('#cc-eq').textContent = fmt(amount) + ' ' + from + ' = ' + fmt(converted) + ' ' + to;
-        $('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
-        $('#cc-date').textContent = 'Rate date: ' + (date || '—');
+        $('#cc-eq').innerHTML = methodHTML() + '<span id="cc-eq-val" style="display:block">' + fmt(amount) + ' ' + from + ' = ' + fmt(converted) + ' ' + to + '</span>';
+        $('#cc-rate').innerHTML = '1 ' + from + ' = <b>' + rate.toFixed(4) + '</b> ' + to;
+        rateLive = !fromCache;
+        paintTimes();
         $('#cc-result').style.display = '';
-        lastPair = { amount, from, to, rate, date };
+        lastPair = { amount, from, to, rate: rate, entry: entry };
+    }
+
+    // Fetch live rates on load and refresh periodically so the rate stays real-time.
+    function refreshRates(){
+        fetchUsdRates()
+            .then(data => {
+                ratesCache = buildCache(data);
+                saveCache(ratesCache);
+                if ($('#cc-result').style.display === 'none') return;
+                if (splitActive() && ckCurrent() > 0){ convertSharesSplit(); return; }
+                if (lastPair){
+                    showResult(lastPair.amount, lastPair.from, lastPair.to,
+                        computeRate(data, lastPair.from, lastPair.to), ratesCache, false);
+                }
+            })
+            .catch(() => {});
+    }
+    refreshRates();
+    setInterval(refreshRates, 60000);
+
+    function rateDate(){
+        if (!ratesCache) return '';
+        if (ratesCache.updated){
+            const d = new Date(ratesCache.updated);
+            if (!isNaN(d)) return d.toLocaleString('en-US', { timeZone: 'Africa/Nairobi', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        return ratesCache.date || '';
+    }
+
+    /* Offset like "UTC+3" / "UTC−7", derived from the browser's tz database */
+    function tzOffset(tz, date){
+        try {
+            const part = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(date).find(p => p.type === 'timeZoneName');
+            const m = part && part.value.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+            if (!m) return part ? part.value.replace('GMT', 'UTC') : '';
+            return 'UTC' + (m[1] === '+' ? '+' : '\u2212') + m[2] + (m[3] && m[3] !== '00' ? ':' + m[3] : '');
+        } catch (e) { return ''; }
+    }
+
+    /* Abbreviation like "PDT" / "PST" (or the fixed label) for the given zone */
+    function tzAbbr(z, date){
+        if (z.abbr) return z.abbr;
+        try {
+            const part = new Intl.DateTimeFormat('en-US', { timeZone: z.tz, timeZoneName: 'short' }).formatToParts(date).find(p => p.type === 'timeZoneName');
+            return part ? part.value : z.label;
+        } catch (e) { return z.label; }
+    }
+
+    function tzClock(tz, date){
+        return date.toLocaleString('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit', second: '2-digit' });
+    }
+
+    /* Shared "how it was done" lines · shown on-screen AND in the copy summary */
+    function methodLines(){
+        const fromCode = $('#cc-from').value;
+        const total = ckCurrent();
+        const pct = deductionValue();
+        const remaining = total - (isNaN(pct) ? 0 : total * pct / 100);
+        const custom = customShares();
+        const halfOn = $('#calc-split').classList.contains('active');
+        const out = [];
+        if (!isNaN(pct) && pct > 0) out.push('Deducted ' + fmt2(pct) + '% (' + fmt2(total) + ' → ' + fmt2(remaining) + ' ' + fromCode + ')');
+        if (custom.length >= 2) out.push('Custom shares ' + custom.map(n => fmt2(n) + '%').join(' / '));
+        else if (halfOn && remaining > 0) out.push('Split by half 50% / 50%');
+        return out;
+    }
+
+    function methodHTML(){
+        return methodLines().map(m => '<span class="cc-method">' + m + '</span>').join('');
+    }
+
+    function summaryText(){
+        const fromCode = $('#cc-from').value, toCode = $('#cc-to').value;
+        let total = ckCurrent();
+        if (!(total > 0) && lastPair && lastPair.from === fromCode && lastPair.to === toCode) total = lastPair.amount;
+        const pct = deductionValue();
+        const hasDeduct = !isNaN(pct) && pct > 0;
+        const deducted = hasDeduct ? total * pct / 100 : 0;
+        const net = total - deducted;
+        const custom = customShares();
+        const halfOn = $('#calc-split').classList.contains('active');
+        const isCustom = custom.length >= 2;
+        const isSplit = halfOn || isCustom;
+
+        let rate = null;
+        if (ratesCache && ratesCache.rates && ratesCache.rates[fromCode] && ratesCache.rates[toCode]) {
+            rate = ratesCache.rates[toCode] / ratesCache.rates[fromCode];
+        } else if (lastPair && lastPair.from === fromCode && lastPair.to === toCode) {
+            rate = lastPair.rate;
+        }
+        const canConv = rate != null;
+        const money = usd => fmt2(usd) + ' ' + fromCode;
+        const moneyTo = usd => fmt2(usd) + ' ' + toCode;
+        const usdLine = usd => money(usd) + (canConv ? ' = ' + moneyTo(usd * rate) : '');
+
+        let parts = null;
+        if (isCustom) { const sum = custom.reduce((a, b) => a + b, 0); parts = custom.map(n => net * n / sum); }
+        else if (halfOn && net > 0) { parts = [net / 2, net / 2]; }
+
+        const now = new Date();
+        const lines = [];
+        lines.push(isSplit ? (isCustom ? 'Payment Breakdown & Custom Split Report' : 'Payment Breakdown & Split Report') : 'Payment Breakdown Report');
+        lines.push('');
+        lines.push('Date of the rate: ' + (rateDate() || '\u2014'));
+        if (canConv) lines.push('Exchange Rate: 1 ' + fromCode + ' = ' + rate.toFixed(4) + ' ' + toCode);
+        lines.push('Calculation Time:');
+        ZONES.forEach(z => {
+            const ab = tzAbbr(z, now), off = tzOffset(z.tz, now);
+            lines.push(z.label + ' (' + (ab === z.label ? off : ab + ', ' + off) + '): ' + tzClock(z.tz, now));
+        });
+        lines.push('');
+        lines.push('Payment Breakdown');
+        lines.push('Total: ' + usdLine(total));
+        if (hasDeduct) lines.push('Deducted ' + fmt2(pct) + '%: ' + usdLine(deducted));
+        lines.push('');
+        if (isSplit) {
+            lines.push(isCustom ? 'Custom Split Calculation' : 'Split Calculation');
+            lines.push('Net amount: ' + usdLine(net));
+            lines.push(isCustom ? 'Custom shares: ' + custom.map(n => fmtN(n) + '%').join(' / ') : 'Split: 50% / 50%');
+            lines.push('');
+            parts.forEach((amt, i) => lines.push('Person ' + (i + 1) + ': ' + usdLine(amt)));
+            lines.push('');
+            lines.push('Summary');
+            lines.push('Total received: ' + usdLine(total));
+            if (hasDeduct) lines.push('Total deducted: ' + usdLine(deducted));
+            if (isCustom) {
+                lines.push('Net amount: ' + usdLine(net));
+                lines.push('Total allocated: ' + usdLine(parts.reduce((a, b) => a + b, 0)));
+                parts.forEach((amt, i) => lines.push('Person ' + (i + 1) + "'s share: " + usdLine(amt)));
+            } else {
+                lines.push('Total to split: ' + usdLine(net));
+                lines.push("Each person's share: " + usdLine(parts[0]));
+            }
+        } else {
+            lines.push('Summary');
+            lines.push('Total received: ' + usdLine(total));
+            if (hasDeduct) {
+                lines.push('Total deducted: ' + usdLine(deducted));
+                lines.push('Net amount: ' + usdLine(net));
+            }
+        }
+        return lines.join('\n');
     }
 
     $('#cc-result').addEventListener('click', function(e){
-        if (e.target && e.target.id === 'cc-copy'){
-            copyText($('#cc-eq').textContent + ' (' + $('#cc-rate').textContent + ')', e.target);
+        if (e.target && e.target.closest('#cc-copy')){
+            copyText(summaryText(), $('#cc-copy'));
         }
     });
 
@@ -496,7 +692,7 @@
         ck.entry = '';
         ck.done = true;
         ckPaint();
-        if (ck.acc != null && ck.acc > 0) convert();
+        if (ck.acc != null && ck.acc > 0) runConversion();
     }
 
     function ckReset(all) {
@@ -517,21 +713,50 @@
         }
     }
 
+    function ckSign() {
+        if (ck.done) { ck.acc = rawN(-(ck.acc || 0)); ck.expr = fmtN(ck.acc) + ' ='; ckPaint(); return; }
+        if (ck.entry !== '' && ck.entry !== '-') {
+            ck.entry = ck.entry.charAt(0) === '-' ? ck.entry.slice(1) : '-' + ck.entry;
+        } else if (ck.entry === '-') {
+            ck.entry = '';
+        } else if (ck.acc != null) {
+            ck.acc = rawN(-ck.acc);
+        } else {
+            ck.entry = '-';
+        }
+        ckPaint();
+    }
+
+    function ckPercent() {
+        if (ck.done) ckReset(false);
+        const v = parseFloat(ck.entry);
+        if (ck.entry === '' || isNaN(v)) return;
+        const res = (ck.acc != null && ck.op != null) ? ck.acc * v / 100 : v / 100;
+        ck.entry = String(rawN(res));
+        ckPaint();
+    }
+
     function ckKey(k) {
         if (/^[0-9]$/.test(k)) {
             if (ck.done) ckReset(false);
-            if (ck.entry.length < 12) ck.entry = (ck.entry === '0') ? k : ck.entry + k;
+            if (ck.entry.length < 12) {
+                if (ck.entry === '0') ck.entry = k;
+                else if (ck.entry === '-' || ck.entry === '-0') ck.entry = '-' + k;
+                else ck.entry += k;
+            }
         } else if (k === '.') {
             if (ck.done) ckReset(false);
-            if (ck.entry.indexOf('.') === -1) ck.entry = (ck.entry === '') ? '0.' : ck.entry + '.';
-        } else if (k === '00') {
-            if (ck.done) ckReset(false);
-            if (ck.entry === '' || ck.entry === '0') { ck.entry = '0'; }
-            else if (ck.entry.length <= 10) ck.entry += '00';
+            if (ck.entry.indexOf('.') === -1) {
+                if (ck.entry === '') ck.entry = '0.';
+                else if (ck.entry === '-') ck.entry = '-0.';
+                else ck.entry += '.';
+            }
         } else if (k === 'B') {
             if (ck.done) { ckReset(false); return; }
             ck.entry = ck.entry.slice(0, -1);
-        } else if (k === 'AC') { ckReset(true); return; }
+        } else if (k === 'C' || k === 'AC') { ckReset(true); return; }
+        else if (k === 'sign') { ckSign(); return; }
+        else if (k === '%') { ckPercent(); return; }
         else if (k === '+') { ckOp('+'); return; }
         else if (k === '−') { ckOp('−'); return; }
         else if (k === '×') { ckOp('×'); return; }
@@ -551,10 +776,10 @@
         if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
         const k = e.key;
         const map = { 'x': '×', '*': '×', 'X': '×', '/': '÷', '+': '+', '-': '−', '_': '−',
-            'Enter': '=', 'Backspace': 'B', 'c': 'AC', 'C': 'AC', 'Escape': 'AC' };
+            'Enter': '=', 'Backspace': 'B', 'c': 'C', 'C': 'C', 'Escape': 'C' };
         const key = map[k] || k;
         if (/^[0-9]$/.test(key) || key === '.' || key === '+' || key === '−' || key === '×' ||
-            key === '÷' || key === '=' || key === 'B' || key === 'AC') {
+            key === '÷' || key === '=' || key === 'B' || key === 'C' || key === '%') {
             e.preventDefault();
             ckKey(key);
         }
@@ -566,7 +791,9 @@
     }
 
     function toggleSplit() {
-        $('#calc-split').classList.toggle('active');
+        const on = !$('#calc-split').classList.contains('active');
+        $('#calc-split').classList.toggle('active', on);
+        if (on) { $('#sh2').value = ''; $('#sh3').value = ''; }
         refreshSplit();
     }
 
@@ -597,13 +824,16 @@
         scheduleConvert();
     }
 
+    function runConversion() {
+        if (splitActive() && ckCurrent() > 0) { convertSharesSplit(); return; }
+        $('#cc-amount').value = String(currentAmount());
+        convert();
+    }
+
     let convTimer = null;
     function scheduleConvert() {
         clearTimeout(convTimer);
-        convTimer = setTimeout(() => {
-            const v = parseFloat($('#cc-amount').value);
-            if (isFinite(v) && v > 0) convert();
-        }, 350);
+        convTimer = setTimeout(runConversion, 350);
     }
 
     function refreshSplit() {
@@ -644,7 +874,21 @@
                 btn.type = 'button';
                 btn.className = 'share-tile share-custom';
                 btn.title = 'Send ' + fmt2(n) + '% share to the converter';
-                btn.innerHTML = '<span class="share-tile-pct">' + (i + 1) + ' · ' + fmt2(n) + '%</span><b class="share-tile-amt">' + fmt2(amt) + '</b><em>↪ convert</em>';
+                btn.innerHTML = '<span class="share-tile-pct">Person ' + (i + 1) + ' · ' + fmt2(n) + '%</span><b class="share-tile-amt">' + fmt2(amt) + '</b><em>↪ convert</em>';
+                btn.addEventListener('click', () => {
+                    $('#cc-amount').value = String(rawN(amt));
+                    convert();
+                });
+                chips.appendChild(btn);
+            });
+        } else if (halfOn && nums.remaining > 0) {
+            const amt = nums.remaining / 2;
+            [1, 2].forEach(i => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'share-tile share-custom';
+                btn.title = 'Send 50% share to the converter';
+                btn.innerHTML = '<span class="share-tile-pct">Person ' + i + ' · 50.00%</span><b class="share-tile-amt">' + fmt2(amt) + '</b><em>↪ convert</em>';
                 btn.addEventListener('click', () => {
                     $('#cc-amount').value = String(rawN(amt));
                     convert();
@@ -661,56 +905,62 @@
     }
 
     $('#sh1').addEventListener('input', refreshSplit);
-    ['#sh2', '#sh3'].forEach(s => $(s).addEventListener('input', refreshSplit));
+    ['#sh2', '#sh3'].forEach(s => $(s).addEventListener('input', () => {
+        if (customShares().length) $('#calc-split').classList.remove('active');
+        refreshSplit();
+    }));
     $('#calc-split').addEventListener('click', toggleSplit);
     $('#clear-split').addEventListener('click', () => {
         $('#sh1').value = ''; $('#sh2').value = ''; $('#sh3').value = '';
         $('#calc-split').classList.remove('active');
         refreshSplit();
     });
-    $('#ck-convert-total').addEventListener('click', () => {
-        if (convertSharesSplit()) return;
-        $('#cc-amount').value = String(currentAmount());
-        convert();
-    });
+    $('#ck-convert-total').addEventListener('click', runConversion);
 
     async function convertSharesSplit() {
-        const shares = customShares();
         const total = ckCurrent();
         const pct = deductionValue();
         const remaining = total - (isNaN(pct) ? 0 : total * pct / 100);
-        if (shares.length < 2 || !(remaining > 0)) return false;
+        const custom = customShares();
+        const halfOn = $('#calc-split').classList.contains('active');
+
+        let parts;
+        if (custom.length >= 2) {
+            const sum = custom.reduce((a, b) => a + b, 0);
+            parts = custom.map(n => remaining * n / sum);
+        } else if (halfOn && remaining > 0) {
+            parts = [remaining / 2, remaining / 2];
+        } else {
+            return false;
+        }
+        if (!(remaining > 0)) return false;
 
         const from = $('#cc-from').value, to = $('#cc-to').value;
-        const sum = shares.reduce((a, b) => a + b, 0);
         const f = x => x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
-        const render = (rate, date, fromCache) => {
-            const lines = shares.map((n, i) => {
-                const amt = remaining * n / sum;
-                return '<span style="display:block;font-size:1rem;line-height:1.45">Share ' + (i + 1) + ' · ' + f(amt) + ' ' + from + ' → ' + f(amt * rate) + ' ' + to + '</span>';
+        const render = (rate, entry, fromCache) => {
+            const lines = parts.map((amt, i) => {
+                return '<span style="display:block;font-size:1.05rem;line-height:1.5"><b>Person ' + (i + 1) + ':</b> ' + f(amt) + ' ' + from + ' = ' + f(amt * rate) + ' ' + to + '</span>';
             }).join('');
-            $('#cc-eq').innerHTML = lines;
-$('#cc-rate').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to;
-            $('#cc-date').textContent = 'Rate date: ' + (date || '—');
+            $('#cc-eq').innerHTML = methodHTML() + lines;
+            $('#cc-rate').innerHTML = '1 ' + from + ' = <b>' + rate.toFixed(4) + '</b> ' + to;
+            rateLive = !fromCache;
+            paintTimes();
             $('#cc-result').style.display = '';
             $('#cc-error').style.display = 'none';
         };
 
         const cached = ratesCache;
-        if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
-            render(cached.rates[to] / cached.rates[from], cached.date, true);
-            return true;
-        }
+        const hasCache = cached && cached.rates && cached.rates[from] && cached.rates[to];
+        if (hasCache) render(cached.rates[to] / cached.rates[from], cached, true);
+
         try {
             const data = await fetchUsdRates();
-            ratesCache = { base: 'USD', date: (data.time_last_update_utc || '').replace(' +0000', '').slice(0, 16), rates: data.rates };
+            ratesCache = buildCache(data);
             saveCache(ratesCache);
-            render(computeRate(data, from, to), ratesCache.date, false);
+            render(computeRate(data, from, to), ratesCache, false);
         } catch (e) {
-            if (cached && cached.rates && cached.rates[from] && cached.rates[to]) {
-                render(cached.rates[to] / cached.rates[from], cached.date, true);
-            } else {
+            if (!hasCache) {
                 const err = $('#cc-error');
                 err.textContent = 'Live rates unavailable right now. Check your connection and retry.';
                 err.style.display = '';

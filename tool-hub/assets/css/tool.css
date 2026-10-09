@@ -355,6 +355,17 @@ body.tool-page .btn-ghost {
 body.tool-page .btn-ghost:hover { border-color: #94A3B8; color: #0F172A; }
 body.tool-page .btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 body.tool-page .btn-block { width: 100%; }
+/* Shared export/copy action buttons — matches the Website Auditor controls */
+body.tool-page .export-btn {
+    min-height: 42px;
+    font-size: .84rem;
+    font-weight: 750;
+    padding: .55rem .95rem;
+    border-radius: 8px;
+    gap: .5rem;
+}
+body.tool-page .export-btn i { width: 1rem; text-align: center; font-size: .9rem; }
+body.tool-page .export-btn:focus-visible { outline: 3px solid rgba(14,138,108,.28); outline-offset: 2px; }
 
 /* ── Results ─────────────────────────────────────────────────────── */
 body.tool-page .result-box {
