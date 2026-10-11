@@ -14,12 +14,8 @@
     <meta name="geo.position" content="-1.286389;36.817223" />
     <meta name="ICBM" content="-1.286389, 36.817223" />
 
-    <!-- First-paint background: show the hero visual immediately so the page is never a blank/dark block while the app + 3D load -->
-    <style>html,body{background:#0b111f url(/assets/hero-poster.webp) center/cover no-repeat}#root section:first-of-type{background:#0b111f url(/assets/hero-poster.webp) center/cover no-repeat}</style>
-
     <!-- Start critical downloads ASAP (app bundle + 3D model) for fastest first paint of the 3D -->
     <link rel="modulepreload" href="/assets/index-4f0713c4.js?v=cta18" fetchpriority="high">
-    <link rel="preload" as="image" href="/assets/hero-poster.webp" fetchpriority="high">
     <link rel="preload" as="fetch" href="/desktop_pc/scene.glb" type="model/gltf-binary" crossorigin="anonymous" fetchpriority="high" media="(min-width: 501px)">
     <link rel="preload" as="fetch" href="/desktop_pc/scene-mobile.glb" type="model/gltf-binary" crossorigin="anonymous" fetchpriority="high" media="(max-width: 500px)">
     <link rel="preload" as="font" type="font/woff2" href="/assets/fontawesome/webfonts/fa-solid-900.woff2" crossorigin>
