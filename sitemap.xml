@@ -1,134 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://briankiboi.is-a.dev/</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/about/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/portfolio/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/what-i-do/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/resume/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/contact/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/gallery/</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://briankiboi.is-a.dev/og-card-new.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://briankiboi.is-a.dev/tool-hub/</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://briankiboi.is-a.dev/tool-hub/assets/icon-512.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://briankiboi.is-a.dev/tool-hub/tools/domain-age-checker.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://briankiboi.is-a.dev/tool-hub/tools/ip-geolocation.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://briankiboi.is-a.dev/tool-hub/tools/qr-generator.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/business-name-generator.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/website-auditor.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/url-shortener.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/ping-test.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/qr-scanner.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/receipt-generator.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/quotation-generator.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/dns-lookup.html</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/whois-lookup.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/color-picker.html</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://briankiboi.is-a.dev/tool-hub/tools/currency-converter.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://briankiboi.is-a.dev/tool-hub/tools/document-converter.html</loc>
-    <lastmod>2026-09-19</lastmod>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/dns-lookup.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/whois-lookup.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/ping-test.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/speed-test.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/quotation-generator.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/receipt-generator.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://briankiboi.is-a.dev/tool-hub/tools/website-auditor.html</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

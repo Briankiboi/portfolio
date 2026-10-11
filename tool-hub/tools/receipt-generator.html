@@ -589,6 +589,53 @@ body.tool-page {
     }
 }
 </style>
+<link rel="canonical" href="https://briankiboi.is-a.dev/tool-hub/tools/receipt-generator.html" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://briankiboi.is-a.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Free Tools Hub",
+      "item": "https://briankiboi.is-a.dev/tool-hub/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Receipt Maker",
+      "item": "https://briankiboi.is-a.dev/tool-hub/tools/receipt-generator.html"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Receipt Maker",
+  "url": "https://briankiboi.is-a.dev/tool-hub/tools/receipt-generator.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "DM Solutions Tech",
+    "url": "https://briankiboi.is-a.dev/tool-hub/"
+  }
+}
+    </script>
 </head>
 <body class="tool-page" x-data="receiptMaker()" x-init="init()">
 
@@ -1155,13 +1202,13 @@ body.tool-page {
                     </div>
 
                     <!-- Helpful tip -->
-                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2.5 text-xs text-blue-900">
-                        <i class="fa-solid fa-circle-info text-blue-600 mt-0.5 text-sm"></i>
+                    <div class="p-3 bg-amber-50 border-2 border-amber-300 rounded-lg flex items-start gap-2.5 text-xs text-amber-900">
+                        <i class="fa-solid fa-paperclip text-amber-600 mt-0.5 text-sm"></i>
                         <div x-show="canSharePdf">
                             <strong>PDF auto-attached:</strong> Tap <strong>Share with PDF attached</strong> and pick Gmail, Outlook or WhatsApp — your receipt PDF is included automatically.
                         </div>
                         <div x-show="!canSharePdf">
-                            <strong>PDF ready to attach:</strong> We save your receipt PDF automatically and open the compose window — just tap <strong>attach (&#128206;)</strong> and pick the downloaded PDF.
+                            <strong>PDF ready to attach:</strong> Your receipt PDF has been downloaded. In the email compose window, tap the attachment icon (&#128206;) and select the downloaded PDF to include it with your email.
                         </div>
                     </div>
 
@@ -1175,8 +1222,8 @@ body.tool-page {
                                 <i class="fa-solid fa-share-nodes text-sm"></i>
                             </span>
                             <span class="min-w-0">
-                                <span class="block text-sm font-bold text-slate-800" x-text="canSharePdf ? 'Share with PDF attached' : 'Save PDF & open Gmail'"></span>
-                                <span class="block text-[11px] text-slate-500" x-text="canSharePdf ? 'Pick Gmail, Outlook or WhatsApp — PDF included automatically' : 'Downloads your PDF, then opens Gmail compose'"></span>
+                                <span class="block text-sm font-bold text-slate-800" x-text="canSharePdf ? 'Share with PDF attached' : 'Save PDF & choose messaging application'"></span>
+                                <span class="block text-[11px] text-slate-500" x-text="canSharePdf ? 'Pick Gmail, Outlook or WhatsApp — PDF included automatically' : 'Download your receipt as a PDF, then select an app below to share it with your client.'"></span>
                             </span>
                         </button>
 
@@ -1872,8 +1919,7 @@ function receiptMaker() {
             }
             this.saveEmailPdf();
             this.saveRecord();
-            if (window.ToolsApp && window.ToolsApp.toast) window.ToolsApp.toast('PDF saved — attach it to your message.');
-            this.sendViaGmail();
+            if (window.ToolsApp && window.ToolsApp.toast) window.ToolsApp.toast('PDF saved — now choose an app below to send.');
         },
 
         sendViaGmail() {
