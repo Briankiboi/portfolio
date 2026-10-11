@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internet Speed Test — Free Tools Hub</title>
+<meta name="description" content="Measure your download speed, upload speed and latency right in your browser. Parallel streams, steady-state measurement, ad-free.">
+<link rel="icon" type="image/png" href="../assets/icon-512.png">
+<style>
+    :root { --bg:#F6F7FA; --surface:#ffffff; --surface-2:#F6F7FA; --text:#1F2430; --muted:#5A6472; --border:#E4E8EF; --radius:18px; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Nunito',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; display:flex; flex-direction:column; -webkit-font-smoothing:antialiased; }
+    h1,h2,h3,h4 { font-family:'Poppins','Nunito',sans-serif; letter-spacing:-.01em; }
+    a { color:inherit; text-decoration:none; }
+
+    .st-card { margin:1.3rem 0 1rem; padding:2.4rem 1.4rem 2rem; text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+    .st-label { font-size:.92rem; font-weight:600; color:var(--muted); margin:0 0 .4rem; }
+    .st-speed { display:flex; align-items:baseline; justify-content:center; gap:.45rem; margin:.1rem 0 .2rem; }
+    .st-num { font-size:clamp(3.4rem,15vw,6.6rem); font-weight:800; line-height:1; letter-spacing:-.03em; color:var(--text); font-variant-numeric:tabular-nums; transition:color .2s ease; }
+    .st-unit { font-size:1.35rem; font-weight:800; color:var(--muted); }
+    .st-phase { font-size:.86rem; color:var(--muted); margin:.35rem 0 1.5rem; min-height:1.25em; font-weight:600; }
+    .st-card.is-testing .st-unit { animation:stBlink 1s ease-in-out infinite; }
+    .st-card.is-testing .st-num { color:var(--primary-dark); }
+    @keyframes stBlink { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+
+    /* Client & Server meta badge */
+    .st-meta-strip { display:inline-flex; align-items:center; justify-content:center; gap:.5rem 1rem; flex-wrap:wrap; font-size:.76rem; color:var(--muted); background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:.35rem .95rem; margin-bottom:1.3rem; }
+    .st-meta-item { display:inline-flex; align-items:center; gap:.35rem; }
+    .st-meta-item b { color:var(--text); font-weight:700; }
+
+    .st-actions { display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+    .st-actions-sub { margin-top:.9rem; }
+
+    /* Prominent start button */
+    .st-start { position:relative; display:inline-flex; align-items:center; gap:.65rem; padding:.9rem 2.2rem; font-size:1.05rem; font-weight:800; letter-spacing:.01em; color:#fff; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border:none; border-radius:999px; cursor:pointer; box-shadow:0 4px 14px -6px rgba(0,0,0,.35); transition:transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+    .st-start:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6px rgba(0,0,0,.4); }
+    .st-start:active { transform:translateY(0); }
+    .st-start:disabled { cursor:default; transform:none; filter:saturate(.85); opacity:.92; }
+    .st-start-ico { display:grid; place-items:center; font-size:1.15rem; }
+    .st-start.is-testing .st-start-ico { animation:stSpin 1s linear infinite; }
+    @keyframes stSpin { to { transform:rotate(360deg); } }
+
+    /* Progress bar */
+    .st-progress { max-width:420px; margin:1.4rem auto 0; }
+    .st-progress-track { height:7px; border-radius:999px; background:var(--surface-2); border:1px solid var(--border); overflow:hidden; }
+    .st-progress-fill { height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--primary),var(--secondary)); transition:width .3s ease; }
+    .st-progress-lab { display:block; margin-top:.45rem; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+
+    .st-info { margin:1rem 0; animation:stUp .3s ease; }
+    .st-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+    @media (max-width:640px){ .st-grid { grid-template-columns:repeat(2,1fr); } }
+    .st-metric { background:var(--surface); border:1px solid var(--border); border-radius:15px; padding:.95rem 1.05rem; box-shadow:var(--shadow); text-align:center; }
+    .st-m-lab { display:block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+    .st-m-sub { font-weight:600; text-transform:none; letter-spacing:0; opacity:.85; }
+    .st-m-val { display:flex; align-items:baseline; justify-content:center; gap:.22rem; margin-top:.3rem; }
+    .st-m-val b { font-size:1.5rem; font-weight:800; color:var(--text); font-variant-numeric:tabular-nums; }
+    .st-m-val small { font-size:.72rem; font-weight:700; color:var(--muted); }
+    .st-metric-q .st-m-val b { font-size:1.25rem; color:var(--primary-dark); }
+    .st-foot { display:flex; justify-content:center; margin-top:.9rem; }
+    @keyframes stUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+    @media (max-width:520px){
+        .st-card { padding:1.8rem 1rem 1.6rem; }
+    }
+</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+    }
+</script>
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/tool.css">
+<link rel="stylesheet" href="../assets/css/site-header.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="tool-page">
+
+<!-- Shared Nav -->
+<div id="hub-header-slot" data-root="../"></div>
+
+<main>
+    <div class="container">
+        <div class="page-crumb">
+        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
+        <span class="page-crumb-title">Internet Speed Test</span>
+        </div>
+
+        <div class="tool-shell" style="max-width:860px;margin:0 auto">
+
+            <header class="tool-meta">
+                <span class="tool-meta-icon"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i></span>
+                <div class="tool-meta-body">
+                    <h1>Internet Speed Test</h1>
+                    <p>Check your download speed, upload speed and latency entirely in your browser. Fast, accurate and ad-free.</p>
+                    <div class="tool-meta-row">
+                        <span class="tool-badge">Network</span>
+                        <span class="tool-badge tool-badge-soft">Fast.com precision</span>
+                    </div>
+                </div>
+                <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
+            </header>
+            <span id="page-meta-title" data-title="Internet Speed Test — DM Solution Technologies Toolkits" style="display:none"></span>
+
+            <!-- Speed readout -->
+            <section class="st-card" id="st-card">
+                <div class="st-meta-strip" id="st-meta-strip" hidden>
+                    <span class="st-meta-item"><i class="fa-solid fa-location-dot"></i> <span id="st-meta-client">—</span></span>
+                    <span class="st-meta-item"><i class="fa-solid fa-server"></i> Server: <b id="st-meta-server">Cloudflare Edge</b></span>
+                </div>
+
+                <p class="st-label">Your Internet speed is</p>
+                <div class="st-speed">
+                    <span class="st-num" id="st-speed">0</span>
+                    <span class="st-unit">Mbps</span>
+                </div>
+                <p class="st-phase" id="st-phase">Tap “Start Test” when you're ready</p>
+
+                <div class="st-actions">
+                    <button type="button" class="st-start" id="st-start">
+                        <span class="st-start-ico"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i></span>
+                        <span class="st-start-txt">Start Test</span>
+                    </button>
+                </div>
+
+                <div class="st-progress" id="st-progress" hidden>
+                    <div class="st-progress-track"><div class="st-progress-fill" id="st-progress-fill"></div></div>
+                    <span class="st-progress-lab" id="st-progress-lab">Starting…</span>
+                </div>
+
+                <div class="st-actions st-actions-sub">
+                    <button type="button" class="btn btn-ghost" id="st-toggle" hidden aria-expanded="false"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Show details</button>
+                </div>
+            </section>
+
+            <!-- Detailed metrics -->
+            <section class="st-info" id="st-info" hidden aria-live="polite">
+                <div class="st-grid">
+                    <div class="st-metric"><span class="st-m-lab">Download</span><span class="st-m-val"><b id="st-dl">—</b><small>Mbps</small></span></div>
+                    <div class="st-metric"><span class="st-m-lab">Upload</span><span class="st-m-val"><b id="st-ul">—</b><small>Mbps</small></span></div>
+                    <div class="st-metric"><span class="st-m-lab">Latency <span class="st-m-sub">(idle)</span></span><span class="st-m-val"><b id="st-lat">—</b><small>ms</small></span></div>
+                    <div class="st-metric"><span class="st-m-lab">Latency <span class="st-m-sub">(loaded)</span></span><span class="st-m-val"><b id="st-latl">—</b><small>ms</small></span></div>
+                    <div class="st-metric"><span class="st-m-lab">Jitter</span><span class="st-m-val"><b id="st-jit">—</b><small>ms</small></span></div>
+                    <div class="st-metric st-metric-q"><span class="st-m-lab">Quality</span><span class="st-m-val"><b id="st-q">—</b></span></div>
+                </div>
+                <div class="st-foot">
+                    <button type="button" class="btn btn-secondary export-btn" id="st-copy"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy Summary</button>
+                </div>
+            </section>
+
+            <div class="alert err hidden" id="st-notice" style="margin-top:1rem"></div>
+
+            <div class="info-note">
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
+                    <p>Uses the <strong>Fast.com / Netflix Open Connect methodology</strong>: opens parallel asynchronous data streams to the closest Cloudflare edge CDN node, discards TCP slow-start ramp-up, and calculates the sustained 85th percentile bandwidth under steady saturation. Both idle latency and loaded bufferbloat are measured in real time.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
+                    <p>No account and no tracking. The test only exchanges anonymous measurement frames with the edge CDN; nothing is stored or shared.</p>
+                </div>
+                <div class="note-sec">
+                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
+                    <ul>
+                        <li>For the most accurate result, close heavy background streaming or downloads.</li>
+                        <li>Wi‑Fi speed varies with distance and channel congestion — test near the router for your line's true capacity.</li>
+                        <li>Speed tests measure end-to-end throughput to the nearest cloud edge data center.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Shared Footer -->
+<footer class="site-footer">
+    <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
+        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
+        <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
+    </div>
+</footer>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/site-header.js"></script>
+<script>
+(function(){
+    'use strict';
+    const { $, toast, copyText, toolPageInit } = window.ToolsApp;
+    const KEY = 'speed-test';
+
+    const DOWN = 'https://speed.cloudflare.com/__down?bytes=';
+    const UP   = 'https://speed.cloudflare.com/__up';
+
+    const DL_DURATION_MS = 10500; /* ~10s download test */
+    const UL_DURATION_MS = 8500;  /* ~8.5s upload test */
+    const WARMUP_MS      = 2000;  /* 2s slow-start ramp-up window */
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const now   = () => performance.now();
+    const nonce = () => '&nonce=' + Math.random().toString(36).slice(2) + Date.now();
+
+    const el = {
+        card:       $('#st-card'),
+        num:        $('#st-speed'),
+        phase:      $('#st-phase'),
+        start:      $('#st-start'),
+        startIco:   $('#st-start .st-start-ico'),
+        startTxt:   $('#st-start .st-start-txt'),
+        toggle:     $('#st-toggle'),
+        info:       $('#st-info'),
+        notice:     $('#st-notice'),
+        dl:         $('#st-dl'),
+        ul:         $('#st-ul'),
+        lat:        $('#st-lat'),
+        latl:       $('#st-latl'),
+        jit:        $('#st-jit'),
+        q:          $('#st-q'),
+        copy:       $('#st-copy'),
+        progress:   $('#st-progress'),
+        progFill:   $('#st-progress-fill'),
+        progLab:    $('#st-progress-lab'),
+        metaStrip:  $('#st-meta-strip'),
+        metaClient: $('#st-meta-client'),
+        metaServer: $('#st-meta-server')
+    };
+
+    let running = false;
+    let res = { dl: NaN, ul: NaN, lat: NaN, latl: NaN, jit: NaN, client: '', server: '' };
+
+    function percentile(arr, p) {
+        if (!arr || !arr.length) return NaN;
+        const valid = arr.filter(v => isFinite(v) && v > 0).sort((a, b) => a - b);
+        if (!valid.length) return NaN;
+        const idx = Math.min(valid.length - 1, Math.floor(valid.length * (p / 100)));
+        return valid[idx];
+    }
+
+    function median(a){
+        return percentile(a, 50);
+    }
+
+    function jitter(a){
+        const valid = (a || []).filter(v => isFinite(v) && v > 0);
+        if (valid.length < 2) return NaN;
+        let sum = 0;
+        for (let i = 1; i < valid.length; i++) sum += Math.abs(valid[i] - valid[i - 1]);
+        return sum / (valid.length - 1);
+    }
+
+    function fmtSpeed(v){
+        if (!isFinite(v) || v <= 0) return '0';
+        if (v >= 100) return String(Math.round(v));
+        if (v >= 10)  return v.toFixed(1);
+        return v.toFixed(2);
+    }
+
+    function fmtMs(v){ return isFinite(v) && v > 0 ? String(Math.round(v)) : '—'; }
+    function setSpeed(v){ el.num.textContent = fmtSpeed(v); }
+    function setPhase(t){ el.phase.textContent = t; }
+
+    function verdict(dl){
+        if (!isFinite(dl) || dl <= 0) return '—';
+        if (dl >= 100) return 'Ultra Fast';
+        if (dl >= 50)  return 'Great';
+        if (dl >= 25)  return 'Good';
+        if (dl >= 10)  return 'Fair';
+        return 'Basic';
+    }
+
+    function progress(pct, label){
+        if (pct == null){ el.progress.hidden = true; return; }
+        el.progress.hidden = false;
+        el.progFill.style.width = pct + '%';
+        if (label) el.progLab.textContent = label;
+    }
+
+    function setStart(state){
+        if (state === 'idle'){
+            el.startIco.innerHTML = '<i class="fa-solid fa-gauge-high"></i>';
+            el.startTxt.textContent = 'Start Test';
+            el.start.disabled = false;
+            el.start.classList.remove('is-testing');
+        } else if (state === 'testing'){
+            el.startIco.innerHTML = '<i class="fa-solid fa-spinner"></i>';
+            el.startTxt.textContent = 'Testing…';
+            el.start.disabled = true;
+            el.start.classList.add('is-testing');
+        } else {
+            el.startIco.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
+            el.startTxt.textContent = 'Test Again';
+            el.start.disabled = false;
+            el.start.classList.remove('is-testing');
+        }
+    }
+
+    /* Extract TCP round-trip latency from Cloudflare edge header */
+    function l4Rtt(res){
+        try {
+            const st = res.headers.get('server-timing') || '';
+            const m = /(?:^|[?&])rtt=(\d+)/.exec(st);
+            if (m){
+                const ms = Number(m[1]) / 1000;
+                if (isFinite(ms) && ms > 1 && ms < 4000) return ms;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    /* ── Unloaded Latency & Metadata Probe ── */
+    async function measureLatency(count){
+        const list = [];
+        for (let i = 0; i < count; i++){
+            try {
+                const t0 = now();
+                const resp = await fetch(DOWN + '0' + nonce(), { cache: 'no-store' });
+                const rtt = l4Rtt(resp);
+                const measured = now() - t0;
+                const val = (rtt != null && rtt > 0) ? rtt : measured;
+                if (i >= 2) list.push(val);
+
+                // Extract client and edge metadata on first successful probe
+                if (!res.client) {
+                    const city = resp.headers.get('cf-meta-city');
+                    const country = resp.headers.get('cf-meta-country');
+                    const ip = resp.headers.get('cf-meta-ip');
+                    const colo = resp.headers.get('cf-meta-colo');
+                    const loc = [city, country].filter(Boolean).join(', ');
+                    if (loc || ip) {
+                        res.client = loc ? (loc + (ip ? ' (' + ip + ')' : '')) : ip;
+                        el.metaClient.textContent = res.client;
+                        if (colo) {
+                            res.server = 'Cloudflare Edge (' + colo + ')';
+                            el.metaServer.textContent = res.server;
+                        }
+                        el.metaStrip.hidden = false;
+                    }
+                }
+            } catch (e) {}
+            await sleep(40);
+        }
+        return list;
+    }
+
+    /* Continuous probe during active download (Bufferbloat) */
+    async function loadedLatency(stop, out){
+        while (!stop.v){
+            try {
+                const t0 = now();
+                const resp = await fetch(DOWN + '0' + nonce(), { cache: 'no-store' });
+                const rtt = l4Rtt(resp);
+                const val = (rtt != null && rtt > 0) ? rtt : now() - t0;
+                out.push(val);
+            } catch (e) {}
+            await sleep(400);
+        }
+    }
+
+    /* ── Fast.com Precision Download Algorithm ── */
+    async function downloadTest(durationMs, onLive){
+        let totalBytes = 0;
+        const t0 = now();
+        const rateSamples = [];
+        const slidingHistory = [];
+        let smoothedDisplay = 0;
+
+        // Sliding 1000ms window calculator
+        const samplerInterval = setInterval(() => {
+            const curTime = now();
+            slidingHistory.push({ t: curTime, bytes: totalBytes });
+
+            // Keep only the last 1200ms of history
+            while (slidingHistory.length > 1 && (curTime - slidingHistory[0].t) > 1200) {
+                slidingHistory.shift();
+            }
+
+            if (slidingHistory.length >= 2) {
+                const oldest = slidingHistory[0];
+                const dt = (curTime - oldest.t) / 1000;
+                const db = totalBytes - oldest.bytes;
+                if (dt >= 0.4 && db > 0) {
+                    const instantMbps = (db * 8) / dt / 1e6;
+                    // Fast.com exponential moving average smoothing for the live display
+                    smoothedDisplay = smoothedDisplay === 0 ? instantMbps : (0.7 * instantMbps + 0.3 * smoothedDisplay);
+                    onLive(smoothedDisplay);
+
+                    // Collect steady-state rate samples after warmup window
+                    if ((curTime - t0) >= WARMUP_MS) {
+                        rateSamples.push(instantMbps);
+                    }
+                }
+            }
+        }, 120);
+
+        // Adaptive stream concurrency (2 -> 4 -> 6 streams based on line capacity)
+        let activeStreams = 3;
+        const worker = async () => {
+            while (now() - t0 < durationMs){
+                const c = new AbortController();
+                const remainingMs = Math.max(0, durationMs - (now() - t0));
+                const timer = setTimeout(() => { try { c.abort(); } catch (e) {} }, remainingMs);
+                try {
+                    // Adaptive chunk sizes: small initially, larger as speed climbs
+                    const elapsed = now() - t0;
+                    const chunkSize = elapsed < 2000 ? 5000000 : (smoothedDisplay > 40 ? 25000000 : 15000000);
+                    const res = await fetch(DOWN + chunkSize + nonce(), { cache: 'no-store', signal: c.signal });
+                    const reader = res.body.getReader();
+                    while (true){
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        totalBytes += value.length;
+                        if (now() - t0 >= durationMs) {
+                            try { c.abort(); } catch (e) {}
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    // Aborted or timed out
+                } finally {
+                    clearTimeout(timer);
+                }
+            }
+        };
+
+        // Scale concurrency dynamically
+        const workers = [worker(), worker(), worker()];
+        setTimeout(() => {
+            if (now() - t0 < durationMs) {
+                workers.push(worker());
+                workers.push(worker());
+            }
+        }, 1200);
+
+        await Promise.all(workers);
+        clearInterval(samplerInterval);
+
+        // Fast.com Precision calculation:
+        // Use the 85th percentile of sustained steady-state samples to eliminate TCP saw-tooth dips
+        if (rateSamples.length >= 6) {
+            return percentile(rateSamples, 85);
+        } else if (rateSamples.length > 0) {
+            return median(rateSamples);
+        } else {
+            const elapsed = (now() - t0) / 1000;
+            return elapsed > 0 ? (totalBytes * 8) / elapsed / 1e6 : 0;
+        }
+    }
+
+    /* ── Fast.com Precision Upload Algorithm with XHR Streaming ── */
+    async function uploadTest(durationMs, onLive){
+        let totalBytes = 0;
+        const t0 = now();
+        const rateSamples = [];
+        const slidingHistory = [];
+        let smoothedDisplay = 0;
+
+        // 1.5 MB binary payload
+        const payload = new Uint8Array(1500000);
+        for (let i = 0; i < payload.length; i += 2048) payload[i] = 7;
+
+        const samplerInterval = setInterval(() => {
+            const curTime = now();
+            slidingHistory.push({ t: curTime, bytes: totalBytes });
+
+            while (slidingHistory.length > 1 && (curTime - slidingHistory[0].t) > 1200) {
+                slidingHistory.shift();
+            }
+
+            if (slidingHistory.length >= 2) {
+                const oldest = slidingHistory[0];
+                const dt = (curTime - oldest.t) / 1000;
+                const db = totalBytes - oldest.bytes;
+                if (dt >= 0.4 && db > 0) {
+                    const instantMbps = (db * 8) / dt / 1e6;
+                    smoothedDisplay = smoothedDisplay === 0 ? instantMbps : (0.7 * instantMbps + 0.3 * smoothedDisplay);
+                    onLive(smoothedDisplay);
+
+                    if ((curTime - t0) >= WARMUP_MS) {
+                        rateSamples.push(instantMbps);
+                    }
+                }
+            }
+        }, 120);
+
+        const sendChunk = () => new Promise(resolve => {
+            if (now() - t0 >= durationMs) return resolve(false);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', UP, true);
+            let prevLoaded = 0;
+
+            xhr.upload.onprogress = (evt) => {
+                if (evt.loaded > prevLoaded) {
+                    totalBytes += (evt.loaded - prevLoaded);
+                    prevLoaded = evt.loaded;
+                }
+                if (now() - t0 >= durationMs) {
+                    try { xhr.abort(); } catch(e) {}
+                    resolve(false);
+                }
+            };
+            xhr.onload = () => resolve(true);
+            xhr.onerror = () => resolve(false);
+            xhr.onabort = () => resolve(false);
+            xhr.send(payload);
+        });
+
+        const worker = async () => {
+            while (now() - t0 < durationMs) {
+                await sendChunk();
+            }
+        };
+
+        const streamCount = 3;
+        await Promise.all(Array.from({ length: streamCount }, worker));
+        clearInterval(samplerInterval);
+
+        if (rateSamples.length >= 6) {
+            return percentile(rateSamples, 85);
+        } else if (rateSamples.length > 0) {
+            return median(rateSamples);
+        } else {
+            const elapsed = (now() - t0) / 1000;
+            return elapsed > 0 ? (totalBytes * 8) / elapsed / 1e6 : 0;
+        }
+    }
+
+    function summaryText(){
+        const stamp = new Date().toLocaleString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const lines = [
+            'Internet Speed Test — DM Solutions Tech',
+            '',
+            'Date: ' + stamp,
+            'Download: ' + fmtSpeed(res.dl) + ' Mbps',
+            'Upload: ' + fmtSpeed(res.ul) + ' Mbps',
+            'Latency (idle): ' + fmtMs(res.lat) + ' ms',
+            'Latency (loaded): ' + fmtMs(res.latl) + ' ms',
+            'Jitter: ' + fmtMs(res.jit) + ' ms',
+            'Quality: ' + verdict(res.dl)
+        ];
+        if (res.client) lines.push('Client: ' + res.client);
+        if (res.server) lines.push('Server: ' + res.server);
+        lines.push('');
+        lines.push('Measured via Cloudflare edge CDN using Fast.com steady-state saturation methodology.');
+        return lines.join('\n');
+    }
+
+    function reset(){
+        el.dl.textContent = '—'; el.ul.textContent = '—';
+        el.lat.textContent = '—'; el.latl.textContent = '—'; el.jit.textContent = '—'; el.q.textContent = '—';
+        el.notice.classList.add('hidden');
+        res = { dl: NaN, ul: NaN, lat: NaN, latl: NaN, jit: NaN, client: res.client, server: res.server };
+    }
+
+    async function run(){
+        if (running) return;
+        running = true;
+        reset();
+        setStart('testing');
+        el.toggle.hidden = true;
+        el.info.hidden = true;
+        el.toggle.setAttribute('aria-expanded', 'false');
+        el.card.classList.add('is-testing');
+        setSpeed(0);
+        progress(5, 'Measuring latency & ping…');
+
+        try {
+            setPhase('Measuring latency & ping…');
+            const latList = await measureLatency(8);
+            res.lat = median(latList);
+            res.jit = jitter(latList);
+            el.lat.textContent = fmtMs(res.lat);
+            el.jit.textContent = fmtMs(res.jit);
+            progress(20, 'Testing download speed…');
+
+            setPhase('Testing download speed…');
+            const loadList = [];
+            const stopProbe = { v: false };
+            const probePromise = loadedLatency(stopProbe, loadList);
+
+            const dl = await downloadTest(DL_DURATION_MS, v => setSpeed(v));
+            res.dl = dl;
+            stopProbe.v = true;
+            await probePromise;
+
+            setSpeed(dl);
+            el.dl.textContent = fmtSpeed(dl);
+            res.latl = median(loadList);
+            el.latl.textContent = fmtMs(res.latl);
+            progress(60, 'Testing upload speed…');
+
+            setPhase('Testing upload speed…');
+            try {
+                const ul = await uploadTest(UL_DURATION_MS, v => {
+                    el.ul.textContent = fmtSpeed(v);
+                });
+                res.ul = ul;
+                el.ul.textContent = fmtSpeed(ul);
+            } catch (e) {
+                el.ul.textContent = '—';
+            }
+
+            progress(100, 'Test Complete');
+            el.q.textContent = verdict(res.dl);
+            setPhase('Done — tap “Test Again” to re-run');
+
+            el.toggle.hidden = false;
+            el.info.hidden = false;
+            el.toggle.setAttribute('aria-expanded', 'true');
+            el.toggle.innerHTML = '<i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Hide details';
+            setTimeout(() => progress(null), 800);
+            toast('Speed test complete');
+        } catch (err) {
+            console.error(err);
+            el.notice.textContent = '⚠️ ' + ((err && err.message) || 'Could not reach the test server. Check your connection and try again.');
+            el.notice.classList.remove('hidden');
+            setPhase('Test failed — tap to try again');
+            progress(null);
+            toast('Speed test failed', 'err');
+        } finally {
+            running = false;
+            setStart(isFinite(res.dl) && res.dl > 0 ? 'again' : 'idle');
+            el.card.classList.remove('is-testing');
+        }
+    }
+
+    el.start.addEventListener('click', run);
+    el.copy.addEventListener('click', () => copyText(summaryText(), el.copy));
+    el.toggle.addEventListener('click', () => {
+        const open = el.info.hidden;
+        el.info.hidden = !open;
+        el.toggle.innerHTML = open
+            ? '<i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Hide details'
+            : '<i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Show details';
+        el.toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    toolPageInit(KEY);
+})();
+</script>
+</body>
+</html>

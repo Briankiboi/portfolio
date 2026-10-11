@@ -14,6 +14,10 @@
     <meta name="geo.position" content="-1.286389;36.817223" />
     <meta name="ICBM" content="-1.286389, 36.817223" />
 
+    <!-- Start critical downloads ASAP (app bundle + 3D model) for fastest first paint of the 3D -->
+    <link rel="modulepreload" href="/assets/index-4f0713c4.js?v=cta9" fetchpriority="high">
+    <link rel="preload" as="fetch" href="/desktop_pc/scene.glb" type="model/gltf-binary" crossorigin="anonymous" fetchpriority="high">
+
     <link rel="icon" type="image/png" href="/assets/icon-512.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
@@ -353,11 +357,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@300;400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script type="module" crossorigin src="/assets/index-4f0713c4.js"></script>
+    <script type="module" crossorigin src="/assets/index-4f0713c4.js?v=cta9" fetchpriority="high"></script>
     <script src="/assets/add-service-section.js?v=contact-rail-43"></script>
     <script src="/pwa-install.js?v=2"></script>
     <link rel="stylesheet" href="/assets/index-389a2322.css">
-      <link rel="modulepreload" href="/assets/index-4f0713c4.js">
+    <style>.canvas-loader{font-size:7px!important;animation-duration:.8s!important}.dp-badge{width:auto!important;min-width:0!important;max-width:340px!important;padding:9px 18px!important;border-radius:999px!important;white-space:nowrap!important;top:-24px!important;box-shadow:0 8px 24px rgba(0,0,0,.7)!important}.social-floating-pill{bottom:-64px!important}.hero-counter-wrap .count-text.percent:after{content:"%"!important}.services-grid-new{opacity:1!important;transform:none!important}.service-card-new,.service-card-new:hover{opacity:1!important;transform:none!important}</style>
 </head>
   <body>
     <div id="root"></div>
