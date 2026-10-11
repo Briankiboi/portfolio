@@ -640,7 +640,7 @@
 }
 .th-foot-grid {
     display: grid;
-    grid-template-columns: 2.2fr 1fr 1.1fr 1.6fr;
+    grid-template-columns: 1.8fr 1fr 1.9fr 1.2fr;
     gap: 40px;
     align-items: flex-start;
 }
@@ -717,6 +717,14 @@
 .th-foot-links li a:hover {
     color: #ffffff;
     transform: translateX(3px);
+}
+
+/* Resources column: the 12 tools flow as two balanced columns (6 + 6) */
+.th-foot-links-tools {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(6, auto);
+    gap: 12px 18px;
 }
 
 /* Column 3: Google Play Badge */
