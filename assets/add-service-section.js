@@ -2356,20 +2356,20 @@ section:has(.feedbacks-wrap) {
     if (type === 'wa') {
       a.href = 'https://api.whatsapp.com/send?phone=254112401838&text=Hello%20Brian,%20I%27d%20like%20to%20schedule%20a%20consultation%20with%20DM%20Solution%20Tech.';
       a.innerHTML =
-        '<div class="about-cta-tile-icon"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" width="28" height="28"></div>' +
+        '<div class="about-cta-tile-icon"><img src="/assets/ext/simple/whatsapp-ffffff.svg" alt="" width="28" height="28"></div>' +
         '<div class="about-cta-tile-body"><strong>Schedule on WhatsApp</strong><small>Get instant replies <br><br> powered by WhatsApp</small></div>' +
         '<span class="about-cta-tile-arrow">→</span>';
     } else if (type === 'cal') {
       a.href = '#';
       a.setAttribute('onclick', "window.__svcOpenCalendly && window.__svcOpenCalendly(); return false;");
       a.innerHTML =
-        '<div class="about-cta-tile-icon"><img src="https://cdn.simpleicons.org/calendly/ffffff" alt="" width="28" height="28"></div>' +
+        '<div class="about-cta-tile-icon"><img src="/assets/ext/simple/calendly-ffffff.svg" alt="" width="28" height="28"></div>' +
         '<div class="about-cta-tile-body"><strong>Book a 30-min meeting</strong><small>Quick intro meeting <br><br> powered by Calendly</small></div>' +
         '<span class="about-cta-tile-arrow">→</span>';
     } else {
       a.href = 'mailto:briankiboi83@gmail.com?subject=Project%20inquiry';
       a.innerHTML =
-        '<div class="about-cta-tile-icon"><img src="https://cdn.simpleicons.org/gmail/ffffff" alt="" width="28" height="28"></div>' +
+        '<div class="about-cta-tile-icon"><img src="/assets/ext/simple/gmail-ffffff.svg" alt="" width="28" height="28"></div>' +
         '<div class="about-cta-tile-body"><strong>Email me directly</strong><small>Detailed brief mail <br><br> powered by Gmail</small></div>' +
         '<span class="about-cta-tile-arrow">→</span>';
     }

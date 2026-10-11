@@ -8,16 +8,12 @@
 //   - Hashed images (/assets/*) are CACHE-FIRST: instant on repeat visits.
 //   - Navigations and root files (/, index.html, manifest.json, etc.) are
 //     NETWORK-FIRST and runtime-cached, so edits go live without a cache dance.
-const VERSION = 'portfolio-v10';
+const VERSION = 'portfolio-v11';
 const PRECACHE_URLS = [
       "/",
       "/assets/brian-dp.webp",
       "/assets/herobg-ecbfddc8.webp",
-      "/assets/image.webp",
-      "/planet/scene.bin",
-      "/planet/scene.gltf",
-      "/planet/textures/Clouds_baseColor.png",
-      "/planet/textures/Planet_baseColor.png"
+      "/assets/image.webp"
 ];
 
 self.addEventListener('install', (event) => {
