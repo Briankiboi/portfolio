@@ -2026,7 +2026,7 @@ section:has(.feedbacks-wrap) {
       var img = document.createElement('img');
       img.src = p.thumb;
       img.alt = p.imgAlt;
-      img.loading = 'lazy';
+      img.loading = 'eager';
       link.appendChild(img);
 
       var body = document.createElement('div');
@@ -2134,7 +2134,7 @@ section:has(.feedbacks-wrap) {
     var img = document.createElement('img');
     img.src = RATE_CARD.src;
     img.alt = RATE_CARD.alt;
-    img.loading = 'lazy';
+    img.loading = 'eager';
 
     frame.appendChild(img);
 
