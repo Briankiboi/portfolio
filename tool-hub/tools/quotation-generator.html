@@ -3,425 +3,1756 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quotation Generator — Free Tools Hub</title>
-<meta name="description" content="Generate professional quotations with PDF download — client-side, offline.">
+<title>Quotation Maker — Free Tools Hub</title>
+<meta name="description" content="Generate professional project quotations and price estimates with PDF download and email sharing — client-side, offline.">
 <link rel="icon" type="image/png" href="../assets/icon-512.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
     tailwind.config = {
         darkMode: 'class',
-        theme: { extend: { colors: { primary: '#C77800', primaryDark: '#A15E00', secondary: '#0E8A6C' } } }
+        theme: { extend: { colors: { primary: '#2563EB', primaryDark: '#1D4ED8', secondary: '#0E8A6C' } } }
     }
 </script>
 <link rel="stylesheet" href="../assets/css/app.css">
 <link rel="stylesheet" href="../assets/css/tool.css">
-    <link rel="stylesheet" href="../assets/css/site-header.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<style>[x-cloak]{display:none!important}</style>
-</head>
-<body class="tool-page">
+<link rel="stylesheet" href="../assets/css/site-header.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+[x-cloak]{display:none!important}
+:root {
+    --rm-border: #cbd5e1;
+    --rm-border-light: #e2e8f0;
+    --rm-bg-subtle: #f8fafc;
+    --rm-text-main: #0f172a;
+    --rm-text-muted: #64748b;
+}
 
+body.tool-page {
+    background-color: #f1f5f9;
+}
+
+/* Quotation Maker App Container */
+.rm-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+/* App Header */
+.rm-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+.rm-app-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #334155;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* Tabs: Preview / Edit / History */
+.rm-tabs {
+    display: inline-flex;
+    background: #e2e8f0;
+    padding: 3px;
+    border-radius: 8px;
+    gap: 2px;
+}
+.rm-tab-btn {
+    padding: 6px 18px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #475569;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.rm-tab-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-weight: 600;
+}
+
+/* Action Buttons (PDF, Email Quotation) */
+.rm-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+.rm-btn-pdf {
+    background: #e2e8f0;
+    color: #334155;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 7px;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.rm-btn-pdf:hover {
+    background: #cbd5e1;
+}
+.rm-btn-email {
+    background: #334155;
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 7px 20px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.rm-btn-email:hover {
+    background: #1e293b;
+}
+
+/* Two-column workspace layout */
+.rm-workspace {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Left Document Sheet */
+.rm-paper {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    padding: 2.25rem 2.5rem;
+}
+
+/* Title & Logo Header */
+.rm-head-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.rm-title-input {
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: #0f172a;
+    border: 1.5px solid var(--rm-border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    width: 250px;
+    max-width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.rm-title-input:focus {
+    border-color: #3b82f6;
+}
+
+.rm-logo-box {
+    width: 210px;
+    height: 105px;
+    border: 1.5px solid var(--rm-border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #475569;
+    font-size: 0.88rem;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.15s ease;
+}
+.rm-logo-box:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+}
+.rm-logo-box img {
+    max-width: 90%;
+    max-height: 85%;
+    object-fit: contain;
+}
+.rm-logo-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(239,68,68,0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* From & Prepared For 2-Column Section */
+.rm-parties-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+}
+.rm-section-h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0 0 1rem 0;
+}
+.rm-field-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.65rem;
+    gap: 0.75rem;
+}
+.rm-field-label {
+    width: 100px;
+    flex-shrink: 0;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #334155;
+}
+.rm-field-input-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.rm-input {
+    width: 100%;
+    border: 1px solid var(--rm-border);
+    border-radius: 6px;
+    padding: 7px 11px;
+    font-size: 0.88rem;
+    color: #1e293b;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.rm-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+.rm-input-icon {
+    position: absolute;
+    right: 9px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.rm-address-stack {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.rm-toggle-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #2563eb;
+    font-size: 0.82rem;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 0.4rem;
+}
+
+/* Quotation Metadata Strip: Number, Date, Valid Until */
+.rm-meta-strip {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 1.25rem;
+    margin-bottom: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Items Table */
+.rm-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.25rem;
+}
+.rm-items-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #334155;
+    letter-spacing: 0.05em;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1.5px solid #334155;
+}
+.rm-items-table th.th-num {
+    text-align: right;
+}
+.rm-item-tr td {
+    padding: 0.65rem 0.5rem;
+    vertical-align: top;
+}
+.rm-btn-remove {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--rm-border);
+    border-radius: 4px;
+    background: #ffffff;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s;
+}
+.rm-btn-remove:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+.rm-details-box {
+    margin-top: 0.4rem;
+    position: relative;
+}
+.rm-textarea {
+    width: 100%;
+    border: 1px solid var(--rm-border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 0.85rem;
+    color: #1e293b;
+    outline: none;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.15s;
+}
+.rm-textarea:focus {
+    border-color: #3b82f6;
+}
+.rm-char-count {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+.rm-btn-add {
+    width: 32px;
+    height: 32px;
+    background: #1e293b;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.rm-btn-add:hover {
+    background: #0f172a;
+}
+
+/* Totals Summary */
+.rm-totals-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1.5rem 0 2rem 0;
+}
+.rm-totals-card {
+    min-width: 270px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.rm-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: #475569;
+}
+.rm-total-row.balance-due {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    padding-top: 0.4rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Terms & Conditions Section */
+.rm-section-block {
+    margin-bottom: 1.75rem;
+}
+.rm-sec-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.rm-notes-wrap {
+    position: relative;
+}
+
+/* Signature & Photos */
+.rm-signature-preview {
+    border: 1px dashed var(--rm-border);
+    border-radius: 8px;
+    padding: 0.5rem;
+    max-width: 240px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #fafafa;
+}
+.rm-photo-card {
+    width: 140px;
+    height: 90px;
+    border: 1px solid var(--rm-border);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.15s;
+    overflow: hidden;
+    position: relative;
+}
+.rm-photo-card:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+/* Right Sidebar Sticky */
+.rm-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 1.5rem;
+}
+
+/* Live Paper Thumbnail (Orange Border) */
+.rm-thumb-card {
+    border: 2px solid #f97316;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    padding: 12px;
+    height: 310px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+.rm-mini-paper {
+    font-size: 5px;
+    line-height: 1.35;
+    color: #334155;
+    transform: scale(0.92);
+    transform-origin: top left;
+    width: 108%;
+    user-select: none;
+    pointer-events: none;
+}
+.rm-mini-line {
+    border-bottom: 0.5px solid #cbd5e1;
+    margin: 4px 0;
+}
+
+/* Sidebar Controls */
+.rm-side-control {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 7px 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #334155;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+}
+.rm-side-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+.rm-side-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    width: 70px;
+}
+.rm-side-select {
+    flex: 1;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+    color: #334155;
+    background: #ffffff;
+    outline: none;
+}
+
+.rm-currency-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 10px;
+    background: #ffffff;
+}
+
+/* Modal Backdrops */
+.rm-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(2px);
+}
+.rm-modal-card {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    width: min(920px, 100%);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@media (max-width: 960px) {
+    .rm-workspace {
+        grid-template-columns: 1fr;
+    }
+    .rm-sidebar {
+        position: static;
+        order: -1;
+    }
+    .rm-thumb-card {
+        height: 220px;
+    }
+    .rm-meta-strip {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 640px) {
+    .rm-parties-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .rm-head-row {
+        flex-direction: column;
+    }
+    .rm-paper {
+        padding: 1.25rem 1rem;
+    }
+    .rm-items-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+</style>
+</head>
+<body class="tool-page" x-data="quoteMaker()" x-init="init()">
+
+<!-- Hub site header slot -->
 <div id="hub-header-slot" data-root="../"></div>
 
-<main>
-    <div class="container">
-        <div class="page-crumb">
-        <a href="../index.html" class="back-link"><span class="bl-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path> </g></svg></span><span>Back to all tools</span></a>
-        <span class="page-crumb-title">Quotation Generator</span>
+<main class="py-4">
+    <div class="container" style="max-width: 1240px; margin: 0 auto; padding: 0 1rem;">
+        <div class="page-crumb" style="margin-bottom: 1rem;">
+            <a href="../index.html" class="back-link">
+                <span class="bl-arrow">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true"><rect width="48" height="48" fill="white" fill-opacity="0.01"></rect><path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="#14c86b" stroke="#000000" stroke-width="4" stroke-linejoin="round"></path></svg>
+                </span>
+                <span>Back to all tools</span>
+            </a>
+            <span class="page-crumb-title">Quotation Maker</span>
         </div>
 
+        <div class="rm-container">
+            <!-- Top App Bar -->
+            <div class="rm-top-bar">
+                <div>
+                    <h1 class="rm-app-title">Quotation Maker</h1>
+                </div>
 
+                <!-- Tabs: Preview, Edit, History -->
+                <div class="rm-tabs">
+                    <button type="button" class="rm-tab-btn" :class="{ 'active': activeTab === 'preview' }" @click="openFullPreview()">Preview</button>
+                    <button type="button" class="rm-tab-btn" :class="{ 'active': activeTab === 'edit' }" @click="activeTab = 'edit'">Edit</button>
+                    <button type="button" class="rm-tab-btn" :class="{ 'active': activeTab === 'history' }" @click="openHistory()">History</button>
+                </div>
 
-        <div class="tool-shell" style="max-width:1200px;margin:0 auto" x-data="quoteData()" x-init="init()">
-            <header class="tool-meta">
-            <span class="tool-meta-icon"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i></span>
-            <div class="tool-meta-body">
-                <h1>Quotation Generator</h1>
-                <p>Create professional quotations and download as PDF. All data stays in your browser.</p>
-                <div class="tool-meta-row">
-                    <span class="tool-badge">Business</span>
-                    <span class="tool-badge tool-badge-soft">client-side</span>
+                <!-- Right Action Buttons -->
+                <div class="rm-actions">
+                    <button type="button" class="rm-btn-pdf" @click="downloadPdf()"><i class="fa-solid fa-file-pdf mr-1 text-red-500"></i> PDF</button>
+                    <button type="button" class="rm-btn-email" @click="emailQuote()"><i class="fa-solid fa-paper-plane mr-1.5"></i> Email Quotation</button>
                 </div>
             </div>
-            <button type="button" class="fav-btn" data-fav title="Save to favorites" aria-label="Save to favorites">☆</button>
-        </header>
-            
 
-            <div class="tool-split">
-            <div class="preview-col">
-            <div x-show="showPreview" x-cloak>
-                <div id="quote-preview-content" style="background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:1.5rem;max-width:650px;margin:0 auto;font-size:.82rem;color:#111">
-                    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #915EFF;padding-bottom:.75rem;margin-bottom:.75rem">
+            <!-- Main Workspace: Form Paper on Left, Sidebar on Right -->
+            <div class="rm-workspace">
+                
+                <!-- ══ LEFT QUOTATION DOCUMENT PAPER ══ -->
+                <div class="rm-paper">
+                    
+                    <!-- Title & Logo Row -->
+                    <div class="rm-head-row">
                         <div>
-                            <img x-show="logoDataUrl" :src="logoDataUrl" alt="logo" x-cloak style="max-height:48px;max-width:170px;object-fit:contain;margin-bottom:.4rem;display:block">
-                            <div style="font-size:1.2rem;font-weight:700;color:#915EFF" x-text="businessName || 'Your Business'"></div>
-                            <div style="font-style:italic;color:#6b7280;font-size:.78rem" x-text="tagline" x-show="tagline"></div>
-                            <div style="font-size:.78rem" x-text="address" x-show="address"></div>
-                            <div style="font-size:.78rem"><span x-text="bizPhone" x-show="bizPhone"></span><span x-show="bizPhone && bizEmail"> | </span><span x-text="bizEmail" x-show="bizEmail"></span></div>
-                            <div style="font-size:.78rem" x-text="bizWebsite" x-show="bizWebsite"></div>
+                            <input type="text" class="rm-title-input" x-model="docTitle" placeholder="Quotation">
                         </div>
-                        <div style="text-align:right">
-                            <div style="font-size:1.1rem;font-weight:700;color:#915EFF">QUOTATION</div>
-                            <div style="font-size:.78rem"><strong x-text="quoteNo"></strong></div>
-                            <div style="font-size:.78rem" x-text="'Date: ' + quoteDate"></div>
-                            <div style="font-size:.78rem;color:#ef4444" x-text="'Valid Until: ' + validUntil"></div>
+
+                        <!-- + Logo Box -->
+                        <div>
+                            <div class="rm-logo-box" @click="$refs.logoInput.click()">
+                                <template x-if="!logoDataUrl">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-image text-slate-800 text-base"></i>
+                                        <span>+ Logo</span>
+                                    </div>
+                                </template>
+                                <template x-if="logoDataUrl">
+                                    <div class="w-full h-full p-2 flex items-center justify-center">
+                                        <img :src="logoDataUrl" alt="Logo">
+                                        <button type="button" class="rm-logo-remove" @click.stop="clearLogo()" title="Remove logo">&times;</button>
+                                    </div>
+                                </template>
+                            </div>
+                            <input type="file" x-ref="logoInput" accept="image/*" @change="onLogo($event)" class="hidden">
                         </div>
                     </div>
-                    <div style="margin-bottom:.5rem;font-size:.8rem"><strong>Prepared For:</strong><br><span x-text="custName || 'Client Name'"></span><br><span x-text="custAddress" x-show="custAddress"></span><br><span x-text="custPhone" x-show="custPhone"></span> <span x-show="custEmail">| <span x-text="custEmail"></span></span></div>
-                    <table style="width:100%;border-collapse:collapse;margin:.5rem 0;font-size:.78rem">
-                        <thead><tr style="border-bottom:2px solid #915EFF"><th style="text-align:left;padding:.3rem 0">Item</th><th style="text-align:right;padding:.3rem 0">Qty</th><th style="text-align:right;padding:.3rem 0">Price</th><th style="text-align:right;padding:.3rem 0">Amount</th></tr></thead>
+
+                    <!-- From & Prepared For 2-Column Grid -->
+                    <div class="rm-parties-grid">
+                        
+                        <!-- "From" Column -->
+                        <div>
+                            <h3 class="rm-section-h3">From (Prepared By)</h3>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Name</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="fromName" placeholder="Your Business / Studio">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Email</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="email" class="rm-input" x-model="fromEmail" placeholder="contact@yourbusiness.com">
+                                    <i class="fa-solid fa-circle-check rm-input-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row" style="align-items:flex-start;">
+                                <label class="rm-field-label pt-2">Address</label>
+                                <div class="rm-address-stack">
+                                    <input type="text" class="rm-input" x-model="fromStreet" placeholder="Street / Plaza">
+                                    <input type="text" class="rm-input" x-model="fromCityState" placeholder="City, Country">
+                                    <input type="text" class="rm-input" x-model="fromZip" placeholder="Postal Code">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Phone</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="tel" class="rm-input" x-model="fromPhone" placeholder="+254 712 345 678">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Tax ID / PIN</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="fromTaxId" placeholder="KRA PIN or Reg No">
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="button" class="rm-toggle-link" @click="showExtraBiz = !showExtraBiz" x-text="showExtraBiz ? 'Hide additional business details' : 'Show additional business details'"></button>
+                                <div x-show="showExtraBiz" x-cloak class="mt-2 space-y-2">
+                                    <div class="rm-field-row">
+                                        <label class="rm-field-label">Website</label>
+                                        <div class="rm-field-input-wrap">
+                                            <input type="text" class="rm-input" x-model="fromWebsite" placeholder="https://yourbusiness.com">
+                                        </div>
+                                    </div>
+                                    <div class="rm-field-row">
+                                        <label class="rm-field-label">Tagline</label>
+                                        <div class="rm-field-input-wrap">
+                                            <input type="text" class="rm-input" x-model="fromTagline" placeholder="Digital Solutions & Design">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- "Prepared For" Column -->
+                        <div>
+                            <h3 class="rm-section-h3">Prepared For (Client)</h3>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Client Name</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="clientName" placeholder="Client Contact Name">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Company</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="clientCompany" placeholder="Client Organization / Company">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Email</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="email" class="rm-input" x-model="clientEmail" placeholder="client@company.com">
+                                    <i class="fa-solid fa-circle-check rm-input-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Address</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="clientStreet" placeholder="Client Location / Street">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Phone</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="tel" class="rm-input" x-model="clientPhone" placeholder="+254 700 000 000">
+                                </div>
+                            </div>
+
+                            <div class="rm-field-row">
+                                <label class="rm-field-label">Project Ref</label>
+                                <div class="rm-field-input-wrap">
+                                    <input type="text" class="rm-input" x-model="projectRef" placeholder="e.g. Website Redesign 2026">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quotation Metadata: Number, Issue Date, Valid Until -->
+                    <div class="rm-meta-strip">
+                        <div class="rm-field-row">
+                            <label class="rm-field-label">Quote #</label>
+                            <div class="rm-field-input-wrap">
+                                <input type="text" class="rm-input" x-model="quoteNo" placeholder="QTN-2026-001">
+                                <i class="fa-solid fa-circle-check rm-input-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="rm-field-row">
+                            <label class="rm-field-label">Date</label>
+                            <div class="rm-field-input-wrap">
+                                <input type="text" class="rm-input" x-model="quoteDate" placeholder="Oct 11, 2026">
+                            </div>
+                        </div>
+
+                        <div class="rm-field-row">
+                            <label class="rm-field-label">Valid Until</label>
+                            <div class="rm-field-input-wrap">
+                                <input type="text" class="rm-input" x-model="validUntil" placeholder="Nov 11, 2026">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Line Items Table -->
+                    <table class="rm-items-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 38px;"></th>
+                                <th>DESCRIPTION / SCOPE</th>
+                                <th class="th-num" style="width: 120px;">RATE</th>
+                                <th class="th-num" style="width: 90px;">QTY / HRS</th>
+                                <th class="th-num" style="width: 120px;">AMOUNT</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <template x-for="(item, i) in items" :key="'q'+i">
-                                <tr style="border-bottom:1px dashed #ddd"><td style="padding:.25rem 0" x-text="item.desc || '—'"></td><td style="text-align:right;padding:.25rem 0" x-text="item.qty"></td><td style="text-align:right;padding:.25rem 0" x-text="currencySym + fmtNum(item.price)"></td><td style="text-align:right;padding:.25rem 0;font-weight:600" x-text="currencySym + fmtNum(item.qty * item.price)"></td></tr>
+                            <template x-for="(item, i) in items" :key="i">
+                                <tr class="rm-item-tr">
+                                    <td>
+                                        <button type="button" class="rm-btn-remove" @click="removeItem(i)" title="Remove item">&times;</button>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="rm-input" x-model="item.desc" placeholder="Service or Item Title">
+                                        <div class="rm-details-box">
+                                            <textarea class="rm-textarea" rows="2" maxlength="5000" x-model="item.details" placeholder="Scope of work, deliverables, and specifications"></textarea>
+                                            <span class="rm-char-count" x-text="(item.details ? item.details.length : 0) + '/5000'"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.01" min="0" class="rm-input text-right" x-model.number="item.rate" placeholder="0.00">
+                                    </td>
+                                    <td>
+                                        <input type="number" step="1" min="1" class="rm-input text-right" x-model.number="item.qty" placeholder="1">
+                                    </td>
+                                    <td class="text-right font-medium text-slate-800 pt-3">
+                                        <span x-text="currencySym + fmtNum((item.rate || 0) * (item.qty || 0))"></span>
+                                    </td>
+                                </tr>
                             </template>
                         </tbody>
                     </table>
-                    <div style="text-align:right;border-top:1px solid #915EFF;padding-top:.5rem;margin-top:.5rem">
-                        <div>Subtotal: <strong x-text="currencySym + fmtNum(subtotal)"></strong></div>
-                        <div x-show="discountAmt > 0" style="color:#ef4444">Discount: <strong x-text="'-' + currencySym + fmtNum(discountAmt)"></strong></div>
-                        <div x-show="Number(taxRate) > 0">Tax (<span x-text="taxRate"></span>%): <strong x-text="currencySym + fmtNum(taxAmt)"></strong></div>
-                        <div style="font-size:1.05rem;font-weight:700;margin-top:.25rem;color:#915EFF">TOTAL: <span x-text="currencySym + fmtNum(total)"></span></div>
-                    </div>
-                    <div style="margin-top:.5rem;font-size:.78rem;border-top:1px dashed #d1d5db;padding-top:.5rem">
-                        <div>Payment Terms: <strong x-text="paymentTerms"></strong></div>
-                        <div style="font-style:italic;margin-top:.25rem" x-text="totalInWords"></div>
-                    </div>
-                    <div style="text-align:center;margin-top:.75rem;font-style:italic;color:#6b7280;font-size:.75rem" x-text="notes || 'Thank you for your business!'"></div>
-                </div>
-            </div>
-            </div>
-            <div class="entry-col">
 
-            <!-- Business Info -->
-            <h2 class="sec-title">Business Information</h2>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-                <div class="field"><label>Business Name</label><input type="text" x-model="businessName" placeholder="e.g. Your Business Ltd" autocomplete="organization"></div>
-                <div class="field"><label>Tagline</label><input type="text" x-model="tagline" placeholder="e.g. Your trusted partner"></div>
-                <div class="field"><label>Address</label><input type="text" x-model="address" placeholder="e.g. Nairobi, Kenya" autocomplete="street-address"></div>
-                <div class="field"><label>Phone</label><input type="tel" inputmode="tel" x-model="bizPhone" placeholder="e.g. +254 712 345 678" autocomplete="tel"></div>
-                <div class="field"><label>Email</label><input type="email" inputmode="email" autocapitalize="off" x-model="bizEmail" placeholder="e.g. info@yourbusiness.example" autocomplete="email"></div>
-                <div class="field"><label>Website</label><input type="text" x-model="bizWebsite" placeholder="e.g. www.yourbusiness.example"></div>
-                <div class="field" style="grid-column:1 / -1">
-                    <label>Business Logo</label>
-                    <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
-                        <button type="button" class="btn btn-secondary" style="font-size:.82rem;padding:.55rem 1.05rem" @click="$refs.logoInput.click()">🖼️ Upload Logo</button>
-                        <span x-show="logoName" style="font-size:.8rem;color:var(--muted)" x-text="logoName"></span>
-                        <template x-if="logoDataUrl">
-                            <span style="display:inline-flex;align-items:center;gap:.5rem">
-                                <img :src="logoDataUrl" alt="logo" style="max-height:40px;border:1px solid #E4E8EF;border-radius:8px;padding:3px;background:#fff">
-                                <button type="button" class="fav-btn" @click="clearLogo()" title="Remove logo" style="font-size:.9rem;color:#ef4444">✕</button>
-                            </span>
+                    <!-- + Add Row Button -->
+                    <div>
+                        <button type="button" class="rm-btn-add" @click="addItem()" title="Add scope item">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Summary & Total Quotation -->
+                    <div class="rm-totals-wrap">
+                        <div class="rm-totals-card">
+                            <div class="rm-total-row">
+                                <span>Subtotal</span>
+                                <span class="font-medium text-slate-800" x-text="currencySym + fmtNum(subtotal)"></span>
+                            </div>
+                            <div class="rm-total-row" x-show="discountAmt > 0">
+                                <span class="text-red-500">Discount</span>
+                                <span class="text-red-500" x-text="'-' + currencySym + fmtNum(discountAmt)"></span>
+                            </div>
+                            <div class="rm-total-row" x-show="taxAmt > 0">
+                                <span x-text="'Tax (' + taxValue + '%)'"></span>
+                                <span x-text="currencySym + fmtNum(taxAmt)"></span>
+                            </div>
+                            <div class="rm-total-row balance-due">
+                                <span>Total Quotation</span>
+                                <span x-text="currencySym + fmtNum(total)"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions Section (Tweak for Quotations) -->
+                    <div class="rm-section-block">
+                        <label class="rm-sec-label">Terms &amp; Conditions / Payment Schedule</label>
+                        <div class="rm-notes-wrap">
+                            <textarea class="rm-textarea" rows="4" maxlength="5000" x-model="terms" placeholder="1. Quotation valid for 30 days from date of issue.&#10;2. 50% deposit required upon confirmation, balance upon completion.&#10;3. Additional scope or revisions beyond agreed terms will be billed separately."></textarea>
+                            <span class="rm-char-count" x-text="(terms ? terms.length : 0) + '/5000'"></span>
+                        </div>
+                    </div>
+
+                    <!-- Authorized Signature -->
+                    <div class="rm-section-block">
+                        <div class="flex items-center gap-2 mb-2">
+                            <label class="rm-sec-label mb-0">Authorized Signature / Stamp</label>
+                            <button type="button" class="rm-btn-add" style="width:24px;height:24px;border-radius:4px;" @click="openSignatureModal()" title="Add signature">
+                                <i class="fa-solid fa-plus text-[10px]"></i>
+                            </button>
+                        </div>
+                        <template x-if="signatureDataUrl">
+                            <div class="rm-signature-preview">
+                                <img :src="signatureDataUrl" alt="Signature" class="max-h-full max-w-full object-contain">
+                                <button type="button" class="rm-logo-remove" @click="signatureDataUrl = ''" title="Remove signature">&times;</button>
+                            </div>
                         </template>
                     </div>
-                    <input type="file" x-ref="logoInput" accept="image/*" @change="onLogo($event)" style="display:none" aria-label="Choose logo image">
-                    <p style="font-size:.7rem;color:#8a93a2;margin-top:.35rem">PNG / JPG / SVG up to 2MB — shown in the preview and PDF.</p>
-                </div>
-            </div>
 
-            <!-- Customer Info + Quote Meta -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:.75rem">
-                <div>
-                    <h2 class="sec-title" style="margin:.2rem 0 .6rem">Customer Information</h2>
-                    <div style="display:grid;gap:.75rem">
-                        <div class="field"><label>Customer / Company Name</label><input type="text" x-model="custName" placeholder="Client name"></div>
-                        <div class="field"><label>Phone</label><input type="tel" inputmode="tel" x-model="custPhone" placeholder="Phone" autocomplete="tel"></div>
-                        <div class="field"><label>Email</label><input type="email" inputmode="email" autocapitalize="off" x-model="custEmail" placeholder="Email" autocomplete="email"></div>
-                        <div class="field"><label>Address</label><input type="text" x-model="custAddress" placeholder="Client address"></div>
+                    <!-- Project Photos / Visual References -->
+                    <div class="rm-section-block">
+                        <label class="rm-sec-label">Project Attachments / References</label>
+                        <div class="flex flex-wrap gap-3">
+                            <template x-for="(ph, pi) in photos" :key="pi">
+                                <div class="rm-photo-card">
+                                    <img :src="ph" alt="Attachment" class="w-full h-full object-cover">
+                                    <button type="button" class="rm-logo-remove" @click="photos.splice(pi, 1)">&times;</button>
+                                </div>
+                            </template>
+                            <div class="rm-photo-card" @click="$refs.photoInput.click()">
+                                <i class="fa-solid fa-image text-slate-800 text-base"></i>
+                                <span>Add Photo</span>
+                            </div>
+                            <input type="file" x-ref="photoInput" accept="image/*" @change="onPhotoUpload($event)" class="hidden">
+                        </div>
                     </div>
+
                 </div>
-                <div>
-                    <h2 class="sec-title" style="margin:.2rem 0 .6rem">Quotation Details</h2>
-                    <div style="display:grid;gap:.75rem">
-                        <div class="field"><label>Quote Number</label><input type="text" x-model="quoteNo"></div>
-                        <div class="field"><label>Date</label><input type="date" x-model="quoteDate"></div>
-                        <div class="field"><label>Valid Until</label><input type="date" x-model="validUntil"></div>
-                        <div class="field"><label>Currency</label>
-                            <select x-model="currency">
-                                <option value="KSh">KSh — Kenya Shilling</option>
-                                <option value="USD">$ — US Dollar</option>
-                                <option value="EUR">€ — Euro</option>
-                                <option value="GBP">£ — British Pound</option>
+
+                <!-- ══ RIGHT SIDEBAR CONTROLS ══ -->
+                <div class="rm-sidebar">
+                    
+                    <!-- Paper Live Thumbnail Preview with Orange Border -->
+                    <div class="rm-thumb-card" @click="openFullPreview()" title="Click to view full preview">
+                        <div class="rm-mini-paper">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-bold text-[8px]" x-text="docTitle || 'QUOTATION'"></div>
+                                <div class="text-[5px] text-slate-500 text-right">
+                                    <div>QUOTE #</div>
+                                    <div x-text="quoteNo || 'QTN-001'"></div>
+                                    <div>DATE</div>
+                                    <div x-text="quoteDate"></div>
+                                    <div>VALID UNTIL</div>
+                                    <div x-text="validUntil"></div>
+                                    <div>TOTAL ESTIMATE</div>
+                                    <div class="font-bold" x-text="currencySym + fmtNum(total)"></div>
+                                </div>
+                            </div>
+                            <div class="rm-mini-line"></div>
+                            <div class="grid grid-cols-2 gap-1 mb-2 text-[5px]">
+                                <div>
+                                    <div class="font-bold">FROM:</div>
+                                    <div x-text="fromName || 'Your Business'"></div>
+                                    <div x-text="fromStreet"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">PREPARED FOR:</div>
+                                    <div x-text="clientName || 'Client Name'"></div>
+                                    <div x-text="clientCompany"></div>
+                                </div>
+                            </div>
+                            <div class="rm-mini-line"></div>
+                            <table class="w-full text-[5px] mb-2">
+                                <tr class="font-bold">
+                                    <td>DESCRIPTION</td>
+                                    <td class="text-right">RATE</td>
+                                    <td class="text-right">QTY</td>
+                                    <td class="text-right">AMOUNT</td>
+                                </tr>
+                                <template x-for="item in items.slice(0, 3)" :key="item.desc">
+                                    <tr>
+                                        <td x-text="item.desc || 'Service'"></td>
+                                        <td class="text-right" x-text="fmtNum(item.rate)"></td>
+                                        <td class="text-right" x-text="item.qty"></td>
+                                        <td class="text-right" x-text="fmtNum((item.rate||0)*(item.qty||0))"></td>
+                                    </tr>
+                                </template>
+                            </table>
+                            <div class="rm-mini-line"></div>
+                            <div class="text-right font-bold text-[7px]" x-text="currencySym + fmtNum(total)"></div>
+                        </div>
+                    </div>
+
+                    <!-- Color Selector -->
+                    <div class="relative" x-data="{ openColor: false }">
+                        <button type="button" class="rm-side-control" @click="openColor = !openColor">
+                            <span class="flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full border border-slate-300 inline-block" :style="'background:' + (themeColor === 'none' ? 'transparent' : themeColor)"></span>
+                                <span x-text="themeColorName"></span>
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                        </button>
+                        <div x-show="openColor" @click.away="openColor = false" x-cloak class="absolute top-full left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg p-2 z-20 space-y-1 text-sm">
+                            <button type="button" class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 flex items-center gap-2" @click="themeColor = 'none'; themeColorName = 'No Color'; openColor = false">
+                                <i class="fa-solid fa-ban text-slate-400"></i> No Color
+                            </button>
+                            <button type="button" class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 flex items-center gap-2" @click="themeColor = '#2563eb'; themeColorName = 'Corporate Blue'; openColor = false">
+                                <span class="w-3.5 h-3.5 rounded-full bg-blue-600 inline-block"></span> Corporate Blue
+                            </button>
+                            <button type="button" class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 flex items-center gap-2" @click="themeColor = '#059669'; themeColorName = 'Forest Green'; openColor = false">
+                                <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 inline-block"></span> Forest Green
+                            </button>
+                            <button type="button" class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 flex items-center gap-2" @click="themeColor = '#ea580c'; themeColorName = 'Warm Orange'; openColor = false">
+                                <span class="w-3.5 h-3.5 rounded-full bg-orange-600 inline-block"></span> Warm Orange
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Discount Selector -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Discount</label>
+                        <select class="rm-side-select" x-model="discountType">
+                            <option value="none">None</option>
+                            <option value="percent">Percentage (%)</option>
+                            <option value="flat">Flat Amount</option>
+                        </select>
+                    </div>
+                    <div x-show="discountType !== 'none'" x-cloak class="rm-side-row">
+                        <label class="rm-side-label">Value</label>
+                        <input type="number" step="0.01" min="0" class="rm-input text-right" x-model.number="discountValue" placeholder="0">
+                    </div>
+
+                    <!-- Tax Selector -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Tax</label>
+                        <select class="rm-side-select" x-model="taxRatePreset" @change="onTaxPresetChange()">
+                            <option value="none">None</option>
+                            <option value="5">5%</option>
+                            <option value="16">16% (Kenya VAT)</option>
+                            <option value="18">18%</option>
+                            <option value="custom">Custom %</option>
+                        </select>
+                    </div>
+                    <div x-show="taxRatePreset === 'custom'" x-cloak class="rm-side-row">
+                        <label class="rm-side-label">Tax %</label>
+                        <input type="number" step="0.1" min="0" class="rm-input text-right" x-model.number="taxValue" placeholder="16">
+                    </div>
+
+                    <!-- Currency Selector -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Currency</label>
+                        <div class="rm-currency-box">
+                            <select class="w-full bg-transparent border-none outline-none font-medium text-slate-800 text-sm cursor-pointer" x-model="currencyCode" @change="onCurrencyChange()">
+                                <option value="KES">KES   KSh   🇰🇪</option>
+                                <option value="USD">USD   $     🇺🇸</option>
+                                <option value="EUR">EUR   €     🇪🇺</option>
+                                <option value="GBP">GBP   £     🇬🇧</option>
+                                <option value="UGX">UGX   USh   🇺🇬</option>
+                                <option value="TZS">TZS   TSh   🇹🇿</option>
+                                <option value="ZAR">ZAR   R     🇿🇦</option>
                             </select>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Line Items -->
-            <h2 class="sec-title">Line Items</h2>
-            <div style="overflow-x:auto">
-                <table style="width:100%;border-collapse:collapse;font-size:.85rem;min-width:600px">
-                    <thead>
-                        <tr style="border-bottom:2px solid #E4E8EF;text-align:left">
-                            <th style="padding:.5rem">Description</th>
-                            <th style="padding:.5rem;width:70px">Qty</th>
-                            <th style="padding:.5rem;width:110px">Unit Price</th>
-                            <th style="padding:.5rem;width:110px">Amount</th>
-                            <th style="padding:.5rem;width:50px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template x-for="(item, i) in items" :key="i">
-                            <tr style="border-bottom:1px solid #f3f4f6">
-                                <td style="padding:.4rem .5rem"><input type="text" x-model="item.desc" placeholder="Item description" style="width:100%;padding:.35rem;border:1px solid #d1d5db;border-radius:4px;font-size:.85rem"></td>
-                                <td style="padding:.4rem .5rem"><input type="number" x-model.number="item.qty" min="1" style="width:100%;padding:.35rem;border:1px solid #d1d5db;border-radius:4px;font-size:.85rem"></td>
-                                <td style="padding:.4rem .5rem"><input type="number" x-model.number="item.price" min="0" step="0.01" style="width:100%;padding:.35rem;border:1px solid #d1d5db;border-radius:4px;font-size:.85rem"></td>
-                                <td style="padding:.4rem .5rem;font-weight:600" x-text="currencySym + fmtNum(item.qty * item.price)"></td>
-                                <td style="padding:.4rem .5rem;text-align:center"><button @click="removeItem(i)" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem" title="Remove">&times;</button></td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
-            </div>
-            <button @click="addItem()" class="btn" style="margin-top:.5rem;font-size:.85rem">+ Add Item</button>
+                    <!-- Validity Presets (Quotation Specific) -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Validity</label>
+                        <select class="rm-side-select" @change="setValidity($event.target.value)">
+                            <option value="30">30 Days</option>
+                            <option value="14">14 Days</option>
+                            <option value="60">60 Days</option>
+                            <option value="90">90 Days</option>
+                        </select>
+                    </div>
 
-            <!-- Tax / Discount / Payment Terms -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin-top:1rem">
-                <div class="field"><label>Tax Rate</label>
-                    <select x-model="taxRate"><option value="0">None (0%)</option><option value="5">5%</option><option value="16">16%</option><option value="18">18%</option></select>
                 </div>
-                <div class="field"><label>Discount Type</label>
-                    <select x-model="discountType"><option value="none">No Discount</option><option value="flat">Flat Amount</option><option value="percent">Percent (%)</option></select>
-                </div>
-                <div class="field" x-show="discountType !== 'none'"><label>Discount Value</label><input type="number" x-model.number="discountValue" min="0" step="0.01"></div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-                <div class="field"><label>Payment Terms</label>
-                    <select x-model="paymentTerms">
-                        <option>Due on Receipt</option>
-                        <option>Net 7 Days</option>
-                        <option>Net 14 Days</option>
-                        <option>Net 30 Days</option>
-                        <option>Net 60 Days</option>
-                        <option>50% Advance, 50% on Delivery</option>
-                    </select>
-                </div>
-                <div class="field"><label>Notes / Special Terms</label><textarea x-model="notes" rows="2" placeholder="Any additional terms or notes..."></textarea></div>
-            </div>
 
-            <!-- Totals -->
-            <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:1rem;margin-top:1rem;display:flex;justify-content:flex-end">
-                <div style="min-width:260px;font-size:.9rem">
-                    <div style="display:flex;justify-content:space-between;padding:.25rem 0"><span>Subtotal</span><span x-text="currencySym + fmtNum(subtotal)"></span></div>
-                    <div style="display:flex;justify-content:space-between;padding:.25rem 0" x-show="discountAmt > 0"><span style="color:#ef4444">Discount</span><span style="color:#ef4444" x-text="'-' + currencySym + fmtNum(discountAmt)"></span></div>
-                    <div style="display:flex;justify-content:space-between;padding:.25rem 0" x-show="Number(taxRate) > 0"><span x-text="'Tax (' + taxRate + '%)'"></span><span x-text="currencySym + fmtNum(taxAmt)"></span></div>
-                    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-top:2px solid #915EFF;margin-top:.25rem;font-weight:700;font-size:1.05rem;color:#915EFF"><span>TOTAL</span><span x-text="currencySym + fmtNum(total)"></span></div>
-                    <div style="font-size:.8rem;color:#6b7280;margin-top:.4rem;font-style:italic" x-text="totalInWords"></div>
-                </div>
-            </div>
-
-            </div>
-            </div>
-
-            <div class="tool-actions">
-                <button @click="showPreview = !showPreview" class="btn btn-secondary">👁 Toggle Preview</button>
-                <button @click="generatePDF()" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon style="fill:#B12A27;" points="475.435,117.825 475.435,512 47.791,512 47.791,0.002 357.613,0.002 412.491,54.881 "/><rect x="36.565" y="34.295" style="fill:#F2F2F2;" width="205.097" height="91.768"></rect><polygon style="fill:#771B1B;" points="475.435,117.836 357.599,117.836 357.599,0 "/><g style="fill:#B12A27;"><path d="M110.132,64.379c-0.905-2.186-2.111-4.146-3.769-5.804c-1.658-1.658-3.694-3.015-6.031-3.92c-2.412-0.98-5.126-1.432-8.141-1.432H69.651v58.195h11.383V89.481h11.157c3.015,0,5.729-0.452,8.141-1.432c2.337-0.905,4.372-2.261,6.031-3.92c1.659-1.658,2.865-3.543,3.769-5.804c0.829-2.186,1.282-4.523,1.282-6.935C111.413,68.902,110.961,66.565,110.132,64.379z M97.844,77.118c-1.508,1.432-3.618,2.186-6.181,2.186H81.034V63.323h10.629c2.563,0,4.674,0.754,6.181,2.261c1.432,1.432,2.186,3.392,2.186,5.804C100.031,73.726,99.277,75.686,97.844,77.118z"></path><path d="M164.558,75.761c-0.075-2.035-0.151-3.844-0.377-5.503c-0.226-1.659-0.603-3.166-1.131-4.598c-0.528-1.357-1.206-2.714-2.111-3.92c-2.035-2.94-4.523-5.126-7.312-6.483c-2.865-1.357-6.257-2.035-10.252-2.035h-20.956v58.195h20.956c3.995,0,7.387-0.678,10.252-2.035c2.789-1.357,5.277-3.543,7.312-6.483c0.905-1.206,1.583-2.563,2.111-3.92c0.528-1.432,0.905-2.94,1.131-4.598c0.226-1.658,0.301-3.468,0.377-5.503c0.075-1.96,0.075-4.146,0.075-6.558C164.633,79.908,164.633,77.721,164.558,75.761z M153.175,88.2c0,1.734-0.151,3.091-0.302,4.297c-0.151,1.131-0.377,2.186-0.678,2.94c-0.301,0.829-0.754,1.583-1.281,2.261c-1.885,2.412-4.749,3.543-8.518,3.543h-8.669V63.323h8.669c3.769,0,6.634,1.206,8.518,3.618c0.528,0.678,0.98,1.357,1.281,2.186s0.528,1.809,0.678,3.015c0.151,1.131,0.302,2.563,0.302,4.221c0.075,1.659,0.075,3.694,0.075,5.955C153.251,84.581,153.251,86.541,153.175,88.2z"></path><path d="M213.18,63.323V53.222h-38.37v58.195h11.383V87.823h22.992V77.646h-22.992V63.323H213.18z"></path></g></svg> Download PDF</button>
-                <button @click="printQuote()" class="btn btn-secondary"><svg width="16" height="16" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M192 234.666667h640v64H192z" fill="#424242"></path><path d="M85.333333 533.333333h853.333334v-149.333333c0-46.933333-38.4-85.333333-85.333334-85.333333H170.666667c-46.933333 0-85.333333 38.4-85.333334 85.333333v149.333333z" fill="#616161"></path><path d="M170.666667 768h682.666666c46.933333 0 85.333333-38.4 85.333334-85.333333v-170.666667H85.333333v170.666667c0 46.933333 38.4 85.333333 85.333334 85.333333z" fill="#424242"></path><path d="M853.333333 384m-21.333333 0a21.333333 21.333333 0 1 0 42.666667 0 21.333333 21.333333 0 1 0-42.666667 0Z" fill="#00E676"></path><path d="M234.666667 85.333333h554.666666v213.333334H234.666667z" fill="#90CAF9"></path><path d="M800 661.333333h-576c-17.066667 0-32-14.933333-32-32s14.933333-32 32-32h576c17.066667 0 32 14.933333 32 32s-14.933333 32-32 32z" fill="#242424"></path><path d="M234.666667 661.333333h554.666666v234.666667H234.666667z" fill="#90CAF9"></path><path d="M234.666667 618.666667h554.666666v42.666666H234.666667z" fill="#42A5F5"></path><path d="M341.333333 704h362.666667v42.666667H341.333333zM341.333333 789.333333h277.333334v42.666667H341.333333z" fill="#1976D2"></path></svg> Print</button>
-            </div>
-
-            <div class="info-note">
-                <div class="note-sec">
-                    <div class="note-label"><span class="nl-ico">⚙️</span>How it works</div>
-                    <p>You fill in your business details, the customer's info, and the quote's number/date/validity; then add line items (description, quantity, unit price). All arithmetic — subtotal, flat or percentage discount, tax (0 / 5 / 16 / 18%) and grand total — is computed live in your browser with Alpine.js, and the formatted quote preview updates as you type. From there you can <strong>print</strong> a clean A4 sheet or <strong>download it as a PDF</strong>, generated fully client-side.</p>
-                </div>
-                <div class="note-sec">
-                    <div class="note-label"><span class="nl-ico">🔒</span>Privacy</div>
-                    <p>Quotation data stays in your browser — nothing is uploaded or saved to any server.</p>
-                </div>
-                <div class="note-sec">
-                    <div class="note-label"><span class="nl-ico">💡</span>Tips</div>
-                    <ul>
-                        <li>Add a validity period (e.g. "Valid for 14 days") to encourage a timely decision.</li>
-                        <li>Pick the currency and tax rate that match your jurisdiction before totalling up.</li>
-                        <li>Use <strong>Download PDF</strong> to send a professional file — no account or email needed.</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
+
+    <!-- ══ FULL PDF PREVIEW MODAL ══ -->
+    <template x-if="showPdfModal">
+        <div class="rm-modal-backdrop" @click.self="showPdfModal = false" @keydown.escape.window="showPdfModal = false">
+            <div class="rm-modal-card" style="height: 90vh;">
+                <div class="flex items-center justify-between px-5 py-3 border-b border-slate-200 bg-slate-50">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf text-red-600 text-lg"></i>
+                        <h3 class="font-bold text-slate-800" x-text="(quoteNo || 'Quotation') + '.pdf'"></h3>
+                    </div>
+                    <button type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold" @click="showPdfModal = false">&times;</button>
+                </div>
+                <div class="flex-1 bg-slate-200 overflow-hidden">
+                    <iframe :src="pdfBlobUrl" class="w-full h-full border-0" title="Quotation PDF"></iframe>
+                </div>
+                <div class="flex justify-end gap-3 px-5 py-3 border-t border-slate-200 bg-white">
+                    <button type="button" class="rm-btn-pdf" @click="printPdf()"><i class="fa-solid fa-print mr-1"></i> Print</button>
+                    <button type="button" class="rm-btn-email" @click="saveAndDownload()"><i class="fa-solid fa-download mr-1"></i> Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ══ SIGNATURE MODAL ══ -->
+    <template x-if="showSigModal">
+        <div class="rm-modal-backdrop" @click.self="showSigModal = false">
+            <div class="rm-modal-card" style="max-width: 480px;">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
+                    <h3 class="font-bold text-slate-800">Authorized Signature</h3>
+                    <button type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold" @click="showSigModal = false">&times;</button>
+                </div>
+                <div class="p-4">
+                    <div class="border border-slate-300 rounded-lg bg-white relative">
+                        <canvas id="sig-pad" width="440" height="160" class="w-full h-40 touch-none cursor-crosshair"></canvas>
+                        <div class="absolute bottom-2 right-2 text-xs text-slate-400">Sign or draw stamp here</div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center px-4 py-3 border-t border-slate-200 bg-slate-50">
+                    <button type="button" class="text-sm text-red-500 hover:underline" @click="clearSigCanvas()">Clear</button>
+                    <div class="flex gap-2">
+                        <button type="button" class="rm-btn-pdf py-1 px-3" @click="showSigModal = false">Cancel</button>
+                        <button type="button" class="rm-btn-email py-1 px-4" @click="saveSignature()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ══ HISTORY MODAL ══ -->
+    <template x-if="activeTab === 'history'">
+        <div class="rm-modal-backdrop" @click.self="activeTab = 'edit'">
+            <div class="rm-modal-card" style="max-width: 640px;">
+                <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50">
+                    <h3 class="font-bold text-slate-800 text-base">Saved Quotations History</h3>
+                    <button type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold" @click="activeTab = 'edit'">&times;</button>
+                </div>
+                <div class="p-5 max-h-[60vh] overflow-y-auto space-y-3">
+                    <template x-if="historyList.length === 0">
+                        <div class="text-center py-8 text-slate-400">No saved quotations yet. Generate or download a quote to store it here.</div>
+                    </template>
+                    <template x-for="(h, idx) in historyList" :key="idx">
+                        <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition">
+                            <div>
+                                <div class="font-bold text-slate-800" x-text="h.quoteNo + ' — ' + (h.clientName || 'Client')"></div>
+                                <div class="text-xs text-slate-500" x-text="h.quoteDate + ' • Valid until: ' + h.validUntil + ' • ' + h.currencySym + h.total"></div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" class="px-2.5 py-1 text-xs font-semibold bg-blue-50 text-blue-600 rounded hover:bg-blue-100" @click="loadFromHistory(h)">Load</button>
+                                <button type="button" class="px-2 py-1 text-xs text-red-500 hover:bg-red-50 rounded" @click="deleteHistory(idx)">&times;</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    <!-- ══ USER-FRIENDLY EMAIL & SHARE MODAL ══ -->
+    <template x-if="showEmailModal">
+        <div class="rm-modal-backdrop" @click.self="showEmailModal = false" @keydown.escape.window="showEmailModal = false">
+            <div class="rm-modal-card" style="max-width: 580px;">
+                <!-- Header -->
+                <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-paper-plane text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base" x-text="'Send ' + (docTitle || 'Quotation')"></h3>
+                            <p class="text-xs text-slate-500">Fast, direct sharing for you and your client</p>
+                        </div>
+                    </div>
+                    <button type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold" @click="showEmailModal = false">&times;</button>
+                </div>
+
+                <!-- Body -->
+                <div class="p-5 space-y-4">
+                    <!-- Client Email & Subject -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Send to (Client Email):</label>
+                            <input type="email" class="rm-input text-sm" x-model="clientEmail" placeholder="client@company.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Subject Line:</label>
+                            <input type="text" class="rm-input text-sm" x-model="emailSubject">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Message Preview:</label>
+                            <textarea class="rm-textarea text-xs font-mono" rows="5" x-model="emailBody"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Helpful tip -->
+                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2.5 text-xs text-blue-900">
+                        <i class="fa-solid fa-circle-info text-blue-600 mt-0.5 text-sm"></i>
+                        <div>
+                            <strong>Attaching the PDF:</strong> First click <strong>PDF</strong> in the top bar to save your quotation PDF, then attach it directly in your email app.
+                        </div>
+                    </div>
+
+                    <!-- 1-Click Send Actions for Non-Technical Users -->
+                    <div class="pt-1">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">Choose How to Send:</label>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <!-- Gmail Web Button -->
+                            <button type="button" class="flex flex-col items-center justify-center p-3 border border-slate-200 rounded-xl hover:border-red-400 hover:bg-red-50/50 transition group cursor-pointer bg-white" @click="sendViaGmail()">
+                                <svg class="w-6 h-6 mb-1.5" viewBox="0 0 24 24"><path fill="#EA4335" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                <span class="text-xs font-bold text-slate-800 group-hover:text-red-600">Open in Gmail</span>
+                                <span class="text-[10px] text-slate-400">Web Browser</span>
+                            </button>
+
+                            <!-- Default Mail App -->
+                            <button type="button" class="flex flex-col items-center justify-center p-3 border border-slate-200 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 transition group cursor-pointer bg-white" @click="sendViaMailto()">
+                                <i class="fa-solid fa-envelope text-blue-600 text-2xl mb-1.5"></i>
+                                <span class="text-xs font-bold text-slate-800 group-hover:text-blue-600">Mail App</span>
+                                <span class="text-[10px] text-slate-400">Outlook / Apple</span>
+                            </button>
+
+                            <!-- WhatsApp Web / Mobile -->
+                            <button type="button" class="flex flex-col items-center justify-center p-3 border border-slate-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition group cursor-pointer bg-white" @click="sendViaWhatsApp()">
+                                <i class="fa-brands fa-whatsapp text-emerald-500 text-2xl mb-1.5"></i>
+                                <span class="text-xs font-bold text-slate-800 group-hover:text-emerald-600">WhatsApp</span>
+                                <span class="text-[10px] text-slate-400">Direct Chat</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex items-center justify-between px-5 py-3 border-t border-slate-200 bg-slate-50">
+                    <button type="button" class="text-xs text-slate-700 hover:text-slate-900 font-semibold flex items-center gap-1.5 cursor-pointer" @click="copyEmailText()">
+                        <i class="fa-regular fa-copy text-sm"></i>
+                        <span x-text="copiedMessage ? '✓ Copied to Clipboard!' : 'Copy Message Text'"></span>
+                    </button>
+                    <button type="button" class="rm-btn-pdf py-1 px-4 text-xs font-semibold" @click="showEmailModal = false">Close</button>
+                </div>
+            </div>
+        </div>
+    </template>
 </main>
 
 <!-- Shared Footer -->
 <footer class="site-footer">
     <div class="container" style="display:flex;flex-wrap:nowrap;gap:0 16px;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:10px 24px 12px;font-size:.78rem;color:#9aa3a9;border-top:1px solid rgba(255,255,255,.08);background:#020A0A">
-        <p style="margin:0">&copy; <span data-year></span> DM Solutions Tech. All rights reserved.</p>
+        <p style="margin:0">&copy; <span data-year>2026</span> DM Solutions Tech. All rights reserved.</p>
         <a href="https://calendly.com/briankiboi83/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;background:rgb(171,24,48);color:#fff;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .18s">Book a Session</a>
         <p style="margin:0;white-space:nowrap"><a href="https://briankiboi.is-a.dev" target="_blank" rel="noopener" style="color:#ffd600;text-decoration:underline;text-underline-offset:3px;font-weight:600">https://briankiboi.is-a.dev</a></p>
     </div>
 </footer>
 
 <script src="../assets/vendor/jsPDF.umd.min.js"></script>
-    <script src="../assets/js/app.js"></script>
-    <script src="../assets/js/site-header.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/site-header.js"></script>
 <script>
-function numberToWords(num, currencyName) {
-    var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-    var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
-    function w(n) {
-        if (n === 0) return '';
-        if (n < 20) return ones[n];
-        if (n < 100) return tens[Math.floor(n/10)] + (n%10 ? ' ' + ones[n%10] : '');
-        if (n < 1000) return ones[Math.floor(n/100)] + ' Hundred' + (n%100 ? ' and ' + w(n%100) : '');
-        if (n < 1e6) return w(Math.floor(n/1000)) + ' Thousand' + (n%1000 ? ' ' + w(n%1000) : '');
-        if (n < 1e9) return w(Math.floor(n/1e6)) + ' Million' + (n%1e6 ? ' ' + w(n%1e6) : '');
-        return w(Math.floor(n/1e9)) + ' Billion' + (n%1e9 ? ' ' + w(n%1e9) : '');
-    }
-    var n = Math.abs(num);
-    var intPart = Math.floor(n);
-    var decPart = Math.round((n - intPart) * 100);
-    var result = w(intPart) + ' ' + currencyName;
-    if (decPart > 0) result += ' and ' + w(decPart) + ' Cents';
-    return result + ' Only';
-}
-
-var CURRENCY_NAMES = { KSh: 'Kenya Shillings', USD: 'US Dollars', EUR: 'Euros', GBP: 'British Pounds' };
-var CURRENCY_SYMBOLS = { KSh: 'KSh ', USD: '$ ', EUR: '€ ', GBP: '£ ' };
-
-function padDate(d) { return d < 10 ? '0' + d : '' + d; }
-function todayStr() { var d = new Date(); return d.getFullYear() + '-' + padDate(d.getMonth()+1) + '-' + padDate(d.getDate()); }
-function addDaysStr(n) { var d = new Date(); d.setDate(d.getDate()+n); return d.getFullYear() + '-' + padDate(d.getMonth()+1) + '-' + padDate(d.getDate()); }
-
-function quoteData() {
-    var now = new Date();
-    var qNum = 'Q-' + (now.getFullYear() % 100) + padDate(now.getMonth()+1) + padDate(now.getDate()) + '-' + String(Math.floor(Math.random()*900)+100);
+function quoteMaker() {
     return {
-        businessName: '', tagline: '', address: '', bizPhone: '', bizEmail: '', bizWebsite: '',
-        custName: '', custPhone: '', custEmail: '', custAddress: '',
-        quoteNo: qNum, quoteDate: todayStr(), validUntil: addDaysStr(30),
-        currency: 'USD', taxRate: '0', discountType: 'none', discountValue: 0,
-        paymentTerms: 'Net 30 Days', notes: '',
-        items: [{ desc: '', qty: 1, price: 0 }],
-        showPreview: true,
-        logoDataUrl: '', logoName: '',
-        onLogo(ev) {
-            var f = ev.target.files && ev.target.files[0];
-            if (!f) return;
-            if (f.size > 2*1024*1024) { window.ToolsApp.toast('Logo too large (max 2MB)', 'err'); ev.target.value=''; return; }
-            var self = this;
-            var rd = new FileReader();
-            rd.onload = function(e) { self.logoDataUrl = e.target.result; self.logoName = f.name; };
-            rd.readAsDataURL(f);
+        activeTab: 'edit',
+        docTitle: 'Quotation',
+        logoDataUrl: '',
+        
+        // From
+        fromName: '',
+        fromEmail: '',
+        fromStreet: '',
+        fromCityState: '',
+        fromZip: '',
+        fromPhone: '',
+        fromTaxId: '',
+        fromWebsite: '',
+        fromTagline: '',
+        showExtraBiz: false,
+
+        // Prepared For (Client)
+        clientName: '',
+        clientCompany: '',
+        clientEmail: '',
+        clientStreet: '',
+        clientPhone: '',
+        projectRef: '',
+
+        // Metadata
+        quoteNo: 'QTN-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 899) + 100),
+        quoteDate: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date()),
+        validUntil: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(Date.now() + 30 * 86400000)),
+
+        // Items
+        items: [
+            { desc: '', details: '', rate: 0, qty: 1 }
+        ],
+
+        // Terms & Conditions
+        terms: '1. Quotation valid for 30 days from date of issue.\n2. 50% deposit required upon confirmation, balance upon completion.\n3. Turnaround time: 14 business days from kickoff.\n4. Additional scope or revisions beyond agreed terms will be billed separately.',
+        signatureDataUrl: '',
+        photos: [],
+
+        // Controls
+        themeColor: 'none',
+        themeColorName: 'No Color',
+        discountType: 'none',
+        discountValue: 0,
+        taxRatePreset: 'none',
+        taxValue: 0,
+        currencyCode: 'KES',
+        currencySym: 'KSh',
+
+        // Modals & PDF
+        showPdfModal: false,
+        showSigModal: false,
+        pdfBlobUrl: '',
+        historyList: [],
+
+        init() {
+            var saved = localStorage.getItem('qm_quote_history');
+            if (saved) {
+                try { this.historyList = JSON.parse(saved); } catch (e) {}
+            }
         },
-        clearLogo() { this.logoDataUrl = ''; this.logoName = ''; },
-        addItem() { this.items.push({ desc: '', qty: 1, price: 0 }); },
-        removeItem(i) { if (this.items.length > 1) this.items.splice(i, 1); },
-        get subtotal() { return this.items.reduce(function(s, it) { return s + (it.qty * it.price); }, 0); },
+
+        setValidity(days) {
+            var d = new Date(Date.now() + Number(days) * 86400000);
+            this.validUntil = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
+        },
+
+        addItem() {
+            this.items.push({ desc: '', details: '', rate: 0, qty: 1 });
+        },
+        removeItem(i) {
+            if (this.items.length > 1) {
+                this.items.splice(i, 1);
+            }
+        },
+
+        onCurrencyChange() {
+            var syms = {
+                KES: 'KSh',
+                USD: '$',
+                EUR: '€',
+                GBP: '£',
+                UGX: 'USh',
+                TZS: 'TSh',
+                ZAR: 'R'
+            };
+            this.currencySym = syms[this.currencyCode] || this.currencyCode + ' ';
+        },
+
+        onTaxPresetChange() {
+            if (this.taxRatePreset === 'none') this.taxValue = 0;
+            else if (this.taxRatePreset === 'custom') this.taxValue = 16;
+            else this.taxValue = Number(this.taxRatePreset) || 0;
+        },
+
+        get subtotal() {
+            return this.items.reduce(function (sum, it) {
+                return sum + ((Number(it.rate) || 0) * (Number(it.qty) || 0));
+            }, 0);
+        },
+
         get discountAmt() {
-            if (this.discountType === 'percent') return this.subtotal * (this.discountValue / 100);
-            if (this.discountType === 'flat') return this.discountValue;
+            if (this.discountType === 'percent') {
+                return this.subtotal * ((Number(this.discountValue) || 0) / 100);
+            }
+            if (this.discountType === 'flat') {
+                return Number(this.discountValue) || 0;
+            }
             return 0;
         },
-        get taxAmt() { return (this.subtotal - this.discountAmt) * (Number(this.taxRate) / 100); },
-        get total() { return Math.max(0, this.subtotal - this.discountAmt + this.taxAmt); },
-        get currencySym() { return CURRENCY_SYMBOLS[this.currency] || ''; },
-        get totalInWords() { return numberToWords(this.total, CURRENCY_NAMES[this.currency] || this.currency); },
-        fmtNum(v) { return Number(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); },
-        init() { window.ToolsApp.toolPageInit('quotation-generator'); },
-        copySummary() {
-            var self = this;
-            var lines = [];
-            lines.push(self.businessName || 'Business');
-            if (self.tagline) lines.push(self.tagline);
-            lines.push([self.address, self.bizPhone, self.bizEmail].filter(Boolean).join(' | '));
-            lines.push('--- QUOTATION ---');
-            lines.push('Quote: ' + self.quoteNo + '  Date: ' + self.quoteDate + '  Valid Until: ' + self.validUntil);
-            lines.push('Prepared For: ' + (self.custName || 'N/A'));
-            if (self.custAddress) lines.push(self.custAddress);
-            lines.push('');
-            self.items.forEach(function(it) { lines.push((it.desc||'—') + '  x' + it.qty + '  @ ' + self.currencySym + self.fmtNum(it.price) + '  = ' + self.currencySym + self.fmtNum(it.qty * it.price)); });
-            lines.push('---');
-            lines.push('Subtotal: ' + self.currencySym + self.fmtNum(self.subtotal));
-            if (self.discountAmt > 0) lines.push('Discount: -' + self.currencySym + self.fmtNum(self.discountAmt));
-            if (Number(self.taxRate) > 0) lines.push('Tax (' + self.taxRate + '%): ' + self.currencySym + self.fmtNum(self.taxAmt));
-            lines.push('TOTAL: ' + self.currencySym + self.fmtNum(self.total));
-            lines.push('Terms: ' + self.paymentTerms);
-            lines.push(self.totalInWords);
-            if (self.notes) lines.push('Notes: ' + self.notes);
-            window.ToolsApp.copyText(lines.join('\n'));
+
+        get taxAmt() {
+            var taxable = Math.max(0, this.subtotal - this.discountAmt);
+            return taxable * ((Number(this.taxValue) || 0) / 100);
         },
-        printQuote() {
-            var html = document.getElementById('quote-preview-content').innerHTML;
-            var win = window.open('', '_blank');
-            win.document.write('<html><head><title>Quotation</title><style>body{font-family:Arial,sans-serif;padding:20px;font-size:13px;color:#111;max-width:650px;margin:0 auto}table{width:100%;border-collapse:collapse}th,td{padding:3px 0}</style></head><body>' + html + '</body></html>');
-            win.document.close(); win.focus(); win.print();
+
+        get total() {
+            return Math.max(0, this.subtotal - this.discountAmt + this.taxAmt);
         },
-        generatePDF() {
-            if (typeof window.jspdf === 'undefined') { window.ToolsApp.toast('jsPDF not loaded', 'err'); return; }
+
+        fmtNum(val) {
+            return Number(val || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        },
+
+        onLogo(e) {
+            var file = e.target.files && e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
             var self = this;
+            reader.onload = function (evt) {
+                self.logoDataUrl = evt.target.result;
+                var img = new Image();
+                img.onload = function() {
+                    self.logoW = img.naturalWidth || 1;
+                    self.logoH = img.naturalHeight || 1;
+                };
+                img.src = self.logoDataUrl;
+            };
+            reader.readAsDataURL(file);
+        },
+        clearLogo() {
+            this.logoDataUrl = '';
+            if (this.$refs.logoInput) this.$refs.logoInput.value = '';
+        },
+
+        onPhotoUpload(e) {
+            var file = e.target.files && e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            var self = this;
+            reader.onload = function (evt) { self.photos.push(evt.target.result); };
+            reader.readAsDataURL(file);
+        },
+
+        // Signature Canvas
+        openSignatureModal() {
+            this.showSigModal = true;
+            this.$nextTick(() => {
+                var canvas = document.getElementById('sig-pad');
+                if (!canvas) return;
+                var ctx = canvas.getContext('2d');
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                var drawing = false;
+
+                function getPos(ev) {
+                    var rect = canvas.getBoundingClientRect();
+                    var clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+                    var clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+                    return { x: clientX - rect.left, y: clientY - rect.top };
+                }
+
+                canvas.onmousedown = canvas.ontouchstart = function(ev) {
+                    drawing = true;
+                    var pos = getPos(ev);
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                    if (ev.type === 'touchstart') ev.preventDefault();
+                };
+                canvas.onmousemove = canvas.ontouchmove = function(ev) {
+                    if (!drawing) return;
+                    var pos = getPos(ev);
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    if (ev.type === 'touchmove') ev.preventDefault();
+                };
+                window.onmouseup = window.ontouchend = function() {
+                    drawing = false;
+                };
+            });
+        },
+        clearSigCanvas() {
+            var canvas = document.getElementById('sig-pad');
+            if (canvas) {
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        },
+        saveSignature() {
+            var canvas = document.getElementById('sig-pad');
+            if (canvas) {
+                this.signatureDataUrl = canvas.toDataURL('image/png');
+            }
+            this.showSigModal = false;
+        },
+
+        // PDF Generation
+        generatePdfDoc() {
             var jsPDF = window.jspdf.jsPDF;
             var doc = new jsPDF('p', 'mm', 'a4');
             var pw = doc.internal.pageSize.getWidth();
-            var y = 18;
-            if (self.logoDataUrl) {
+            var leftY = 22;
+            // Title
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(24);
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.docTitle || 'QUOTATION', 18, leftY);
+            leftY += 8;
+
+            // Quote #, Date, Valid Until
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 116, 139);
+            doc.text('QUOTE #:', 18, leftY);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.quoteNo || 'QTN-001', 44, leftY);
+            leftY += 5;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 116, 139);
+            doc.text('DATE:', 18, leftY);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.quoteDate || '', 44, leftY);
+            leftY += 5;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 116, 139);
+            doc.text('VALID UNTIL:', 18, leftY);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.validUntil || '', 44, leftY);
+            leftY += 5;
+
+            // Logo and Total Estimate on Top Right
+            var rightY = 16;
+            if (this.logoDataUrl) {
                 try {
-                    var lfmt = self.logoDataUrl.indexOf('data:image/svg') === 0 ? 'SVG' : self.logoDataUrl.indexOf('data:image/jpeg') === 0 ? 'JPEG' : 'PNG';
-                    doc.addImage(self.logoDataUrl, lfmt, 18, y, 40, 14);
-                    y += 16;
+                    var maxW = 48, maxH = 22;
+                    var ratio = (this.logoW && this.logoH) ? (this.logoW / this.logoH) : 2.2;
+                    var drawW = maxW;
+                    var drawH = drawW / ratio;
+                    if (drawH > maxH) {
+                        drawH = maxH;
+                        drawW = drawH * ratio;
+                    }
+                    var logoX = pw - 18 - drawW;
+                    var logoY = 15;
+                    doc.addImage(this.logoDataUrl, 'PNG', logoX, logoY, drawW, drawH);
+                    rightY = logoY + drawH + 4;
+                } catch (e) {
+                    rightY = 20;
+                }
+            } else {
+                rightY = 20;
+            }
+
+            // Top-right Total Estimate pill/badge
+            var pillW = 68, pillH = 11;
+            var pillX = pw - 18 - pillW;
+            doc.setFillColor(248, 250, 252);
+            doc.setDrawColor(226, 232, 240);
+            doc.roundedRect(pillX, rightY, pillW, pillH, 2, 2, 'FD');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(7.5);
+            doc.setTextColor(100, 116, 139);
+            doc.text('TOTAL ESTIMATE', pillX + 4, rightY + 4.5);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.currencySym + ' ' + this.fmtNum(this.total), pillX + pillW - 4, rightY + 8, { align: 'right' });
+            rightY += pillH + 4;
+
+            // Clean divider line calculated so it NEVER touches the logo or top text
+            var y = Math.max(leftY, rightY) + 5;
+            doc.setDrawColor(226, 232, 240);
+            doc.setLineWidth(0.5);
+            doc.line(18, y, pw - 18, y);
+            y += 7;
+
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('FROM (PREPARED BY):', 18, y);
+            doc.text('PREPARED FOR (CLIENT):', 110, y);
+            y += 5;
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(51, 65, 85);
+
+            var fromLines = [
+                this.fromName,
+                this.fromTagline,
+                this.fromEmail,
+                this.fromStreet,
+                [this.fromCityState, this.fromZip].filter(Boolean).join(' '),
+                this.fromPhone ? 'Phone: ' + this.fromPhone : '',
+                this.fromTaxId ? 'Tax ID: ' + this.fromTaxId : '',
+                this.fromWebsite
+            ].filter(Boolean);
+
+            var clientLines = [
+                this.clientName,
+                this.clientCompany,
+                this.clientEmail,
+                this.clientStreet,
+                this.clientPhone ? 'Phone: ' + this.clientPhone : '',
+                this.projectRef ? 'Project: ' + this.projectRef : ''
+            ].filter(Boolean);
+
+            var maxParties = Math.max(fromLines.length, clientLines.length);
+            for (var p = 0; p < maxParties; p++) {
+                if (fromLines[p]) doc.text(fromLines[p], 18, y + (p * 4.2));
+                if (clientLines[p]) doc.text(clientLines[p], 110, y + (p * 4.2));
+            }
+
+            y += Math.max(maxParties * 4.2 + 8, 18);
+
+            // Table Header
+            doc.setFillColor(241, 245, 249);
+            doc.rect(18, y, pw - 36, 7, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(15, 23, 42);
+            doc.text('DESCRIPTION / SCOPE', 22, y + 4.8);
+            doc.text('RATE', 120, y + 4.8, { align: 'right' });
+            doc.text('QTY / HRS', 145, y + 4.8, { align: 'right' });
+            doc.text('AMOUNT', pw - 22, y + 4.8, { align: 'right' });
+            y += 10;
+
+            // Table Rows
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(30, 41, 59);
+
+            var self = this;
+            this.items.forEach(function (item) {
+                if (y > 260) { doc.addPage(); y = 20; }
+                var lineAmt = (Number(item.rate) || 0) * (Number(item.qty) || 0);
+                doc.setFont('helvetica', 'bold');
+                doc.text(item.desc || '—', 22, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(self.fmtNum(item.rate), 120, y, { align: 'right' });
+                doc.text(String(item.qty || 1), 145, y, { align: 'right' });
+                doc.text(self.currencySym + ' ' + self.fmtNum(lineAmt), pw - 22, y, { align: 'right' });
+                y += 4.5;
+
+                if (item.details) {
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(100, 116, 139);
+                    var splitDetails = doc.splitTextToSize(item.details, 88);
+                    doc.text(splitDetails, 22, y);
+                    y += (splitDetails.length * 3.6);
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(30, 41, 59);
+                }
+                y += 2.5;
+                doc.setDrawColor(241, 245, 249);
+                doc.line(18, y, pw - 18, y);
+                y += 4;
+            });
+
+            y += 3;
+            // Summary Totals with safe wide spacing to prevent collision
+            var labelX = pw - 92;
+            var valueX = pw - 22;
+
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(71, 85, 105);
+            doc.text('Subtotal:', labelX, y);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(15, 23, 42);
+            doc.text(this.currencySym + ' ' + this.fmtNum(this.subtotal), valueX, y, { align: 'right' });
+            y += 5.5;
+
+            if (this.discountAmt > 0) {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(239, 68, 68);
+                doc.text('Discount:', labelX, y);
+                doc.text('-' + this.currencySym + ' ' + this.fmtNum(this.discountAmt), valueX, y, { align: 'right' });
+                doc.setTextColor(30, 41, 59);
+                y += 5.5;
+            }
+
+            if (this.taxAmt > 0) {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(71, 85, 105);
+                doc.text('Tax (' + this.taxValue + '%):', labelX, y);
+                doc.setTextColor(15, 23, 42);
+                doc.text(this.currencySym + ' ' + this.fmtNum(this.taxAmt), valueX, y, { align: 'right' });
+                y += 5.5;
+            }
+
+            doc.setDrawColor(203, 213, 225);
+            doc.setLineWidth(0.5);
+            doc.line(labelX, y, valueX, y);
+            y += 6;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text('Total Quotation:', labelX, y);
+            doc.text(this.currencySym + ' ' + this.fmtNum(this.total), valueX, y, { align: 'right' });
+            y += 12;
+
+            // Terms & Conditions
+            if (this.terms) {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8.5);
+                doc.text('Terms & Conditions / Payment Schedule:', 18, y);
+                y += 4;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                doc.setTextColor(71, 85, 105);
+                var termLines = doc.splitTextToSize(this.terms, pw - 36);
+                doc.text(termLines, 18, y);
+                y += (termLines.length * 4) + 6;
+            }
+
+            // Authorized Signature
+            if (this.signatureDataUrl) {
+                try {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8.5);
+                    doc.text('Authorized Signature:', 18, y);
+                    y += 3;
+                    doc.addImage(this.signatureDataUrl, 'PNG', 18, y, 40, 16);
                 } catch (e) {}
             }
-            var cs = self.currencySym.trim();
-            function center(txt, sz, style) { doc.setFontSize(sz); doc.setFont('helvetica', style || 'normal'); doc.text(txt, pw/2, y, { align: 'center' }); }
-            function right(txt, sz) { doc.setFontSize(sz || 9); doc.setFont('helvetica', 'normal'); doc.text(txt, pw - 18, y, { align: 'right' }); }
-            function left(txt, sz) { doc.setFontSize(sz || 9); doc.setFont('helvetica', 'normal'); doc.text(txt, 18, y); }
 
-            /* Header */
-            doc.setFillColor(147, 51, 234); doc.rect(0, 0, pw, 3, 'F'); y = 16;
-            doc.setFontSize(16); doc.setFont('helvetica', 'bold'); doc.setTextColor(147, 51, 234);
-            doc.text(self.businessName || 'Business Name', 18, y); doc.setTextColor(0); y += 6;
-            if (self.tagline) { doc.setFontSize(9); doc.setFont('helvetica', 'italic'); doc.text(self.tagline, 18, y); y += 5; }
-            doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-            if (self.address) { doc.text(self.address, 18, y); y += 4; }
-            var contact = [self.bizPhone, self.bizEmail, self.bizWebsite].filter(Boolean).join(' | ');
-            if (contact) { doc.text(contact, 18, y); y += 5; }
-            doc.setFontSize(18); doc.setFont('helvetica', 'bold'); doc.setTextColor(147, 51, 234);
-            doc.text('QUOTATION', pw - 18, 22, { align: 'right' }); doc.setTextColor(0);
-            doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-            doc.text(self.quoteNo, pw - 18, 28, { align: 'right' });
-            doc.text('Date: ' + self.quoteDate, pw - 18, 33, { align: 'right' });
-            doc.setTextColor(200, 0, 0); doc.text('Valid Until: ' + self.validUntil, pw - 18, 38, { align: 'right' }); doc.setTextColor(0);
-            y = Math.max(y, 44);
-            doc.setDrawColor(147, 51, 234); doc.line(18, y, pw - 18, y); y += 6;
+            return doc;
+        },
 
-            /* Customer */
-            doc.setFontSize(8); doc.setFont('helvetica', 'bold'); doc.text('PREPARED FOR:', 18, y); y += 4;
-            doc.setFont('helvetica', 'normal');
-            doc.text(self.custName || 'Client Name', 18, y); y += 4;
-            if (self.custAddress) { doc.text(self.custAddress, 18, y); y += 4; }
-            if (self.custPhone || self.custEmail) { doc.text([self.custPhone, self.custEmail].filter(Boolean).join(' | '), 18, y); y += 4; }
-            y += 2;
+        openFullPreview() {
+            var doc = this.generatePdfDoc();
+            if (this.pdfBlobUrl) { try { URL.revokeObjectURL(this.pdfBlobUrl); } catch (e) {} }
+            this.pdfBlobUrl = URL.createObjectURL(doc.output('blob'));
+            this.showPdfModal = true;
+        },
 
-            /* Table */
-            doc.setDrawColor(147, 51, 234); doc.line(18, y, pw - 18, y); y += 5;
-            doc.setFont('helvetica', 'bold');
-            doc.text('Description', 18, y); doc.text('Qty', 110, y, {align:'right'}); doc.text('Price', 140, y, {align:'right'}); doc.text('Amount', pw-18, y, {align:'right'});
-            y += 3; doc.line(18, y, pw-18, y); y += 4;
-            doc.setFont('helvetica', 'normal');
-            self.items.forEach(function(it) {
-                if (y > 265) { doc.addPage(); y = 20; }
-                var amt = (it.qty || 0) * (it.price || 0);
-                doc.text((it.desc || '—').substring(0, 36), 18, y);
-                doc.text(String(it.qty || 0), 110, y, {align:'right'});
-                doc.text(cs + ' ' + self.fmtNum(it.price), 140, y, {align:'right'});
-                doc.text(cs + ' ' + self.fmtNum(amt), pw-18, y, {align:'right'});
-                y += 5;
-            });
-            y += 1; doc.line(18, y, pw-18, y); y += 6;
-            doc.setFontSize(9);
-            right('Subtotal: ' + cs + ' ' + self.fmtNum(self.subtotal)); y += 5;
-            if (self.discountAmt > 0) { doc.setTextColor(200,0,0); right('Discount: -' + cs + ' ' + self.fmtNum(self.discountAmt)); doc.setTextColor(0); y += 5; }
-            if (Number(self.taxRate) > 0) { right('Tax (' + self.taxRate + '%): ' + cs + ' ' + self.fmtNum(self.taxAmt)); y += 5; }
-            doc.setDrawColor(147, 51, 234); doc.line(pw-80, y, pw-18, y); y += 6;
-            doc.setFontSize(12); doc.setFont('helvetica', 'bold'); doc.setTextColor(147, 51, 234);
-            right('TOTAL: ' + cs + ' ' + self.fmtNum(self.total), 12); doc.setTextColor(0); y += 7;
-            doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-            left('Payment Terms: ' + self.paymentTerms); y += 5;
-            doc.setFont('helvetica', 'italic');
-            var wordLines = doc.splitTextToSize(self.totalInWords, pw - 36);
-            doc.text(wordLines, 18, y); y += wordLines.length * 4 + 4;
-            if (self.notes) { doc.setFont('helvetica', 'normal'); doc.setFontSize(8); left('Notes: ' + self.notes.substring(0, 80)); y += 4; }
+        saveRecord() {
+            var record = {
+                quoteNo: this.quoteNo,
+                quoteDate: this.quoteDate,
+                validUntil: this.validUntil,
+                clientName: this.clientName || this.clientCompany,
+                total: this.fmtNum(this.total),
+                currencySym: this.currencySym,
+                timestamp: Date.now()
+            };
+            this.historyList.unshift(record);
+            if (this.historyList.length > 25) this.historyList.pop();
+            localStorage.setItem('qm_quote_history', JSON.stringify(this.historyList));
+        },
 
-            doc.save((self.quoteNo || 'quotation') + '.pdf');
-            window.ToolsApp.toast('PDF downloaded!');
+        downloadPdf() {
+            var doc = this.generatePdfDoc();
+            doc.save((this.quoteNo || 'Quotation') + '.pdf');
+            this.saveRecord();
+            if (window.ToolsApp && window.ToolsApp.toast) window.ToolsApp.toast('Quotation PDF Downloaded!');
+        },
+
+        saveAndDownload() {
+            this.downloadPdf();
+            this.showPdfModal = false;
+        },
+
+        printPdf() {
+            var doc = this.generatePdfDoc();
+            doc.autoPrint();
+            var url = URL.createObjectURL(doc.output('blob'));
+            window.open(url, '_blank');
+        },
+
+        emailQuote() {
+            var subject = encodeURIComponent((this.docTitle || 'Quotation') + ' #' + (this.quoteNo || '') + (this.projectRef ? ' - ' + this.projectRef : ''));
+            var body = encodeURIComponent(
+                'Hello ' + (this.clientName || this.clientCompany || 'there') + ',\n\n' +
+                'Please find your quotation details below:\n\n' +
+                'Quotation Number: ' + this.quoteNo + '\n' +
+                'Date: ' + this.quoteDate + '\n' +
+                'Valid Until: ' + this.validUntil + '\n' +
+                (this.projectRef ? 'Project: ' + this.projectRef + '\n' : '') +
+                'Total Estimate: ' + this.currencySym + ' ' + this.fmtNum(this.total) + '\n\n' +
+                (this.terms ? 'Terms & Conditions:\n' + this.terms + '\n\n' : '') +
+                'Feel free to reach out if you have any questions or would like to proceed.\n\n' +
+                'Best regards,\n' +
+                (this.fromName || 'DM Solutions Tech')
+            );
+            var recipient = encodeURIComponent(this.clientEmail || '');
+            window.location.href = 'mailto:' + recipient + '?subject=' + subject + '&body=' + body;
+        },
+
+        openHistory() {
+            this.activeTab = 'history';
+        },
+        loadFromHistory(h) {
+            this.quoteNo = h.quoteNo;
+            this.quoteDate = h.quoteDate;
+            this.validUntil = h.validUntil;
+            this.clientName = h.clientName;
+            this.activeTab = 'edit';
+            if (window.ToolsApp && window.ToolsApp.toast) window.ToolsApp.toast('Loaded ' + h.quoteNo);
+        },
+        deleteHistory(idx) {
+            this.historyList.splice(idx, 1);
+            localStorage.setItem('qm_quote_history', JSON.stringify(this.historyList));
         }
     };
 }

@@ -640,7 +640,7 @@
 }
 .th-foot-grid {
     display: grid;
-    grid-template-columns: 1.8fr 1fr 1.9fr 1.2fr;
+    grid-template-columns: 1.8fr 1fr 2.2fr;
     gap: 40px;
     align-items: flex-start;
 }
@@ -656,16 +656,45 @@
     margin: 0 0 24px;
     max-width: 44ch;
 }
+.th-foot-licos {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+.th-foot-lico {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    border: 0 none;
+    background: none;
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s ease;
+}
+.th-foot-lico:hover {
+    transform: translateY(-3px) scale(1.08);
+    filter: brightness(1.15);
+}
+.th-foot-lico svg {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Fallback for circular classes if used */
 .th-foot-social-circles {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 .th-social-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -675,16 +704,16 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 .th-social-circle:hover {
-    transform: translateY(-3px) scale(1.06);
-    filter: brightness(1.1);
+    transform: translateY(-3px) scale(1.08);
+    filter: brightness(1.15);
 }
-.th-sc-github { background: #181717; border: 1px solid rgba(255, 255, 255, 0.15); }
-.th-sc-instagram {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+
+/* Contact block below socials in the bio column */
+.th-foot-contact-below {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
-.th-sc-linkedin { background: #0A66C2; }
-.th-sc-stackoverflow { background: #F48024; }
-.th-sc-medium { background: #000000; border: 1px solid rgba(255, 255, 255, 0.15); }
 
 /* Titles across columns */
 .th-foot-title {
@@ -801,22 +830,28 @@
     max-width: 1200px;
     margin: 0 auto;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px 24px 28px;
+    padding: 22px 24px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
     font-size: 0.88rem;
     color: #8da4be;
 }
 .th-foot-dev {
     font-weight: 500;
+    z-index: 1;
 }
 .th-dev-highlight {
     color: #ffd600;
     font-weight: 700;
 }
 .th-foot-copyright {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
+    white-space: nowrap;
 }
 
 /* Floating "Click to Get In Touch" side drawer tab (Image 1) */
@@ -945,6 +980,30 @@
         grid-column: 1 / -1;
     }
 }
+@media (max-width: 860px) {
+    .th-foot-bottom-bar {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+        padding: 16px 20px 24px;
+    }
+    .th-foot-dev {
+        font-size: 0.84rem;
+        text-align: center;
+    }
+    .th-foot-copyright {
+        position: static;
+        transform: none;
+        white-space: normal;
+        text-align: center;
+        font-size: 0.82rem;
+        line-height: 1.5;
+        max-width: 260px;
+        margin: 0 auto;
+    }
+}
 @media (max-width: 720px) {
     .th-foot-wave-wrap {
         margin-top: -24px;
@@ -953,23 +1012,62 @@
         height: 36px;
     }
     .th-foot-main {
-        padding: 24px 18px 30px;
+        padding: 24px 18px 24px;
     }
     .th-foot-grid {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 26px;
     }
-    .th-foot-bottom-bar {
-        flex-direction: column;
-        gap: 12px;
-        text-align: center;
-        padding: 18px 18px 24px;
+    .th-foot-col-bio {
+        padding-right: 0;
+    }
+    .th-foot-bio-text {
+        max-width: 100%;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+    }
+    .th-foot-licos {
+        gap: 8px;
+    }
+    .th-foot-contact-below {
+        margin-top: 20px;
+        padding-top: 16px;
+    }
+    .th-contact-item {
+        word-break: break-word;
     }
     .th-wa-bubble {
         display: none; /* keep clean on mobile */
     }
     .th-floating-side-tab {
         display: none; /* keep mobile screen free */
+    }
+}
+@media (max-width: 600px) {
+    .th-floating-whatsapp-widget {
+        bottom: 16px;
+        right: 16px;
+    }
+    .th-wa-icon-circle {
+        width: 44px;
+        height: 44px;
+    }
+    .th-wa-icon-circle svg {
+        width: 24px;
+        height: 24px;
+    }
+    .back-to-top {
+        bottom: 68px !important;
+        right: 18px !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+@media (max-width: 520px) {
+    .th-foot-links-tools {
+        grid-auto-flow: row;
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 }
 
