@@ -851,9 +851,13 @@ body.tool-page {
                                 <span x-text="'Tax (' + taxValue + '%)'"></span>
                                 <span x-text="currencySym + fmtNum(taxAmt)"></span>
                             </div>
+                            <div class="rm-total-row" x-show="amountPaid > 0" x-cloak>
+                                <span class="text-emerald-600">Amount Paid</span>
+                                <span class="text-emerald-600" x-text="'-' + currencySym + fmtNum(amountPaid)"></span>
+                            </div>
                             <div class="rm-total-row balance-due">
                                 <span>Balance Due</span>
-                                <span x-text="currencySym + fmtNum(total)"></span>
+                                <span x-text="currencySym + fmtNum(balanceDue)"></span>
                             </div>
                         </div>
                     </div>
@@ -917,7 +921,7 @@ body.tool-page {
                                     <div>DATE</div>
                                     <div x-text="receiptDate"></div>
                                     <div>BALANCE DUE</div>
-                                    <div class="font-bold" x-text="currencySym + fmtNum(total)"></div>
+                                    <div class="font-bold" x-text="currencySym + fmtNum(balanceDue)"></div>
                                 </div>
                             </div>
                             <div class="rm-mini-line"></div>
@@ -951,7 +955,7 @@ body.tool-page {
                                 </template>
                             </table>
                             <div class="rm-mini-line"></div>
-                            <div class="text-right font-bold text-[7px]" x-text="currencySym + fmtNum(total)"></div>
+                            <div class="text-right font-bold text-[7px]" x-text="currencySym + fmtNum(balanceDue)"></div>
                         </div>
                     </div>
 
@@ -1024,6 +1028,12 @@ body.tool-page {
                                 <option value="ZAR">ZAR   R     🇿🇦</option>
                             </select>
                         </div>
+                    </div>
+
+                    <!-- Amount Paid / Deposit -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Amount Paid</label>
+                        <input type="number" step="0.01" min="0" class="rm-input text-right" x-model.number="amountPaid" placeholder="0.00">
                     </div>
 
                 </div>
@@ -1171,6 +1181,7 @@ function receiptMaker() {
         taxValue: 0,
         currencyCode: 'KES',
         currencySym: 'KSh',
+        amountPaid: 0,
 
         // Modals & PDF
         showPdfModal: false,
@@ -1236,6 +1247,10 @@ function receiptMaker() {
 
         get total() {
             return Math.max(0, this.subtotal - this.discountAmt + this.taxAmt);
+        },
+
+        get balanceDue() {
+            return Math.max(0, this.total - (Number(this.amountPaid) || 0));
         },
 
         fmtNum(val) {
@@ -1394,7 +1409,7 @@ function receiptMaker() {
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(9.5);
             doc.setTextColor(15, 23, 42);
-            doc.text(this.currencySym + ' ' + this.fmtNum(this.total), pillX + pillW - 4, rightY + 8, { align: 'right' });
+            doc.text(this.currencySym + ' ' + this.fmtNum(this.balanceDue), pillX + pillW - 4, rightY + 8, { align: 'right' });
             rightY += pillH + 4;
 
             // Clean divider line calculated so it NEVER touches the logo or top text
@@ -1522,11 +1537,20 @@ function receiptMaker() {
             doc.line(labelX, y, valueX, y);
             y += 6;
 
+            if (Number(this.amountPaid) > 0) {
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(5, 150, 105);
+                doc.text('Amount Paid:', labelX, y);
+                doc.text('-' + this.currencySym + ' ' + this.fmtNum(this.amountPaid), valueX, y, { align: 'right' });
+                y += 6;
+            }
+
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(10.5);
             doc.setTextColor(15, 23, 42);
             doc.text('Balance Due:', labelX, y);
-            doc.text(this.currencySym + ' ' + this.fmtNum(this.total), valueX, y, { align: 'right' });
+            doc.text(this.currencySym + ' ' + this.fmtNum(this.balanceDue), valueX, y, { align: 'right' });
             y += 12;
 
             // Notes
@@ -1551,10 +1575,58 @@ function receiptMaker() {
                     doc.text('Signature:', 18, y);
                     y += 3;
                     doc.addImage(this.signatureDataUrl, 'PNG', 18, y, 40, 16);
+                    y += 18;
                 } catch (e) {}
             }
 
+            // Photos
+            y = this.renderPhotosPdf(doc, y, pw);
+
             return doc;
+        },
+
+        renderPhotosPdf(doc, startY, pw) {
+            if (!this.photos || !this.photos.length) return startY;
+            var y = startY;
+            if (y > 220) { doc.addPage(); y = 20; }
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text('Photos:', 18, y);
+            y += 5;
+
+            var cols = 3, gap = 4;
+            var availW = pw - 36;
+            var cellW = (availW - gap * (cols - 1)) / cols;
+            var cellH = cellW * 0.7;
+            var col = 0;
+            for (var i = 0; i < this.photos.length; i++) {
+                if (y + cellH > 275) { doc.addPage(); y = 20; col = 0; }
+                var src = this.photos[i];
+                var fmt = null;
+                if (/^data:image\/jpe?g/i.test(src)) fmt = 'JPEG';
+                else if (/^data:image\/webp/i.test(src)) fmt = 'WEBP';
+                else if (/^data:image\/png/i.test(src)) fmt = 'PNG';
+                if (fmt) {
+                    var px = 18 + col * (cellW + gap);
+                    try {
+                        var props = doc.getImageProperties(src);
+                        var ratio = props.width / props.height;
+                        var dw = cellW, dh = cellW / ratio;
+                        if (dh > cellH) { dh = cellH; dw = cellH * ratio; }
+                        var ox = px + (cellW - dw) / 2;
+                        var oy = y + (cellH - dh) / 2;
+                        doc.setDrawColor(226, 232, 240);
+                        doc.setLineWidth(0.3);
+                        doc.rect(px, y, cellW, cellH);
+                        doc.addImage(src, fmt, ox, oy, dw, dh);
+                    } catch (e) {}
+                }
+                col++;
+                if (col >= cols) { col = 0; y += cellH + gap; }
+            }
+            if (col !== 0) y += cellH + gap;
+            return y + 2;
         },
 
         openFullPreview() {
@@ -1605,6 +1677,7 @@ function receiptMaker() {
                 'Receipt Number: ' + this.receiptNo + '\n' +
                 'Date: ' + this.receiptDate + '\n' +
                 'Total Amount: ' + this.currencySym + ' ' + this.fmtNum(this.total) + '\n\n' +
+                (Number(this.amountPaid) > 0 ? 'Amount Paid: ' + this.currencySym + ' ' + this.fmtNum(this.amountPaid) + '\n' + 'Balance Due: ' + this.currencySym + ' ' + this.fmtNum(this.balanceDue) + '\n\n' : '') +
                 (this.notes ? 'Notes: ' + this.notes + '\n\n' : '') +
                 'Thank you for your business!\n' +
                 (this.fromName || 'DM Solutions Tech')

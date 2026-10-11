@@ -867,6 +867,14 @@ body.tool-page {
                                 <span>Total Quotation</span>
                                 <span x-text="currencySym + fmtNum(total)"></span>
                             </div>
+                            <div class="rm-total-row" x-show="amountPaid > 0" x-cloak>
+                                <span class="text-emerald-600">Amount Paid</span>
+                                <span class="text-emerald-600" x-text="'-' + currencySym + fmtNum(amountPaid)"></span>
+                            </div>
+                            <div class="rm-total-row" x-show="amountPaid > 0" x-cloak style="font-weight:700;color:#0f172a;">
+                                <span>Balance Due</span>
+                                <span x-text="currencySym + fmtNum(balanceDue)"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -966,6 +974,9 @@ body.tool-page {
                             </table>
                             <div class="rm-mini-line"></div>
                             <div class="text-right font-bold text-[7px]" x-text="currencySym + fmtNum(total)"></div>
+                            <template x-if="amountPaid > 0">
+                                <div class="text-right text-[5px]"><span>Balance Due: </span><span class="font-bold" x-text="currencySym + fmtNum(balanceDue)"></span></div>
+                            </template>
                         </div>
                     </div>
 
@@ -1051,6 +1062,12 @@ body.tool-page {
                         </select>
                     </div>
 
+                    <!-- Amount Paid / Deposit -->
+                    <div class="rm-side-row">
+                        <label class="rm-side-label">Amount Paid</label>
+                        <input type="number" step="0.01" min="0" class="rm-input text-right" x-model.number="amountPaid" placeholder="0.00">
+                    </div>
+
                 </div>
 
             </div>
@@ -1131,6 +1148,8 @@ body.tool-page {
                 </div>
             </div>
         </div>
+    </template>
+
     <!-- ══ USER-FRIENDLY EMAIL & SHARE MODAL ══ -->
     <template x-if="showEmailModal">
         <div class="rm-modal-backdrop" @click.self="showEmailModal = false" @keydown.escape.window="showEmailModal = false">
@@ -1279,10 +1298,15 @@ function quoteMaker() {
         taxValue: 0,
         currencyCode: 'KES',
         currencySym: 'KSh',
+        amountPaid: 0,
 
         // Modals & PDF
         showPdfModal: false,
         showSigModal: false,
+        showEmailModal: false,
+        emailSubject: '',
+        emailBody: '',
+        copiedMessage: false,
         pdfBlobUrl: '',
         historyList: [],
 
@@ -1349,6 +1373,10 @@ function quoteMaker() {
 
         get total() {
             return Math.max(0, this.subtotal - this.discountAmt + this.taxAmt);
+        },
+
+        get balanceDue() {
+            return Math.max(0, this.total - (Number(this.amountPaid) || 0));
         },
 
         fmtNum(val) {
@@ -1649,7 +1677,24 @@ function quoteMaker() {
             doc.setTextColor(15, 23, 42);
             doc.text('Total Quotation:', labelX, y);
             doc.text(this.currencySym + ' ' + this.fmtNum(this.total), valueX, y, { align: 'right' });
-            y += 12;
+            y += 6;
+
+            if (Number(this.amountPaid) > 0) {
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(5, 150, 105);
+                doc.text('Amount Paid:', labelX, y);
+                doc.text('-' + this.currencySym + ' ' + this.fmtNum(this.amountPaid), valueX, y, { align: 'right' });
+                y += 5.5;
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10.5);
+                doc.setTextColor(15, 23, 42);
+                doc.text('Balance Due:', labelX, y);
+                doc.text(this.currencySym + ' ' + this.fmtNum(this.balanceDue), valueX, y, { align: 'right' });
+                y += 6;
+            }
+            y += 6;
 
             // Terms & Conditions
             if (this.terms) {
@@ -1673,10 +1718,58 @@ function quoteMaker() {
                     doc.text('Authorized Signature:', 18, y);
                     y += 3;
                     doc.addImage(this.signatureDataUrl, 'PNG', 18, y, 40, 16);
+                    y += 18;
                 } catch (e) {}
             }
 
+            // Project Attachments / References (photos)
+            y = this.renderPhotosPdf(doc, y, pw);
+
             return doc;
+        },
+
+        renderPhotosPdf(doc, startY, pw) {
+            if (!this.photos || !this.photos.length) return startY;
+            var y = startY;
+            if (y > 220) { doc.addPage(); y = 20; }
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text('Attachments / References:', 18, y);
+            y += 5;
+
+            var cols = 3, gap = 4;
+            var availW = pw - 36;
+            var cellW = (availW - gap * (cols - 1)) / cols;
+            var cellH = cellW * 0.7;
+            var col = 0;
+            for (var i = 0; i < this.photos.length; i++) {
+                if (y + cellH > 275) { doc.addPage(); y = 20; col = 0; }
+                var src = this.photos[i];
+                var fmt = null;
+                if (/^data:image\/jpe?g/i.test(src)) fmt = 'JPEG';
+                else if (/^data:image\/webp/i.test(src)) fmt = 'WEBP';
+                else if (/^data:image\/png/i.test(src)) fmt = 'PNG';
+                if (fmt) {
+                    var px = 18 + col * (cellW + gap);
+                    try {
+                        var props = doc.getImageProperties(src);
+                        var ratio = props.width / props.height;
+                        var dw = cellW, dh = cellW / ratio;
+                        if (dh > cellH) { dh = cellH; dw = cellH * ratio; }
+                        var ox = px + (cellW - dw) / 2;
+                        var oy = y + (cellH - dh) / 2;
+                        doc.setDrawColor(226, 232, 240);
+                        doc.setLineWidth(0.3);
+                        doc.rect(px, y, cellW, cellH);
+                        doc.addImage(src, fmt, ox, oy, dw, dh);
+                    } catch (e) {}
+                }
+                col++;
+                if (col >= cols) { col = 0; y += cellH + gap; }
+            }
+            if (col !== 0) y += cellH + gap;
+            return y + 2;
         },
 
         openFullPreview() {
@@ -1720,23 +1813,78 @@ function quoteMaker() {
             window.open(url, '_blank');
         },
 
-        emailQuote() {
-            var subject = encodeURIComponent((this.docTitle || 'Quotation') + ' #' + (this.quoteNo || '') + (this.projectRef ? ' - ' + this.projectRef : ''));
-            var body = encodeURIComponent(
-                'Hello ' + (this.clientName || this.clientCompany || 'there') + ',\n\n' +
+        buildEmailSubject() {
+            return (this.docTitle || 'Quotation') + ' #' + (this.quoteNo || '') + (this.projectRef ? ' - ' + this.projectRef : '');
+        },
+
+        buildEmailBody() {
+            return 'Hello ' + (this.clientName || this.clientCompany || 'there') + ',\n\n' +
                 'Please find your quotation details below:\n\n' +
                 'Quotation Number: ' + this.quoteNo + '\n' +
                 'Date: ' + this.quoteDate + '\n' +
                 'Valid Until: ' + this.validUntil + '\n' +
                 (this.projectRef ? 'Project: ' + this.projectRef + '\n' : '') +
-                'Total Estimate: ' + this.currencySym + ' ' + this.fmtNum(this.total) + '\n\n' +
+                'Subtotal: ' + this.currencySym + ' ' + this.fmtNum(this.subtotal) + '\n' +
+                (this.discountAmt > 0 ? 'Discount: -' + this.currencySym + ' ' + this.fmtNum(this.discountAmt) + '\n' : '') +
+                (this.taxAmt > 0 ? 'Tax (' + this.taxValue + '%): ' + this.currencySym + ' ' + this.fmtNum(this.taxAmt) + '\n' : '') +
+                'Total Estimate: ' + this.currencySym + ' ' + this.fmtNum(this.total) + '\n' +
+                (Number(this.amountPaid) > 0 ? 'Amount Paid: ' + this.currencySym + ' ' + this.fmtNum(this.amountPaid) + '\n' + 'Balance Due: ' + this.currencySym + ' ' + this.fmtNum(this.balanceDue) + '\n' : '') +
+                '\n' +
                 (this.terms ? 'Terms & Conditions:\n' + this.terms + '\n\n' : '') +
                 'Feel free to reach out if you have any questions or would like to proceed.\n\n' +
                 'Best regards,\n' +
-                (this.fromName || 'DM Solutions Tech')
-            );
-            var recipient = encodeURIComponent(this.clientEmail || '');
-            window.location.href = 'mailto:' + recipient + '?subject=' + subject + '&body=' + body;
+                (this.fromName || 'DM Solutions Tech');
+        },
+
+        openEmailModal() {
+            this.emailSubject = this.buildEmailSubject();
+            this.emailBody = this.buildEmailBody();
+            this.copiedMessage = false;
+            this.showEmailModal = true;
+        },
+
+        sendViaGmail() {
+            var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(this.clientEmail || '') +
+                '&su=' + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+            window.open(url, '_blank');
+        },
+
+        sendViaMailto() {
+            window.location.href = 'mailto:' + encodeURIComponent(this.clientEmail || '') +
+                '?subject=' + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+        },
+
+        sendViaWhatsApp() {
+            var text = this.emailSubject + '\n\n' + this.emailBody;
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+        },
+
+        copyEmailText() {
+            var text = this.emailSubject + '\n\n' + this.emailBody;
+            var self = this;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function () {
+                    self.copiedMessage = true;
+                    setTimeout(function () { self.copiedMessage = false; }, 2500);
+                }).catch(function () { self.fallbackCopy(text); });
+            } else {
+                this.fallbackCopy(text);
+            }
+        },
+
+        fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); this.copiedMessage = true; } catch (e) {}
+            document.body.removeChild(ta);
+        },
+
+        emailQuote() {
+            this.openEmailModal();
         },
 
         openHistory() {
