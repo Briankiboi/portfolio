@@ -3640,7 +3640,7 @@ const TStk_Comp=()=>tt(q1,{children:[
     ]},`skill-${cidx}-${sidx}`))})
   ]},`cat-${cidx}`))})
 ]}),vTsk=$u(TStk_Comp,"tech-stack");
-const Cj=()=>pe("div",{className:"relative z-0 py-10",children:[pe("div",{className:"text-center mb-12",children:pe("h2",{className:`${Gn.sectionHeadText} text-center`,children:"The Stacks I've Worked With in prod."})}),pe("div",{className:"flex flex-row flex-wrap justify-center gap-10",children:lj.map(n=>pe("div",{className:"w-28 h-28",children:pe(bV,{icon:n.icon})},n.name))})]}),Ej=$u(Cj,"");var Qg={},tg={},bj={get exports(){return tg},set exports(n){tg=n}};/*!
+const Cj=()=>pe("div",{className:"relative z-0 py-10",children:[pe("div",{className:"text-center mb-12",children:pe("h2",{className:`${Gn.sectionHeadText} text-center`,children:"The Stacks I've Worked With in prod."})}),pe("div",{className:"flex flex-row flex-wrap justify-center gap-10",children:lj.map(n=>pe("div",{className:"w-28 h-28",children:pe("img",{src:n.icon,alt:n.name,decoding:"async",style:{width:"100%",height:"100%",objectFit:"contain",padding:"6px"}})},n.name))})]}),Ej=$u(Cj,"");var Qg={},tg={},bj={get exports(){return tg},set exports(n){tg=n}};/*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
 	http://jedwatson.github.io/classnames
